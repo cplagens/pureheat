@@ -9,6 +9,7 @@ import de.cplagens.pureheat.data.HistoryWorker
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.StalledHeating
+import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.HeatingState
 import de.cplagens.pureheat.hmip.HmipClient
 import de.cplagens.pureheat.hmip.toUserMessage
@@ -30,6 +31,8 @@ sealed interface UiState {
         val error: String? = null,
         val lastUpdated: Long? = null,
         val history: Map<String, RoomHistory> = emptyMap(),
+        /** Learned room model and heat-up/cool-down predictions per room id. */
+        val insights: Map<String, RoomInsight> = emptyMap(),
     ) : UiState
 }
 
@@ -46,10 +49,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
 
     init {
         viewModelScope.launch {
+            var insightsAt = 0L
             repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS).collect { samples ->
                 val history = samples.groupBy { it.roomId }
                     .mapValues { (_, s) -> RoomHistory(s, HistoryAnalysis.stalledHeating(s)) }
                 _ui.update { (it as? UiState.Dashboard)?.copy(history = history) ?: it }
+                // The model uses up to 60 days of data and changes slowly: refit at most every 30 min.
+                val now = System.currentTimeMillis()
+                if (now - insightsAt >= INSIGHTS_INTERVAL_MS) {
+                    insightsAt = now
+                    val insights = runCatching { repository.roomInsights(now) }.getOrDefault(emptyMap())
+                    _ui.update { (it as? UiState.Dashboard)?.copy(insights = insights) ?: it }
+                }
             }
         }
     }
@@ -118,5 +129,6 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         // Each refresh is ~100 KB uncompressed; floor heating changes slowly. "Aktualisieren" is instant.
         const val POLL_INTERVAL_MS = 5 * 60_000L
         const val HISTORY_WINDOW_MS = 24 * 60 * 60 * 1000L
+        const val INSIGHTS_INTERVAL_MS = 30 * 60 * 1000L
     }
 }

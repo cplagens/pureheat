@@ -84,6 +84,12 @@ interface HistoryDao {
     @Query("SELECT * FROM room_sample WHERE roomId = :roomId ORDER BY timestamp")
     suspend fun roomSamples(roomId: String): List<RoomSample>
 
+    @Query("SELECT * FROM room_sample WHERE timestamp >= :since ORDER BY timestamp")
+    suspend fun roomSamplesSinceOnce(since: Long): List<RoomSample>
+
+    @Query("SELECT * FROM weather_sample WHERE timestamp >= :since ORDER BY timestamp")
+    suspend fun weatherSamplesSinceOnce(since: Long): List<WeatherSample>
+
     @Query("DELETE FROM room_sample WHERE timestamp < :before")
     suspend fun deleteRoomSamplesBefore(before: Long)
 

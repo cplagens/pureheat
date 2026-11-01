@@ -16,6 +16,8 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import de.cplagens.pureheat.data.model.RoomInsight
 
 enum class HistoryRange(val label: String, val millis: Long) {
     DAY("24 h", 24 * 3_600_000L),
@@ -65,5 +67,15 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
 
     fun setRange(r: HistoryRange) {
         range.value = r
+    }
+
+    /** Learned model of this room (always from the full 60 days, independent of [range]). */
+    private val _insight = MutableStateFlow<RoomInsight?>(null)
+    val insight: StateFlow<RoomInsight?> = _insight
+
+    init {
+        viewModelScope.launch {
+            _insight.value = runCatching { repository.roomInsights()[roomId] }.getOrNull()
+        }
     }
 }

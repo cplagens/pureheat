@@ -17,6 +17,23 @@ data class ThermalPhase(
     val endTemperature: Double,
     /** Mean outside temperature during the phase, if recorded. */
     val meanOutside: Double?,
+    /** Mean room temperature during the phase. */
+    val meanTemperature: Double = (startTemperature + endTemperature) / 2,
+    /** Setpoint at the end of the phase (tells whether the room was still heating up). */
+    val setPointAtEnd: Double? = null,
+    /**
+     * Heating only: the low point from which the room starts warming up (the room keeps
+     * cooling while the screed heats). The time before it is the dead time; null if the room
+     * never rose ≥ 0.1 K above its start temperature.
+     */
+    val responseStart: Long? = null,
+    val responseStartTemperature: Double? = null,
+    /**
+     * Heating only: end of the actual heat-up – first moment within [APPROACH_MARGIN] of the
+     * setpoint (after that the valve merely holds the temperature), else the phase end.
+     */
+    val heatUpEnd: Long? = null,
+    val heatUpEndTemperature: Double? = null,
 ) {
     val hours: Double get() = (end - start) / 3_600_000.0
     val ratePerHour: Double get() = (endTemperature - startTemperature) / hours
@@ -63,6 +80,12 @@ object HistoryAnalysis {
     /** Valve at or below this counts as closed for cooling phases. */
     const val CLOSED_VALVE = 0.05
 
+    /** Rise that marks the end of the dead time in a heating phase. */
+    const val RESPONSE_DELTA = 0.1
+
+    /** Closer than this to the setpoint the room is no longer heating up freely. */
+    const val APPROACH_MARGIN = 0.3
+
     /**
      * Splits one room's history into heating (valve ≥ 50 %) and cooling (valve closed)
      * phases of at least an hour. Gaps > 1 h and missing temperatures end a phase.
@@ -88,13 +111,37 @@ object HistoryAnalysis {
                 val start = run.first().timestamp
                 val end = run.last().timestamp
                 val outside = weather.filter { it.timestamp in start..end }.mapNotNull { it.outsideTemperature }
+                val startTemp = run.first().actualTemperature!!
+                val responseIndex = if (kind == PhaseKind.HEATING) {
+                    val risen = run.indexOfFirst { it.actualTemperature!! >= startTemp + RESPONSE_DELTA }
+                    // Last minimum before the rise (lastIndexOf: a flat bottom ends where warming begins).
+                    if (risen < 0) null else run.subList(0, risen + 1).let { head ->
+                        val min = head.minOf { it.actualTemperature!! }
+                        head.indexOfLast { it.actualTemperature!! == min }
+                    }
+                } else {
+                    null
+                }
+                val response = responseIndex?.let { run[it] }
+                val heatUpEnd = responseIndex?.let { from ->
+                    run.drop(from).firstOrNull { s ->
+                        val sp = s.setPointTemperature
+                        sp != null && s.actualTemperature!! >= sp - APPROACH_MARGIN
+                    } ?: run.last()
+                }
                 result += ThermalPhase(
                     kind = kind,
                     start = start,
                     end = end,
-                    startTemperature = run.first().actualTemperature!!,
+                    startTemperature = startTemp,
                     endTemperature = run.last().actualTemperature!!,
                     meanOutside = outside.takeIf { it.isNotEmpty() }?.average(),
+                    meanTemperature = run.map { it.actualTemperature!! }.average(),
+                    setPointAtEnd = run.last().setPointTemperature,
+                    responseStart = response?.timestamp,
+                    responseStartTemperature = response?.actualTemperature,
+                    heatUpEnd = heatUpEnd?.timestamp,
+                    heatUpEndTemperature = heatUpEnd?.actualTemperature,
                 )
             }
             run = mutableListOf()

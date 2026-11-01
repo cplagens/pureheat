@@ -7,6 +7,7 @@ import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.HistoryDao
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WeatherSample
+import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.HeatingProfile
 import de.cplagens.pureheat.hmip.HeatingProfileCodec
 import de.cplagens.pureheat.hmip.HeatingState
@@ -54,6 +55,14 @@ class HeatingRepository(
     fun weatherHistorySince(since: Long): Flow<List<WeatherSample>> = dao.weatherSamplesSince(since)
 
     suspend fun roomSamples(roomId: String): List<RoomSample> = dao.roomSamples(roomId)
+
+    /** Room model, setpoint levels and predictions for every room, from the full history. */
+    suspend fun roomInsights(now: Long = System.currentTimeMillis()): Map<String, RoomInsight> {
+        val since = now - RETENTION_MS
+        val samples = dao.roomSamplesSinceOnce(since)
+        val weather = dao.weatherSamplesSinceOnce(since)
+        return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now) }
+    }
 
     /** Room samples of the last two recordings (newest first) for [PollingPolicy]. */
     suspend fun lastTwoRecordings(): Pair<List<RoomSample>, List<RoomSample>> {

@@ -26,6 +26,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.HeatingCircuit
 import de.cplagens.pureheat.hmip.Room
 import java.text.DateFormat
@@ -81,6 +82,7 @@ fun DashboardScreen(
                 room,
                 showDevice,
                 state.history[room.id],
+                state.insights[room.id],
                 state.lastUpdated ?: System.currentTimeMillis(),
                 onOpenProfile = { onOpenProfile(room.id) },
                 onOpenHistory = { onOpenHistory(room.id) },
@@ -103,6 +105,7 @@ private fun RoomCard(
     room: Room,
     showDevice: Boolean,
     history: RoomHistory?,
+    insight: RoomInsight?,
     now: Long,
     onOpenProfile: () -> Unit,
     onOpenHistory: () -> Unit,
@@ -144,6 +147,12 @@ private fun RoomCard(
                 )
             }
             RoomHistoryChart(history?.samples.orEmpty(), now, Modifier.fillMaxWidth().clickable(onClick = onOpenHistory))
+            // Rooms without a thermometer (towel radiators) have nothing to learn from.
+            if (room.actualTemperature != null) {
+                ModelTexts.summary(insight)?.let {
+                    Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                }
+            }
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextButton(onClick = onOpenHistory, contentPadding = PaddingValues(0.dp)) { Text("Verlauf ›") }
                 if (room.profiles.isNotEmpty()) {

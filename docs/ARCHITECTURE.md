@@ -50,12 +50,15 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `HistoryWorker.kt` | Sich selbst neu planende Abrufkette (`history-chain`) + stündlicher `HistoryWatchdogWorker` |
 | `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
 | `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 2): `room_sample`, `circuit_sample`, `weather_sample` |
-| `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Aufheiz-/Abkühlphasen |
+| `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Phasen „Ventil offen/zu“ (mit Totzeit-Tiefpunkt und Ende des freien Aufheizens) |
+| `model/RoomModel.kt` | Reines Wärmemodell je Raum (k, P, Totzeit), Anpassung aus Phasen, Vorhersage Aufheiz-/Abkühlzeit; `SetPointLevels` (Spar-/Komforttemperatur aus Sollwerten) |
+| `model/RoomInsight.kt` | Modell + Spar/Komfort + Außentemperatur je Raum, mit fertigen Vorhersagen |
 | **ui/** | |
 | `MainViewModel.kt` | Setup/Registrierung, Polling alle 5 min solange sichtbar, 24-h-Verlauf + Warnungen fürs Dashboard |
 | `DashboardScreen.kt` | Raumkarten: Ist/Soll, Ventil je Kanal, 24-h-Diagramm, Links „Verlauf ›“ / „Heizprofil ›“ |
 | `RoomHistoryChart.kt` | Kompaktes 24-h-Diagramm (Temperatur oben, Ventil unten) |
-| `RoomDetailScreen.kt` / `RoomDetailViewModel.kt` | Detailansicht: Zeitraum 24 h–60 Tage, Ist/Soll/Außen, Ventil je Kanal, Werte per Antippen, erkannte Phasen |
+| `RoomDetailScreen.kt` / `RoomDetailViewModel.kt` | Detailansicht: Zeitraum 24 h–60 Tage, Ist/Soll/Außen, Ventil je Kanal, Werte per Antippen, Raummodell, erkannte Phasen |
+| `ModelTexts.kt` | Deutsche Texte für Modellvorhersagen (Dauer, „nicht erreichbar“, „lernt noch“) |
 | `TimeSeriesChart.kt` | Wiederverwendbares Zeitreihen-Diagramm mit gemeinsamem Zeit-Cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | Wochenprofile ansehen/bearbeiten/speichern/aktivieren/rückgängig |
 | `AboutDialog.kt` | Version, Beschreibung, Unterstützen-Links, Logo-Preview |
@@ -148,7 +151,7 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
 
 `./gradlew testDebugUnitTest` – JVM-Unit-Tests für die reinen Kotlin-Teile:
 `HeatingStateParserTest`, `HeatingProfileTest`, `HistoryAnalysisTest`, `ThermalPhaseTest`,
-`PollingPolicyTest`.
+`PollingPolicyTest`, `RoomModelTest` (simulierter Raum mit bekannten Parametern).
 JSON-Beispiele in Tests sind anonymisiert.
 
 ## Debugging

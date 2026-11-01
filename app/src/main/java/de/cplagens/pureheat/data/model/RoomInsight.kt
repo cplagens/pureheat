@@ -1,0 +1,40 @@
+package de.cplagens.pureheat.data.model
+
+import de.cplagens.pureheat.data.history.HistoryAnalysis
+import de.cplagens.pureheat.data.history.RoomSample
+import de.cplagens.pureheat.data.history.WeatherSample
+
+/** What the app has learned about one room, plus the inputs for its predictions. */
+data class RoomInsight(
+    val model: RoomModel,
+    /** Setback/comfort temperature from the last 7 days of setpoints. */
+    val levels: SetPointLevels?,
+    /** Latest recorded outside temperature (the forecast replaces this in a later step). */
+    val outside: Double?,
+) {
+    /** Setback → comfort, e.g. in the morning. */
+    val heatUp: Prediction
+        get() = if (levels == null || outside == null) Prediction.Unknown
+        else model.heatUp(levels.setback, levels.comfort, outside)
+
+    /** Comfort → setback after the heating phase ends. */
+    val coolDown: Prediction
+        get() = if (levels == null || outside == null) Prediction.Unknown
+        else model.coolDown(levels.comfort, levels.setback, outside)
+
+    companion object {
+        private const val LEVEL_WINDOW_MS = 7 * 24 * 3_600_000L
+
+        /** [samples] and [weather] sorted by time; [samples] of all rooms. */
+        fun forAllRooms(samples: List<RoomSample>, weather: List<WeatherSample>, now: Long): Map<String, RoomInsight> {
+            val outside = weather.lastOrNull { it.outsideTemperature != null }?.outsideTemperature
+            return samples.groupBy { it.roomId }.mapValues { (_, s) ->
+                RoomInsight(
+                    model = RoomModelFitter.fit(HistoryAnalysis.phases(s, weather)),
+                    levels = SetPointLevels.from(s.filter { it.timestamp >= now - LEVEL_WINDOW_MS }),
+                    outside = outside,
+                )
+            }
+        }
+    }
+}

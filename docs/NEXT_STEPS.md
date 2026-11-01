@@ -90,27 +90,42 @@ Offen:
 6. Kleinigkeit: Jeder neue Worker-Prozess macht zuerst einen Lookup (`getHost`, 223 Bytes) –
    vernachlässigbar; könnte man in SharedPreferences cachen.
 
-## Schritt 3 – Raummodell (Aufheiz-/Abkühlzeiten in der Übersicht)
+## Schritt 3 – Raummodell (umgesetzt 2026-11-01, lernt jetzt mit echten Daten)
 
-Einfaches Wärmemodell 1. Ordnung pro Raum (T = Raum, Tₐ = außen):
+Wärmemodell 1. Ordnung pro Raum (T = Raum, Tₐ = außen, Zeiten in Stunden), Code in
+`data/model/RoomModel.kt` (reines Kotlin):
 
-- Abkühlen (Ventil zu): `dT/dt = −k·(T − Tₐ)` → je Abkühlphase `k = −rate / (T̄ − T̄ₐ)`
-- Aufheizen (Ventil offen): `dT/dt = P − k·(T − Tₐ)` → je Aufheizphase `P = rate + k·(T̄ − T̄ₐ)`
-- Robust schätzen: Median über alle Phasen der letzten 60 Tage; zusätzlich **Totzeit** `d`
-  (Estrich!): Zeit vom Öffnen des Ventils bis die Temperatur um > 0,1 K steigt.
-- Vorhersagen:
-  - Aufheizen T₀ → T₁: `t = d + (1/k)·ln((P − k(T₀−Tₐ)) / (P − k(T₁−Tₐ)))`;
-    wenn `P ≤ k(T₁−Tₐ)` → „Ziel bei dieser Außentemperatur nicht erreichbar“.
-  - Abkühlen T₀ → T₁ (T₁ > Tₐ): `t = (1/k)·ln((T₀−Tₐ) / (T₁−Tₐ))`.
-- Neue reine Klasse z. B. `data/model/RoomModel.kt` (`fit(phases)`, `heatUpTime(...)`,
-  `coolDownTime(...)`) mit Unit-Tests auf synthetischen Daten.
-- `ThermalPhase` braucht dafür zusätzlich die mittlere Raumtemperatur (T̄) – ergänzen.
-- **Übersicht:** pro Raumkarte eine Zeile, z. B. „15 → 24 °C in ca. 7 h · 24 → 15 °C in ca. 16 h
-  (bei 10 °C außen)“; Ausgangs-/Zielwerte aus dem aktiven Heizprofil (Grundtemperatur ↔
-  Phasentemperatur). Vor genügend Daten (z. B. < 3 Phasen je Art): „lernt noch …“.
-- Detailansicht: Modellwerte (k, P, Totzeit, Anzahl Phasen) und eine Güteangabe.
-- Hinweis: Der Raum „Zimmer 2“ heizte im ersten Verlauf nur mit ~0,09 °C/h (Ventilstift war
-  festgesessen, wurde am 2026-11-01 gelöst) – frühe Daten dieses Raums sind nicht repräsentativ.
+- Ventil zu: `dT/dt = −k·(T − Tₐ)` → je Phase `k = −rate / (T̄ − T̄ₐ)`. Nur Phasen mit
+  `T̄ − T̄ₐ ≥ 3 K` und fallender Temperatur (Ventil zu + steigende Temperatur, z. B. durch
+  Handtuchheizkörper, sagt nichts über den Verlust).
+- Ventil offen: `dT/dt = P − k·(T − Tₐ)` → `P = rate + k·(T̄ − T̄ₐ)`, ausgewertet nur im
+  **freien Aufheizen**: vom Tiefpunkt nach der Totzeit (`ThermalPhase.responseStart`) bis die
+  Temperatur 0,3 K unter dem Sollwert ist (`heatUpEnd`); danach hält das Ventil nur noch.
+- **Totzeit** `d` = Phasenbeginn bis Tiefpunkt (der Raum kühlt weiter, während der Estrich
+  aufheizt). Alles als Median; Streuung von k als (Q3−Q1)/Median.
+- Vorhersagen (`RoomModel.heatUp/coolDown` → `Prediction.Hours | Unreachable | Unknown`):
+  - Aufheizen: `t = d + (1/k)·ln((P − k(T₀−Tₐ)) / (P − k(T₁−Tₐ)))`, nicht erreichbar
+    wenn `P ≤ k(T₁−Tₐ)`.
+  - Abkühlen: `t = (1/k)·ln((T₀−Tₐ) / (T₁−Tₐ))`.
+- **Vertrauenswürdig** ab je 3 verwertbaren Phasen (`RoomModel.MIN_PHASES`), sonst zeigt die
+  App „Raummodell lernt noch (Ventil offen x/3, Ventil zu y/3)“.
+- **Spar-/Komforttemperatur** kommen aus den aufgezeichneten Sollwerten der letzten 7 Tage
+  (10./90. Perzentil, `SetPointLevels`) – keine zusätzlichen API-Aufrufe; kurze manuelle
+  Änderungen fallen heraus. Außentemperatur = letzter aufgezeichneter Wert.
+- Berechnet in `HeatingRepository.roomInsights()` (60 Tage, `Dispatchers.Default`), im
+  Dashboard höchstens alle 30 min neu; die Detailansicht zeigt k, P, Totzeit, Phasenanzahl,
+  Streuung und die Spar-/Komforttemperatur. Ein Nachtjob ist dafür (noch) nicht nötig.
+- Unit-Test simuliert einen Raum mit bekanntem k, P, Totzeit und prüft, dass die Anpassung
+  sie wiederfindet (`RoomModelTest`).
+
+Offen / beobachten:
+1. Nach einigen Tagen prüfen, ob die Werte plausibel sind (Detailansicht → Raummodell).
+   Typisch für Fußbodenheizung: k ≈ 0,02–0,08/h, P ≈ 0,2–1 K/h, Totzeit 0,5–3 h.
+2. Der Raum „Zimmer 2“ heizte anfangs nur mit ~0,09 °C/h (Ventilstift saß fest, am
+   2026-11-01 gelöst) – Daten von vor dem 2026-11-02 dieses Raums ggf. ignorieren.
+3. Räume, deren Ventil fast nie ganz zu ist, liefern evtl. nie „Ventil zu“-Phasen → dann
+   k aus Phasen mit kleinem Ventilwert schätzen (Erweiterung).
+4. Später (Schritt 5/6) Spar-/Komfortwerte direkt aus dem aktiven Heizprofil nehmen.
 
 ## Schritt 4 – Wetterprognose
 

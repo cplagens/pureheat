@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.cplagens.pureheat.data.history.PhaseKind
 import de.cplagens.pureheat.data.history.ThermalPhase
+import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.Room
 import java.text.SimpleDateFormat
 import java.util.Date
@@ -53,6 +54,7 @@ fun RoomDetailScreen(
     modifier: Modifier = Modifier,
 ) {
     val state by vm.ui.collectAsStateWithLifecycle()
+    val insight by vm.insight.collectAsStateWithLifecycle()
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
 
     val actualColor = MaterialTheme.colorScheme.primary
@@ -172,6 +174,10 @@ fun RoomDetailScreen(
             }
         }
 
+        if (room.actualTemperature != null) {
+            item { ModelCard(insight) }
+        }
+
         item {
             Text("Phasen (Ventil ≥ 1 h offen bzw. zu)", style = MaterialTheme.typography.titleMedium)
             PhaseSummary(state.phases)
@@ -186,6 +192,55 @@ fun RoomDetailScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             }
+        }
+    }
+}
+
+/** What the room model has learned, with the predictions and how reliable they are. */
+@Composable
+private fun ModelCard(insight: RoomInsight?) {
+    Card(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text("Raummodell", style = MaterialTheme.typography.labelLarge)
+            if (insight == null) {
+                Text("Wird berechnet …", style = MaterialTheme.typography.bodySmall)
+                return@Column
+            }
+            val m = insight.model
+            ModelTexts.summary(insight)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
+            val muted = MaterialTheme.colorScheme.onSurfaceVariant
+            Text(
+                buildString {
+                    append("Wärmeverlust k: ")
+                    append(m.k?.let { String.format(Locale.GERMANY, "%.3f/h", it) } ?: "unbekannt")
+                    append(" · Heizleistung P: ")
+                    append(m.power?.let { String.format(Locale.GERMANY, "%.2f °C/h", it) } ?: "unbekannt")
+                    append(" · Totzeit: ")
+                    append(m.deadTimeHours?.let { ModelTexts.duration(it) } ?: "unbekannt")
+                },
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
+            Text(
+                "Verwertbare Phasen: Ventil offen ${m.heatingPhases}, Ventil zu ${m.coolingPhases}" +
+                    (m.kSpread?.let { " · Streuung k: ±${(it * 50).toInt()} %" } ?: ""),
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
+            insight.levels?.let {
+                Text(
+                    "Spar-/Komforttemperatur (aus den Sollwerten der letzten 7 Tage): " +
+                        "${it.setback.fmt1()} / ${it.comfort.fmt1()} °C",
+                    style = MaterialTheme.typography.bodySmall,
+                    color = muted,
+                )
+            }
+            Text(
+                "Das Modell nimmt an, dass der Raum mit offenem Ventil gleichmäßig heizt und mit geschlossenem " +
+                    "Ventil Richtung Außentemperatur abkühlt. Je mehr Tage mit unterschiedlichem Wetter, desto genauer.",
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
         }
     }
 }

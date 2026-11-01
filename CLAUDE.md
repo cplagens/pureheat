@@ -27,7 +27,8 @@ which heating circuit is currently heating and how far each valve actuator is op
 - `data/HeatingRepository.kt` — fetch + record history, load/save profiles (backup before save, read-back check)
 - `data/HistoryWorker.kt` — self-rescheduling WorkManager chain (15/30/60 min via `PollingPolicy`) +
   hourly watchdog; `data/history/` — Room DB (60 days, incl.
-  outside temperature) and analysis (warnings, heat-up rate, heating/cooling phases)
+  outside temperature) and analysis (warnings, heat-up rate, heating/cooling phases);
+  `data/model/` — per-room thermal model (k, P, dead time) and heat-up/cool-down predictions
 - `ui/` — `MainViewModel` (polls every 5 min while visible; each fetch is ~100 KB, uncompressed), `SetupScreen`, `DashboardScreen`,
   `RoomHistoryChart`, `RoomDetailScreen`/`RoomDetailViewModel` + `TimeSeriesChart` (full history),
   `ProfileScreen`/`ProfileViewModel`, `AboutDialog` (voluntary support links)
