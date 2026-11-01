@@ -3,6 +3,25 @@ package de.cplagens.pureheat.data.history
 /** A room whose valve has been open for a while without the temperature following. */
 data class StalledHeating(val openSince: Long, val temperatureRise: Double)
 
+enum class PhaseKind { HEATING, COOLING }
+
+/**
+ * A stretch of at least an hour in which the valve stayed open ([PhaseKind.HEATING]) or
+ * closed ([PhaseKind.COOLING]). These are the raw material for the room model.
+ */
+data class ThermalPhase(
+    val kind: PhaseKind,
+    val start: Long,
+    val end: Long,
+    val startTemperature: Double,
+    val endTemperature: Double,
+    /** Mean outside temperature during the phase, if recorded. */
+    val meanOutside: Double?,
+) {
+    val hours: Double get() = (end - start) / 3_600_000.0
+    val ratePerHour: Double get() = (endTemperature - startTemperature) / hours
+}
+
 object HistoryAnalysis {
     const val MIN_OPEN_MILLIS = 2 * 60 * 60 * 1000L
     const val MIN_VALVE = 0.5
@@ -39,6 +58,59 @@ object HistoryAnalysis {
         val first = samples.subList(start, samples.size).firstNotNullOfOrNull { it.actualTemperature } ?: return null
         val rise = actual - first
         return if (rise < MAX_RISE) StalledHeating(openSince, rise) else null
+    }
+
+    /** Valve at or below this counts as closed for cooling phases. */
+    const val CLOSED_VALVE = 0.05
+
+    /**
+     * Splits one room's history into heating (valve ≥ 50 %) and cooling (valve closed)
+     * phases of at least an hour. Gaps > 1 h and missing temperatures end a phase.
+     * [samples] and [weather] must be sorted by timestamp.
+     */
+    fun phases(samples: List<RoomSample>, weather: List<WeatherSample>): List<ThermalPhase> {
+        fun kindOf(s: RoomSample): PhaseKind? {
+            if (s.actualTemperature == null) return null
+            val v = s.valvePosition ?: return null
+            return when {
+                v >= MIN_VALVE -> PhaseKind.HEATING
+                v <= CLOSED_VALVE -> PhaseKind.COOLING
+                else -> null
+            }
+        }
+
+        val result = mutableListOf<ThermalPhase>()
+        var run = mutableListOf<RoomSample>()
+        var runKind: PhaseKind? = null
+        fun close() {
+            val kind = runKind
+            if (kind != null && run.size >= 2 && run.last().timestamp - run.first().timestamp >= MIN_HEATUP_MILLIS) {
+                val start = run.first().timestamp
+                val end = run.last().timestamp
+                val outside = weather.filter { it.timestamp in start..end }.mapNotNull { it.outsideTemperature }
+                result += ThermalPhase(
+                    kind = kind,
+                    start = start,
+                    end = end,
+                    startTemperature = run.first().actualTemperature!!,
+                    endTemperature = run.last().actualTemperature!!,
+                    meanOutside = outside.takeIf { it.isNotEmpty() }?.average(),
+                )
+            }
+            run = mutableListOf()
+            runKind = null
+        }
+        for (s in samples) {
+            val kind = kindOf(s)
+            val gap = run.lastOrNull()?.let { s.timestamp - it.timestamp > MAX_GAP_MILLIS } ?: false
+            if (kind == null || kind != runKind || gap) close()
+            if (kind != null) {
+                runKind = kind
+                run += s
+            }
+        }
+        close()
+        return result
     }
 
     /** Heat-up phases shorter than this are too noisy to derive a rate from. */

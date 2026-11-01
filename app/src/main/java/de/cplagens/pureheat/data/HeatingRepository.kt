@@ -6,6 +6,7 @@ import de.cplagens.pureheat.BuildConfig
 import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.HistoryDao
 import de.cplagens.pureheat.data.history.RoomSample
+import de.cplagens.pureheat.data.history.WeatherSample
 import de.cplagens.pureheat.hmip.HeatingProfile
 import de.cplagens.pureheat.hmip.HeatingProfileCodec
 import de.cplagens.pureheat.hmip.HeatingState
@@ -48,12 +49,17 @@ class HeatingRepository(
 
     fun roomHistorySince(since: Long): Flow<List<RoomSample>> = dao.roomSamplesSince(since)
 
+    fun circuitHistorySince(since: Long): Flow<List<CircuitSample>> = dao.circuitSamplesSince(since)
+
+    fun weatherHistorySince(since: Long): Flow<List<WeatherSample>> = dao.weatherSamplesSince(since)
+
     suspend fun roomSamples(roomId: String): List<RoomSample> = dao.roomSamples(roomId)
 
     suspend fun clear() {
         restUrl = null
         dao.clearRooms()
         dao.clearCircuits()
+        dao.clearWeather()
         withContext(Dispatchers.IO) { backupDir().deleteRecursively() }
     }
 
@@ -146,8 +152,10 @@ class HeatingRepository(
             circuits.distinctBy { it.deviceId to it.channelIndex }
                 .map { CircuitSample(it.deviceId, it.channelIndex, now, it.valvePosition) },
         )
+        dao.insertWeather(WeatherSample(now, state.outsideTemperature))
         dao.deleteRoomSamplesBefore(now - RETENTION_MS)
         dao.deleteCircuitSamplesBefore(now - RETENTION_MS)
+        dao.deleteWeatherSamplesBefore(now - RETENTION_MS)
     }
 
     private fun Room.toSample(now: Long) = RoomSample(
@@ -161,6 +169,7 @@ class HeatingRepository(
     private companion object {
         const val TAG = "PureHeat"
         const val MIN_SAMPLE_INTERVAL_MS = 4 * 60 * 1000L
-        const val RETENTION_MS = 14 * 24 * 60 * 60 * 1000L
+        // 60 days: enough for the room model to see different outside temperatures (~2 MB).
+        const val RETENTION_MS = 60 * 24 * 60 * 60 * 1000L
     }
 }

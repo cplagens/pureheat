@@ -60,6 +60,8 @@ data class HeatingState(
     val rooms: List<Room>,
     /** Circuits that are not assigned to any room. */
     val unassignedCircuits: List<HeatingCircuit>,
+    /** Current outside temperature from the cloud's weather service (`home.weather.temperature`). */
+    val outsideTemperature: Double? = null,
 )
 
 /**
@@ -141,6 +143,7 @@ object HeatingStateParser {
         return HeatingState(
             rooms = rooms,
             unassignedCircuits = circuits.map { it.first }.filter { it !in assigned },
+            outsideTemperature = state["home"].asObject()["weather"].asObject().dbl("temperature"),
         )
     }
 

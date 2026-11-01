@@ -1,5 +1,7 @@
 package de.cplagens.pureheat.hmip
 
+import android.util.Log
+import de.cplagens.pureheat.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -80,7 +82,18 @@ class HmipClient(
             .apply { headers.forEach { (k, v) -> header(k, v) } }
             .build()
         http.newCall(request).execute().use { resp ->
-            resp.code to (resp.body?.string() ?: "")
+            val text = resp.body?.string() ?: ""
+            if (BuildConfig.DEBUG) {
+                // Data/battery check: transfer size vs. payload; OkHttp asks for gzip transparently.
+                val net = resp.networkResponse
+                Log.d(
+                    "PureHeat",
+                    "HTTP ${request.url.encodedPath} ${resp.code} " +
+                        "encoding=${net?.header("Content-Encoding") ?: "none"} " +
+                        "wire=${net?.header("Content-Length") ?: "?"} payload=${text.length}",
+                )
+            }
+            resp.code to text
         }
     }
 

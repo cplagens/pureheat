@@ -1,5 +1,6 @@
 package de.cplagens.pureheat.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,7 @@ fun DashboardScreen(
     onRefresh: () -> Unit,
     onLogout: () -> Unit,
     onOpenProfile: (roomId: String) -> Unit,
+    onOpenHistory: (roomId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showAbout by remember { mutableStateOf(false) }
@@ -81,6 +83,7 @@ fun DashboardScreen(
                 state.history[room.id],
                 state.lastUpdated ?: System.currentTimeMillis(),
                 onOpenProfile = { onOpenProfile(room.id) },
+                onOpenHistory = { onOpenHistory(room.id) },
             )
         }
 
@@ -96,7 +99,14 @@ fun DashboardScreen(
 }
 
 @Composable
-private fun RoomCard(room: Room, showDevice: Boolean, history: RoomHistory?, now: Long, onOpenProfile: () -> Unit) {
+private fun RoomCard(
+    room: Room,
+    showDevice: Boolean,
+    history: RoomHistory?,
+    now: Long,
+    onOpenProfile: () -> Unit,
+    onOpenHistory: () -> Unit,
+) {
     Card(
         colors = if (room.isHeating) {
             CardDefaults.cardColors(containerColor = HeatingColor.copy(alpha = 0.12f))
@@ -133,9 +143,12 @@ private fun RoomCard(room: Room, showDevice: Boolean, history: RoomHistory?, now
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
-            RoomHistoryChart(history?.samples.orEmpty(), now, Modifier.fillMaxWidth())
-            if (room.profiles.isNotEmpty()) {
-                TextButton(onClick = onOpenProfile, contentPadding = PaddingValues(0.dp)) { Text("Heizprofil ›") }
+            RoomHistoryChart(history?.samples.orEmpty(), now, Modifier.fillMaxWidth().clickable(onClick = onOpenHistory))
+            Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
+                TextButton(onClick = onOpenHistory, contentPadding = PaddingValues(0.dp)) { Text("Verlauf ›") }
+                if (room.profiles.isNotEmpty()) {
+                    TextButton(onClick = onOpenProfile, contentPadding = PaddingValues(0.dp)) { Text("Heizprofil ›") }
+                }
             }
         }
     }

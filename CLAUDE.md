@@ -4,6 +4,11 @@ Android app (Kotlin, Jetpack Compose) that reads a Homematic IP floor heating sy
 Homematic IP Cloud (Access Point HmIP-HAP) and shows what the official app doesn't:
 which heating circuit is currently heating and how far each valve actuator is open.
 
+## Docs
+- `docs/ARCHITECTURE.md` — structure, data flow, DB schema, verified API quirks
+- `docs/NEXT_STEPS.md` — roadmap (room model, forecast, shadow mode, optimal profile, savings) and
+  open device checks. **Start here in a new session** and keep it updated when finishing a step.
+
 ## Build & Run
 - Build: `./gradlew assembleDebug`
 - Install on emulator/device: `./gradlew installDebug`
@@ -20,9 +25,11 @@ which heating circuit is currently heating and how far each valve actuator is op
   (channels of `FLOOR_TERMINAL_BLOCK*` devices)
 - `data/CredentialStore.kt` — SGTIN + auth token in app-private SharedPreferences
 - `data/HeatingRepository.kt` — fetch + record history, load/save profiles (backup before save, read-back check)
-- `data/HistoryWorker.kt` — WorkManager job every 15 min; `data/history/` — Room DB (14 days) and analysis
+- `data/HistoryWorker.kt` — WorkManager job every 15 min; `data/history/` — Room DB (60 days, incl.
+  outside temperature) and analysis (warnings, heat-up rate, heating/cooling phases)
 - `ui/` — `MainViewModel` (polls every 60 s while visible), `SetupScreen`, `DashboardScreen`,
-  `RoomHistoryChart`, `ProfileScreen`/`ProfileViewModel`, `AboutDialog` (voluntary support links)
+  `RoomHistoryChart`, `RoomDetailScreen`/`RoomDetailViewModel` + `TimeSeriesChart` (full history),
+  `ProfileScreen`/`ProfileViewModel`, `AboutDialog` (voluntary support links)
 
 ## Rules
 - The repo is **public**: never commit the SGTIN, auth token, PIN or raw API dumps containing them.

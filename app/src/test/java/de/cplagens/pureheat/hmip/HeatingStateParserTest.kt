@@ -12,6 +12,7 @@ class HeatingStateParserTest {
     // Shortened, anonymized sample in the shape returned by getCurrentState.
     private val sample = """
     {
+      "home": { "weather": { "temperature": 10.6, "humidity": 80 } },
       "devices": {
         "dev-fal": {
           "type": "FLOOR_TERMINAL_BLOCK_10",
@@ -65,6 +66,7 @@ class HeatingStateParserTest {
         // Channel 4 (no group, no position) is an unused output and hidden.
         assertEquals(listOf(3), state.unassignedCircuits.map { it.channelIndex })
 
+        assertEquals(10.6, state.outsideTemperature!!, 0.0)
         assertEquals("PROFILE_1", bad.activeProfile)
         assertEquals(listOf("Profil 1", "Sommer"), bad.profiles.map { it.displayName })
     }

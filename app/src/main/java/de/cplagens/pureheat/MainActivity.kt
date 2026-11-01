@@ -20,6 +20,8 @@ import androidx.activity.compose.BackHandler
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.cplagens.pureheat.ui.ProfileScreen
 import de.cplagens.pureheat.ui.ProfileViewModel
+import de.cplagens.pureheat.ui.RoomDetailScreen
+import de.cplagens.pureheat.ui.RoomDetailViewModel
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -46,27 +48,40 @@ class MainActivity : ComponentActivity() {
                 val ui by viewModel.ui.collectAsStateWithLifecycle()
                 Scaffold(Modifier.fillMaxSize()) { padding ->
                     var profileRoomId by rememberSaveable { mutableStateOf<String?>(null) }
+                    var historyRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     when (val s = ui) {
                         is UiState.Setup -> SetupScreen(s, viewModel::register, Modifier.padding(padding))
                         is UiState.Dashboard -> {
                             val rooms = s.state?.rooms.orEmpty()
-                            val room = rooms.firstOrNull { it.id == profileRoomId }
-                            if (room != null) {
-                                BackHandler { profileRoomId = null }
-                                ProfileScreen(
-                                    room = room,
-                                    allRooms = rooms,
-                                    vm = viewModel(key = "profile-${room.id}") { ProfileViewModel(application, room.id) },
-                                    onBack = { profileRoomId = null },
-                                    onChanged = viewModel::refresh,
-                                    modifier = Modifier.padding(padding),
-                                )
-                            } else {
-                                DashboardScreen(
+                            val profileRoom = rooms.firstOrNull { it.id == profileRoomId }
+                            val historyRoom = rooms.firstOrNull { it.id == historyRoomId }
+                            when {
+                                profileRoom != null -> {
+                                    BackHandler { profileRoomId = null }
+                                    ProfileScreen(
+                                        room = profileRoom,
+                                        allRooms = rooms,
+                                        vm = viewModel(key = "profile-${profileRoom.id}") { ProfileViewModel(application, profileRoom.id) },
+                                        onBack = { profileRoomId = null },
+                                        onChanged = viewModel::refresh,
+                                        modifier = Modifier.padding(padding),
+                                    )
+                                }
+                                historyRoom != null -> {
+                                    BackHandler { historyRoomId = null }
+                                    RoomDetailScreen(
+                                        room = historyRoom,
+                                        vm = viewModel(key = "history-${historyRoom.id}") { RoomDetailViewModel(application, historyRoom.id) },
+                                        onBack = { historyRoomId = null },
+                                        modifier = Modifier.padding(padding),
+                                    )
+                                }
+                                else -> DashboardScreen(
                                     s,
                                     onRefresh = viewModel::refresh,
                                     onLogout = viewModel::logout,
                                     onOpenProfile = { profileRoomId = it },
+                                    onOpenHistory = { historyRoomId = it },
                                     modifier = Modifier.padding(padding),
                                 )
                             }
