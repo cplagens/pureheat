@@ -156,7 +156,10 @@ class HmipClient(
         val rest = restUrl ?: lookup(sgtin).rest
         val (code, text) = post(
             "$rest/hmip/home/getCurrentState",
-            clientCharacteristics(),
+            buildJsonObject {
+                put("clientCharacteristics", clientCharacteristics())
+                put("id", sgtin)
+            },
             baseHeaders(sgtin) + ("AUTHTOKEN" to authToken),
         )
         if (code != 200) throw HmipException("Status konnte nicht geladen werden (HTTP $code): $text", code)

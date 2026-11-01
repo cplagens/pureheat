@@ -22,6 +22,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.hmip.HeatingCircuit
 import de.cplagens.pureheat.hmip.Room
+import de.cplagens.pureheat.hmip.valveStateText
 import java.text.DateFormat
 import java.util.Date
 
@@ -108,12 +109,24 @@ private fun RoomCard(room: Room) {
 
 @Composable
 private fun CircuitRow(circuit: HeatingCircuit) {
-    val name = circuit.channelLabel ?: "Kanal ${circuit.channelIndex}"
+    val name = circuit.channelLabel ?: "Kreis ${circuit.channelIndex}"
     val position = circuit.valvePosition
-    if (position != null) {
-        ValveBar("$name · ${circuit.deviceLabel}", position)
-    } else {
-        Text("$name · ${circuit.deviceLabel}: ${circuit.valveState ?: "unbekannt"}", style = MaterialTheme.typography.bodySmall)
+    Column {
+        if (position != null) {
+            ValveBar("$name · ${circuit.deviceLabel}", position)
+        } else {
+            Text(
+                "$name · ${circuit.deviceLabel}: keine Ventilstellung gemeldet",
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
+        if (circuit.hasValveProblem) {
+            Text(
+                "Stellantrieb: ${valveStateText(circuit.valveState)}",
+                color = MaterialTheme.colorScheme.error,
+                style = MaterialTheme.typography.bodySmall,
+            )
+        }
     }
 }
 
