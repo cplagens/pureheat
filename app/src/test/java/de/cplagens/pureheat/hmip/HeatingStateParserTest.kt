@@ -23,14 +23,22 @@ class HeatingStateParserTest {
             "2": { "functionalChannelType": "FLOOR_TERMINAL_BLOCK_MECHANIC_CHANNEL", "index": 2,
                    "label": "", "valvePosition": 0.0, "valveState": "ADAPTION_DONE", "groups": ["grp-wohnen"] },
             "3": { "functionalChannelType": "FLOOR_TERMINAL_BLOCK_MECHANIC_CHANNEL", "index": 3,
-                   "valvePosition": 0.2, "groups": [] }
+                   "valvePosition": 0.2, "groups": [] },
+            "4": { "functionalChannelType": "FLOOR_TERMINAL_BLOCK_MECHANIC_CHANNEL", "index": 4,
+                   "valveState": "ADJUSTMENT_TOO_SMALL", "groups": [] }
           }
         },
         "dev-wth": { "type": "WALL_MOUNTED_THERMOSTAT_PRO", "label": "Thermostat Bad", "functionalChannels": {} }
       },
       "groups": {
         "grp-bad": { "type": "HEATING", "label": "Bad", "actualTemperature": 21.5,
-                     "setPointTemperature": 23.0, "humidity": 55, "valvePosition": 0.45, "windowState": "CLOSED" },
+                     "setPointTemperature": 23.0, "humidity": 55, "valvePosition": 0.45, "windowState": "CLOSED",
+                     "activeProfile": "PROFILE_1", "minTemperature": 5.0, "maxTemperature": 30.0,
+                     "profiles": {
+                       "PROFILE_2": { "index": "PROFILE_2", "profileId": "p2", "name": "Sommer ", "enabled": true, "visible": true },
+                       "PROFILE_1": { "index": "PROFILE_1", "profileId": "p1", "name": "", "enabled": true, "visible": true },
+                       "PROFILE_3": { "index": "PROFILE_3", "profileId": "p3", "name": "", "enabled": false, "visible": false }
+                     } },
         "grp-wohnen": { "type": "HEATING", "label": "Wohnzimmer", "actualTemperature": 21.0,
                         "setPointTemperature": 20.0, "valvePosition": 0.0 },
         "grp-meta": { "type": "META", "label": "EG" }
@@ -54,6 +62,10 @@ class HeatingStateParserTest {
         assertFalse(wohnen.isHeating)
         assertEquals(null, wohnen.circuits.single().channelLabel) // blank label -> null
 
+        // Channel 4 (no group, no position) is an unused output and hidden.
         assertEquals(listOf(3), state.unassignedCircuits.map { it.channelIndex })
+
+        assertEquals("PROFILE_1", bad.activeProfile)
+        assertEquals(listOf("Profil 1", "Sommer"), bad.profiles.map { it.displayName })
     }
 }

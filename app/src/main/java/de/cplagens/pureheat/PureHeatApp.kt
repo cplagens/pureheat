@@ -8,7 +8,7 @@ import de.cplagens.pureheat.data.history.HistoryDatabase
 
 class PureHeatApp : Application() {
     val credentialStore by lazy { CredentialStore(this) }
-    val repository by lazy { HeatingRepository(this, HistoryDatabase.create(this).dao()) }
+    val repository by lazy { HeatingRepository(this, credentialStore, HistoryDatabase.create(this).dao()) }
 
     override fun onCreate() {
         super.onCreate()

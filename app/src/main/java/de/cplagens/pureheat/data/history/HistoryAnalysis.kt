@@ -40,4 +40,38 @@ object HistoryAnalysis {
         val rise = actual - first
         return if (rise < MAX_RISE) StalledHeating(openSince, rise) else null
     }
+
+    /** Heat-up phases shorter than this are too noisy to derive a rate from. */
+    const val MIN_HEATUP_MILLIS = 60 * 60 * 1000L
+
+    /**
+     * Typical heat-up rate of a room in K per hour: the median over all phases in which the
+     * valve was at least half open while the room was still clearly below its setpoint.
+     * Null if the history doesn't contain such a phase of at least an hour yet.
+     */
+    fun heatUpRate(samples: List<RoomSample>): Double? {
+        fun heatingUp(s: RoomSample): Boolean {
+            val actual = s.actualTemperature ?: return false
+            val setPoint = s.setPointTemperature ?: return false
+            return (s.valvePosition ?: 0.0) >= MIN_VALVE && setPoint - actual >= 0.3
+        }
+
+        val rates = mutableListOf<Double>()
+        var phase = mutableListOf<RoomSample>()
+        fun closePhase() {
+            if (phase.size >= 2) {
+                val millis = phase.last().timestamp - phase.first().timestamp
+                val rise = phase.last().actualTemperature!! - phase.first().actualTemperature!!
+                if (millis >= MIN_HEATUP_MILLIS && rise > 0) rates += rise / (millis / 3_600_000.0)
+            }
+            phase = mutableListOf()
+        }
+        for (s in samples) {
+            val gap = phase.lastOrNull()?.let { s.timestamp - it.timestamp > MAX_GAP_MILLIS } ?: false
+            if (gap || !heatingUp(s)) closePhase()
+            if (heatingUp(s)) phase += s
+        }
+        closePhase()
+        return rates.sorted().takeIf { it.isNotEmpty() }?.let { it[it.size / 2] }
+    }
 }

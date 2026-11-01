@@ -1,6 +1,7 @@
 package de.cplagens.pureheat.ui
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,6 +17,10 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -32,20 +37,24 @@ fun DashboardScreen(
     state: UiState.Dashboard,
     onRefresh: () -> Unit,
     onLogout: () -> Unit,
+    onOpenProfile: (roomId: String) -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    var showAbout by remember { mutableStateOf(false) }
+    if (showAbout) AboutDialog(onDismiss = { showAbout = false })
+
     LazyColumn(
         modifier = modifier,
-        contentPadding = androidx.compose.foundation.layout.PaddingValues(16.dp),
+        contentPadding = PaddingValues(16.dp),
         verticalArrangement = Arrangement.spacedBy(12.dp),
     ) {
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("PureHeat", style = MaterialTheme.typography.headlineSmall)
-                    val heating = state.state?.rooms?.count { it.isHeating }
+                    val open = state.state?.rooms?.count { it.isHeating }
                     val subtitle = buildString {
-                        if (heating != null) append("$heating Räume heizen gerade")
+                        if (open != null) append(if (open == 1) "Ventil offen in 1 Raum" else "Ventil offen in $open Räumen")
                         state.lastUpdated?.let {
                             if (isNotEmpty()) append(" · ")
                             append(DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(it)))
@@ -54,6 +63,7 @@ fun DashboardScreen(
                     if (subtitle.isNotEmpty()) Text(subtitle, style = MaterialTheme.typography.bodySmall)
                 }
                 TextButton(onClick = onRefresh, enabled = !state.loading) { Text("Aktualisieren") }
+                TextButton(onClick = { showAbout = true }) { Text("Info") }
             }
             if (state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
             state.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
@@ -65,7 +75,13 @@ fun DashboardScreen(
         val showDevice = (rooms.flatMap { it.circuits } + unassigned).map { it.deviceId }.distinct().size > 1
 
         items(rooms, key = { it.id }) { room ->
-            RoomCard(room, showDevice, state.history[room.id], state.lastUpdated ?: System.currentTimeMillis())
+            RoomCard(
+                room,
+                showDevice,
+                state.history[room.id],
+                state.lastUpdated ?: System.currentTimeMillis(),
+                onOpenProfile = { onOpenProfile(room.id) },
+            )
         }
 
         if (unassigned.isNotEmpty()) {
@@ -80,7 +96,7 @@ fun DashboardScreen(
 }
 
 @Composable
-private fun RoomCard(room: Room, showDevice: Boolean, history: RoomHistory?, now: Long) {
+private fun RoomCard(room: Room, showDevice: Boolean, history: RoomHistory?, now: Long, onOpenProfile: () -> Unit) {
     Card(
         colors = if (room.isHeating) {
             CardDefaults.cardColors(containerColor = HeatingColor.copy(alpha = 0.12f))
@@ -92,7 +108,9 @@ private fun RoomCard(room: Room, showDevice: Boolean, history: RoomHistory?, now
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(room.label, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-                if (room.isHeating) Text("heizt", color = HeatingColor, style = MaterialTheme.typography.labelLarge)
+                // "Ventil offen" rather than "heizt": the system only knows the valve position,
+                // not whether warm water actually flows (stuck valve pin, cold supply, …).
+                if (room.isHeating) Text("Ventil offen", color = HeatingColor, style = MaterialTheme.typography.labelLarge)
             }
             Text(
                 buildString {
@@ -116,6 +134,9 @@ private fun RoomCard(room: Room, showDevice: Boolean, history: RoomHistory?, now
                 )
             }
             RoomHistoryChart(history?.samples.orEmpty(), now, Modifier.fillMaxWidth())
+            if (room.profiles.isNotEmpty()) {
+                TextButton(onClick = onOpenProfile, contentPadding = PaddingValues(0.dp)) { Text("Heizprofil ›") }
+            }
         }
     }
 }

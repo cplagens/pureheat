@@ -174,6 +174,72 @@ class HmipClient(
         return json.parseToJsonElement(text).jsonObject
     }
 
+    // --- Heating profiles -------------------------------------------------------------------
+    // Endpoints as used by homematicip-rest-api. These are the app's only write calls; they
+    // are triggered solely from the profile screen after the user confirmed the changes.
+
+    /** Reads one weekly profile of a room (HEATING group). */
+    suspend fun getProfile(
+        sgtin: String,
+        authToken: String,
+        rest: String,
+        groupId: String,
+        profileIndex: String,
+        profileId: String,
+    ): JsonObject {
+        val text = authed(
+            sgtin, authToken, "$rest/hmip/group/heating/getProfile",
+            buildJsonObject {
+                put("groupId", groupId)
+                put("profileIndex", profileIndex)
+                put("profileId", profileId)
+            },
+            "Heizprofil konnte nicht geladen werden",
+        )
+        return json.parseToJsonElement(text).jsonObject
+    }
+
+    /**
+     * Writes a complete profile (as returned by [getProfile], with edited `profileDays`).
+     * Without the top-level `profileIndex` the cloud answers 400 INVALID_REQUEST (verified 2026-11).
+     */
+    suspend fun updateProfile(
+        sgtin: String,
+        authToken: String,
+        rest: String,
+        groupId: String,
+        profileIndex: String,
+        profile: JsonObject,
+    ) {
+        authed(
+            sgtin, authToken, "$rest/hmip/group/heating/updateProfile",
+            buildJsonObject {
+                put("groupId", groupId)
+                put("profileIndex", profileIndex)
+                put("profile", profile)
+            },
+            "Heizprofil konnte nicht gespeichert werden",
+        )
+    }
+
+    /** Switches the room to another of its weekly profiles. */
+    suspend fun setActiveProfile(sgtin: String, authToken: String, rest: String, groupId: String, profileIndex: String) {
+        authed(
+            sgtin, authToken, "$rest/hmip/group/heating/setActiveProfile",
+            buildJsonObject {
+                put("groupId", groupId)
+                put("profileIndex", profileIndex)
+            },
+            "Profil konnte nicht aktiviert werden",
+        )
+    }
+
+    private suspend fun authed(sgtin: String, authToken: String, url: String, body: JsonElement, context: String): String {
+        val (code, text) = post(url, body, baseHeaders(sgtin) + ("AUTHTOKEN" to authToken))
+        if (code != 200) throw httpError(context, code, text)
+        return text
+    }
+
     companion object {
         const val LOOKUP_URL = "https://lookup.homematic.com:48335/getHost"
         const val API_VERSION_HEADER = "12"

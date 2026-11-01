@@ -4,6 +4,7 @@ import kotlinx.serialization.json.JsonArray
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
 import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.booleanOrNull
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.intOrNull
 import kotlinx.serialization.json.jsonObject
@@ -22,6 +23,18 @@ data class HeatingCircuit(
     val isHeating: Boolean get() = (valvePosition ?: 0.0) > 0.0
 }
 
+/** Reference to one of the (up to six) weekly heating profiles of a room. */
+data class ProfileRef(
+    /** "PROFILE_1" … "PROFILE_6" */
+    val index: String,
+    val profileId: String,
+    val name: String?,
+    val visible: Boolean,
+) {
+    val displayName: String
+        get() = name ?: "Profil ${index.substringAfterLast('_')}"
+}
+
 /** A room as configured in the app (HEATING group in the API). */
 data class Room(
     val id: String,
@@ -34,6 +47,10 @@ data class Room(
     val windowState: String?,
     val controlMode: String?,
     val circuits: List<HeatingCircuit>,
+    val activeProfile: String? = null,
+    val profiles: List<ProfileRef> = emptyList(),
+    val minTemperature: Double = 5.0,
+    val maxTemperature: Double = 30.0,
 ) {
     val isHeating: Boolean
         get() = circuits.any { it.isHeating } || (valvePosition ?: 0.0) > 0.0
@@ -82,6 +99,9 @@ object HeatingStateParser {
                 )
                 val groupIds = (channel["groups"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.content }
                     ?: emptyList()
+                // Unused outputs (nothing connected, e.g. valveState ADJUSTMENT_TOO_SMALL) belong to no
+                // group and report no position; they would only clutter the dashboard.
+                if (groupIds.isEmpty() && circuit.valvePosition == null) continue
                 circuits += circuit to groupIds
             }
         }
@@ -102,6 +122,19 @@ object HeatingStateParser {
                 windowState = group.str("windowState"),
                 controlMode = group.str("controlMode"),
                 circuits = roomCircuits.sortedBy { it.channelIndex },
+                activeProfile = group.str("activeProfile"),
+                profiles = group["profiles"].asObject().mapNotNull { (key, el) ->
+                    val p = el.asObject()
+                    if (p.bool("enabled") == false) return@mapNotNull null
+                    ProfileRef(
+                        index = p.str("index") ?: key,
+                        profileId = p.str("profileId") ?: return@mapNotNull null,
+                        name = p.str("name")?.trim()?.takeIf { it.isNotEmpty() },
+                        visible = p.bool("visible") ?: true,
+                    )
+                }.sortedBy { it.index },
+                minTemperature = group.dbl("minTemperature") ?: 5.0,
+                maxTemperature = group.dbl("maxTemperature") ?: 30.0,
             )
         }.sortedBy { it.label.lowercase() }
 
@@ -116,4 +149,5 @@ object HeatingStateParser {
     private fun JsonObject.str(key: String): String? = prim(key)?.takeIf { it.isString }?.content
     private fun JsonObject.dbl(key: String): Double? = prim(key)?.doubleOrNull
     private fun JsonObject.int(key: String): Int? = prim(key)?.intOrNull ?: prim(key)?.doubleOrNull?.toInt()
+    private fun JsonObject.bool(key: String): Boolean? = prim(key)?.booleanOrNull
 }

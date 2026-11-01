@@ -13,6 +13,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.activity.compose.BackHandler
+import androidx.lifecycle.viewmodel.compose.viewModel
+import de.cplagens.pureheat.ui.ProfileScreen
+import de.cplagens.pureheat.ui.ProfileViewModel
 import androidx.compose.ui.Modifier
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -38,14 +45,32 @@ class MainActivity : ComponentActivity() {
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
                 val ui by viewModel.ui.collectAsStateWithLifecycle()
                 Scaffold(Modifier.fillMaxSize()) { padding ->
+                    var profileRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     when (val s = ui) {
                         is UiState.Setup -> SetupScreen(s, viewModel::register, Modifier.padding(padding))
-                        is UiState.Dashboard -> DashboardScreen(
-                            s,
-                            onRefresh = viewModel::refresh,
-                            onLogout = viewModel::logout,
-                            modifier = Modifier.padding(padding),
-                        )
+                        is UiState.Dashboard -> {
+                            val rooms = s.state?.rooms.orEmpty()
+                            val room = rooms.firstOrNull { it.id == profileRoomId }
+                            if (room != null) {
+                                BackHandler { profileRoomId = null }
+                                ProfileScreen(
+                                    room = room,
+                                    allRooms = rooms,
+                                    vm = viewModel(key = "profile-${room.id}") { ProfileViewModel(application, room.id) },
+                                    onBack = { profileRoomId = null },
+                                    onChanged = viewModel::refresh,
+                                    modifier = Modifier.padding(padding),
+                                )
+                            } else {
+                                DashboardScreen(
+                                    s,
+                                    onRefresh = viewModel::refresh,
+                                    onLogout = viewModel::logout,
+                                    onOpenProfile = { profileRoomId = it },
+                                    modifier = Modifier.padding(padding),
+                                )
+                            }
+                        }
                     }
                 }
             }
