@@ -55,6 +55,13 @@ class HeatingRepository(
 
     suspend fun roomSamples(roomId: String): List<RoomSample> = dao.roomSamples(roomId)
 
+    /** Room samples of the last two recordings (newest first) for [PollingPolicy]. */
+    suspend fun lastTwoRecordings(): Pair<List<RoomSample>, List<RoomSample>> {
+        val ts = dao.lastTimestamps(2)
+        return (ts.getOrNull(0)?.let { dao.roomSamplesAt(it) }.orEmpty()) to
+            (ts.getOrNull(1)?.let { dao.roomSamplesAt(it) }.orEmpty())
+    }
+
     suspend fun clear() {
         restUrl = null
         dao.clearRooms()

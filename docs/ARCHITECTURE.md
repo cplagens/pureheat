@@ -13,13 +13,13 @@ Was als Nächstes geplant ist, steht in [NEXT_STEPS.md](NEXT_STEPS.md).
  │  ─────────────                   ──────────                ─────                     │
  │  SetupScreen ──────────────┐                                                         │
  │  DashboardScreen ──────────┼──► MainViewModel ─────┐                                 │
- │   └ RoomHistoryChart       │    (60-s-Polling,     │                                 │
+ │   └ RoomHistoryChart       │    (5-min-Polling,     │                                 │
  │  RoomDetailScreen ─────────┼──► RoomDetailViewModel├──► HeatingRepository ──► HmipClient ──► HmIP-Cloud
  │   └ TimeSeriesChart        │                       │     │  (fetch, record,        (OkHttp)
  │  ProfileScreen ────────────┼──► ProfileViewModel ──┘     │   Profile laden/        
  │  AboutDialog               │                             │   speichern)           
  │                            │                             ├──► Room-DB history.db   
- │  HistoryWorker (WorkManager, alle 15 min) ───────────────┘     (60 Tage)           
+ │  HistoryWorker (WorkManager, 15/30/60 min adaptiv) ──────┘     (60 Tage)           
  │                                                                                      │
  │  Reines Kotlin (keine Android-Abhängigkeiten, unit-getestet):                        │
  │  HeatingStateParser · HeatingProfileCodec · ProfileEditing · HistoryAnalysis         │
@@ -37,7 +37,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | Datei | Aufgabe |
 |---|---|
 | `PureHeatApp.kt` | `Application`: hält `CredentialStore` und `HeatingRepository` (einfache manuelle DI), plant den `HistoryWorker` |
-| `MainActivity.kt` | Ein-Activity-App; Navigation per Zustand (`profileRoomId`, `historyRoomId`) + `BackHandler`; startet das 60-s-Polling nur im Zustand `STARTED` |
+| `MainActivity.kt` | Ein-Activity-App; Navigation per Zustand (`profileRoomId`, `historyRoomId`) + `BackHandler`; startet das 5-min-Polling nur im Zustand `STARTED` |
 | `SupportLinks.kt` | Freiwillige Unterstützen-Links (wie in PureRemote) |
 | **hmip/** | |
 | `HmipClient.kt` | Cloud-API: Lookup, Client-Registrierung (blauer Knopf), `getCurrentState`, `getProfile`, `updateProfile`, `setActiveProfile` |
@@ -47,11 +47,12 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | **data/** | |
 | `CredentialStore.kt` | SGTIN + Auth-Token in app-privaten SharedPreferences |
 | `HeatingRepository.kt` | Einziger Zugang zur Cloud: Zustand holen + aufzeichnen, Profile laden/speichern (Backup vorher, Prüfung nachher), Debug-Dumps |
-| `HistoryWorker.kt` | WorkManager-Job, alle 15 min mit Netz: `repository.fetch()` |
+| `HistoryWorker.kt` | Sich selbst neu planende Abrufkette (`history-chain`) + stündlicher `HistoryWatchdogWorker` |
+| `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
 | `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 2): `room_sample`, `circuit_sample`, `weather_sample` |
 | `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Aufheiz-/Abkühlphasen |
 | **ui/** | |
-| `MainViewModel.kt` | Setup/Registrierung, Polling solange sichtbar, 24-h-Verlauf + Warnungen fürs Dashboard |
+| `MainViewModel.kt` | Setup/Registrierung, Polling alle 5 min solange sichtbar, 24-h-Verlauf + Warnungen fürs Dashboard |
 | `DashboardScreen.kt` | Raumkarten: Ist/Soll, Ventil je Kanal, 24-h-Diagramm, Links „Verlauf ›“ / „Heizprofil ›“ |
 | `RoomHistoryChart.kt` | Kompaktes 24-h-Diagramm (Temperatur oben, Ventil unten) |
 | `RoomDetailScreen.kt` / `RoomDetailViewModel.kt` | Detailansicht: Zeitraum 24 h–60 Tage, Ist/Soll/Außen, Ventil je Kanal, Werte per Antippen, erkannte Phasen |
@@ -66,8 +67,9 @@ Ressourcen: adaptives Icon in `res/mipmap-anydpi-v26/`, Vordergrund/Hintergrund/
 ## Datenfluss
 
 ### Lesen / Aufzeichnen
-1. `HeatingRepository.fetch()` – aufgerufen vom UI-Polling (60 s, nur sichtbar) oder vom
-   `HistoryWorker` (15 min, Hintergrund, nur mit Netz).
+1. `HeatingRepository.fetch()` – aufgerufen vom UI-Polling (5 min, nur sichtbar) oder vom
+   `HistoryWorker` (Hintergrund, 15/30/60 min je nach `PollingPolicy`, nur mit Netz und
+   wenn der Akku nicht niedrig ist).
 2. Ggf. Lookup des REST-Servers (gecacht, nach Fehler neu).
 3. `getCurrentState` (~95 KB JSON) → `HeatingStateParser.parse()`.
 4. `record()`: höchstens alle 4 min ein Datensatz je Raum, je Kanal und ein Wetterwert;
@@ -122,9 +124,13 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
 
 ## Akku und Daten
 
-- Polling im Vordergrund 60 s, nur solange die App sichtbar ist (`repeatOnLifecycle(STARTED)`).
-- Hintergrund: ein periodischer WorkManager-Job (15 min, `NetworkType.CONNECTED`), wird von
-  Android gebündelt und in Doze gestreckt.
+- Polling im Vordergrund alle 5 min, nur solange die App sichtbar ist (`repeatOnLifecycle(STARTED)`).
+- Hintergrund: Kette aus einmaligen WorkManager-Jobs; `PollingPolicy` wählt 15/30/60 min.
+  Bedingungen: `NetworkType.CONNECTED`, `setRequiresBatteryNotLow(true)`. Ein stündlicher
+  Watchdog-Job (ohne Netz) startet die Kette neu, falls sie abreißt. Android bündelt die
+  Jobs und streckt sie in Doze. `am force-stop` pausiert alle Jobs bis zum nächsten App-Start.
+- Jobs am Gerät ansehen: `adb shell dumpsys jobscheduler | grep -A3 de.cplagens.pureheat`;
+  erzwingen: `adb shell cmd jobscheduler run -f -n androidx.work.systemjobscheduler de.cplagens.pureheat <jobId>`.
 - Debug-Builds loggen pro Request Kompression und Größe (`adb logcat -s PureHeat`),
   um den Datenverbrauch zu messen.
 - Gemessen: Die Cloud komprimiert **nicht** (ignoriert `Accept-Encoding: gzip`);
@@ -141,7 +147,8 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
 ## Tests
 
 `./gradlew testDebugUnitTest` – JVM-Unit-Tests für die reinen Kotlin-Teile:
-`HeatingStateParserTest`, `HeatingProfileTest`, `HistoryAnalysisTest`, `ThermalPhaseTest`.
+`HeatingStateParserTest`, `HeatingProfileTest`, `HistoryAnalysisTest`, `ThermalPhaseTest`,
+`PollingPolicyTest`.
 JSON-Beispiele in Tests sind anonymisiert.
 
 ## Debugging

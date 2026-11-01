@@ -115,7 +115,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     }
 
     private companion object {
-        const val POLL_INTERVAL_MS = 60_000L
+        // Each refresh is ~100 KB uncompressed; floor heating changes slowly. "Aktualisieren" is instant.
+        const val POLL_INTERVAL_MS = 5 * 60_000L
         const val HISTORY_WINDOW_MS = 24 * 60 * 60 * 1000L
     }
 }

@@ -25,9 +25,10 @@ which heating circuit is currently heating and how far each valve actuator is op
   (channels of `FLOOR_TERMINAL_BLOCK*` devices)
 - `data/CredentialStore.kt` — SGTIN + auth token in app-private SharedPreferences
 - `data/HeatingRepository.kt` — fetch + record history, load/save profiles (backup before save, read-back check)
-- `data/HistoryWorker.kt` — WorkManager job every 15 min; `data/history/` — Room DB (60 days, incl.
+- `data/HistoryWorker.kt` — self-rescheduling WorkManager chain (15/30/60 min via `PollingPolicy`) +
+  hourly watchdog; `data/history/` — Room DB (60 days, incl.
   outside temperature) and analysis (warnings, heat-up rate, heating/cooling phases)
-- `ui/` — `MainViewModel` (polls every 60 s while visible), `SetupScreen`, `DashboardScreen`,
+- `ui/` — `MainViewModel` (polls every 5 min while visible; each fetch is ~100 KB, uncompressed), `SetupScreen`, `DashboardScreen`,
   `RoomHistoryChart`, `RoomDetailScreen`/`RoomDetailViewModel` + `TimeSeriesChart` (full history),
   `ProfileScreen`/`ProfileViewModel`, `AboutDialog` (voluntary support links)
 

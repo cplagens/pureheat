@@ -56,20 +56,39 @@ Heizzeit/Kosten das spart.
 3. Noch nie am echten System ausgeführt: „Profil aktivieren“ (`setActiveProfile`),
    „Letzte Speicherung rückgängig“, „auf andere Räume übernehmen“.
 
-## Schritt 2 – Akkumessung und -optimierung
+## Schritt 2 – Akkumessung und -optimierung (umgesetzt 2026-11-01, Messung offen)
 
-1. **Messen** (1 Tag): `adb shell dumpsys batterystats --charged de.cplagens.pureheat` und die
-   HTTP-Logzeilen auswerten (Requests/Tag). Bytes/Request sind bekannt: ~100 KB, unkomprimiert.
-2. **Polling im Vordergrund** von 60 s auf z. B. 3–5 min verlängern (Werte ändern sich bei
-   Fußbodenheizung langsam; „Aktualisieren“ bleibt für sofort). Spart am meisten Daten.
-3. **Adaptive Abrufe** statt fester 15 min: Kette aus `OneTimeWorkRequest`s mit variabler
-   Verzögerung – 15 min, wenn sich Ventile/Sollwerte gerade ändern oder eine Umschaltzeit aus
-   dem Profil naht; 30–60 min in stabilen Phasen/nachts. `setRequiresBatteryNotLow(true)`.
-4. **Nachtjob** (`PeriodicWorkRequest` 24 h, `setRequiresCharging(true)`,
-   `setRequiresDeviceIdle(true)`): Modell anpassen, Prognose holen, Vorhersagen/Profil berechnen.
-5. Keine WebSocket-Dauerverbindung auf dem Telefon (wäre etwas für den Raspberry Pi).
-6. Prüfen, ob es schlankere Abfragen gibt (z. B. nur einzelne Gruppen) – laut
-   homematicip-rest-api eher nicht; sonst bleibt nur seltener abrufen.
+Erledigt:
+- **Vordergrund:** Abruf alle **5 min** (vom Nutzer so gewünscht), „Aktualisieren“ sofort.
+- **Hintergrund adaptiv:** `HistoryWorker` ist eine sich selbst neu planende Kette aus
+  `OneTimeWorkRequest`s (`history-chain`, `APPEND_OR_REPLACE` aus dem Worker heraus).
+  `PollingPolicy` (reines Kotlin, getestet) wählt den Abstand anhand der letzten zwei
+  Aufzeichnungen: **15 min**, wenn sich ein Ventil um ≥ 10 % oder ein Sollwert um ≥ 0,25 K
+  geändert hat; sonst **30 min**, nachts (22–05 Uhr) **60 min**.
+- `HistoryWatchdogWorker` (stündlich, ohne Netz) startet die Kette neu, falls sie abreißt.
+  Der alte feste 15-min-Job (`history`) wird beim Start entfernt.
+- Bedingungen: Netz vorhanden **und Akku nicht niedrig**.
+- Am Gerät geprüft: erzwungener Lauf (`adb shell cmd jobscheduler run -f -n
+  androidx.work.systemjobscheduler de.cplagens.pureheat <jobId>`) → Abruf →
+  „next run in 30 min“ im Log → genau ein Folgeauftrag eingeplant.
+- Erwartung: statt 96 nun ca. 40–60 Abrufe/Tag → ca. 4–6 MB/Tag statt 9,5 MB.
+
+Offen:
+1. **Messen** (nach 1–2 Tagen): Anzahl Abrufe aus dem Log
+   (`adb logcat -s PureHeat | grep "next run"`) bzw. Datenverbrauch der App in den
+   Android-Einstellungen (Apps → PureHeat → Mobile Daten/WLAN) und Akku
+   (`adb shell dumpsys batterystats --charged de.cplagens.pureheat`; Telefon hängt meist am
+   Ladegerät, daher ist der Datenverbrauch die aussagekräftigere Größe). Ergebnis hier eintragen.
+2. **Profilbewusst abrufen** (sobald Profile im Nachtjob geladen werden, Schritt 3/5):
+   rund um Umschaltzeiten des aktiven Profils 15 min, damit das Modell genau diese Übergänge
+   sieht. Dazu `PollingPolicy` um „nächste Umschaltzeit“ erweitern.
+3. **Nachtjob** (`PeriodicWorkRequest` 24 h, `setRequiresCharging(true)`,
+   `setRequiresDeviceIdle(true)`) – bewusst erst mit Schritt 3 anlegen, wenn er Arbeit hat
+   (Modell anpassen, Prognose holen, Vorhersagen/Profil berechnen).
+4. Keine WebSocket-Dauerverbindung auf dem Telefon (wäre etwas für den Raspberry Pi).
+5. Schlankere Abfragen gibt es laut homematicip-rest-api nicht; seltener abrufen bleibt der Hebel.
+6. Kleinigkeit: Jeder neue Worker-Prozess macht zuerst einen Lookup (`getHost`, 223 Bytes) –
+   vernachlässigbar; könnte man in SharedPreferences cachen.
 
 ## Schritt 3 – Raummodell (Aufheiz-/Abkühlzeiten in der Übersicht)
 

@@ -71,6 +71,13 @@ interface HistoryDao {
     @Query("SELECT MAX(timestamp) FROM room_sample")
     suspend fun lastTimestamp(): Long?
 
+    /** Timestamps of the most recent recordings, newest first. */
+    @Query("SELECT DISTINCT timestamp FROM room_sample ORDER BY timestamp DESC LIMIT :n")
+    suspend fun lastTimestamps(n: Int): List<Long>
+
+    @Query("SELECT * FROM room_sample WHERE timestamp = :timestamp")
+    suspend fun roomSamplesAt(timestamp: Long): List<RoomSample>
+
     @Query("SELECT * FROM room_sample WHERE timestamp >= :since ORDER BY timestamp")
     fun roomSamplesSince(since: Long): Flow<List<RoomSample>>
 
