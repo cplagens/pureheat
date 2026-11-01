@@ -38,6 +38,14 @@ class HmipClient(
 
     class HmipException(message: String, val code: Int? = null) : Exception(message)
 
+    /** Builds a German error for a non-200 response, e.g. "Lookup fehlgeschlagen: Zugriff verweigert. … (HTTP 403)". */
+    private fun httpError(context: String, code: Int, body: String): HmipException {
+        val errorCode = runCatching {
+            json.parseToJsonElement(body).jsonObject["errorCode"]?.jsonPrimitive?.content
+        }.getOrNull()
+        return HmipException("$context: ${httpErrorHint(code, errorCode)}", code)
+    }
+
     /** Normalizes "3014-F711-A000-0000-0000-0000" to "3014F711A0000000000000". */
     fun normalizeSgtin(raw: String): String = raw.replace("-", "").replace(" ", "").uppercase()
 
@@ -88,7 +96,7 @@ class HmipClient(
             put("id", sgtin)
         }
         val (code, text) = post(LOOKUP_URL, body, baseHeaders(sgtin))
-        if (code != 200) throw HmipException("Lookup fehlgeschlagen (HTTP $code): $text", code)
+        if (code != 200) throw httpError("Lookup fehlgeschlagen", code, text)
         val obj = json.parseToJsonElement(text).jsonObject
         return Endpoints(
             rest = obj["urlREST"]!!.jsonPrimitive.content,
@@ -121,7 +129,7 @@ class HmipClient(
             },
             headers,
         )
-        if (reqCode != 200) throw HmipException("Verbindungsanfrage abgelehnt (HTTP $reqCode): $reqText", reqCode)
+        if (reqCode != 200) throw httpError("Verbindungsanfrage abgelehnt", reqCode, reqText)
 
         onWaitingForButton()
         val deadline = System.currentTimeMillis() + timeoutMs
@@ -136,7 +144,7 @@ class HmipClient(
         }
 
         val (tokCode, tokText) = post("$rest/hmip/auth/requestAuthToken", idBody, headers)
-        if (tokCode != 200) throw HmipException("Token-Anfrage fehlgeschlagen (HTTP $tokCode): $tokText", tokCode)
+        if (tokCode != 200) throw httpError("Token-Anfrage fehlgeschlagen", tokCode, tokText)
         val authToken = json.parseToJsonElement(tokText).jsonObject["authToken"]!!.jsonPrimitive.content
 
         val (confCode, confText) = post(
@@ -147,7 +155,7 @@ class HmipClient(
             },
             headers,
         )
-        if (confCode != 200) throw HmipException("Token-Bestätigung fehlgeschlagen (HTTP $confCode): $confText", confCode)
+        if (confCode != 200) throw httpError("Token-Bestätigung fehlgeschlagen", confCode, confText)
         return authToken
     }
 
@@ -156,10 +164,13 @@ class HmipClient(
         val rest = restUrl ?: lookup(sgtin).rest
         val (code, text) = post(
             "$rest/hmip/home/getCurrentState",
-            clientCharacteristics(),
+            buildJsonObject {
+                put("clientCharacteristics", clientCharacteristics())
+                put("id", sgtin)
+            },
             baseHeaders(sgtin) + ("AUTHTOKEN" to authToken),
         )
-        if (code != 200) throw HmipException("Status konnte nicht geladen werden (HTTP $code): $text", code)
+        if (code != 200) throw httpError("Status konnte nicht geladen werden", code, text)
         return json.parseToJsonElement(text).jsonObject
     }
 

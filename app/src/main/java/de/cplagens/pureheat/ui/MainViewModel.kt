@@ -1,23 +1,26 @@
 package de.cplagens.pureheat.ui
 
 import android.app.Application
-import android.util.Log
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
-import de.cplagens.pureheat.BuildConfig
-import de.cplagens.pureheat.data.CredentialStore
+import de.cplagens.pureheat.PureHeatApp
 import de.cplagens.pureheat.data.Credentials
+import de.cplagens.pureheat.data.HistoryWorker
+import de.cplagens.pureheat.data.history.HistoryAnalysis
+import de.cplagens.pureheat.data.history.RoomSample
+import de.cplagens.pureheat.data.history.StalledHeating
 import de.cplagens.pureheat.hmip.HeatingState
-import de.cplagens.pureheat.hmip.HeatingStateParser
 import de.cplagens.pureheat.hmip.HmipClient
-import kotlinx.coroutines.Job
+import de.cplagens.pureheat.hmip.toUserMessage
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import kotlinx.coroutines.isActive
 import kotlinx.coroutines.launch
+
+/** Last 24 h of one room plus the derived warning, if any. */
+data class RoomHistory(val samples: List<RoomSample>, val stalled: StalledHeating?)
 
 sealed interface UiState {
     data class Setup(val waitingForButton: Boolean = false, val busy: Boolean = false, val error: String? = null) : UiState
@@ -26,14 +29,15 @@ sealed interface UiState {
         val loading: Boolean = false,
         val error: String? = null,
         val lastUpdated: Long? = null,
+        val history: Map<String, RoomHistory> = emptyMap(),
     ) : UiState
 }
 
 class MainViewModel(app: Application) : AndroidViewModel(app) {
-    private val store = CredentialStore(app)
+    private val pureHeat = app as PureHeatApp
+    private val store = pureHeat.credentialStore
+    private val repository = pureHeat.repository
     private val client = HmipClient()
-    private var restUrl: String? = null
-    private var pollJob: Job? = null
 
     private val _ui = MutableStateFlow<UiState>(
         if (store.load() != null) UiState.Dashboard() else UiState.Setup()
@@ -41,7 +45,13 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val ui: StateFlow<UiState> = _ui.asStateFlow()
 
     init {
-        if (store.load() != null) startPolling()
+        viewModelScope.launch {
+            repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS).collect { samples ->
+                val history = samples.groupBy { it.roomId }
+                    .mapValues { (_, s) -> RoomHistory(s, HistoryAnalysis.stalledHeating(s)) }
+                _ui.update { (it as? UiState.Dashboard)?.copy(history = history) ?: it }
+            }
+        }
     }
 
     fun register(sgtinInput: String, pin: String) {
@@ -55,54 +65,57 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     onWaitingForButton = { _ui.value = UiState.Setup(waitingForButton = true, busy = true) },
                 )
                 store.save(Credentials(sgtin, token))
+                HistoryWorker.schedule(getApplication())
                 _ui.value = UiState.Dashboard()
-                startPolling()
+                load()
             } catch (e: Exception) {
-                _ui.value = UiState.Setup(error = e.message ?: e.toString())
+                _ui.value = UiState.Setup(error = e.toUserMessage())
             }
         }
     }
 
     fun refresh() {
-        val creds = store.load() ?: return
-        viewModelScope.launch { load(creds) }
+        viewModelScope.launch { load() }
     }
 
     fun logout() {
-        pollJob?.cancel()
         store.clear()
-        restUrl = null
+        HistoryWorker.cancel(getApplication())
+        viewModelScope.launch { repository.clear() }
         _ui.value = UiState.Setup()
     }
 
-    private fun startPolling() {
-        pollJob?.cancel()
-        pollJob = viewModelScope.launch {
-            while (isActive) {
-                store.load()?.let { load(it) }
-                delay(POLL_INTERVAL_MS)
-            }
+    /**
+     * Polls every minute. Called from the activity inside `repeatOnLifecycle(STARTED)`, so it
+     * only runs while the app is visible; in the background [HistoryWorker] takes over.
+     */
+    suspend fun pollWhileVisible() {
+        while (true) {
+            load()
+            delay(POLL_INTERVAL_MS)
         }
     }
 
-    private suspend fun load(creds: Credentials) {
+    private suspend fun load() {
+        val creds = store.load() ?: return
         _ui.update { (it as? UiState.Dashboard)?.copy(loading = true, error = null) ?: it }
         try {
-            if (restUrl == null) restUrl = client.lookup(creds.sgtin).rest
-            val raw = client.getCurrentState(creds.sgtin, creds.authToken, restUrl)
-            if (BuildConfig.DEBUG) {
-                // Raw state for checking field names on real hardware: adb logcat -s PureHeat
-                Log.d(TAG, raw.toString())
+            val parsed = repository.fetch(creds)
+            _ui.update {
+                (it as? UiState.Dashboard)?.copy(
+                    state = parsed,
+                    loading = false,
+                    error = null,
+                    lastUpdated = System.currentTimeMillis(),
+                ) ?: it
             }
-            val parsed = HeatingStateParser.parse(raw)
-            _ui.value = UiState.Dashboard(state = parsed, lastUpdated = System.currentTimeMillis())
         } catch (e: Exception) {
-            _ui.update { (it as? UiState.Dashboard)?.copy(loading = false, error = e.message ?: e.toString()) ?: it }
+            _ui.update { (it as? UiState.Dashboard)?.copy(loading = false, error = e.toUserMessage()) ?: it }
         }
     }
 
     private companion object {
-        const val TAG = "PureHeat"
         const val POLL_INTERVAL_MS = 60_000L
+        const val HISTORY_WINDOW_MS = 24 * 60 * 60 * 1000L
     }
 }

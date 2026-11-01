@@ -25,7 +25,7 @@ import de.cplagens.pureheat.hmip.Room
 import java.text.DateFormat
 import java.util.Date
 
-private val HeatingColor = Color(0xFFE65100)
+internal val HeatingColor = Color(0xFFE65100)
 
 @Composable
 fun DashboardScreen(
@@ -60,12 +60,17 @@ fun DashboardScreen(
         }
 
         val rooms = state.state?.rooms.orEmpty()
-        items(rooms, key = { it.id }) { room -> RoomCard(room) }
-
         val unassigned = state.state?.unassignedCircuits.orEmpty()
+        // The device name only helps to tell actuators apart; with a single one "Kanal 4" is enough.
+        val showDevice = (rooms.flatMap { it.circuits } + unassigned).map { it.deviceId }.distinct().size > 1
+
+        items(rooms, key = { it.id }) { room ->
+            RoomCard(room, showDevice, state.history[room.id], state.lastUpdated ?: System.currentTimeMillis())
+        }
+
         if (unassigned.isNotEmpty()) {
             item { Text("Ohne Raumzuordnung", style = MaterialTheme.typography.titleMedium) }
-            items(unassigned, key = { "${it.deviceId}-${it.channelIndex}" }) { CircuitRow(it) }
+            items(unassigned, key = { "${it.deviceId}-${it.channelIndex}" }) { CircuitRow(it, showDevice) }
         }
 
         item {
@@ -75,7 +80,7 @@ fun DashboardScreen(
 }
 
 @Composable
-private fun RoomCard(room: Room) {
+private fun RoomCard(room: Room, showDevice: Boolean, history: RoomHistory?, now: Long) {
     Card(
         colors = if (room.isHeating) {
             CardDefaults.cardColors(containerColor = HeatingColor.copy(alpha = 0.12f))
@@ -100,20 +105,32 @@ private fun RoomCard(room: Room) {
             if (room.circuits.isEmpty()) {
                 room.valvePosition?.let { ValveBar("Ventil (Raum)", it) }
             } else {
-                room.circuits.forEach { CircuitRow(it) }
+                room.circuits.forEach { CircuitRow(it, showDevice) }
             }
+            history?.stalled?.let { stalled ->
+                val hours = (now - stalled.openSince) / (60 * 60 * 1000.0)
+                Text(
+                    "⚠ Ventil seit %.1f h offen, Temperatur nur %+.1f °C – kommt Wärme an?".format(hours, stalled.temperatureRise),
+                    color = MaterialTheme.colorScheme.error,
+                    style = MaterialTheme.typography.bodySmall,
+                )
+            }
+            RoomHistoryChart(history?.samples.orEmpty(), now, Modifier.fillMaxWidth())
         }
     }
 }
 
 @Composable
-private fun CircuitRow(circuit: HeatingCircuit) {
-    val name = circuit.channelLabel ?: "Kanal ${circuit.channelIndex}"
+private fun CircuitRow(circuit: HeatingCircuit, showDevice: Boolean) {
+    val name = buildString {
+        append(circuit.channelLabel ?: "Kanal ${circuit.channelIndex}")
+        if (showDevice) append(" · ${circuit.deviceLabel}")
+    }
     val position = circuit.valvePosition
     if (position != null) {
-        ValveBar("$name · ${circuit.deviceLabel}", position)
+        ValveBar(name, position)
     } else {
-        Text("$name · ${circuit.deviceLabel}: ${circuit.valveState ?: "unbekannt"}", style = MaterialTheme.typography.bodySmall)
+        Text("$name: ${circuit.valveState ?: "unbekannt"}", style = MaterialTheme.typography.bodySmall)
     }
 }
 
