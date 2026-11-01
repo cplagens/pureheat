@@ -127,6 +127,9 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
   Android gebündelt und in Doze gestreckt.
 - Debug-Builds loggen pro Request Kompression und Größe (`adb logcat -s PureHeat`),
   um den Datenverbrauch zu messen.
+- Gemessen: Die Cloud komprimiert **nicht** (ignoriert `Accept-Encoding: gzip`);
+  `getCurrentState` ≈ 100 KB pro Abruf. Seltener abrufen ist der wichtigste Hebel
+  (siehe NEXT_STEPS, Schritt 2).
 
 ## Sicherheit und Datenschutz
 

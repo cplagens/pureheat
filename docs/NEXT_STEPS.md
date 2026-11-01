@@ -37,28 +37,39 @@ Heizzeit/Kosten das spart.
 - Debug-Log pro HTTP-Request mit Kompression und Größe (für die Akku-/Datenmessung).
 - Aufbewahrung von 14 auf 60 Tage erhöht (Modell braucht unterschiedliches Wetter).
 
-## Offen: am Gerät prüfen (Telefon war bei Fertigstellung nicht verbunden)
+## Am Gerät geprüft (2026-11-01, abends)
 
-1. Detailansicht auf dem Telefon ansehen (Hell/Dunkel, 24 h und 7 Tage, Antippen/Wischen).
-2. Prüfen, dass `weather_sample` gefüllt wird:
-   `adb exec-out run-as de.cplagens.pureheat cat files/last_state.json | jq '.home.weather'`
-   und in der Detailansicht muss die Außen-Linie erscheinen.
-3. Felder von `home.location` prüfen (laut Bibliothek `latitude`, `longitude`, `city`; evtl.
-   als String) – **Werte nicht ins Repo oder in Logs schreiben**.
-4. Kompression/Datenmenge: `adb logcat -s PureHeat | grep HTTP` → `encoding=gzip?`, `wire=`, `payload=`.
-5. Noch nie am echten System ausgeführt: „Profil aktivieren“ (`setActiveProfile`),
+- Detailansicht läuft auf dem Telefon (24 h, Antippen, Phasenliste).
+- `home.weather` enthält `temperature`, `minTemperature`, `maxTemperature` (Tagesprognose!),
+  `humidity`, `windSpeed`, `windDirection`, `weatherCondition`, `weatherDayTime`, `vaporAmount`.
+- `home.location` hat `city`, `latitude`, `longitude` – **als Strings**. Werte nie ins Repo/Logs.
+- **Keine Kompression:** Die Cloud ignoriert `Accept-Encoding: gzip`. `getCurrentState` überträgt
+  ~100 KB unkomprimiert (Log: `encoding=none wire=99606`). Das heißt: Hintergrund alle 15 min
+  ≈ 9,5 MB/Tag; geöffnete App mit 60-s-Polling ≈ 6 MB/Stunde. → Schritt 2 ist wichtig.
+- Lücken im Verlauf vom 2026-11-01 nachmittags stammen von `am force-stop` beim Entwickeln
+  (das pausiert WorkManager-Jobs bis zum nächsten App-Start) – kein Fehler der App.
+
+## Offen: am Gerät prüfen
+
+1. Außen-Linie in der Detailansicht nach einigen Aufzeichnungen (erste `weather_sample`-Zeilen).
+2. Detailansicht im Dunkelmodus und mit 7/14/60 Tagen, sobald genug Daten da sind.
+3. Noch nie am echten System ausgeführt: „Profil aktivieren“ (`setActiveProfile`),
    „Letzte Speicherung rückgängig“, „auf andere Räume übernehmen“.
 
 ## Schritt 2 – Akkumessung und -optimierung
 
 1. **Messen** (1 Tag): `adb shell dumpsys batterystats --charged de.cplagens.pureheat` und die
-   HTTP-Logzeilen auswerten (Requests/Tag, Bytes/Request). Ergebnis hier eintragen.
-2. **Adaptive Abrufe** statt fester 15 min: Kette aus `OneTimeWorkRequest`s mit variabler
+   HTTP-Logzeilen auswerten (Requests/Tag). Bytes/Request sind bekannt: ~100 KB, unkomprimiert.
+2. **Polling im Vordergrund** von 60 s auf z. B. 3–5 min verlängern (Werte ändern sich bei
+   Fußbodenheizung langsam; „Aktualisieren“ bleibt für sofort). Spart am meisten Daten.
+3. **Adaptive Abrufe** statt fester 15 min: Kette aus `OneTimeWorkRequest`s mit variabler
    Verzögerung – 15 min, wenn sich Ventile/Sollwerte gerade ändern oder eine Umschaltzeit aus
    dem Profil naht; 30–60 min in stabilen Phasen/nachts. `setRequiresBatteryNotLow(true)`.
-3. **Nachtjob** (`PeriodicWorkRequest` 24 h, `setRequiresCharging(true)`,
+4. **Nachtjob** (`PeriodicWorkRequest` 24 h, `setRequiresCharging(true)`,
    `setRequiresDeviceIdle(true)`): Modell anpassen, Prognose holen, Vorhersagen/Profil berechnen.
-4. Keine WebSocket-Dauerverbindung auf dem Telefon (wäre etwas für den Raspberry Pi).
+5. Keine WebSocket-Dauerverbindung auf dem Telefon (wäre etwas für den Raspberry Pi).
+6. Prüfen, ob es schlankere Abfragen gibt (z. B. nur einzelne Gruppen) – laut
+   homematicip-rest-api eher nicht; sonst bleibt nur seltener abrufen.
 
 ## Schritt 3 – Raummodell (Aufheiz-/Abkühlzeiten in der Übersicht)
 

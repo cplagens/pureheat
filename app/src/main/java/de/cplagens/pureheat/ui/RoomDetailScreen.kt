@@ -173,7 +173,7 @@ fun RoomDetailScreen(
         }
 
         item {
-            Text("Aufheiz- und Abkühlphasen", style = MaterialTheme.typography.titleMedium)
+            Text("Phasen (Ventil ≥ 1 h offen bzw. zu)", style = MaterialTheme.typography.titleMedium)
             PhaseSummary(state.phases)
         }
         items(state.phases.asReversed().take(30), key = { "${it.kind}-${it.start}" }) { PhaseRow(it) }
@@ -220,10 +220,12 @@ private fun PhaseSummary(phases: List<ThermalPhase>) {
     val heating = phases.filter { it.kind == PhaseKind.HEATING }
     val cooling = phases.filter { it.kind == PhaseKind.COOLING }
     val text = buildString {
-        if (heating.isNotEmpty()) append("Aufheizen im Schnitt ${heating.map { it.ratePerHour }.average().fmtSigned2()} °C/h (${heating.size} Phasen)")
+        if (heating.isNotEmpty()) {
+            append("Ventil offen: im Schnitt ${heating.map { it.ratePerHour }.average().fmtSigned2()} °C/h (${heating.size.phases()})")
+        }
         if (cooling.isNotEmpty()) {
             if (isNotEmpty()) append(" · ")
-            append("Abkühlen im Schnitt ${cooling.map { it.ratePerHour }.average().fmtSigned2()} °C/h (${cooling.size} Phasen)")
+            append("Ventil zu: im Schnitt ${cooling.map { it.ratePerHour }.average().fmtSigned2()} °C/h (${cooling.size.phases()})")
         }
     }
     if (text.isNotEmpty()) {
@@ -237,7 +239,9 @@ private fun PhaseRow(p: ThermalPhase) {
     val minutes = ((p.end - p.start) / 60_000).toInt()
     Column {
         Text(
-            "${if (p.kind == PhaseKind.HEATING) "▲ Aufheizen" else "▼ Abkühlen"} · ${fmt.format(Date(p.start))}–" +
+            // Named after the valve, not the result: a closed valve can still see rising temperatures
+            // (e.g. a towel radiator in the same room).
+            "${if (p.kind == PhaseKind.HEATING) "▲ Ventil offen" else "▼ Ventil zu"} · ${fmt.format(Date(p.start))}–" +
                 SimpleDateFormat("HH:mm", Locale.GERMANY).format(Date(p.end)),
             style = MaterialTheme.typography.labelLarge,
         )
@@ -270,6 +274,7 @@ private fun Legend(label: String, color: Color, dashed: Boolean) {
 private fun List<Pair<Long, Double>>.nearest(t: Long): Double? =
     minByOrNull { abs(it.first - t) }?.takeIf { abs(it.first - t) <= 30 * 60_000L }?.second
 
+private fun Int.phases() = if (this == 1) "1 Phase" else "$this Phasen"
 private fun Double.fmt0() = String.format(Locale.GERMANY, "%.0f", this)
 private fun Double.fmt1() = String.format(Locale.GERMANY, "%.1f", this)
 private fun Double.fmtSigned2() = String.format(Locale.GERMANY, "%+.2f", this)
