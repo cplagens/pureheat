@@ -19,6 +19,7 @@ class WindowDetectorTest {
         assertEquals(2 * quarter, e.start)
         assertEquals(9 * quarter, e.end)
         assertEquals(1.7, e.drop, 1e-9)
+        assertTrue(e.closeDetected)
     }
 
     @Test
@@ -52,7 +53,10 @@ class WindowDetectorTest {
     @Test
     fun heatingStartEndsEvent() {
         val samples = listOf(s(0, 22.0), s(1, 21.4), s(2, 21.0), s(3, 20.8, valve = 1.0))
-        assertEquals(2 * quarter, WindowDetector.detect(samples).single().end)
+        val e = WindowDetector.detect(samples).single()
+        assertEquals(2 * quarter, e.end)
+        // Heating started: we don't know whether the window was closed.
+        assertTrue(!e.closeDetected)
     }
 
     @Test

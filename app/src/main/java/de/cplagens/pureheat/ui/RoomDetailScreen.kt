@@ -127,6 +127,10 @@ fun RoomDetailScreen(
                     if (actual.size < 2) {
                         Text("Noch zu wenig Daten in diesem Zeitraum.", style = MaterialTheme.typography.bodySmall)
                     }
+                    // Time labels only where they stay readable (up to 3 days).
+                    if (state.end - state.start <= HistoryRange.DAYS_3.millis) {
+                        MarkerStrip(chartMarkers(state.samples, state.windows, state.start, state.end), state.start, state.end)
+                    }
                     TimeSeriesChart(
                         series = listOf(
                             ChartSeries("Außen", outsideColor, outside),

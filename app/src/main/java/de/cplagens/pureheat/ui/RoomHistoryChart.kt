@@ -94,6 +94,8 @@ fun RoomHistoryChart(
             }
         }
 
+        MarkerStrip(chartMarkers(visible, windows, start, now), start, now)
+
         Canvas(Modifier.fillMaxWidth().height(56.dp)) {
             fun x(t: Long) = ((t - start).toFloat() / WINDOW_MS) * size.width
             fun y(v: Double) = (size.height * (1 - (v - minT) / (maxT - minT))).toFloat()

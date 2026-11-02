@@ -12,6 +12,11 @@ data class WindowEvent(
     val minTemperature: Double,
     /** Humidity drop at the opening in %rH, if humidity was recorded. */
     val humidityDrop: Int?,
+    /**
+     * True if the closing was actually seen (temperature rose again). Otherwise [end] is only
+     * the last moment we know it was still open (heating started, gap in the data, time limit).
+     */
+    val closeDetected: Boolean = false,
 ) {
     val drop: Double get() = startTemperature - minTemperature
 }
@@ -60,7 +65,11 @@ object WindowDetector {
                         open = null
                     }
                     tb - ta >= RECOVERY_RISE -> {
-                        events += current.copy(end = b.timestamp, minTemperature = minOf(current.minTemperature, ta))
+                        events += current.copy(
+                            end = b.timestamp,
+                            minTemperature = minOf(current.minTemperature, ta),
+                            closeDetected = true,
+                        )
                         open = null
                     }
                     else -> open = current.copy(minTemperature = minOf(current.minTemperature, tb))
