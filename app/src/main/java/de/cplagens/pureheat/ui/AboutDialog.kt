@@ -10,6 +10,9 @@ import androidx.compose.material3.Surface
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.tooling.preview.Preview
 import de.cplagens.pureheat.R
 import androidx.compose.foundation.layout.Column
@@ -29,7 +32,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.SupportLinks
 
-/** Version, short description and the optional, voluntary support links (as in PureRemote). */
+/** Version, short description, app language and the optional, voluntary support links (as in PureRemote). */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun AboutDialog(onDismiss: () -> Unit) {
@@ -41,20 +44,22 @@ fun AboutDialog(onDismiss: () -> Unit) {
     val options = SupportLinks.donationOptions
     AlertDialog(
         onDismissRequest = onDismiss,
-        confirmButton = { TextButton(onClick = onDismiss) { Text("Schließen") } },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } },
         icon = { Image(painterResource(R.drawable.ic_logo), contentDescription = null, modifier = Modifier.size(64.dp)) },
-        title = { Text("PureHeat") },
+        title = { Text(stringResource(R.string.app_name)) },
         text = {
-            Column(verticalArrangement = Arrangement.spacedBy(12.dp)) {
-                if (version.isNotEmpty()) Text("Version $version", style = MaterialTheme.typography.bodySmall)
-                Text(
-                    "Zeigt, welcher Heizkreis deiner Fußbodenheizung gerade offen ist, zeichnet den Verlauf auf " +
-                        "und macht Heizprofile bequem bearbeitbar. Kostenlos, ohne Werbung und ohne Tracking. " +
-                        "Inoffizielles Projekt, nicht mit eQ-3 verbunden.",
-                )
+            Column(
+                Modifier.verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(12.dp),
+            ) {
+                if (version.isNotEmpty()) Text(stringResource(R.string.version, version), style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.about_text))
+                HorizontalDivider()
+                Text(stringResource(R.string.language), style = MaterialTheme.typography.titleSmall)
+                LanguagePicker()
                 if (options.isNotEmpty()) {
                     HorizontalDivider()
-                    Text("Wenn dir die App gefällt, freue ich mich über eine freiwillige Unterstützung. Sie ist nie nötig und schaltet nichts frei.")
+                    Text(stringResource(R.string.support_text))
                     FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                         options.forEach { (name, url) ->
                             FilledTonalButton(onClick = { uri.openUri(url) }) { Text(name) }
@@ -62,7 +67,7 @@ fun AboutDialog(onDismiss: () -> Unit) {
                     }
                 }
                 TextButton(onClick = { uri.openUri(SupportLinks.SOURCE_CODE) }, contentPadding = PaddingValues(0.dp)) {
-                    Text("Quellcode auf GitHub")
+                    Text(stringResource(R.string.source_code))
                 }
             }
         },

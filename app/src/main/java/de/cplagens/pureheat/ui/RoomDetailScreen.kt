@@ -1,5 +1,7 @@
 package de.cplagens.pureheat.ui
 
+import android.content.Context
+import android.text.format.DateFormat
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,20 +32,23 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.PathEffect
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.history.PhaseKind
 import de.cplagens.pureheat.data.history.ThermalPhase
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.Room
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 import kotlin.math.abs
 
 /**
  * Everything recorded for one room: temperatures (actual, setpoint, outside), the valve of each
- * channel, and the detected heating/cooling phases. Tap or drag on a chart to read exact values.
+ * channel, the room model, detected open windows and heating/cooling phases. Tap or drag on a
+ * chart to read exact values.
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -56,9 +61,11 @@ fun RoomDetailScreen(
     val state by vm.ui.collectAsStateWithLifecycle()
     val insight by vm.insight.collectAsStateWithLifecycle()
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
+    val ctx = LocalContext.current
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
 
     val actualColor = MaterialTheme.colorScheme.primary
-    val setPointColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val setPointColor = muted
     val outsideColor = MaterialTheme.colorScheme.tertiary
     val valveColor = HeatingColor.copy(alpha = 0.5f)
 
@@ -69,6 +76,14 @@ fun RoomDetailScreen(
     val yMin = (temps.minOrNull() ?: 15.0).let { kotlin.math.floor(it) - 0.5 }
     val yMax = (temps.maxOrNull() ?: 25.0).let { kotlin.math.ceil(it) + 0.5 }
 
+    val channelName: @Composable (String?, Int) -> String = { label, index -> label ?: stringResource(R.string.channel_n, index) }
+    val channels = room.circuits.map { c ->
+        channelName(c.channelLabel, c.channelIndex) to state.circuits[c.deviceId to c.channelIndex].orEmpty()
+            .mapNotNull { s -> s.valvePosition?.let { s.timestamp to it } }
+    }.ifEmpty {
+        listOf(stringResource(R.string.valve_room) to state.samples.mapNotNull { s -> s.valvePosition?.let { s.timestamp to it } })
+    }
+
     LazyColumn(
         modifier = modifier,
         contentPadding = PaddingValues(16.dp),
@@ -76,7 +91,7 @@ fun RoomDetailScreen(
     ) {
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = onBack, contentPadding = PaddingValues(0.dp)) { Text("‹ Räume") }
+                TextButton(onClick = onBack, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.back_rooms)) }
                 Spacer(Modifier.width(8.dp))
                 Text(room.label.trim(), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
             }
@@ -85,57 +100,48 @@ fun RoomDetailScreen(
                     FilterChip(
                         selected = state.range == r,
                         onClick = { selected = null; vm.setRange(r) },
-                        label = { Text(r.label) },
+                        label = { Text(stringResource(r.label)) },
                     )
                 }
             }
         }
 
         item {
-            Readout(
-                selected = selected,
-                values = selected?.let { t ->
-                    buildList {
-                        actual.nearest(t)?.let { add("Ist ${it.fmt1()} °C") }
-                        setPoint.nearest(t)?.let { add("Soll ${it.fmt1()} °C") }
-                        outside.nearest(t)?.let { add("Außen ${it.fmt1()} °C") }
-                        room.circuits.forEach { c ->
-                            val pts = state.circuits[c.deviceId to c.channelIndex].orEmpty()
-                                .mapNotNull { s -> s.valvePosition?.let { s.timestamp to it } }
-                            pts.nearest(t)?.let { add("${c.channelLabel ?: "Kanal ${c.channelIndex}"} ${(it * 100).toInt()} %") }
-                        }
-                        if (room.circuits.isEmpty()) {
-                            state.samples.mapNotNull { s -> s.valvePosition?.let { s.timestamp to it } }
-                                .nearest(t)?.let { add("Ventil ${(it * 100).toInt()} %") }
-                        }
+            val values = selected?.let { t ->
+                buildList {
+                    actual.nearest(t)?.let { add(ctx.getString(R.string.value_actual, it)) }
+                    setPoint.nearest(t)?.let { add(ctx.getString(R.string.value_setpoint, it)) }
+                    outside.nearest(t)?.let { add(ctx.getString(R.string.value_outside, it)) }
+                    channels.forEach { (label, pts) ->
+                        pts.nearest(t)?.let { add(ctx.getString(R.string.value_valve, label, (it * 100).toInt())) }
                     }
-                }.orEmpty(),
-                onClear = { selected = null },
-            )
+                }
+            }.orEmpty()
+            Readout(selected, values, onClear = { selected = null })
         }
 
         item {
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("Temperatur", style = MaterialTheme.typography.labelLarge)
-                    Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-                        Legend("Ist", actualColor, dashed = false)
-                        Legend("Soll", setPointColor, dashed = true)
-                        Legend("Außen", outsideColor, dashed = false)
-                        if (state.windows.isNotEmpty()) BandLegend("Fenster offen (erkannt)")
+                    Text(stringResource(R.string.temperature), style = MaterialTheme.typography.labelLarge)
+                    FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                        Legend(stringResource(R.string.legend_actual), actualColor, dashed = false)
+                        Legend(stringResource(R.string.legend_setpoint), setPointColor, dashed = true)
+                        Legend(stringResource(R.string.legend_outside), outsideColor, dashed = false)
+                        if (state.windows.isNotEmpty()) BandLegend(stringResource(R.string.legend_window_detected))
                     }
                     if (actual.size < 2) {
-                        Text("Noch zu wenig Daten in diesem Zeitraum.", style = MaterialTheme.typography.bodySmall)
+                        Text(stringResource(R.string.too_little_data), style = MaterialTheme.typography.bodySmall)
                     }
                     // Time labels only where they stay readable (up to 3 days).
                     if (state.end - state.start <= HistoryRange.DAYS_3.millis) {
-                        MarkerStrip(chartMarkers(state.samples, state.windows, state.start, state.end), state.start, state.end)
+                        MarkerStrip(chartMarkers(ctx, state.samples, state.windows, state.start, state.end), state.start, state.end)
                     }
                     TimeSeriesChart(
                         series = listOf(
-                            ChartSeries("Außen", outsideColor, outside),
-                            ChartSeries("Soll", setPointColor, setPoint, step = true, dashed = true),
-                            ChartSeries("Ist", actualColor, actual),
+                            ChartSeries("outside", outsideColor, outside),
+                            ChartSeries("setpoint", setPointColor, setPoint, step = true, dashed = true),
+                            ChartSeries("actual", actualColor, actual),
                         ),
                         start = state.start,
                         end = state.end,
@@ -143,7 +149,7 @@ fun RoomDetailScreen(
                         yMax = yMax,
                         selected = selected,
                         onSelect = { selected = it },
-                        yLabel = { "${it.fmt0()} °C" },
+                        yLabel = { ctx.getString(R.string.temp_c0, it) },
                         modifier = Modifier.fillMaxWidth().height(180.dp),
                         bands = state.windows.map { it.start to it.end },
                         bandColor = WindowBandColor,
@@ -156,13 +162,7 @@ fun RoomDetailScreen(
         item {
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                    Text("Ventilöffnung (0–100 %)", style = MaterialTheme.typography.labelLarge)
-                    val channels = room.circuits.map { c ->
-                        (c.channelLabel ?: "Kanal ${c.channelIndex}") to state.circuits[c.deviceId to c.channelIndex].orEmpty()
-                            .mapNotNull { s -> s.valvePosition?.let { s.timestamp to it } }
-                    }.ifEmpty {
-                        listOf("Ventil (Raum)" to state.samples.mapNotNull { s -> s.valvePosition?.let { s.timestamp to it } })
-                    }
+                    Text(stringResource(R.string.valve_opening_title), style = MaterialTheme.typography.labelLarge)
                     channels.forEach { (label, points) ->
                         Text(label, style = MaterialTheme.typography.bodySmall)
                         TimeSeriesChart(
@@ -184,35 +184,23 @@ fun RoomDetailScreen(
         if (room.actualTemperature != null) {
             item { ModelCard(insight) }
             item {
-                Text("Fenster offen (aus dem Temperaturverlauf erkannt)", style = MaterialTheme.typography.titleMedium)
+                Text(stringResource(R.string.windows_title), style = MaterialTheme.typography.titleMedium)
                 if (state.windows.isEmpty()) {
-                    Text(
-                        "In diesem Zeitraum nichts erkannt. Erkannt wird ein schneller Temperatursturz bei geschlossenem " +
-                            "Ventil (≥ 0,3 K mit ≥ 0,6 K/h) und das Ende an einem Wiederanstieg ohne Heizen.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    )
+                    Text(stringResource(R.string.windows_none), style = MaterialTheme.typography.bodySmall, color = muted)
                 }
             }
             items(state.windows.asReversed().take(20), key = { "window-${it.start}" }) {
-                Text(WindowTexts.describe(it), style = MaterialTheme.typography.bodySmall)
+                Text(WindowTexts.describe(ctx, it), style = MaterialTheme.typography.bodySmall)
             }
         }
 
         item {
-            Text("Phasen (Ventil ≥ 1 h offen bzw. zu)", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.phases_title), style = MaterialTheme.typography.titleMedium)
             PhaseSummary(state.phases)
         }
         items(state.phases.asReversed().take(30), key = { "${it.kind}-${it.start}" }) { PhaseRow(it) }
         if (state.phases.isEmpty()) {
-            item {
-                Text(
-                    "Noch keine Phase von mindestens einer Stunde erkannt. Phasen entstehen, wenn das Ventil " +
-                        "länger offen (Aufheizen) oder zu (Abkühlen) ist.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                )
-            }
+            item { Text(stringResource(R.string.phases_none), style = MaterialTheme.typography.bodySmall, color = muted) }
         }
     }
 }
@@ -220,77 +208,67 @@ fun RoomDetailScreen(
 /** What the room model has learned, with the predictions and how reliable they are. */
 @Composable
 private fun ModelCard(insight: RoomInsight?) {
+    val ctx = LocalContext.current
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Raummodell", style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.model_title), style = MaterialTheme.typography.labelLarge)
             if (insight == null) {
-                Text("Wird berechnet …", style = MaterialTheme.typography.bodySmall)
+                Text(stringResource(R.string.model_computing), style = MaterialTheme.typography.bodySmall)
                 return@Column
             }
             val m = insight.model
-            ModelTexts.summary(insight)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
-            val muted = MaterialTheme.colorScheme.onSurfaceVariant
+            val unknown = stringResource(R.string.unknown)
+            ModelTexts.summary(ctx, insight)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
+            Text(
+                stringResource(
+                    R.string.model_parameters,
+                    m.k?.let { ctx.getString(R.string.model_k, it) } ?: unknown,
+                    m.power?.let { ctx.getString(R.string.model_p, it) } ?: unknown,
+                    m.deadTimeHours?.let { ModelTexts.duration(ctx, it) } ?: unknown,
+                ),
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
             Text(
                 buildString {
-                    append("Wärmeverlust k: ")
-                    append(m.k?.let { String.format(Locale.GERMANY, "%.3f/h", it) } ?: "unbekannt")
-                    append(" · Heizleistung P: ")
-                    append(m.power?.let { String.format(Locale.GERMANY, "%.2f °C/h", it) } ?: "unbekannt")
-                    append(" · Totzeit: ")
-                    append(m.deadTimeHours?.let { ModelTexts.duration(it) } ?: "unbekannt")
+                    append(stringResource(R.string.model_phases, m.heatingPhases, m.coolingPhases))
+                    m.kSpread?.let { append(stringResource(R.string.model_spread, (it * 50).toInt())) }
+                    if (insight.windowEvents.isNotEmpty()) {
+                        append(pluralStringResource(R.plurals.model_windows_excluded, insight.windowEvents.size, insight.windowEvents.size))
+                    }
                 },
                 style = MaterialTheme.typography.bodySmall,
                 color = muted,
             )
-            Text(
-                "Verwertbare Phasen: Ventil offen ${m.heatingPhases}, Ventil zu ${m.coolingPhases}" +
-                    (m.kSpread?.let { " · Streuung k: ±${(it * 50).toInt()} %" } ?: "") +
-                    (if (insight.windowEvents.isNotEmpty()) {
-                        " · ${insight.windowEvents.size}× Fenster offen erkannt, beim Lernen ausgeklammert"
-                    } else {
-                        ""
-                    }),
-                style = MaterialTheme.typography.bodySmall,
-                color = muted,
-            )
             insight.levels?.let {
-                Text(
-                    "Spar-/Komforttemperatur (aus den Sollwerten der letzten 7 Tage): " +
-                        "${it.setback.fmt1()} / ${it.comfort.fmt1()} °C",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = muted,
-                )
+                Text(stringResource(R.string.model_levels, it.setback, it.comfort), style = MaterialTheme.typography.bodySmall, color = muted)
             }
-            Text(
-                "Das Modell nimmt an, dass der Raum mit offenem Ventil gleichmäßig heizt und mit geschlossenem " +
-                    "Ventil Richtung Außentemperatur abkühlt. Je mehr Tage mit unterschiedlichem Wetter, desto genauer.",
-                style = MaterialTheme.typography.bodySmall,
-                color = muted,
-            )
+            Text(stringResource(R.string.model_explanation), style = MaterialTheme.typography.bodySmall, color = muted)
         }
     }
 }
 
 @Composable
 private fun Readout(selected: Long?, values: List<String>, onClear: () -> Unit) {
+    val ctx = LocalContext.current
     Card(Modifier.fillMaxWidth()) {
         Column(Modifier.padding(horizontal = 16.dp, vertical = 8.dp)) {
             if (selected == null) {
                 Text(
-                    "Diagramm antippen oder darüber wischen, um die Werte zu einem Zeitpunkt zu sehen.",
+                    stringResource(R.string.readout_hint),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
             } else {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(
-                        SimpleDateFormat("EE dd.MM. HH:mm", Locale.GERMANY).format(Date(selected)),
-                        style = MaterialTheme.typography.labelLarge,
-                        modifier = Modifier.weight(1f),
-                    )
-                    TextButton(onClick = onClear) { Text("Schließen") }
+                    Text(dayTime(ctx, selected, "EEE dd.MM. Hm"), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
+                    TextButton(onClick = onClear) { Text(stringResource(R.string.close)) }
                 }
-                Text(values.joinToString(" · ").ifEmpty { "Keine Werte zu diesem Zeitpunkt." }, style = MaterialTheme.typography.bodyMedium)
+                Text(
+                    values.joinToString(" · ").ifEmpty { stringResource(R.string.readout_no_values) },
+                    style = MaterialTheme.typography.bodyMedium,
+                )
             }
         }
     }
@@ -300,35 +278,39 @@ private fun Readout(selected: Long?, values: List<String>, onClear: () -> Unit) 
 private fun PhaseSummary(phases: List<ThermalPhase>) {
     val heating = phases.filter { it.kind == PhaseKind.HEATING }
     val cooling = phases.filter { it.kind == PhaseKind.COOLING }
-    val text = buildString {
+    val parts = buildList {
         if (heating.isNotEmpty()) {
-            append("Ventil offen: im Schnitt ${heating.map { it.ratePerHour }.average().fmtSigned2()} °C/h (${heating.size.phases()})")
+            add(stringResource(R.string.phase_summary_open, heating.map { it.ratePerHour }.average(),
+                pluralStringResource(R.plurals.phases, heating.size, heating.size)))
         }
         if (cooling.isNotEmpty()) {
-            if (isNotEmpty()) append(" · ")
-            append("Ventil zu: im Schnitt ${cooling.map { it.ratePerHour }.average().fmtSigned2()} °C/h (${cooling.size.phases()})")
+            add(stringResource(R.string.phase_summary_closed, cooling.map { it.ratePerHour }.average(),
+                pluralStringResource(R.plurals.phases, cooling.size, cooling.size)))
         }
     }
-    if (text.isNotEmpty()) {
-        Text(text, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    if (parts.isNotEmpty()) {
+        Text(parts.joinToString(" · "), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
 @Composable
 private fun PhaseRow(p: ThermalPhase) {
-    val fmt = SimpleDateFormat("EE HH:mm", Locale.GERMANY)
+    val ctx = LocalContext.current
     val minutes = ((p.end - p.start) / 60_000).toInt()
     Column {
         Text(
             // Named after the valve, not the result: a closed valve can still see rising temperatures
             // (e.g. a towel radiator in the same room).
-            "${if (p.kind == PhaseKind.HEATING) "▲ Ventil offen" else "▼ Ventil zu"} · ${fmt.format(Date(p.start))}–" +
-                SimpleDateFormat("HH:mm", Locale.GERMANY).format(Date(p.end)),
+            stringResource(
+                if (p.kind == PhaseKind.HEATING) R.string.phase_open else R.string.phase_closed,
+                dayTime(ctx, p.start, "EEE Hm"),
+                DateFormat.getTimeFormat(ctx).format(Date(p.end)),
+            ),
             style = MaterialTheme.typography.labelLarge,
         )
         Text(
-            "${p.startTemperature.fmt1()} → ${p.endTemperature.fmt1()} °C in ${minutes / 60} h ${minutes % 60} min " +
-                "(${p.ratePerHour.fmtSigned2()} °C/h)" + (p.meanOutside?.let { " · außen Ø ${it.fmt1()} °C" } ?: ""),
+            stringResource(R.string.phase_detail, p.startTemperature, p.endTemperature, minutes / 60, minutes % 60, p.ratePerHour) +
+                (p.meanOutside?.let { stringResource(R.string.phase_outside, it) } ?: ""),
             style = MaterialTheme.typography.bodySmall,
         )
     }
@@ -343,7 +325,7 @@ private fun Legend(label: String, color: Color, dashed: Boolean) {
                 Offset(0f, size.height / 2),
                 Offset(size.width, size.height / 2),
                 strokeWidth = 2.dp.toPx(),
-                pathEffect = if (dashed) PathEffect.dashPathEffect(floatArrayOf(4f, 3f)) else null,
+                pathEffect = if (dashed) PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 2.dp.toPx())) else null,
             )
         }
         Spacer(Modifier.width(4.dp))
@@ -360,11 +342,10 @@ private fun BandLegend(label: String) {
     }
 }
 
+/** Localised weekday/date/time, e.g. "Mon 21:15" or "Mon 9:15 PM". */
+private fun dayTime(ctx: Context, t: Long, skeleton: String) =
+    DateFormat.format(DateFormat.getBestDateTimePattern(currentLocale(ctx), skeleton), t).toString()
+
 /** Value of the sample closest to [t], if one lies within 30 min. */
 private fun List<Pair<Long, Double>>.nearest(t: Long): Double? =
     minByOrNull { abs(it.first - t) }?.takeIf { abs(it.first - t) <= 30 * 60_000L }?.second
-
-private fun Int.phases() = if (this == 1) "1 Phase" else "$this Phasen"
-private fun Double.fmt0() = String.format(Locale.GERMANY, "%.0f", this)
-private fun Double.fmt1() = String.format(Locale.GERMANY, "%.1f", this)
-private fun Double.fmtSigned2() = String.format(Locale.GERMANY, "%+.2f", this)

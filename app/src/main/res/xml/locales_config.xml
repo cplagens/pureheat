@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Languages offered in the Android settings (Android 13+) under "App languages". Keep in sync with Lang.kt;
+     only list languages with a complete values-<tag>/strings.xml. -->
+<locale-config xmlns:android="http://schemas.android.com/apk/res/android">
+    <locale android:name="en" />
+    <locale android:name="de" />
+</locale-config>

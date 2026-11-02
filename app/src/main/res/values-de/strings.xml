@@ -1,0 +1,243 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Allgemein -->
+    <string name="refresh">Aktualisieren</string>
+    <string name="help">Hilfe</string>
+    <string name="info">Info</string>
+    <string name="logout">Abmelden</string>
+    <string name="close">Schließen</string>
+    <string name="cancel">Abbrechen</string>
+    <string name="save">Speichern</string>
+    <string name="save_ellipsis">Speichern …</string>
+    <string name="discard">Verwerfen</string>
+    <string name="dismiss">Ausblenden</string>
+    <string name="apply">Übernehmen</string>
+    <string name="activate">Aktivieren</string>
+    <string name="remove">Entfernen</string>
+    <string name="back">‹ Zurück</string>
+    <string name="back_rooms">‹ Räume</string>
+    <string name="unknown">unbekannt</string>
+    <string name="now">jetzt</string>
+    <string name="ago_24h">vor 24 h</string>
+    <string name="temperature">Temperatur</string>
+    <string name="temp_c">%.1f °C</string>
+    <string name="temp_c0">%.0f °C</string>
+    <string name="percent">%d %%</string>
+    <string name="version">Version %s</string>
+    <string name="language">Sprache</string>
+    <string name="system_language">Systemsprache</string>
+
+    <!-- Wochentage (kurz) -->
+    <string name="day_mo">Mo</string>
+    <string name="day_tu">Di</string>
+    <string name="day_we">Mi</string>
+    <string name="day_th">Do</string>
+    <string name="day_fr">Fr</string>
+    <string name="day_sa">Sa</string>
+    <string name="day_su">So</string>
+
+    <!-- Dauer -->
+    <string name="duration_min">%d min</string>
+    <string name="duration_h">%d h</string>
+    <string name="duration_h_min">%1$d h %2$d min</string>
+    <string name="duration_over_day">über 24 h</string>
+
+    <!-- Einrichtung -->
+    <string name="setup_title">Access Point verbinden</string>
+    <string name="setup_sgtin_hint">Die SGTIN (Access-Point-ID) steht auf dem Aufkleber unter dem Access Point, z. B. 3014-F711-A000-…</string>
+    <string name="setup_sgtin">SGTIN</string>
+    <string name="setup_pin">PIN (nur falls in der App gesetzt)</string>
+    <string name="setup_connect">Verbinden</string>
+    <string name="setup_press_button">Jetzt den blauen Knopf am Access Point drücken …</string>
+
+    <!-- Übersicht -->
+    <plurals name="rooms_valve_open">
+        <item quantity="one">Ventil offen in %d Raum</item>
+        <item quantity="other">Ventil offen in %d Räumen</item>
+    </plurals>
+    <string name="unassigned_circuits">Ohne Raumzuordnung</string>
+    <string name="valve_open">Ventil offen</string>
+    <string name="room_values">Ist %1$s · Soll %2$s</string>
+    <string name="room_humidity">" · %d %% rF"</string>
+    <string name="room_window_contact_open">" · Fenster offen"</string>
+    <string name="valve_room">Ventil (Raum)</string>
+    <string name="channel_n">Kanal %d</string>
+    <string name="channel_state">%1$s: %2$s</string>
+    <string name="stalled_warning">⚠ Ventil seit %1$.1f h offen, Temperatur nur %2$+.1f °C – kommt Wärme an?</string>
+    <string name="history_link">Verlauf ›</string>
+    <string name="profile_link">Heizprofil ›</string>
+
+    <!-- Diagramme -->
+    <string name="history_recording">Verlauf wird aufgezeichnet …</string>
+    <string name="legend_actual">Ist</string>
+    <string name="legend_setpoint">Soll</string>
+    <string name="legend_valve">Ventil</string>
+    <string name="legend_window">Fenster</string>
+    <string name="legend_outside">Außen</string>
+    <string name="legend_window_detected">Fenster offen (erkannt)</string>
+    <string name="actual_range">Ist %1$.1f–%2$.1f °C</string>
+    <string name="marker_window_open">Fenster auf %s</string>
+    <string name="marker_window_closed">zu %s</string>
+    <string name="marker_setpoint">Soll %1$s %2$s</string>
+
+    <!-- Akku-Hinweis -->
+    <string name="battery_title">Lücken im Verlauf vermeiden</string>
+    <string name="battery_text">Android bremst die Hintergrund-Aufzeichnung, weil die App selten geöffnet wird – dadurch entstehen stundenlange Lücken. Abhilfe: App-Info → Akku → „Nicht eingeschränkt“. PureHeat ruft trotzdem nur alle 15–60 Minuten ab.</string>
+    <string name="battery_open_settings">App-Info öffnen</string>
+
+    <!-- Detailansicht -->
+    <string name="range_24h">24 h</string>
+    <string name="range_3d">3 Tage</string>
+    <string name="range_7d">7 Tage</string>
+    <string name="range_14d">14 Tage</string>
+    <string name="range_60d">60 Tage</string>
+    <string name="readout_hint">Diagramm antippen oder darüber wischen, um die Werte zu einem Zeitpunkt zu sehen.</string>
+    <string name="readout_no_values">Keine Werte zu diesem Zeitpunkt.</string>
+    <string name="value_actual">Ist %.1f °C</string>
+    <string name="value_setpoint">Soll %.1f °C</string>
+    <string name="value_outside">Außen %.1f °C</string>
+    <string name="value_valve">%1$s %2$d %%</string>
+    <string name="too_little_data">Noch zu wenig Daten in diesem Zeitraum.</string>
+    <string name="valve_opening_title">Ventilöffnung (0–100 %)</string>
+    <string name="windows_title">Fenster offen (aus dem Temperaturverlauf erkannt)</string>
+    <string name="windows_none">In diesem Zeitraum nichts erkannt. Erkannt wird ein schneller Temperatursturz bei geschlossenem Ventil (≥ 0,3 K mit ≥ 0,6 K/h) und das Ende an einem Wiederanstieg ohne Heizen.</string>
+    <string name="phases_title">Phasen (Ventil ≥ 1 h offen bzw. zu)</string>
+    <string name="phases_none">Noch keine Phase von mindestens einer Stunde erkannt. Phasen entstehen, wenn das Ventil länger offen (Aufheizen) oder zu (Abkühlen) ist.</string>
+    <plurals name="phases">
+        <item quantity="one">%d Phase</item>
+        <item quantity="other">%d Phasen</item>
+    </plurals>
+    <string name="phase_summary_open">Ventil offen: im Schnitt %1$+.2f °C/h (%2$s)</string>
+    <string name="phase_summary_closed">Ventil zu: im Schnitt %1$+.2f °C/h (%2$s)</string>
+    <string name="phase_open">▲ Ventil offen · %1$s–%2$s</string>
+    <string name="phase_closed">▼ Ventil zu · %1$s–%2$s</string>
+    <string name="phase_detail">%1$.1f → %2$.1f °C in %3$d h %4$d min (%5$+.2f °C/h)</string>
+    <string name="phase_outside">" · außen Ø %.1f °C"</string>
+
+    <!-- Fenster-Erkennung -->
+    <string name="window_open_since">Fenster vermutlich offen seit %1$s (−%2$.1f K)</string>
+    <string name="window_open_from_to">Fenster vermutlich offen: %1$s–%2$s (−%3$.1f K)</string>
+    <string name="window_open_at_least">Fenster vermutlich offen ab %1$s, mindestens bis %2$s (−%3$.1f K)</string>
+    <string name="window_end_now">jetzt</string>
+    <string name="window_end_unknown">mind. %s (Ende nicht erkennbar)</string>
+    <string name="window_event">%1$s–%2$s · %3$.1f → %4$.1f °C</string>
+    <string name="window_humidity_drop">" · Luftfeuchte −%d %%"</string>
+
+    <!-- Raummodell -->
+    <string name="model_title">Raummodell</string>
+    <string name="model_computing">Wird berechnet …</string>
+    <string name="model_learning">Raummodell lernt noch (Ventil offen %1$d/%2$d, Ventil zu %3$d/%4$d verwertbare Phasen)</string>
+    <string name="model_no_setback">Keine Absenkung im Heizprofil erkannt.</string>
+    <string name="model_summary">%1$.1f → %2$.1f °C %3$s · zurück auf %1$.1f °C %4$s (bei %5$.0f °C außen)</string>
+    <string name="model_in_about">in ca. %s</string>
+    <string name="model_unreachable">bei %1$.0f °C außen nicht erreichbar (%2$.1f °C)</string>
+    <string name="model_unknown">– noch unbekannt</string>
+    <string name="model_parameters">Wärmeverlust k: %1$s · Heizleistung P: %2$s · Totzeit: %3$s</string>
+    <string name="model_k">%.3f/h</string>
+    <string name="model_p">%.2f °C/h</string>
+    <string name="model_phases">Verwertbare Phasen: Ventil offen %1$d, Ventil zu %2$d</string>
+    <string name="model_spread">" · Streuung k: ±%d %%"</string>
+    <plurals name="model_windows_excluded">
+        <item quantity="one">" · %d× Fenster offen erkannt, beim Lernen ausgeklammert"</item>
+        <item quantity="other">" · %d× Fenster offen erkannt, beim Lernen ausgeklammert"</item>
+    </plurals>
+    <string name="model_levels">Spar-/Komforttemperatur (aus den Sollwerten der letzten 7 Tage): %1$.1f / %2$.1f °C</string>
+    <string name="model_explanation">Das Modell nimmt an, dass der Raum mit offenem Ventil gleichmäßig heizt und mit geschlossenem Ventil Richtung Außentemperatur abkühlt. Je mehr Tage mit unterschiedlichem Wetter, desto genauer.</string>
+
+    <!-- Heizprofile -->
+    <string name="profiles_title">Heizprofile</string>
+    <string name="profile_n">Profil %s</string>
+    <string name="profile_active_suffix">%s · aktiv</string>
+    <string name="profile_save_first">Zum Wechseln des Profils erst speichern oder verwerfen.</string>
+    <string name="profile_activate">%s aktivieren</string>
+    <string name="profile_activate_q">%s aktivieren?</string>
+    <string name="profile_activate_text">Der Raum „%s“ heizt dann nach diesem Wochenprofil.</string>
+    <string name="profile_week_hint">Woche – Tag antippen zum Bearbeiten</string>
+    <string name="profile_day_unreadable">nicht lesbar</string>
+    <string name="profile_rate">Aus dem Verlauf: Dieser Raum heizt typischerweise um ca. %.2f °C pro Stunde auf.</string>
+    <string name="profile_rate_unknown">Sobald genug Verlauf aufgezeichnet ist, zeigt die App hier, wie schnell der Raum aufheizt.</string>
+    <string name="profile_optimum_tip">Tipp: Mit „Optimum Start/Stop“ in der Homematic-IP-App lernt das System die Vorheizzeit selbst.</string>
+    <string name="profile_undo">Letzte Speicherung rückgängig</string>
+    <string name="profile_saved">Gespeichert und geprüft.</string>
+    <string name="profile_saved_also">Gespeichert und geprüft. Auch übernommen für %d weitere Räume.</string>
+    <string name="profile_saved_partly">Gespeichert. Nicht übernommen werden konnte es für: %s.</string>
+    <string name="profile_now_active">%s ist jetzt aktiv.</string>
+    <string name="profile_restored">Vorherige Version wiederhergestellt.</string>
+    <string name="save_changes_q">Änderungen speichern?</string>
+    <string name="save_backup_note">Die bisherige Version wird gesichert und kann rückgängig gemacht werden.</string>
+    <string name="save_also_rooms">Geänderte Tage auch übernehmen für:</string>
+    <string name="diff_period">%1$s–%2$s %3$.1f °C</string>
+    <string name="diff_no_period">keine Heizphase</string>
+    <string name="diff_periods">%1$s: %2$s → %3$s</string>
+    <string name="diff_base">%1$s: Grundtemperatur %2$.1f → %3$.1f °C</string>
+    <string name="diff_both">%1$s: %2$s → %3$s; Grundtemperatur %4$.1f → %5$.1f °C</string>
+    <string name="editor_drag_hint">Ränder der Heizphasen ziehen oder unten genau einstellen</string>
+    <string name="editor_phase">Phase %1$d: %2$s–%3$s</string>
+    <string name="editor_start">Beginn</string>
+    <string name="editor_end">Ende</string>
+    <string name="editor_add_phase">+ Heizphase hinzufügen</string>
+    <string name="editor_max_phases">Maximal %d Heizphasen</string>
+    <string name="editor_base">Grundtemperatur (außerhalb der Phasen)</string>
+    <string name="editor_copy_to">Diesen Tag übernehmen für:</string>
+    <string name="editor_workdays">Mo–Fr</string>
+    <string name="editor_weekend">Sa–So</string>
+    <string name="editor_all_days">Alle</string>
+    <string name="preheat_start">Damit es um %1$s %2$.1f °C hat, müsste die Heizung bei ca. %3$.2f °C/h etwa um %4$s starten. Das ist eine Obergrenze – der Estrich kühlt meist nicht ganz auf die Grundtemperatur ab.</string>
+    <string name="preheat_too_slow">Bei ca. %1$.2f °C/h braucht der Raum von %2$.1f auf %3$.1f °C über 8 Stunden. Eine höhere Grundtemperatur ist bei Fußbodenheizung meist sinnvoller als eine starke Absenkung.</string>
+
+    <!-- Info -->
+    <string name="about_text">Zeigt, welcher Heizkreis deiner Fußbodenheizung gerade offen ist, zeichnet den Verlauf auf, lernt das Verhalten jedes Raums und macht Heizprofile bequem bearbeitbar. Kostenlos, ohne Werbung und ohne Tracking. Inoffizielles Projekt, nicht mit eQ-3 verbunden.</string>
+    <string name="support_text">Wenn dir die App gefällt, freue ich mich über eine freiwillige Unterstützung. Sie ist nie nötig und schaltet nichts frei.</string>
+    <string name="source_code">Quellcode auf GitHub</string>
+
+    <!-- Fehler -->
+    <string name="err_unknown_host">Server %s nicht erreichbar. Bitte Internetverbindung prüfen und erneut versuchen.</string>
+    <string name="err_unknown_host_cloud">Server der Cloud nicht erreichbar. Bitte Internetverbindung prüfen und erneut versuchen.</string>
+    <string name="err_timeout">Zeitüberschreitung: Die Cloud hat nicht rechtzeitig geantwortet.</string>
+    <string name="err_no_connection">Keine Verbindung zur Cloud möglich. Bitte Internetverbindung prüfen.</string>
+    <string name="err_ssl">Sichere Verbindung zur Cloud fehlgeschlagen (%s).</string>
+    <string name="err_network">Netzwerkfehler: %s</string>
+    <string name="err_unexpected">Unerwarteter Fehler: %s</string>
+    <string name="err_with_context">%1$s: %2$s (%3$s)</string>
+    <string name="err_http_forbidden">Zugriff verweigert. Falls die App am Access Point entfernt wurde: abmelden und neu verbinden.</string>
+    <string name="err_http_not_found">Access Point nicht gefunden. Bitte SGTIN prüfen.</string>
+    <string name="err_http_bad_request">Ungültige Anfrage.</string>
+    <string name="err_http_too_many">Zu viele Anfragen. Bitte etwas warten.</string>
+    <string name="err_http_server">Die Homematic IP Cloud hat gerade ein Problem. Bitte später erneut versuchen.</string>
+    <string name="err_http_unexpected">Unerwartete Antwort der Cloud.</string>
+    <string name="err_button_timeout">Der blaue Knopf am Access Point wurde nicht rechtzeitig gedrückt.</string>
+    <string name="err_not_logged_in">Nicht angemeldet.</string>
+    <string name="err_profile_mismatch">Das Profil wurde gesendet, aber die Cloud meldet andere Werte zurück. Bitte in der Homematic-IP-App prüfen oder „Rückgängig“ verwenden.</string>
+    <string name="ctx_lookup">Lookup fehlgeschlagen</string>
+    <string name="ctx_connection_request">Verbindungsanfrage abgelehnt</string>
+    <string name="ctx_token_request">Token-Anfrage fehlgeschlagen</string>
+    <string name="ctx_token_confirm">Token-Bestätigung fehlgeschlagen</string>
+    <string name="ctx_state">Status konnte nicht geladen werden</string>
+    <string name="ctx_profile_load">Heizprofil konnte nicht geladen werden</string>
+    <string name="ctx_profile_save">Heizprofil konnte nicht gespeichert werden</string>
+    <string name="ctx_profile_activate">Profil konnte nicht aktiviert werden</string>
+
+    <!-- Hilfe -->
+    <string name="help_title">Hilfe</string>
+    <string name="help_intro">PureHeat liest deine Fußbodenheizung über die Homematic IP Cloud und zeigt, was die offizielle App nicht zeigt: welches Ventil offen ist, wie sich jeder Raum über die Zeit verhält und wie er besser beheizt werden könnte.</string>
+    <string name="help_start_title">Einrichtung</string>
+    <string name="help_start_text">Die SGTIN vom Aufkleber unter dem Access Point eingeben (und die PIN, falls eine gesetzt ist). Wenn die App dazu auffordert, den blauen Knopf am Access Point drücken. Der Zugangsschlüssel wird nur auf diesem Telefon gespeichert.</string>
+    <string name="help_overview_title">Übersicht</string>
+    <string name="help_overview_text">Eine Karte pro Raum: Ist- und Solltemperatur, Luftfeuchte und die Öffnung jedes Ventils (Heizkreises). Handtuchheizkörper mit Heizkörperthermostat erscheinen als eigene Räume ohne Temperaturfühler. Solange die App offen ist, aktualisiert sich die Übersicht alle 5 Minuten; „Aktualisieren“ holt sofort.</string>
+    <string name="help_valve_title">„Ventil offen“ heißt nicht „heizt“</string>
+    <string name="help_valve_text">Das System kennt nur die Ventilstellung, nicht ob warmes Wasser fließt. Ein festsitzender Ventilstift, ein kalter Vorlauf der Zentralheizung oder Luft im Kreis sehen alle wie „Ventil offen“ aus. Ist ein Ventil stundenlang offen und der Raum wird nicht wärmer, zeigt die App eine Warnung – dann den Kreis am Verteiler prüfen.</string>
+    <string name="help_chart_title">Verlaufsdiagramm</string>
+    <string name="help_chart_text">Das kleine Diagramm zeigt die letzten 24 Stunden: Ist-Temperatur (Linie), Solltemperatur (gestrichelt) und Ventilöffnung (Fläche darunter). Beschriftungen über dem Diagramm zeigen, wann ein Fenster geöffnet oder geschlossen wurde und wann sich der Sollwert geändert hat (auf 15 Minuten gerundet). Diagramm oder „Verlauf ›“ antippen für alle Daten bis 60 Tage – mit Außentemperatur, jedem Kanal und genauen Werten zu jedem Zeitpunkt.</string>
+    <string name="help_window_title">Fenster-offen-Erkennung</string>
+    <string name="help_window_text">Ohne Fensterkontakte erkennt die App ein offenes Fenster an der Temperatur: ein schneller Sturz bei geschlossenem Ventil. Ein Wiederanstieg ohne Heizen gilt als „zu“. Startet die Heizung, während das Fenster vielleicht noch offen ist, schreibt die App nur „mindestens bis“. Am besten funktioniert die Erkennung mit dichten Aufzeichnungen (siehe „Akku“).</string>
+    <string name="help_model_title">Raummodell und Vorhersagen</string>
+    <string name="help_model_text">Aus den aufgezeichneten Phasen lernt die App für jeden Raum, wie schnell er Wärme verliert (k), wie stark die Fußbodenheizung ihn aufheizt (P) und wie lange der Estrich braucht, bis er reagiert (Totzeit). Daraus sagt sie vorher, wie lange der Raum bei der aktuellen Außentemperatur von der Spar- zur Komforttemperatur und zurück braucht. Fenster-offen-Zeiten werden ausgeklammert. Bis genug Phasen beobachtet wurden, steht dort „lernt noch“.</string>
+    <string name="help_profiles_title">Heizprofile</string>
+    <string name="help_profiles_text">„Heizprofil ›“ zeigt die Wochenprofile eines Raums. Einen Tag antippen zum Bearbeiten: Ränder der Phasen ziehen, Beginn, Ende und Temperatur genau einstellen, einen Tag auf andere übertragen. Vor dem Speichern listet die App jede Änderung auf, sichert die alte Version, speichert und liest das Profil zur Kontrolle zurück. „Letzte Speicherung rückgängig“ stellt die Sicherung wieder her. Ohne deine Bestätigung wird nichts geschrieben.</string>
+    <string name="help_battery_title">Akku und Daten</string>
+    <string name="help_battery_text">Im Hintergrund ruft die App alle 15 Minuten ab, solange sich etwas ändert, sonst alle 30 Minuten und nachts alle 60 Minuten. Jeder Abruf sind etwa 100 KB. Android kann diese Aufträge um Stunden verschieben, wenn die App selten geöffnet wird – für einen lückenlosen Verlauf App-Info → Akku → „Nicht eingeschränkt“ wählen.</string>
+    <string name="help_language_title">Sprache</string>
+    <string name="help_language_text">Die App folgt der Systemsprache. Eine andere Sprache lässt sich unter „Info“ wählen oder (ab Android 13) in den Systemeinstellungen unter „App-Sprachen“.</string>
+    <string name="help_privacy_title">Datenschutz</string>
+    <string name="help_privacy_text">Die App spricht nur mit der Homematic IP Cloud. Zugangsdaten und Verlauf bleiben auf diesem Telefon. PureHeat ist ein inoffizielles Projekt und nicht mit eQ-3 verbunden.</string>
+</resources>

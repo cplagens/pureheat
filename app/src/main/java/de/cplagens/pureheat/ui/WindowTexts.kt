@@ -1,39 +1,38 @@
 package de.cplagens.pureheat.ui
 
+import android.content.Context
+import android.text.format.DateFormat
+import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.history.WindowEvent
-import java.text.SimpleDateFormat
 import java.util.Date
-import java.util.Locale
 
-/** German texts for detected open-window times. */
+/** Texts for detected open-window times. */
 internal object WindowTexts {
-    private fun time(t: Long) = SimpleDateFormat("HH:mm", Locale.GERMANY).format(Date(t))
-    private fun dayTime(t: Long) = SimpleDateFormat("EE HH:mm", Locale.GERMANY).format(Date(t))
+    private fun time(ctx: Context, t: Long) = DateFormat.getTimeFormat(ctx).format(Date(t))
+    private fun dayTime(ctx: Context, t: Long) =
+        DateFormat.format(DateFormat.getBestDateTimePattern(currentLocale(ctx), "EEE Hm"), t).toString()
 
-    /** "Fenster offen erkannt seit 21:05" or the last event of the shown 24 h; null if none. */
-    fun dashboardLine(events: List<WindowEvent>): String? {
+    /** The last event of the shown 24 h; null if none. */
+    fun dashboardLine(ctx: Context, events: List<WindowEvent>): String? {
         val last = events.lastOrNull() ?: return null
         val end = last.end
         return when {
-            end == null -> "Fenster vermutlich offen seit ${time(last.start)} (−${last.drop.k()} K)"
-            last.closeDetected -> "Fenster vermutlich offen: ${time(last.start)}–${time(end)} (−${last.drop.k()} K)"
-            else -> "Fenster vermutlich offen ab ${time(last.start)}, mindestens bis ${time(end)} (−${last.drop.k()} K)"
+            end == null -> ctx.getString(R.string.window_open_since, time(ctx, last.start), last.drop)
+            last.closeDetected -> ctx.getString(R.string.window_open_from_to, time(ctx, last.start), time(ctx, end), last.drop)
+            else -> ctx.getString(R.string.window_open_at_least, time(ctx, last.start), time(ctx, end), last.drop)
         }
     }
 
     /** One line per event for the detail view. */
-    fun describe(e: WindowEvent): String = buildString {
-        append(dayTime(e.start)).append("–")
-        append(
-            when {
-                e.end == null -> "jetzt"
-                e.closeDetected -> time(e.end)
-                else -> "mind. ${time(e.end)} (Ende nicht erkennbar)"
-            },
-        )
-        append(" · ${e.startTemperature.k()} → ${e.minTemperature.k()} °C")
-        e.humidityDrop?.let { append(" · Luftfeuchte −$it %") }
+    fun describe(ctx: Context, e: WindowEvent): String {
+        val end = when {
+            e.end == null -> ctx.getString(R.string.window_end_now)
+            e.closeDetected -> time(ctx, e.end)
+            else -> ctx.getString(R.string.window_end_unknown, time(ctx, e.end))
+        }
+        val base = ctx.getString(R.string.window_event, dayTime(ctx, e.start), end, e.startTemperature, e.minTemperature)
+        return e.humidityDrop?.let { base + ctx.getString(R.string.window_humidity_drop, it) } ?: base
     }
-
-    private fun Double.k() = String.format(Locale.GERMANY, "%.1f", this)
 }
+
+internal fun currentLocale(ctx: Context) = ctx.resources.configuration.locales[0]

@@ -31,8 +31,8 @@ data class ProfileRef(
     val name: String?,
     val visible: Boolean,
 ) {
-    val displayName: String
-        get() = name ?: "Profil ${index.substringAfterLast('_')}"
+    /** "1" … "6"; the display name (user's name or "Profile n") is built in `ui/ProfileTexts.kt`. */
+    val number: String get() = index.substringAfterLast('_')
 }
 
 /** A room as configured in the app (HEATING group in the API). */

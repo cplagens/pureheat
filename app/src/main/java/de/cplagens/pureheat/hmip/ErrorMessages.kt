@@ -1,5 +1,7 @@
 package de.cplagens.pureheat.hmip
 
+import de.cplagens.pureheat.R
+import de.cplagens.pureheat.ui.UiText
 import java.io.IOException
 import java.net.ConnectException
 import java.net.NoRouteToHostException
@@ -7,33 +9,31 @@ import java.net.SocketTimeoutException
 import java.net.UnknownHostException
 import javax.net.ssl.SSLException
 
-/** Turns any failure from [HmipClient] into a short German message for the UI. */
-fun Throwable.toUserMessage(): String = when (this) {
-    is HmipClient.HmipException -> message ?: "Unbekannter Fehler der Homematic IP Cloud."
+/** Turns any failure from [HmipClient] into a short, translatable message for the UI. */
+fun Throwable.toUiText(): UiText = when (this) {
+    is HmipClient.HmipException -> uiText
     is UnknownHostException -> {
         // Android: Unable to resolve host "srv….homematic.com": No address associated with hostname
         val host = message?.let { Regex("\"([^\"]+)\"").find(it)?.groupValues?.get(1) ?: it }
-        "Server ${host ?: "der Cloud"} nicht erreichbar. Bitte Internetverbindung prüfen und erneut versuchen."
+        if (host != null) UiText.Res(R.string.err_unknown_host, host) else UiText.Res(R.string.err_unknown_host_cloud)
     }
-    is SocketTimeoutException -> "Zeitüberschreitung: Die Cloud hat nicht rechtzeitig geantwortet."
-    is ConnectException, is NoRouteToHostException ->
-        "Keine Verbindung zur Cloud möglich. Bitte Internetverbindung prüfen."
-    is SSLException -> "Sichere Verbindung zur Cloud fehlgeschlagen (${message ?: "SSL-Fehler"})."
-    is IOException -> "Netzwerkfehler: ${message ?: javaClass.simpleName}"
-    else -> "Unerwarteter Fehler: ${message ?: javaClass.simpleName}"
+    is SocketTimeoutException -> UiText.Res(R.string.err_timeout)
+    is ConnectException, is NoRouteToHostException -> UiText.Res(R.string.err_no_connection)
+    is SSLException -> UiText.Res(R.string.err_ssl, message ?: "SSL")
+    is IOException -> UiText.Res(R.string.err_network, message ?: javaClass.simpleName)
+    else -> UiText.Res(R.string.err_unexpected, message ?: javaClass.simpleName)
 }
 
-/** Hint for an HTTP error from the cloud API, based on status and the `errorCode` in the body. */
-internal fun httpErrorHint(code: Int, errorCode: String?): String {
+/** "<what failed>: <hint> (HTTP 400, INVALID_REQUEST)" for an HTTP error from the cloud API. */
+internal fun httpError(context: UiText, code: Int, errorCode: String?): UiText {
     val hint = when {
-        code == 401 || code == 403 ->
-            "Zugriff verweigert. Falls die App am Access Point entfernt wurde: abmelden und neu verbinden."
-        code == 404 -> "Access Point nicht gefunden. Bitte SGTIN prüfen."
-        code == 400 -> "Ungültige Anfrage."
-        code == 429 -> "Zu viele Anfragen. Bitte etwas warten."
-        code >= 500 -> "Die Homematic IP Cloud hat gerade ein Problem. Bitte später erneut versuchen."
-        else -> "Unerwartete Antwort der Cloud."
+        code == 401 || code == 403 -> R.string.err_http_forbidden
+        code == 404 -> R.string.err_http_not_found
+        code == 400 -> R.string.err_http_bad_request
+        code == 429 -> R.string.err_http_too_many
+        code >= 500 -> R.string.err_http_server
+        else -> R.string.err_http_unexpected
     }
     val detail = listOfNotNull("HTTP $code", errorCode).joinToString(", ")
-    return "$hint ($detail)"
+    return UiText.Res(R.string.err_with_context, context, UiText.Res(hint), detail)
 }

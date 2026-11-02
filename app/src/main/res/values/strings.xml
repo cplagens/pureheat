@@ -1,3 +1,250 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  Default (English). Translations live in values-<lang>/strings.xml; keep keys in sync.
+  Strings with format arguments need %% for a literal percent sign.
+  Strings with leading/trailing spaces are wrapped in double quotes.
+-->
 <resources>
-    <string name="app_name">PureHeat</string>
+    <string name="app_name" translatable="false">PureHeat</string>
+
+    <!-- General -->
+    <string name="refresh">Refresh</string>
+    <string name="help">Help</string>
+    <string name="info">Info</string>
+    <string name="logout">Log out</string>
+    <string name="close">Close</string>
+    <string name="cancel">Cancel</string>
+    <string name="save">Save</string>
+    <string name="save_ellipsis">Save …</string>
+    <string name="discard">Discard</string>
+    <string name="dismiss">Hide</string>
+    <string name="apply">Apply</string>
+    <string name="activate">Activate</string>
+    <string name="remove">Remove</string>
+    <string name="back">‹ Back</string>
+    <string name="back_rooms">‹ Rooms</string>
+    <string name="unknown">unknown</string>
+    <string name="now">now</string>
+    <string name="ago_24h">24 h ago</string>
+    <string name="temperature">Temperature</string>
+    <string name="temp_c">%.1f °C</string>
+    <string name="temp_c0">%.0f °C</string>
+    <string name="percent">%d %%</string>
+    <string name="version">Version %s</string>
+    <string name="language">Language</string>
+    <string name="system_language">System language</string>
+
+    <!-- Weekdays (short) -->
+    <string name="day_mo">Mo</string>
+    <string name="day_tu">Tu</string>
+    <string name="day_we">We</string>
+    <string name="day_th">Th</string>
+    <string name="day_fr">Fr</string>
+    <string name="day_sa">Sa</string>
+    <string name="day_su">Su</string>
+
+    <!-- Durations -->
+    <string name="duration_min">%d min</string>
+    <string name="duration_h">%d h</string>
+    <string name="duration_h_min">%1$d h %2$d min</string>
+    <string name="duration_over_day">over 24 h</string>
+
+    <!-- Setup -->
+    <string name="setup_title">Connect access point</string>
+    <string name="setup_sgtin_hint">The SGTIN (access point ID) is printed on the label underneath the access point, e.g. 3014-F711-A000-…</string>
+    <string name="setup_sgtin">SGTIN</string>
+    <string name="setup_pin">PIN (only if set in the app)</string>
+    <string name="setup_connect">Connect</string>
+    <string name="setup_press_button">Now press the blue button on the access point …</string>
+
+    <!-- Dashboard -->
+    <plurals name="rooms_valve_open">
+        <item quantity="one">Valve open in %d room</item>
+        <item quantity="other">Valve open in %d rooms</item>
+    </plurals>
+    <string name="unassigned_circuits">Not assigned to a room</string>
+    <string name="valve_open">Valve open</string>
+    <string name="room_values">Actual %1$s · Target %2$s</string>
+    <string name="room_humidity">" · %d %% RH"</string>
+    <string name="room_window_contact_open">" · window open"</string>
+    <string name="valve_room">Valve (room)</string>
+    <string name="channel_n">Channel %d</string>
+    <string name="channel_state">%1$s: %2$s</string>
+    <string name="stalled_warning">⚠ Valve open for %1$.1f h, temperature only %2$+.1f °C – is heat arriving?</string>
+    <string name="history_link">History ›</string>
+    <string name="profile_link">Heating profile ›</string>
+
+    <!-- Charts -->
+    <string name="history_recording">Recording history …</string>
+    <string name="legend_actual">Actual</string>
+    <string name="legend_setpoint">Target</string>
+    <string name="legend_valve">Valve</string>
+    <string name="legend_window">Window</string>
+    <string name="legend_outside">Outside</string>
+    <string name="legend_window_detected">Window open (detected)</string>
+    <string name="actual_range">Actual %1$.1f–%2$.1f °C</string>
+    <string name="marker_window_open">Window open %s</string>
+    <string name="marker_window_closed">closed %s</string>
+    <string name="marker_setpoint">Target %1$s %2$s</string>
+
+    <!-- Battery hint -->
+    <string name="battery_title">Avoid gaps in the history</string>
+    <string name="battery_text">Android slows down the background recording because the app is rarely opened – this leaves gaps of several hours. Fix: App info → Battery → “Unrestricted”. PureHeat still only fetches every 15–60 minutes.</string>
+    <string name="battery_open_settings">Open app info</string>
+
+    <!-- Detail view -->
+    <string name="range_24h">24 h</string>
+    <string name="range_3d">3 days</string>
+    <string name="range_7d">7 days</string>
+    <string name="range_14d">14 days</string>
+    <string name="range_60d">60 days</string>
+    <string name="readout_hint">Tap or swipe across a chart to see the values at that time.</string>
+    <string name="readout_no_values">No values at this time.</string>
+    <string name="value_actual">Actual %.1f °C</string>
+    <string name="value_setpoint">Target %.1f °C</string>
+    <string name="value_outside">Outside %.1f °C</string>
+    <string name="value_valve">%1$s %2$d %%</string>
+    <string name="too_little_data">Not enough data in this period yet.</string>
+    <string name="valve_opening_title">Valve opening (0–100 %)</string>
+    <string name="windows_title">Window open (detected from the temperature curve)</string>
+    <string name="windows_none">Nothing detected in this period. Detected is a quick temperature drop with the valve closed (≥ 0.3 K at ≥ 0.6 K/h); the end is a rise again without heating.</string>
+    <string name="phases_title">Phases (valve open or closed for ≥ 1 h)</string>
+    <string name="phases_none">No phase of at least one hour detected yet. Phases occur when the valve stays open (heating up) or closed (cooling down) for a longer time.</string>
+    <plurals name="phases">
+        <item quantity="one">%d phase</item>
+        <item quantity="other">%d phases</item>
+    </plurals>
+    <string name="phase_summary_open">Valve open: on average %1$+.2f °C/h (%2$s)</string>
+    <string name="phase_summary_closed">Valve closed: on average %1$+.2f °C/h (%2$s)</string>
+    <string name="phase_open">▲ Valve open · %1$s–%2$s</string>
+    <string name="phase_closed">▼ Valve closed · %1$s–%2$s</string>
+    <string name="phase_detail">%1$.1f → %2$.1f °C in %3$d h %4$d min (%5$+.2f °C/h)</string>
+    <string name="phase_outside">" · outside avg. %.1f °C"</string>
+
+    <!-- Window detection -->
+    <string name="window_open_since">Window probably open since %1$s (−%2$.1f K)</string>
+    <string name="window_open_from_to">Window probably open: %1$s–%2$s (−%3$.1f K)</string>
+    <string name="window_open_at_least">Window probably open from %1$s, at least until %2$s (−%3$.1f K)</string>
+    <string name="window_end_now">now</string>
+    <string name="window_end_unknown">at least %s (end not detectable)</string>
+    <string name="window_event">%1$s–%2$s · %3$.1f → %4$.1f °C</string>
+    <string name="window_humidity_drop">" · humidity −%d %%"</string>
+
+    <!-- Room model -->
+    <string name="model_title">Room model</string>
+    <string name="model_computing">Calculating …</string>
+    <string name="model_learning">Room model still learning (valve open %1$d/%2$d, valve closed %3$d/%4$d usable phases)</string>
+    <string name="model_no_setback">No setback detected in the heating profile.</string>
+    <string name="model_summary">%1$.1f → %2$.1f °C %3$s · back to %1$.1f °C %4$s (at %5$.0f °C outside)</string>
+    <string name="model_in_about">in about %s</string>
+    <string name="model_unreachable">not reachable at %1$.0f °C outside (%2$.1f °C)</string>
+    <string name="model_unknown">– not known yet</string>
+    <string name="model_parameters">Heat loss k: %1$s · Heating power P: %2$s · Dead time: %3$s</string>
+    <string name="model_k">%.3f/h</string>
+    <string name="model_p">%.2f °C/h</string>
+    <string name="model_phases">Usable phases: valve open %1$d, valve closed %2$d</string>
+    <string name="model_spread">" · spread of k: ±%d %%"</string>
+    <plurals name="model_windows_excluded">
+        <item quantity="one">" · %d× window open detected, left out when learning"</item>
+        <item quantity="other">" · %d× window open detected, left out when learning"</item>
+    </plurals>
+    <string name="model_levels">Setback/comfort temperature (from the setpoints of the last 7 days): %1$.1f / %2$.1f °C</string>
+    <string name="model_explanation">The model assumes that the room heats up evenly with the valve open and cools towards the outside temperature with the valve closed. The more days with different weather, the more accurate it gets.</string>
+
+    <!-- Heating profiles -->
+    <string name="profiles_title">Heating profiles</string>
+    <string name="profile_n">Profile %s</string>
+    <string name="profile_active_suffix">%s · active</string>
+    <string name="profile_save_first">Save or discard first to switch the profile.</string>
+    <string name="profile_activate">Activate %s</string>
+    <string name="profile_activate_q">Activate %s?</string>
+    <string name="profile_activate_text">The room “%s” will then heat according to this weekly profile.</string>
+    <string name="profile_week_hint">Week – tap a day to edit it</string>
+    <string name="profile_day_unreadable">not readable</string>
+    <string name="profile_rate">From the history: this room typically heats up by about %.2f °C per hour.</string>
+    <string name="profile_rate_unknown">Once enough history has been recorded, the app shows here how fast the room heats up.</string>
+    <string name="profile_optimum_tip">Tip: with “Optimum Start/Stop” in the Homematic IP app the system learns the preheating time itself.</string>
+    <string name="profile_undo">Undo last save</string>
+    <string name="profile_saved">Saved and verified.</string>
+    <string name="profile_saved_also">Saved and verified. Also applied to %d other rooms.</string>
+    <string name="profile_saved_partly">Saved. Could not be applied to: %s.</string>
+    <string name="profile_now_active">%s is now active.</string>
+    <string name="profile_restored">Previous version restored.</string>
+    <string name="save_changes_q">Save changes?</string>
+    <string name="save_backup_note">The previous version is backed up and can be restored.</string>
+    <string name="save_also_rooms">Also apply the changed days to:</string>
+    <string name="diff_period">%1$s–%2$s %3$.1f °C</string>
+    <string name="diff_no_period">no heating phase</string>
+    <string name="diff_periods">%1$s: %2$s → %3$s</string>
+    <string name="diff_base">%1$s: base temperature %2$.1f → %3$.1f °C</string>
+    <string name="diff_both">%1$s: %2$s → %3$s; base temperature %4$.1f → %5$.1f °C</string>
+    <string name="editor_drag_hint">Drag the edges of the heating phases or set them precisely below</string>
+    <string name="editor_phase">Phase %1$d: %2$s–%3$s</string>
+    <string name="editor_start">Start</string>
+    <string name="editor_end">End</string>
+    <string name="editor_add_phase">+ Add heating phase</string>
+    <string name="editor_max_phases">At most %d heating phases</string>
+    <string name="editor_base">Base temperature (outside the phases)</string>
+    <string name="editor_copy_to">Copy this day to:</string>
+    <string name="editor_workdays">Mo–Fr</string>
+    <string name="editor_weekend">Sa–Su</string>
+    <string name="editor_all_days">All</string>
+    <string name="preheat_start">To have %2$.1f °C at %1$s, the heating would have to start at about %4$s at about %3$.2f °C/h. This is an upper limit – the screed usually doesn\'t cool down all the way to the base temperature.</string>
+    <string name="preheat_too_slow">At about %1$.2f °C/h the room needs more than 8 hours from %2$.1f to %3$.1f °C. With floor heating a higher base temperature usually works better than a deep setback.</string>
+
+    <!-- About -->
+    <string name="about_text">Shows which circuit of your floor heating is open right now, records the history, learns how each room behaves and makes heating profiles easy to edit. Free, no ads, no tracking. Unofficial project, not affiliated with eQ-3.</string>
+    <string name="support_text">If you like the app, a voluntary contribution is always appreciated. It is never required and doesn\'t unlock anything.</string>
+    <string name="source_code">Source code on GitHub</string>
+
+    <!-- Errors -->
+    <string name="err_unknown_host">Server %s not reachable. Please check the internet connection and try again.</string>
+    <string name="err_unknown_host_cloud">Cloud server not reachable. Please check the internet connection and try again.</string>
+    <string name="err_timeout">Timeout: the cloud did not answer in time.</string>
+    <string name="err_no_connection">Cannot connect to the cloud. Please check the internet connection.</string>
+    <string name="err_ssl">Secure connection to the cloud failed (%s).</string>
+    <string name="err_network">Network error: %s</string>
+    <string name="err_unexpected">Unexpected error: %s</string>
+    <string name="err_with_context">%1$s: %2$s (%3$s)</string>
+    <string name="err_http_forbidden">Access denied. If the app was removed from the access point: log out and connect again.</string>
+    <string name="err_http_not_found">Access point not found. Please check the SGTIN.</string>
+    <string name="err_http_bad_request">Invalid request.</string>
+    <string name="err_http_too_many">Too many requests. Please wait a moment.</string>
+    <string name="err_http_server">The Homematic IP cloud has a problem right now. Please try again later.</string>
+    <string name="err_http_unexpected">Unexpected answer from the cloud.</string>
+    <string name="err_button_timeout">The blue button on the access point was not pressed in time.</string>
+    <string name="err_not_logged_in">Not logged in.</string>
+    <string name="err_profile_mismatch">The profile was sent, but the cloud reports different values back. Please check in the Homematic IP app or use “Undo”.</string>
+    <string name="ctx_lookup">Lookup failed</string>
+    <string name="ctx_connection_request">Connection request rejected</string>
+    <string name="ctx_token_request">Token request failed</string>
+    <string name="ctx_token_confirm">Token confirmation failed</string>
+    <string name="ctx_state">Could not load the status</string>
+    <string name="ctx_profile_load">Could not load the heating profile</string>
+    <string name="ctx_profile_save">Could not save the heating profile</string>
+    <string name="ctx_profile_activate">Could not activate the profile</string>
+
+    <!-- Help -->
+    <string name="help_title">Help</string>
+    <string name="help_intro">PureHeat reads your floor heating through the Homematic IP cloud and shows what the official app doesn\'t: which valve is open, how each room behaves over time and how it could be heated better.</string>
+    <string name="help_start_title">Getting started</string>
+    <string name="help_start_text">Enter the SGTIN from the label underneath the access point (and the PIN if you set one). When asked, press the blue button on the access point. The access token is stored on this phone only.</string>
+    <string name="help_overview_title">Overview</string>
+    <string name="help_overview_text">One card per room: actual and target temperature, humidity and the opening of each valve (circuit). Towel radiators with a radiator thermostat appear as their own rooms without a temperature sensor. The overview refreshes every 5 minutes while the app is open; “Refresh” fetches immediately.</string>
+    <string name="help_valve_title">“Valve open” is not “heating”</string>
+    <string name="help_valve_text">The system only knows how far a valve is open, not whether warm water actually flows. A stuck valve pin, a cold supply from the central heating or air in the circuit all look like “valve open”. If a valve is open for hours and the room doesn\'t get warmer, the app shows a warning – check the circuit at the manifold then.</string>
+    <string name="help_chart_title">History chart</string>
+    <string name="help_chart_text">The small chart shows the last 24 hours: actual temperature (line), target temperature (dashed) and valve opening (area below). Labels above the chart mark when a window was opened or closed and when the target changed (rounded to 15 minutes). Tap the chart or “History ›” for all data up to 60 days, with outside temperature, each channel and exact values at any time.</string>
+    <string name="help_window_title">Open window detection</string>
+    <string name="help_window_text">Without window contacts the app recognises an open window from the temperature: a quick drop while the valve is closed. A rise again without heating counts as “closed”. If the heating starts while the window may still be open, the app only says “at least until”. Detection works best with dense recordings (see “Battery”).</string>
+    <string name="help_model_title">Room model and predictions</string>
+    <string name="help_model_text">From the recorded phases the app learns per room how fast it loses heat (k), how strongly the floor heating heats it (P) and how long the screed takes to respond (dead time). From this it predicts how long the room needs from setback to comfort temperature and back at the current outside temperature. Open-window times are left out. Until enough phases have been seen, it shows “still learning”.</string>
+    <string name="help_profiles_title">Heating profiles</string>
+    <string name="help_profiles_text">“Heating profile ›” shows the weekly profiles of a room. Tap a day to edit it: drag the edges of the phases, set start, end and temperature precisely, copy a day to others. Before saving, the app lists every change, backs up the old version, saves and then reads the profile back to check it. “Undo last save” restores the backup. Nothing is written without your confirmation.</string>
+    <string name="help_battery_title">Battery and data</string>
+    <string name="help_battery_text">In the background the app fetches every 15 minutes while something is changing, otherwise every 30 minutes and every 60 minutes at night. Each fetch is about 100 KB. Android may delay these jobs for hours if the app is rarely opened – for a complete history set App info → Battery → “Unrestricted”.</string>
+    <string name="help_language_title">Language</string>
+    <string name="help_language_text">The app follows the system language. You can choose another language under “Info” or (Android 13+) in the system settings under “App languages”.</string>
+    <string name="help_privacy_title">Privacy</string>
+    <string name="help_privacy_text">The app only talks to the Homematic IP cloud. Access data and history stay on this phone. PureHeat is an unofficial project and not affiliated with eQ-3.</string>
 </resources>

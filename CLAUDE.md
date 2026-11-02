@@ -6,6 +6,8 @@ which heating circuit is currently heating and how far each valve actuator is op
 
 ## Docs
 - `docs/ARCHITECTURE.md` — structure, data flow, DB schema, verified API quirks
+- `docs/FINDINGS.md` — what we learned on the real system (API, Android, building, model); add new
+  findings there with a date
 - `docs/NEXT_STEPS.md` — roadmap (room model, forecast, shadow mode, optimal profile, savings) and
   open device checks. **Start here in a new session** and keep it updated when finishing a step.
 
@@ -31,7 +33,8 @@ which heating circuit is currently heating and how far each valve actuator is op
   `data/model/` — per-room thermal model (k, P, dead time) and heat-up/cool-down predictions
 - `ui/` — `MainViewModel` (polls every 5 min while visible; each fetch is ~100 KB, uncompressed), `SetupScreen`, `DashboardScreen`,
   `RoomHistoryChart`, `RoomDetailScreen`/`RoomDetailViewModel` + `TimeSeriesChart` (full history),
-  `ProfileScreen`/`ProfileViewModel`, `AboutDialog` (voluntary support links)
+  `ProfileScreen`/`ProfileViewModel`, `AboutDialog` (support links, language picker), `HelpScreen` (in-app guide),
+  `UiText` (translatable texts from ViewModels); `Lang.kt` — per-app language via AppCompat (as in PureRemote)
 
 ## Rules
 - The repo is **public**: never commit the SGTIN, auth token, PIN or raw API dumps containing them.
@@ -41,5 +44,8 @@ which heating circuit is currently heating and how far each valve actuator is op
 - Writes only where the user asked for them: heating profiles (edit, activate, undo), always behind a
   confirmation. Don't add other write calls (set temperature, boost, …) without being asked.
 - Do not use "Homematic" in the app name or icon (eQ-3 trademark).
-- UI text is German.
+- All UI text lives in string resources: `values/strings.xml` (English, default) plus translations in
+  `values-<lang>/` (German `values-de` is the user's language). No literal UI strings in Kotlin; ViewModels
+  and the data layer return `UiText` (resolved in the UI). New keys must be added to every language;
+  a language is only listed in `Lang.kt`/`locales_config.xml` once its file is complete.
 - Build after every change before reporting done.

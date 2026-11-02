@@ -14,7 +14,7 @@ import de.cplagens.pureheat.data.history.WindowEvent
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.HeatingState
 import de.cplagens.pureheat.hmip.HmipClient
-import de.cplagens.pureheat.hmip.toUserMessage
+import de.cplagens.pureheat.hmip.toUiText
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
@@ -30,11 +30,11 @@ data class RoomHistory(
 )
 
 sealed interface UiState {
-    data class Setup(val waitingForButton: Boolean = false, val busy: Boolean = false, val error: String? = null) : UiState
+    data class Setup(val waitingForButton: Boolean = false, val busy: Boolean = false, val error: UiText? = null) : UiState
     data class Dashboard(
         val state: HeatingState? = null,
         val loading: Boolean = false,
-        val error: String? = null,
+        val error: UiText? = null,
         val lastUpdated: Long? = null,
         val history: Map<String, RoomHistory> = emptyMap(),
         /** Learned room model and heat-up/cool-down predictions per room id. */
@@ -86,7 +86,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 _ui.value = UiState.Dashboard()
                 load()
             } catch (e: Exception) {
-                _ui.value = UiState.Setup(error = e.toUserMessage())
+                _ui.value = UiState.Setup(error = e.toUiText())
             }
         }
     }
@@ -127,7 +127,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 ) ?: it
             }
         } catch (e: Exception) {
-            _ui.update { (it as? UiState.Dashboard)?.copy(loading = false, error = e.toUserMessage()) ?: it }
+            _ui.update { (it as? UiState.Dashboard)?.copy(loading = false, error = e.toUiText()) ?: it }
         }
     }
 

@@ -1,6 +1,8 @@
 package de.cplagens.pureheat.ui
 
 import android.app.Application
+import androidx.annotation.StringRes
+import de.cplagens.pureheat.R
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import de.cplagens.pureheat.PureHeatApp
@@ -21,12 +23,12 @@ import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import de.cplagens.pureheat.data.model.RoomInsight
 
-enum class HistoryRange(val label: String, val millis: Long) {
-    DAY("24 h", 24 * 3_600_000L),
-    DAYS_3("3 Tage", 3 * 24 * 3_600_000L),
-    WEEK("7 Tage", 7 * 24 * 3_600_000L),
-    WEEKS_2("14 Tage", 14 * 24 * 3_600_000L),
-    ALL("60 Tage", 60 * 24 * 3_600_000L),
+enum class HistoryRange(@StringRes val label: Int, val millis: Long) {
+    DAY(R.string.range_24h, 24 * 3_600_000L),
+    DAYS_3(R.string.range_3d, 3 * 24 * 3_600_000L),
+    WEEK(R.string.range_7d, 7 * 24 * 3_600_000L),
+    WEEKS_2(R.string.range_14d, 14 * 24 * 3_600_000L),
+    ALL(R.string.range_60d, 60 * 24 * 3_600_000L),
 }
 
 data class RoomDetailState(

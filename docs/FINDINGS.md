@@ -1,0 +1,70 @@
+# PureHeat – Erkenntnisse
+
+Was wir am echten System gelernt haben (Stand 2026-11-02). Ergänzt [ARCHITECTURE.md](ARCHITECTURE.md)
+(Aufbau) und [NEXT_STEPS.md](NEXT_STEPS.md) (Plan). Neue Erkenntnisse bitte hier mit Datum eintragen.
+Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
+
+## Homematic IP Cloud-API
+
+| Thema | Erkenntnis | Seit |
+|---|---|---|
+| `getCurrentState` | Body muss `{clientCharacteristics, id}` sein, nur `clientCharacteristics` → 400 | 2026-11-01 |
+| Größe | ~100 KB pro Abruf, **keine Kompression** (`Accept-Encoding: gzip` wird ignoriert) | 2026-11-01 |
+| Lookup | `getHost` antwortet für jede SGTIN mit 200; bei zu vielen Lookups kurz **418** → REST-URL cachen | 2026-11-02 |
+| Profile lesen | `getProfile` mit `{groupId, profileIndex, profileId}`; Antwort `{id, groupId, homeId, type, profileDays}` | 2026-11-01 |
+| Grundtemperatur | heißt **`baseValue`** (homematicip-rest-api dokumentiert `baseTemperature`) | 2026-11-01 |
+| Profile schreiben | `updateProfile` braucht **`profileIndex` auf oberster Ebene**, sonst 400 INVALID_REQUEST; Rückgabe 200 ohne Body | 2026-11-01 |
+| Wetter | `home.weather`: `temperature`, `minTemperature`, `maxTemperature`, `humidity`, `windSpeed`, … | 2026-11-01 |
+| Standort | `home.location`: `city`, `latitude`, `longitude` – als **Strings** | 2026-11-01 |
+| Unbelegte Kanäle | Fußbodenheizungsaktor meldet unbelegte Ausgänge ohne Gruppe und ohne `valvePosition` (`ADJUSTMENT_TOO_SMALL`) | 2026-11-01 |
+| Fensterkontakte | keine vorhanden → `windowState` immer null; Fenster nur über den Temperaturverlauf erkennbar | 2026-11-02 |
+
+## Android
+
+- **App-Standby-Buckets bremsen Hintergrundjobs massiv.** Ein selten geöffneter App wird
+  stufenweise herabgestuft (ACTIVE → WORKING_SET → FREQUENT → RARE). Gemessen: tagsüber 60 statt
+  30 min Abstand, dann 9 h ganz ohne Aufzeichnung. Abhilfe: Akku → „Nicht eingeschränkt“ (die App
+  zeigt dafür eine Hinweiskarte). Diagnose: `adb shell dumpsys usagestats | grep pureheat`.
+- `am force-stop` pausiert alle WorkManager-Jobs bis zum nächsten App-Start (beim Entwickeln
+  entstehen so Lücken).
+- WorkManager-Jobs liegen im Namespace `androidx.work.systemjobscheduler`; zum Erzwingen:
+  `adb shell cmd jobscheduler run -f -n androidx.work.systemjobscheduler de.cplagens.pureheat <jobId>`.
+- Aus einem Worker heraus die eigene Kette mit `APPEND_OR_REPLACE` neu planen – `REPLACE` würde
+  den laufenden Worker selbst abbrechen.
+
+## Anlage und Gebäude (anonymisiert)
+
+- Wohnung in einem Mehrfamilienhaus, Zentralheizung (Wärmemengenzähler im Rücklauf); kein
+  Homematic-Gerät schaltet Pumpe oder Kessel. Vorlauftemperatur ist der App unbekannt.
+- Ein Fußbodenheizungsaktor (8 Kanäle) an einem Verteiler; zwei Kreise ohne Stellantrieb
+  (immer offen, je ~5 l/min) – vermutlich Handtuchheizkörper-Zuleitungen.
+- **Festsitzender Ventilstift** in einem Kreis (Zimmer 2): Stellantrieb meldete 100 %, Raum wurde
+  nicht warm (0,09 °C/h). Nach dem Lösen des Stifts am 2026-11-01: ~0,55 °C/h.
+  → Lehre: „Ventil offen“ heißt nicht „Wärme kommt an“; die App zeigt deshalb „Ventil offen“
+  statt „heizt“ und warnt, wenn das Ventil lange offen ist, der Raum aber nicht wärmer wird.
+- **Gut gedämmt:** Mit geschlossenem Fenster bleibt die Temperatur abends über Stunden fast
+  konstant (z. B. 23,2 °C von 19 bis 21 Uhr in Zimmer 2).
+- **Nachts sind in den Zimmern 1–3 die Fenster offen** (Auskunft des Nutzers). Die nächtliche
+  Abkühlung (k ≈ 0,017–0,026/h, 0,3–0,4 K/h) ist daher fast nur Lüftungsverlust, nicht der
+  Wärmeverlust des Raums. Die App erkennt das am Temperatursturz und klammert diese Zeiten beim
+  Lernen aus. Erste Nacht: Zimmer 2 und 3 erkannt, Zimmer 1 nicht (gleichmäßiges Abkühlen,
+  kein Sturz sichtbar bei stündlichen Messpunkten).
+- **Totzeit des Estrichs ~1,5 h:** Nach dem Öffnen des Ventils kühlt der Raum zunächst weiter;
+  danach ~0,55 K/h Aufheizen (Zimmer 2), Heizleistung P ≈ 0,8 K/h.
+- **Heizen bei offenem Fenster:** In Zimmer 2 startet das Profil um 03:00, während das Fenster
+  vermutlich noch offen ist – ein Ansatzpunkt fürs Optimal-Profil (später heizen oder Hinweis).
+- **Bad und WC** liegen ganztägig bei 25–27 °C über Soll: die Handtuchheizkörper (Soll 26–27 °C)
+  heizen den Raum, die Fußbodenheizung läuft dort nie. **Küche/Wohnzimmer** bleibt ohne Heizen
+  bei 23–24 °C. Diese Räume liefern kaum Aufheizphasen fürs Modell.
+- Außentemperatur in den ersten Tagen nur 6–8 °C → das Modell sieht noch wenig Wetter-Variation.
+
+## Modell und Auswertung
+
+- Phasen „Ventil zu, Temperatur steigt“ (Bad/WC durch Handtuchheizkörper) sagen nichts über den
+  Wärmeverlust und werden verworfen.
+- Heizleistung nur im **freien Aufheizen** messen (ab Tiefpunkt nach der Totzeit bis 0,3 K unter
+  Soll), sonst wird sie durch das „Temperatur halten“ unterschätzt.
+- „Spar → Komfort“ aus den Sollwerten (z. B. 15 → 24 °C) ist unrealistisch, weil die Räume nachts
+  nur auf ~21 °C absinken – besser von der typischen Morgentemperatur aus rechnen (siehe NEXT_STEPS).
+- Ereigniszeiten werden auf 15 min gerundet angezeigt, weil die Messpunkte bis zu 1 h auseinander
+  liegen. „Fenster zu“ wird nur angezeigt, wenn das Schließen am Wiederanstieg erkannt wurde.

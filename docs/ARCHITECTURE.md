@@ -143,6 +143,24 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
   `getCurrentState` ≈ 100 KB pro Abruf. Seltener abrufen ist der wichtigste Hebel
   (siehe NEXT_STEPS, Schritt 2).
 
+## Sprachen und Texte
+
+- Alle Texte in String-Ressourcen: `values/strings.xml` = Englisch (Standard und Rückfall für
+  nicht unterstützte Sprachen), `values-de/strings.xml` = Deutsch. Weitere Sprachen wie in
+  PureRemote geplant (siehe NEXT_STEPS).
+- Die App folgt der Systemsprache; eine eigene Wahl im Info-Dialog (`LanguagePicker`) bzw. ab
+  Android 13 in den Systemeinstellungen „App-Sprachen“ (`res/xml/locales_config.xml`). Umsetzung
+  wie in PureRemote: `AppCompatDelegate.setApplicationLocales`, deshalb ist `MainActivity` eine
+  `AppCompatActivity` (Theme `Theme.AppCompat.DayNight.NoActionBar`), und
+  `AppLocalesMetadataHolderService` speichert die Wahl auch auf Android ≤ 12.
+- ViewModels und Datenschicht liefern keine fertigen Texte, sondern `UiText` (Ressource +
+  Argumente), aufgelöst erst in der Oberfläche – so stimmt die Sprache auch nach einem Wechsel.
+  Fehler aus der Cloud: `HmipException.uiText`, `Throwable.toUiText()`.
+- Zahlen, Uhrzeiten und Wochentage werden über die Ressourcen/`DateFormat` sprachabhängig
+  formatiert (Komma/Punkt, 12/24 h).
+- Hilfe-Bildschirm (`HelpScreen`) erklärt die Anzeigen; erreichbar über „Hilfe“ in der Übersicht
+  und auf dem Einrichtungsbildschirm.
+
 ## Sicherheit und Datenschutz
 
 - Repo ist öffentlich: keine SGTIN, kein Token, keine Roh-Dumps einchecken

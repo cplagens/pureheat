@@ -30,6 +30,9 @@ import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.DrawScope
 import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import de.cplagens.pureheat.R
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.data.history.HistoryAnalysis
@@ -57,7 +60,7 @@ fun RoomHistoryChart(
     val visible = samples.filter { it.timestamp >= start }
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     if (visible.size < 2) {
-        Text("Verlauf wird aufgezeichnet …", style = MaterialTheme.typography.labelSmall, color = muted, modifier = modifier)
+        Text(stringResource(R.string.history_recording), style = MaterialTheme.typography.labelSmall, color = muted, modifier = modifier)
         return
     }
 
@@ -80,21 +83,23 @@ fun RoomHistoryChart(
 
     Column(modifier, verticalArrangement = Arrangement.spacedBy(4.dp)) {
         Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-            LegendItem("Ist", actualColor, dashed = false)
-            LegendItem("Soll", setPointColor, dashed = true)
-            LegendItem("Ventil", HeatingColor.copy(alpha = 0.5f), block = true)
-            if (windows.any { (it.end ?: now) >= start }) LegendItem("Fenster", WindowBandColor, block = true)
+            LegendItem(stringResource(R.string.legend_actual), actualColor, dashed = false)
+            LegendItem(stringResource(R.string.legend_setpoint), setPointColor, dashed = true)
+            LegendItem(stringResource(R.string.legend_valve), HeatingColor.copy(alpha = 0.5f), block = true)
+            if (windows.any { (it.end ?: now) >= start }) {
+                LegendItem(stringResource(R.string.legend_window), WindowBandColor, block = true)
+            }
             Spacer(Modifier.weight(1f))
             if (actualTemps.isNotEmpty()) {
                 Text(
-                    "Ist ${actualTemps.min().fmt()}–${actualTemps.max().fmt()} °C",
+                    stringResource(R.string.actual_range, actualTemps.min(), actualTemps.max()),
                     style = MaterialTheme.typography.labelSmall,
                     color = muted,
                 )
             }
         }
 
-        MarkerStrip(chartMarkers(visible, windows, start, now), start, now)
+        MarkerStrip(chartMarkers(LocalContext.current, visible, windows, start, now), start, now)
 
         Canvas(Modifier.fillMaxWidth().height(56.dp)) {
             fun x(t: Long) = ((t - start).toFloat() / WINDOW_MS) * size.width
@@ -137,9 +142,9 @@ fun RoomHistoryChart(
         }
 
         Row {
-            Text("vor 24 h", style = MaterialTheme.typography.labelSmall, color = muted)
+            Text(stringResource(R.string.ago_24h), style = MaterialTheme.typography.labelSmall, color = muted)
             Spacer(Modifier.weight(1f))
-            Text("jetzt", style = MaterialTheme.typography.labelSmall, color = muted)
+            Text(stringResource(R.string.now), style = MaterialTheme.typography.labelSmall, color = muted)
         }
     }
 }

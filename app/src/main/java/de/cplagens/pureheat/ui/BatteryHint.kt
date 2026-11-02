@@ -21,9 +21,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.LifecycleEventEffect
+import de.cplagens.pureheat.R
 
 /**
  * Android's adaptive battery moves rarely opened apps into standby buckets that delay
@@ -43,24 +45,19 @@ fun BatteryHint(modifier: Modifier = Modifier) {
     if (!restricted || dismissed) return
     Card(modifier.fillMaxWidth()) {
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text("Lücken im Verlauf vermeiden", style = MaterialTheme.typography.labelLarge)
-            Text(
-                "Android bremst die Hintergrund-Aufzeichnung, weil die App selten geöffnet wird – " +
-                    "dadurch entstehen stundenlange Lücken. Abhilfe: App-Info → Akku → „Nicht eingeschränkt“. " +
-                    "PureHeat ruft trotzdem nur alle 15–60 Minuten ab.",
-                style = MaterialTheme.typography.bodySmall,
-            )
+            Text(stringResource(R.string.battery_title), style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.battery_text), style = MaterialTheme.typography.bodySmall)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 TextButton(onClick = {
                     context.startActivity(
                         Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, Uri.parse("package:${context.packageName}"))
                             .addFlags(Intent.FLAG_ACTIVITY_NEW_TASK),
                     )
-                }) { Text("App-Info öffnen") }
+                }) { Text(stringResource(R.string.battery_open_settings)) }
                 TextButton(onClick = {
                     prefs.edit().putBoolean(KEY_DISMISSED, true).apply()
                     dismissed = true
-                }) { Text("Ausblenden") }
+                }) { Text(stringResource(R.string.dismiss)) }
             }
         }
     }

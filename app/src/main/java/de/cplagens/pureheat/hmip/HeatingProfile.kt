@@ -8,11 +8,11 @@ import kotlinx.serialization.json.buildJsonArray
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.doubleOrNull
 import kotlinx.serialization.json.put
-import java.util.Locale
 import kotlin.math.roundToInt
 
-enum class Weekday(val short: String) {
-    MONDAY("Mo"), TUESDAY("Di"), WEDNESDAY("Mi"), THURSDAY("Do"), FRIDAY("Fr"), SATURDAY("Sa"), SUNDAY("So");
+/** Weekdays as keys of `profileDays`; display names come from string resources (`ui/ProfileTexts.kt`). */
+enum class Weekday {
+    MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY, SATURDAY, SUNDAY;
 
     companion object {
         val WORKDAYS = setOf(MONDAY, TUESDAY, WEDNESDAY, THURSDAY, FRIDAY)
@@ -167,27 +167,16 @@ object ProfileEditing {
     }
 
     /** Human-readable list of changes for the confirmation dialog. */
-    fun diff(old: HeatingProfile, new: HeatingProfile): List<String> = Weekday.entries.mapNotNull { day ->
-        val a = old.days[day]
+    /** Days whose periods or base temperature differ, for the confirmation dialog. */
+    fun diff(old: HeatingProfile, new: HeatingProfile): List<DayChange> = Weekday.entries.mapNotNull { day ->
         val b = new.days[day] ?: return@mapNotNull null
-        if (a == b) return@mapNotNull null
-        buildString {
-            append(day.short).append(": ")
-            if (a == null || a.periods != b.periods) {
-                append(a?.periods?.describe() ?: "–").append(" → ").append(b.periods.describe())
-            }
-            if (a != null && a.baseTemperature != b.baseTemperature) {
-                if (a.periods != b.periods) append("; ")
-                append("Grundtemperatur ${a.baseTemperature.fmt()} → ${b.baseTemperature.fmt()} °C")
-            }
-        }
+        val a = old.days[day]
+        if (a == b) null else DayChange(day, a, b)
     }
+}
 
-    private fun List<HeatingPeriod>.describe(): String =
-        if (isEmpty()) "keine Heizphase" else joinToString(", ") {
-            "${HeatingProfileCodec.formatTime(it.start)}–${HeatingProfileCodec.formatTime(it.end)} ${it.temperature.fmt()} °C"
-        }
-
-    // UI text is German; fixed locale keeps the decimal comma independent of the device setting.
-    private fun Double.fmt() = String.format(Locale.GERMANY, "%.1f", this)
+/** One changed day; [before] is null if the day couldn't be read before. */
+data class DayChange(val day: Weekday, val before: ProfileDay?, val after: ProfileDay) {
+    val periodsChanged: Boolean get() = before == null || before.periods != after.periods
+    val baseChanged: Boolean get() = before != null && before.baseTemperature != after.baseTemperature
 }

@@ -11,7 +11,8 @@ import de.cplagens.pureheat.hmip.ProfileEditing
 import de.cplagens.pureheat.hmip.ProfileRef
 import de.cplagens.pureheat.hmip.Room
 import de.cplagens.pureheat.hmip.Weekday
-import de.cplagens.pureheat.hmip.toUserMessage
+import de.cplagens.pureheat.R
+import de.cplagens.pureheat.hmip.toUiText
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -24,15 +25,15 @@ data class ProfileUiState(
     val edited: HeatingProfile? = null,
     val loading: Boolean = false,
     val saving: Boolean = false,
-    val error: String? = null,
-    val message: String? = null,
+    val error: UiText? = null,
+    val message: UiText? = null,
     /** Typical heat-up rate of this room in K/h, derived from the recorded history. */
     val heatUpRate: Double? = null,
     val hasBackup: Boolean = false,
 ) {
     val dirty: Boolean get() = original != null && edited != null && original.days != edited.days
-    val changes: List<String>
-        get() = if (original != null && edited != null) ProfileEditing.diff(original, edited) else emptyList()
+    val changes: List<UiText>
+        get() = if (original != null && edited != null) ProfileEditing.diff(original, edited).map { it.describe() } else emptyList()
 }
 
 /** State of the profile screen for one room. Writes happen only in [save], [activate] and [undo]. */
@@ -66,7 +67,7 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
                     )
                 }
             } catch (e: Exception) {
-                _ui.update { it.copy(loading = false, error = e.toUserMessage()) }
+                _ui.update { it.copy(loading = false, error = e.toUiText()) }
             }
         }
     }
@@ -100,16 +101,16 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
                         edited = saved,
                         saving = false,
                         hasBackup = true,
-                        message = if (failed.isEmpty()) {
-                            "Gespeichert und geprüft." + if (alsoRooms.isNotEmpty()) " Auch übernommen für ${alsoRooms.size} weitere Räume." else ""
-                        } else {
-                            "Gespeichert. Nicht übernommen werden konnte es für: ${failed.joinToString()}."
+                        message = when {
+                            failed.isNotEmpty() -> UiText.Res(R.string.profile_saved_partly, failed.joinToString())
+                            alsoRooms.isNotEmpty() -> UiText.Res(R.string.profile_saved_also, alsoRooms.size)
+                            else -> UiText.Res(R.string.profile_saved)
                         },
                     )
                 }
                 onSaved()
             } catch (e: Exception) {
-                _ui.update { it.copy(saving = false, error = e.toUserMessage()) }
+                _ui.update { it.copy(saving = false, error = e.toUiText()) }
             }
         }
     }
@@ -119,10 +120,10 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
         viewModelScope.launch {
             try {
                 repository.activateProfile(roomId, ref.index)
-                _ui.update { it.copy(saving = false, message = "${ref.displayName} ist jetzt aktiv.") }
+                _ui.update { it.copy(saving = false, message = UiText.Res(R.string.profile_now_active, ref.displayName)) }
                 onDone()
             } catch (e: Exception) {
-                _ui.update { it.copy(saving = false, error = e.toUserMessage()) }
+                _ui.update { it.copy(saving = false, error = e.toUiText()) }
             }
         }
     }
@@ -135,11 +136,11 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
             try {
                 val restored = repository.restoreBackup(roomId, ref.index, ref.profileId)
                 _ui.update {
-                    it.copy(original = restored, edited = restored, saving = false, message = "Vorherige Version wiederhergestellt.")
+                    it.copy(original = restored, edited = restored, saving = false, message = UiText.Res(R.string.profile_restored))
                 }
                 onDone()
             } catch (e: Exception) {
-                _ui.update { it.copy(saving = false, error = e.toUserMessage()) }
+                _ui.update { it.copy(saving = false, error = e.toUiText()) }
             }
         }
     }

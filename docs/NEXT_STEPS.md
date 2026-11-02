@@ -74,6 +74,41 @@ Heizzeit/Kosten das spart.
 - Übersichtsdiagramm: Ist/Soll jetzt als durchgehende Linien über Aufzeichnungslücken
   hinweg; die Detailansicht zeigt Lücken weiterhin.
 
+## Mehrsprachigkeit und Hilfe (2026-11-02)
+
+- Umgesetzt: alle Texte in Ressourcen, Englisch (Standard) + Deutsch, Systemsprache wird befolgt,
+  Sprachwahl im Info-Dialog und (Android 13+) in den System-„App-Sprachen“, Hilfe-Bildschirm.
+- **Offen:** Übersetzungen wie in PureRemote für **fr, es, it, pt, nl, pl, tr, ru, ja, zh-CN**:
+  je eine `values-<tag>/strings.xml` mit allen Schlüsseln aus `values/strings.xml` (inkl. Plurals –
+  für ru/pl die Formen one/few/many/other, für ja/zh nur other), dann die Sprache in `Lang.kt` und
+  `res/xml/locales_config.xml` eintragen. Mit `./gradlew lintDebug` auf `MissingTranslation`/
+  `StringFormatInvalid` prüfen. Bis dahin bietet die App nur en/de an.
+- Auf dem Gerät prüfen: Sprachwechsel im Info-Dialog (Activity wird neu aufgebaut), englische
+  Oberfläche, Hilfe-Bildschirm.
+
+## KI-Modell für Heizverhalten und Tagesplan (Einschätzung 2026-11-02)
+
+Frage des Nutzers: Wäre ein KI-Modell sinnvoll, um das Heizverhalten und den Plan für den
+nächsten Tag besser zu lernen? Einschätzung: **vorerst nicht als Ersatz, später als Ergänzung.**
+
+- Datenlage: wenige Wochen, 8 Räume, 15–60-min-Punkte, Außentemperatur nur 6–8 °C bisher. Ein
+  physikalisches Modell mit 3 Parametern (k, P, Totzeit) lernt daraus robust; ein neuronales Netz
+  bräuchte Monate inkl. Winter und wäre nicht erklärbar.
+- Erklärbarkeit ist Voraussetzung für das Vertrauen (Probelauf): „Start 04:30, weil k=0,02 und
+  6 °C außen“ ist prüfbar, eine Black-Box-Vorhersage nicht.
+- Sinnvolle Zwischenstufe („Grey Box“): das Physikmodell um gelernte Korrekturen erweitern –
+  z. B. Tageszeit-/Wochentagseffekte (Kochen, Sonne, Bewohner), Wind, Sonneneinstrahlung
+  (Wetterprognose), Nachbarräume; per Regression auf die Residuen (Vorhersagefehler) des
+  Physikmodells. Läuft auf dem Telefon ohne Cloud.
+- Typische Nutzungsmuster (wann ist wer zu Hause, wann sind Fenster offen) lassen sich statistisch
+  aus dem Verlauf ableiten und als Vorschlag für Komfortzeiten anbieten.
+- Ein großes Sprachmodell (LLM) ist für die Regelung ungeeignet, könnte aber später Erklärungen
+  formulieren („Warum wurde heute früher geheizt?“) – nur mit ausdrücklicher Zustimmung, da Daten
+  dann das Gerät verlassen würden (oder on-device, z. B. Gemini Nano).
+- Entscheidung: Schritte 3–6 wie geplant mit dem Physikmodell; im Probelauf (Schritt 5) die
+  Residuen speichern, damit später eine Grey-Box-Korrektur gelernt und gegen das reine Modell
+  verglichen werden kann.
+
 ## Fenster-offen-Erkennung (2026-11-02)
 
 Nutzer-Info: In den Zimmern 1–3 sind nachts die Fenster offen. Es gibt keine Fensterkontakte.

@@ -1,51 +1,53 @@
 package de.cplagens.pureheat.ui
 
+import android.content.Context
+import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.model.Prediction
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.data.model.RoomModel
-import java.util.Locale
 import kotlin.math.roundToInt
 
-/** German texts for model predictions, shared by the dashboard and the detail view. */
+/** Texts for model predictions, shared by the dashboard and the detail view. */
 internal object ModelTexts {
 
     /**
-     * One line for the room card, e.g. "15,0 → 24,0 °C in ca. 6 h 45 min · zurück auf 15,0 °C in
-     * ca. 16 h (bei 7 °C außen)", or a "lernt noch" note; null if there is nothing to say.
+     * One line for the room card, e.g. "15.0 → 24.0 °C in about 6 h 45 min · back to 15.0 °C in
+     * about 16 h (at 7 °C outside)", or a "still learning" note; null if there is nothing to say.
      */
-    fun summary(insight: RoomInsight?): String? {
+    fun summary(ctx: Context, insight: RoomInsight?): String? {
         insight ?: return null
         val m = insight.model
         if (!m.confident) {
-            return "Raummodell lernt noch (Ventil offen ${m.heatingPhases}/${RoomModel.MIN_PHASES}, " +
-                "Ventil zu ${m.coolingPhases}/${RoomModel.MIN_PHASES} verwertbare Phasen)"
+            return ctx.getString(R.string.model_learning, m.heatingPhases, RoomModel.MIN_PHASES, m.coolingPhases, RoomModel.MIN_PHASES)
         }
-        val levels = insight.levels ?: return "Keine Absenkung im Heizprofil erkannt."
+        val levels = insight.levels ?: return ctx.getString(R.string.model_no_setback)
         val outside = insight.outside ?: return null
-        return "${levels.setback.t()} → ${levels.comfort.t()} °C ${phrase(insight.heatUp, levels.comfort, outside)} · " +
-            "zurück auf ${levels.setback.t()} °C ${phrase(insight.coolDown, levels.setback, outside)} " +
-            "(bei ${outside.t0()} °C außen)"
+        return ctx.getString(
+            R.string.model_summary,
+            levels.setback,
+            levels.comfort,
+            phrase(ctx, insight.heatUp, levels.comfort, outside),
+            phrase(ctx, insight.coolDown, levels.setback, outside),
+            outside,
+        )
     }
 
-    fun phrase(p: Prediction, target: Double, outside: Double): String = when (p) {
-        is Prediction.Hours -> "in ca. ${duration(p.hours)}"
-        Prediction.Unreachable -> "bei ${outside.t0()} °C außen nicht erreichbar (${target.t()} °C)"
-        Prediction.Unknown -> "– noch unbekannt"
+    fun phrase(ctx: Context, p: Prediction, target: Double, outside: Double): String = when (p) {
+        is Prediction.Hours -> ctx.getString(R.string.model_in_about, duration(ctx, p.hours))
+        Prediction.Unreachable -> ctx.getString(R.string.model_unreachable, outside, target)
+        Prediction.Unknown -> ctx.getString(R.string.model_unknown)
     }
 
-    /** Rounded to 15 min: "45 min", "6 h", "6 h 45 min"; "über 24 h" beyond a day. */
-    fun duration(hours: Double): String {
-        if (hours > 24) return "über 24 h"
+    /** Rounded to 15 min: "45 min", "6 h", "6 h 45 min"; "over 24 h" beyond a day. */
+    fun duration(ctx: Context, hours: Double): String {
+        if (hours > 24) return ctx.getString(R.string.duration_over_day)
         val quarters = (hours * 4).roundToInt().coerceAtLeast(1)
         val h = quarters / 4
         val min = (quarters % 4) * 15
         return when {
-            h == 0 -> "$min min"
-            min == 0 -> "$h h"
-            else -> "$h h $min min"
+            h == 0 -> ctx.getString(R.string.duration_min, min)
+            min == 0 -> ctx.getString(R.string.duration_h, h)
+            else -> ctx.getString(R.string.duration_h_min, h, min)
         }
     }
-
-    fun Double.t(): String = String.format(Locale.GERMANY, "%.1f", this)
-    fun Double.t0(): String = String.format(Locale.GERMANY, "%.0f", this)
 }

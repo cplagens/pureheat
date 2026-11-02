@@ -1,3 +1,4 @@
 <resources>
-    <style name="Theme.PureHeat" parent="android:Theme.Material.Light.NoActionBar" />
+    <!-- AppCompat parent: MainActivity is an AppCompatActivity (per-app language). The UI itself is Compose/Material 3. -->
+    <style name="Theme.PureHeat" parent="Theme.AppCompat.DayNight.NoActionBar" />
 </resources>

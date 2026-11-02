@@ -12,7 +12,8 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WindowEvent
-import java.util.Calendar
+import android.content.Context
+import de.cplagens.pureheat.R
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
@@ -25,19 +26,27 @@ private const val QUARTER_MS = 15 * 60_000L
  * Window opened/closed and setpoint changes, with the time rounded to 15 min (the samples are
  * up to an hour apart, so the exact minute would suggest more precision than we have).
  */
-fun chartMarkers(samples: List<RoomSample>, windows: List<WindowEvent>, start: Long, end: Long): List<ChartMarker> {
+fun chartMarkers(
+    ctx: Context,
+    samples: List<RoomSample>,
+    windows: List<WindowEvent>,
+    start: Long,
+    end: Long,
+): List<ChartMarker> {
     val out = mutableListOf<ChartMarker>()
     windows.forEach { w ->
-        if (w.start in start..end) out += ChartMarker(w.start, "Fenster auf ${clock(w.start)}")
+        if (w.start in start..end) out += ChartMarker(w.start, ctx.getString(R.string.marker_window_open, clock(ctx, w.start)))
         // Only claim "closed" when we saw it; otherwise we just know it was open at least until then.
-        w.end?.takeIf { it in start..end && w.closeDetected }?.let { out += ChartMarker(it, "zu ${clock(it)}") }
+        w.end?.takeIf { it in start..end && w.closeDetected }?.let {
+            out += ChartMarker(it, ctx.getString(R.string.marker_window_closed, clock(ctx, it)))
+        }
     }
     var previous: Double? = null
     samples.filter { it.timestamp in start..end }.forEach { s ->
         val sp = s.setPointTemperature ?: return@forEach
         val p = previous
         if (p != null && abs(sp - p) >= 0.5) {
-            out += ChartMarker(s.timestamp, "Soll ${sp.deg()} ${clock(s.timestamp)}")
+            out += ChartMarker(s.timestamp, ctx.getString(R.string.marker_setpoint, sp.deg(), clock(ctx, s.timestamp)))
         }
         previous = sp
     }
@@ -46,12 +55,11 @@ fun chartMarkers(samples: List<RoomSample>, windows: List<WindowEvent>, start: L
 
 private fun round15(t: Long) = (t.toDouble() / QUARTER_MS).roundToLong() * QUARTER_MS
 
-private fun clock(t: Long): String {
-    val c = Calendar.getInstance().apply { timeInMillis = round15(t) }
-    return "%02d:%02d".format(c.get(Calendar.HOUR_OF_DAY), c.get(Calendar.MINUTE))
-}
+/** Time in the user's 12/24 h format, rounded to 15 min. */
+private fun clock(ctx: Context, t: Long): String =
+    android.text.format.DateFormat.getTimeFormat(ctx).format(java.util.Date(round15(t)))
 
-private fun Double.deg() = if (this % 1.0 == 0.0) "${toInt()}°" else String.format(java.util.Locale.GERMANY, "%.1f°", this)
+private fun Double.deg() = if (this % 1.0 == 0.0) "${toInt()}°" else String.format("%.1f°", this)
 
 /**
  * Time labels on two lanes above a chart with the same [start]/[end]. A label goes to the

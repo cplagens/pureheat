@@ -3,6 +3,8 @@ package de.cplagens.pureheat.data
 import android.content.Context
 import android.util.Log
 import de.cplagens.pureheat.BuildConfig
+import de.cplagens.pureheat.R
+import de.cplagens.pureheat.ui.UiText
 import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.HistoryDao
 import de.cplagens.pureheat.data.history.RoomSample
@@ -115,10 +117,7 @@ class HeatingRepository(
         }
         val check = loadProfile(edited.groupId, edited.index, profileId)
         if (edited.days.any { (day, d) -> check.days[day] != d }) {
-            throw HmipClient.HmipException(
-                "Das Profil wurde gesendet, aber die Cloud meldet andere Werte zurück. " +
-                    "Bitte in der Homematic-App prüfen oder „Rückgängig“ verwenden.",
-            )
+            throw HmipClient.HmipException(UiText.Res(R.string.err_profile_mismatch))
         }
         return check
     }
@@ -152,7 +151,7 @@ class HeatingRepository(
     }
 
     private fun requireCreds(): Credentials =
-        store.load() ?: throw HmipClient.HmipException("Nicht angemeldet.")
+        store.load() ?: throw HmipClient.HmipException(UiText.Res(R.string.err_not_logged_in))
 
     private suspend fun debugDump(name: String, raw: JsonObject) {
         if (!BuildConfig.DEBUG) return

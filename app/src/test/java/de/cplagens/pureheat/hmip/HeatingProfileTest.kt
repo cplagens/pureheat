@@ -97,9 +97,11 @@ class HeatingProfileTest {
     fun diffDescribesChangedDaysOnly() {
         val p = parse()
         val edited = ProfileEditing.copyDay(p, Weekday.MONDAY, setOf(Weekday.SUNDAY))
-        val diff = ProfileEditing.diff(p, edited)
-        assertEquals(1, diff.size)
-        assertTrue(diff.single(), diff.single().startsWith("So: 08:00–24:00 22,0 °C → 06:00–08:00 21,0 °C"))
-        assertTrue(diff.single(), diff.single().contains("Grundtemperatur 18,0 → 17,0 °C"))
+        val change = ProfileEditing.diff(p, edited).single()
+        assertEquals(Weekday.SUNDAY, change.day)
+        assertTrue(change.periodsChanged)
+        assertTrue(change.baseChanged)
+        assertEquals(18.0, change.before!!.baseTemperature, 0.0)
+        assertEquals(17.0, change.after.baseTemperature, 0.0)
     }
 }

@@ -1,6 +1,9 @@
 package de.cplagens.pureheat.hmip
 
 import android.util.Log
+import androidx.annotation.StringRes
+import de.cplagens.pureheat.R
+import de.cplagens.pureheat.ui.UiText
 import de.cplagens.pureheat.BuildConfig
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
@@ -38,14 +41,15 @@ class HmipClient(
 
     data class Endpoints(val rest: String, val websocket: String)
 
-    class HmipException(message: String, val code: Int? = null) : Exception(message)
+    /** Failure with a translatable message ([uiText]) for the UI. */
+    class HmipException(val uiText: UiText, val code: Int? = null) : Exception(uiText.toString())
 
-    /** Builds a German error for a non-200 response, e.g. "Lookup fehlgeschlagen: Zugriff verweigert. … (HTTP 403)". */
-    private fun httpError(context: String, code: Int, body: String): HmipException {
+    /** Error for a non-200 response, e.g. "Lookup failed: Access denied. … (HTTP 403)". */
+    private fun httpFailure(@StringRes context: Int, code: Int, body: String): HmipException {
         val errorCode = runCatching {
             json.parseToJsonElement(body).jsonObject["errorCode"]?.jsonPrimitive?.content
         }.getOrNull()
-        return HmipException("$context: ${httpErrorHint(code, errorCode)}", code)
+        return HmipException(httpError(UiText.Res(context), code, errorCode), code)
     }
 
     /** Normalizes "3014-F711-A000-0000-0000-0000" to "3014F711A0000000000000". */
@@ -109,7 +113,7 @@ class HmipClient(
             put("id", sgtin)
         }
         val (code, text) = post(LOOKUP_URL, body, baseHeaders(sgtin))
-        if (code != 200) throw httpError("Lookup fehlgeschlagen", code, text)
+        if (code != 200) throw httpFailure(R.string.ctx_lookup, code, text)
         val obj = json.parseToJsonElement(text).jsonObject
         return Endpoints(
             rest = obj["urlREST"]!!.jsonPrimitive.content,
@@ -142,7 +146,7 @@ class HmipClient(
             },
             headers,
         )
-        if (reqCode != 200) throw httpError("Verbindungsanfrage abgelehnt", reqCode, reqText)
+        if (reqCode != 200) throw httpFailure(R.string.ctx_connection_request, reqCode, reqText)
 
         onWaitingForButton()
         val deadline = System.currentTimeMillis() + timeoutMs
@@ -151,13 +155,13 @@ class HmipClient(
             val (ackCode, _) = post("$rest/hmip/auth/isRequestAcknowledged", idBody, headers)
             if (ackCode == 200) break
             if (System.currentTimeMillis() > deadline) {
-                throw HmipException("Der blaue Knopf am Access Point wurde nicht rechtzeitig gedrückt.")
+                throw HmipException(UiText.Res(R.string.err_button_timeout))
             }
             delay(2_000)
         }
 
         val (tokCode, tokText) = post("$rest/hmip/auth/requestAuthToken", idBody, headers)
-        if (tokCode != 200) throw httpError("Token-Anfrage fehlgeschlagen", tokCode, tokText)
+        if (tokCode != 200) throw httpFailure(R.string.ctx_token_request, tokCode, tokText)
         val authToken = json.parseToJsonElement(tokText).jsonObject["authToken"]!!.jsonPrimitive.content
 
         val (confCode, confText) = post(
@@ -168,7 +172,7 @@ class HmipClient(
             },
             headers,
         )
-        if (confCode != 200) throw httpError("Token-Bestätigung fehlgeschlagen", confCode, confText)
+        if (confCode != 200) throw httpFailure(R.string.ctx_token_confirm, confCode, confText)
         return authToken
     }
 
@@ -183,7 +187,7 @@ class HmipClient(
             },
             baseHeaders(sgtin) + ("AUTHTOKEN" to authToken),
         )
-        if (code != 200) throw httpError("Status konnte nicht geladen werden", code, text)
+        if (code != 200) throw httpFailure(R.string.ctx_state, code, text)
         return json.parseToJsonElement(text).jsonObject
     }
 
@@ -207,7 +211,7 @@ class HmipClient(
                 put("profileIndex", profileIndex)
                 put("profileId", profileId)
             },
-            "Heizprofil konnte nicht geladen werden",
+            R.string.ctx_profile_load,
         )
         return json.parseToJsonElement(text).jsonObject
     }
@@ -231,7 +235,7 @@ class HmipClient(
                 put("profileIndex", profileIndex)
                 put("profile", profile)
             },
-            "Heizprofil konnte nicht gespeichert werden",
+            R.string.ctx_profile_save,
         )
     }
 
@@ -243,13 +247,19 @@ class HmipClient(
                 put("groupId", groupId)
                 put("profileIndex", profileIndex)
             },
-            "Profil konnte nicht aktiviert werden",
+            R.string.ctx_profile_activate,
         )
     }
 
-    private suspend fun authed(sgtin: String, authToken: String, url: String, body: JsonElement, context: String): String {
+    private suspend fun authed(
+        sgtin: String,
+        authToken: String,
+        url: String,
+        body: JsonElement,
+        @StringRes context: Int,
+    ): String {
         val (code, text) = post(url, body, baseHeaders(sgtin) + ("AUTHTOKEN" to authToken))
-        if (code != 200) throw httpError(context, code, text)
+        if (code != 200) throw httpFailure(context, code, text)
         return text
     }
 

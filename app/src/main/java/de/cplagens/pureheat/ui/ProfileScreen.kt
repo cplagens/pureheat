@@ -1,6 +1,10 @@
 package de.cplagens.pureheat.ui
 
+import android.content.Context
 import androidx.compose.foundation.Canvas
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
+import de.cplagens.pureheat.R
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -90,24 +94,32 @@ fun ProfileScreen(
     ) {
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
-                TextButton(onClick = onBack, contentPadding = PaddingValues(0.dp)) { Text("‹ Räume") }
+                TextButton(onClick = onBack, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.back_rooms)) }
                 Spacer(Modifier.width(8.dp))
                 Text(room.label.trim(), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
             }
-            Text("Heizprofile", style = MaterialTheme.typography.titleMedium)
+            Text(stringResource(R.string.profiles_title), style = MaterialTheme.typography.titleMedium)
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 refs.forEach { ref ->
                     FilterChip(
                         selected = state.selected == ref,
                         onClick = { if (!state.dirty) vm.select(ref) },
                         enabled = !busy && !state.dirty,
-                        label = { Text(if (ref.index == room.activeProfile) "${ref.displayName} · aktiv" else ref.displayName) },
+                        label = {
+                            Text(
+                                if (ref.index == room.activeProfile) {
+                                    stringResource(R.string.profile_active_suffix, ref.displayName.asString())
+                                } else {
+                                    ref.displayName.asString()
+                                },
+                            )
+                        },
                     )
                 }
             }
             if (state.dirty) {
                 Text(
-                    "Zum Wechseln des Profils erst speichern oder verwerfen.",
+                    stringResource(R.string.profile_save_first),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -115,13 +127,13 @@ fun ProfileScreen(
             state.selected?.let { sel ->
                 if (sel.index != room.activeProfile && !state.dirty) {
                     OutlinedButton(onClick = { confirmActivate = sel }, enabled = !busy) {
-                        Text("${sel.displayName} aktivieren")
+                        Text(stringResource(R.string.profile_activate, sel.displayName.asString()))
                     }
                 }
             }
             if (busy) LinearProgressIndicator(Modifier.fillMaxWidth().padding(top = 8.dp))
-            state.error?.let { Text(it, color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(top = 8.dp)) }
-            state.message?.let { Text(it, color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 8.dp)) }
+            state.error?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error, modifier = Modifier.padding(top = 8.dp)) }
+            state.message?.let { Text(it.asString(), color = MaterialTheme.colorScheme.primary, modifier = Modifier.padding(top = 8.dp)) }
         }
 
         if (profile != null) {
@@ -129,7 +141,7 @@ fun ProfileScreen(
                 val range = temperatureRange(profile.days.values)
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
-                        Text("Woche – Tag antippen zum Bearbeiten", style = MaterialTheme.typography.labelLarge)
+                        Text(stringResource(R.string.profile_week_hint), style = MaterialTheme.typography.labelLarge)
                         HourAxis(Modifier.padding(start = 32.dp))
                         Weekday.entries.forEach { day ->
                             val d = profile.days[day]
@@ -140,14 +152,14 @@ fun ProfileScreen(
                                 },
                             ) {
                                 Text(
-                                    day.short,
+                                    stringResource(day.shortRes),
                                     fontWeight = if (expandedDay == day) FontWeight.Bold else FontWeight.Normal,
                                     modifier = Modifier.width(32.dp),
                                 )
                                 if (d != null) {
                                     DayBar(d, range, Modifier.weight(1f).height(28.dp))
                                 } else {
-                                    Text("nicht lesbar", style = MaterialTheme.typography.bodySmall)
+                                    Text(stringResource(R.string.profile_day_unreadable), style = MaterialTheme.typography.bodySmall)
                                 }
                             }
                             if (expandedDay == day && d != null) {
@@ -169,15 +181,8 @@ fun ProfileScreen(
 
             item {
                 Text(
-                    buildString {
-                        val rate = state.heatUpRate
-                        if (rate != null) {
-                            append("Aus dem Verlauf: Dieser Raum heizt typischerweise um ca. ${"%.2f".format(rate)} °C pro Stunde auf. ")
-                        } else {
-                            append("Sobald genug Verlauf aufgezeichnet ist, zeigt die App hier, wie schnell der Raum aufheizt. ")
-                        }
-                        append("Tipp: Mit „Optimum Start/Stop“ in der Homematic-App lernt das System die Vorheizzeit selbst.")
-                    },
+                    (state.heatUpRate?.let { stringResource(R.string.profile_rate, it) } ?: stringResource(R.string.profile_rate_unknown)) +
+                        " " + stringResource(R.string.profile_optimum_tip),
                     style = MaterialTheme.typography.bodySmall,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
@@ -186,10 +191,10 @@ fun ProfileScreen(
             item {
                 Row(horizontalArrangement = Arrangement.spacedBy(8.dp), verticalAlignment = Alignment.CenterVertically) {
                     if (state.dirty) {
-                        Button(onClick = { confirmSave = true }, enabled = !busy) { Text("Speichern …") }
-                        TextButton(onClick = vm::discard, enabled = !busy) { Text("Verwerfen") }
+                        Button(onClick = { confirmSave = true }, enabled = !busy) { Text(stringResource(R.string.save_ellipsis)) }
+                        TextButton(onClick = vm::discard, enabled = !busy) { Text(stringResource(R.string.discard)) }
                     } else if (state.hasBackup) {
-                        TextButton(onClick = { vm.undo(onChanged) }, enabled = !busy) { Text("Letzte Speicherung rückgängig") }
+                        TextButton(onClick = { vm.undo(onChanged) }, enabled = !busy) { Text(stringResource(R.string.profile_undo)) }
                     }
                 }
             }
@@ -211,22 +216,22 @@ fun ProfileScreen(
     confirmActivate?.let { ref ->
         AlertDialog(
             onDismissRequest = { confirmActivate = null },
-            title = { Text("${ref.displayName} aktivieren?") },
-            text = { Text("Der Raum „${room.label.trim()}“ heizt dann nach diesem Wochenprofil.") },
+            title = { Text(stringResource(R.string.profile_activate_q, ref.displayName.asString())) },
+            text = { Text(stringResource(R.string.profile_activate_text, room.label.trim())) },
             confirmButton = {
                 TextButton(onClick = {
                     confirmActivate = null
                     vm.activate(ref, onChanged)
-                }) { Text("Aktivieren") }
+                }) { Text(stringResource(R.string.activate)) }
             },
-            dismissButton = { TextButton(onClick = { confirmActivate = null }) { Text("Abbrechen") } },
+            dismissButton = { TextButton(onClick = { confirmActivate = null }) { Text(stringResource(R.string.cancel)) } },
         )
     }
 }
 
 @Composable
 private fun SaveDialog(
-    changes: List<String>,
+    changes: List<UiText>,
     otherRooms: List<Room>,
     onConfirm: (List<Room>) -> Unit,
     onDismiss: () -> Unit,
@@ -234,20 +239,22 @@ private fun SaveDialog(
     var selected by remember { mutableStateOf(emptySet<String>()) }
     AlertDialog(
         onDismissRequest = onDismiss,
-        title = { Text("Änderungen speichern?") },
+        title = { Text(stringResource(R.string.save_changes_q)) },
         text = {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                items(changes.size) { i -> Text(changes[i], style = MaterialTheme.typography.bodyMedium) }
+                items(changes.size) { i -> Text(changes[i].asString(), style = MaterialTheme.typography.bodyMedium) }
                 item {
                     Text(
-                        "Die bisherige Version wird gesichert und kann rückgängig gemacht werden.",
+                        stringResource(R.string.save_backup_note),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                         modifier = Modifier.padding(top = 8.dp),
                     )
                 }
                 if (otherRooms.isNotEmpty()) {
-                    item { Text("Geänderte Tage auch übernehmen für:", style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 8.dp)) }
+                    item {
+                        Text(stringResource(R.string.save_also_rooms), style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 8.dp))
+                    }
                     items(otherRooms.size) { i ->
                         val r = otherRooms[i]
                         Row(
@@ -262,9 +269,9 @@ private fun SaveDialog(
             }
         },
         confirmButton = {
-            TextButton(onClick = { onConfirm(otherRooms.filter { it.id in selected }) }) { Text("Speichern") }
+            TextButton(onClick = { onConfirm(otherRooms.filter { it.id in selected }) }) { Text(stringResource(R.string.save)) }
         },
-        dismissButton = { TextButton(onClick = onDismiss) { Text("Abbrechen") } },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
     )
 }
 
@@ -284,7 +291,7 @@ private fun DayEditor(
     fun temp(t: Double) = ProfileEditing.snapTemperature(t, minT, maxT)
 
     Column(Modifier.padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text("Ränder der Heizphasen ziehen oder unten genau einstellen", style = MaterialTheme.typography.bodySmall)
+        Text(stringResource(R.string.editor_drag_hint), style = MaterialTheme.typography.bodySmall)
         DraggableDayBar(value, range, onChange, Modifier.fillMaxWidth().height(44.dp))
         HourAxis()
 
@@ -292,25 +299,25 @@ private fun DayEditor(
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        "Phase ${i + 1}: ${formatTime(p.start)}–${formatTime(p.end)}",
+                        stringResource(R.string.editor_phase, i + 1, formatTime(p.start), formatTime(p.end)),
                         style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier.weight(1f),
                     )
-                    TextButton(onClick = { onChange(value.copy(periods = value.periods - p)) }) { Text("Entfernen") }
+                    TextButton(onClick = { onChange(value.copy(periods = value.periods - p)) }) { Text(stringResource(R.string.remove)) }
                 }
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Stepper(
-                        "Beginn", formatTime(p.start),
+                        stringResource(R.string.editor_start), formatTime(p.start),
                         onMinus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, true, p.start - ProfileEditing.STEP_MINUTES))) },
                         onPlus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, true, p.start + ProfileEditing.STEP_MINUTES))) },
                     )
                     Stepper(
-                        "Ende", formatTime(p.end),
+                        stringResource(R.string.editor_end), formatTime(p.end),
                         onMinus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, false, p.end - ProfileEditing.STEP_MINUTES))) },
                         onPlus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, false, p.end + ProfileEditing.STEP_MINUTES))) },
                     )
                     Stepper(
-                        "Temperatur", "${p.temperature.fmt()} °C",
+                        stringResource(R.string.temperature), stringResource(R.string.temp_c, p.temperature),
                         onMinus = { onChange(value.copy(periods = value.periods.replace(i, p.copy(temperature = temp(p.temperature - 0.5))))) },
                         onPlus = { onChange(value.copy(periods = value.periods.replace(i, p.copy(temperature = temp(p.temperature + 0.5))))) },
                     )
@@ -320,31 +327,37 @@ private fun DayEditor(
 
         val added = ProfileEditing.addPeriod(value, value.periods.lastOrNull()?.temperature ?: temp(21.0))
         TextButton(onClick = { added?.let(onChange) }, enabled = added != null, contentPadding = PaddingValues(0.dp)) {
-            Text(if (value.periods.size >= ProfileEditing.MAX_PERIODS) "Maximal ${ProfileEditing.MAX_PERIODS} Heizphasen" else "+ Heizphase hinzufügen")
+            Text(
+                if (value.periods.size >= ProfileEditing.MAX_PERIODS) {
+                    stringResource(R.string.editor_max_phases, ProfileEditing.MAX_PERIODS)
+                } else {
+                    stringResource(R.string.editor_add_phase)
+                },
+            )
         }
 
         Stepper(
-            "Grundtemperatur (außerhalb der Phasen)", "${value.baseTemperature.fmt()} °C",
+            stringResource(R.string.editor_base), stringResource(R.string.temp_c, value.baseTemperature),
             onMinus = { onChange(value.copy(baseTemperature = temp(value.baseTemperature - 0.5))) },
             onPlus = { onChange(value.copy(baseTemperature = temp(value.baseTemperature + 0.5))) },
         )
 
-        preheatHint(value, heatUpRate)?.let {
+        preheatHint(LocalContext.current, value, heatUpRate)?.let {
             Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
 
         var targets by remember(day) { mutableStateOf(emptySet<Weekday>()) }
-        Text("Diesen Tag übernehmen für:", style = MaterialTheme.typography.labelLarge)
+        Text(stringResource(R.string.editor_copy_to), style = MaterialTheme.typography.labelLarge)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(6.dp)) {
             Weekday.entries.filter { it != day }.forEach { d ->
-                FilterChip(selected = d in targets, onClick = { targets = targets.toggle(d) }, label = { Text(d.short) })
+                FilterChip(selected = d in targets, onClick = { targets = targets.toggle(d) }, label = { Text(stringResource(d.shortRes)) })
             }
         }
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-            TextButton(onClick = { targets = Weekday.WORKDAYS - day }) { Text("Mo–Fr") }
-            TextButton(onClick = { targets = Weekday.WEEKEND - day }) { Text("Sa–So") }
-            TextButton(onClick = { targets = Weekday.entries.toSet() - day }) { Text("Alle") }
-            Button(onClick = { onCopy(targets); targets = emptySet() }, enabled = targets.isNotEmpty()) { Text("Übernehmen") }
+            TextButton(onClick = { targets = Weekday.WORKDAYS - day }) { Text(stringResource(R.string.editor_workdays)) }
+            TextButton(onClick = { targets = Weekday.WEEKEND - day }) { Text(stringResource(R.string.editor_weekend)) }
+            TextButton(onClick = { targets = Weekday.entries.toSet() - day }) { Text(stringResource(R.string.editor_all_days)) }
+            Button(onClick = { onCopy(targets); targets = emptySet() }, enabled = targets.isNotEmpty()) { Text(stringResource(R.string.apply)) }
         }
     }
 }
@@ -353,20 +366,23 @@ private fun DayEditor(
  * For the first heating phase of the day: when would the heating have to start, at the
  * learned rate, to reach the phase temperature from the setback temperature in time?
  */
-private fun preheatHint(day: ProfileDay, rate: Double?): String? {
+private fun preheatHint(ctx: Context, day: ProfileDay, rate: Double?): String? {
     if (rate == null || rate <= 0) return null
     val first = day.periods.firstOrNull() ?: return null
     val delta = first.temperature - day.baseTemperature
     if (delta <= 0) return null
     val leadMinutes = (delta / rate * 60).toInt()
     return if (leadMinutes > 8 * 60) {
-        "Bei ca. ${"%.2f".format(rate)} °C/h braucht der Raum von ${day.baseTemperature.fmt()} auf ${first.temperature.fmt()} °C " +
-            "über 8 Stunden. Eine höhere Grundtemperatur ist bei Fußbodenheizung meist sinnvoller als eine starke Absenkung."
+        ctx.getString(R.string.preheat_too_slow, rate, day.baseTemperature, first.temperature)
     } else {
         val start = ((first.start - leadMinutes) % MINUTES_PER_DAY + MINUTES_PER_DAY) % MINUTES_PER_DAY
-        "Damit es um ${formatTime(first.start)} ${first.temperature.fmt()} °C hat, müsste die Heizung bei ca. " +
-            "${"%.2f".format(rate)} °C/h etwa um ${formatTime(ProfileEditing.snapMinutes(start))} starten. " +
-            "Das ist eine Obergrenze – der Estrich kühlt meist nicht ganz auf die Grundtemperatur ab."
+        ctx.getString(
+            R.string.preheat_start,
+            formatTime(first.start),
+            first.temperature,
+            rate,
+            formatTime(ProfileEditing.snapMinutes(start)),
+        )
     }
 }
 

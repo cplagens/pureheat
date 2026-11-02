@@ -2,8 +2,8 @@ package de.cplagens.pureheat.ui
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -25,7 +25,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.pluralStringResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.HeatingCircuit
 import de.cplagens.pureheat.hmip.Room
@@ -41,6 +45,7 @@ fun DashboardScreen(
     onLogout: () -> Unit,
     onOpenProfile: (roomId: String) -> Unit,
     onOpenHistory: (roomId: String) -> Unit,
+    onOpenHelp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     var showAbout by remember { mutableStateOf(false) }
@@ -54,28 +59,29 @@ fun DashboardScreen(
         item {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
-                    Text("PureHeat", style = MaterialTheme.typography.headlineSmall)
+                    Text(stringResource(R.string.app_name), style = MaterialTheme.typography.headlineSmall)
                     val open = state.state?.rooms?.count { it.isHeating }
-                    val subtitle = buildString {
-                        if (open != null) append(if (open == 1) "Ventil offen in 1 Raum" else "Ventil offen in $open Räumen")
-                        state.lastUpdated?.let {
-                            if (isNotEmpty()) append(" · ")
-                            append(DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(it)))
-                        }
-                    }
+                    val subtitle = listOfNotNull(
+                        open?.let { pluralStringResource(R.plurals.rooms_valve_open, it, it) },
+                        state.lastUpdated?.let { DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(it)) },
+                    ).joinToString(" · ")
                     if (subtitle.isNotEmpty()) Text(subtitle, style = MaterialTheme.typography.bodySmall)
                 }
-                TextButton(onClick = onRefresh, enabled = !state.loading) { Text("Aktualisieren") }
-                TextButton(onClick = { showAbout = true }) { Text("Info") }
+                TextButton(onClick = onRefresh, enabled = !state.loading) { Text(stringResource(R.string.refresh)) }
+            }
+            Row {
+                TextButton(onClick = onOpenHelp, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.help)) }
+                Spacer(Modifier.width(16.dp))
+                TextButton(onClick = { showAbout = true }, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.info)) }
             }
             if (state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
-            state.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+            state.error?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
             BatteryHint(Modifier.padding(top = 8.dp))
         }
 
         val rooms = state.state?.rooms.orEmpty()
         val unassigned = state.state?.unassignedCircuits.orEmpty()
-        // The device name only helps to tell actuators apart; with a single one "Kanal 4" is enough.
+        // The device name only helps to tell actuators apart; with a single one "Channel 4" is enough.
         val showDevice = (rooms.flatMap { it.circuits } + unassigned).map { it.deviceId }.distinct().size > 1
 
         items(rooms, key = { it.id }) { room ->
@@ -91,12 +97,12 @@ fun DashboardScreen(
         }
 
         if (unassigned.isNotEmpty()) {
-            item { Text("Ohne Raumzuordnung", style = MaterialTheme.typography.titleMedium) }
+            item { Text(stringResource(R.string.unassigned_circuits), style = MaterialTheme.typography.titleMedium) }
             items(unassigned, key = { "${it.deviceId}-${it.channelIndex}" }) { CircuitRow(it, showDevice) }
         }
 
         item {
-            TextButton(onClick = onLogout) { Text("Abmelden") }
+            TextButton(onClick = onLogout) { Text(stringResource(R.string.logout)) }
         }
     }
 }
@@ -111,6 +117,8 @@ private fun RoomCard(
     onOpenProfile: () -> Unit,
     onOpenHistory: () -> Unit,
 ) {
+    val ctx = LocalContext.current
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Card(
         colors = if (room.isHeating) {
             CardDefaults.cardColors(containerColor = HeatingColor.copy(alpha = 0.12f))
@@ -122,27 +130,29 @@ private fun RoomCard(
         Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Text(room.label, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
-                // "Ventil offen" rather than "heizt": the system only knows the valve position,
+                // "Valve open" rather than "heating": the system only knows the valve position,
                 // not whether warm water actually flows (stuck valve pin, cold supply, …).
-                if (room.isHeating) Text("Ventil offen", color = HeatingColor, style = MaterialTheme.typography.labelLarge)
+                if (room.isHeating) {
+                    Text(stringResource(R.string.valve_open), color = HeatingColor, style = MaterialTheme.typography.labelLarge)
+                }
             }
             Text(
                 buildString {
-                    append("Ist ${room.actualTemperature.fmtTemp()} · Soll ${room.setPointTemperature.fmtTemp()}")
-                    room.humidity?.let { append(" · $it % rF") }
-                    if (room.windowState == "OPEN") append(" · Fenster offen")
+                    append(stringResource(R.string.room_values, room.actualTemperature.fmtTemp(), room.setPointTemperature.fmtTemp()))
+                    room.humidity?.let { append(stringResource(R.string.room_humidity, it)) }
+                    if (room.windowState == "OPEN") append(stringResource(R.string.room_window_contact_open))
                 },
                 style = MaterialTheme.typography.bodyMedium,
             )
             if (room.circuits.isEmpty()) {
-                room.valvePosition?.let { ValveBar("Ventil (Raum)", it) }
+                room.valvePosition?.let { ValveBar(stringResource(R.string.valve_room), it) }
             } else {
                 room.circuits.forEach { CircuitRow(it, showDevice) }
             }
             history?.stalled?.let { stalled ->
                 val hours = (now - stalled.openSince) / (60 * 60 * 1000.0)
                 Text(
-                    "⚠ Ventil seit %.1f h offen, Temperatur nur %+.1f °C – kommt Wärme an?".format(hours, stalled.temperatureRise),
+                    stringResource(R.string.stalled_warning, hours, stalled.temperatureRise),
                     color = MaterialTheme.colorScheme.error,
                     style = MaterialTheme.typography.bodySmall,
                 )
@@ -153,19 +163,19 @@ private fun RoomCard(
                 Modifier.fillMaxWidth().clickable(onClick = onOpenHistory),
                 windows = history?.windows.orEmpty(),
             )
-            WindowTexts.dashboardLine(history?.windows.orEmpty())?.let {
-                Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            WindowTexts.dashboardLine(ctx, history?.windows.orEmpty())?.let {
+                Text(it, style = MaterialTheme.typography.bodySmall, color = muted)
             }
             // Rooms without a thermometer (towel radiators) have nothing to learn from.
             if (room.actualTemperature != null) {
-                ModelTexts.summary(insight)?.let {
-                    Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
-                }
+                ModelTexts.summary(ctx, insight)?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = muted) }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
-                TextButton(onClick = onOpenHistory, contentPadding = PaddingValues(0.dp)) { Text("Verlauf ›") }
+                TextButton(onClick = onOpenHistory, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.history_link)) }
                 if (room.profiles.isNotEmpty()) {
-                    TextButton(onClick = onOpenProfile, contentPadding = PaddingValues(0.dp)) { Text("Heizprofil ›") }
+                    TextButton(onClick = onOpenProfile, contentPadding = PaddingValues(0.dp)) {
+                        Text(stringResource(R.string.profile_link))
+                    }
                 }
             }
         }
@@ -175,14 +185,17 @@ private fun RoomCard(
 @Composable
 private fun CircuitRow(circuit: HeatingCircuit, showDevice: Boolean) {
     val name = buildString {
-        append(circuit.channelLabel ?: "Kanal ${circuit.channelIndex}")
+        append(circuit.channelLabel ?: stringResource(R.string.channel_n, circuit.channelIndex))
         if (showDevice) append(" · ${circuit.deviceLabel}")
     }
     val position = circuit.valvePosition
     if (position != null) {
         ValveBar(name, position)
     } else {
-        Text("$name: ${circuit.valveState ?: "unbekannt"}", style = MaterialTheme.typography.bodySmall)
+        Text(
+            stringResource(R.string.channel_state, name, circuit.valveState ?: stringResource(R.string.unknown)),
+            style = MaterialTheme.typography.bodySmall,
+        )
     }
 }
 
@@ -192,7 +205,7 @@ private fun ValveBar(label: String, position: Double) {
         Row {
             Text(label, style = MaterialTheme.typography.bodySmall, modifier = Modifier.weight(1f))
             Spacer(Modifier.width(8.dp))
-            Text("${(position * 100).toInt()} %", style = MaterialTheme.typography.bodySmall)
+            Text(stringResource(R.string.percent, (position * 100).toInt()), style = MaterialTheme.typography.bodySmall)
         }
         LinearProgressIndicator(
             progress = { position.toFloat().coerceIn(0f, 1f) },
@@ -202,4 +215,5 @@ private fun ValveBar(label: String, position: Double) {
     }
 }
 
-private fun Double?.fmtTemp(): String = this?.let { "%.1f °C".format(it) } ?: "–"
+@Composable
+private fun Double?.fmtTemp(): String = this?.let { stringResource(R.string.temp_c, it) } ?: "–"

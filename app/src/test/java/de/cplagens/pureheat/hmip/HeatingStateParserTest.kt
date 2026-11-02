@@ -68,6 +68,8 @@ class HeatingStateParserTest {
 
         assertEquals(10.6, state.outsideTemperature!!, 0.0)
         assertEquals("PROFILE_1", bad.activeProfile)
-        assertEquals(listOf("Profil 1", "Sommer"), bad.profiles.map { it.displayName })
+        // Disabled profile 3 is dropped; blank name stays null (UI shows "Profile 1"), names are trimmed.
+        assertEquals(listOf("1", "2"), bad.profiles.map { it.number })
+        assertEquals(listOf(null, "Sommer"), bad.profiles.map { it.name })
     }
 }
