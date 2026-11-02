@@ -122,6 +122,7 @@ fun RoomDetailScreen(
                         Legend("Ist", actualColor, dashed = false)
                         Legend("Soll", setPointColor, dashed = true)
                         Legend("Außen", outsideColor, dashed = false)
+                        if (state.windows.isNotEmpty()) BandLegend("Fenster offen (erkannt)")
                     }
                     if (actual.size < 2) {
                         Text("Noch zu wenig Daten in diesem Zeitraum.", style = MaterialTheme.typography.bodySmall)
@@ -140,6 +141,8 @@ fun RoomDetailScreen(
                         onSelect = { selected = it },
                         yLabel = { "${it.fmt0()} °C" },
                         modifier = Modifier.fillMaxWidth().height(180.dp),
+                        bands = state.windows.map { it.start to it.end },
+                        bandColor = WindowBandColor,
                     )
                     TimeAxis(state.start, state.end)
                 }
@@ -176,6 +179,20 @@ fun RoomDetailScreen(
 
         if (room.actualTemperature != null) {
             item { ModelCard(insight) }
+            item {
+                Text("Fenster offen (aus dem Temperaturverlauf erkannt)", style = MaterialTheme.typography.titleMedium)
+                if (state.windows.isEmpty()) {
+                    Text(
+                        "In diesem Zeitraum nichts erkannt. Erkannt wird ein schneller Temperatursturz bei geschlossenem " +
+                            "Ventil (≥ 0,3 K mit ≥ 0,6 K/h) und das Ende an einem Wiederanstieg ohne Heizen.",
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    )
+                }
+            }
+            items(state.windows.asReversed().take(20), key = { "window-${it.start}" }) {
+                Text(WindowTexts.describe(it), style = MaterialTheme.typography.bodySmall)
+            }
         }
 
         item {
@@ -223,7 +240,12 @@ private fun ModelCard(insight: RoomInsight?) {
             )
             Text(
                 "Verwertbare Phasen: Ventil offen ${m.heatingPhases}, Ventil zu ${m.coolingPhases}" +
-                    (m.kSpread?.let { " · Streuung k: ±${(it * 50).toInt()} %" } ?: ""),
+                    (m.kSpread?.let { " · Streuung k: ±${(it * 50).toInt()} %" } ?: "") +
+                    (if (insight.windowEvents.isNotEmpty()) {
+                        " · ${insight.windowEvents.size}× Fenster offen erkannt, beim Lernen ausgeklammert"
+                    } else {
+                        ""
+                    }),
                 style = MaterialTheme.typography.bodySmall,
                 color = muted,
             )
@@ -320,6 +342,15 @@ private fun Legend(label: String, color: Color, dashed: Boolean) {
                 pathEffect = if (dashed) PathEffect.dashPathEffect(floatArrayOf(4f, 3f)) else null,
             )
         }
+        Spacer(Modifier.width(4.dp))
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+@Composable
+private fun BandLegend(label: String) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Canvas(Modifier.size(width = 14.dp, height = 10.dp)) { drawRect(WindowBandColor) }
         Spacer(Modifier.width(4.dp))
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }

@@ -147,7 +147,15 @@ private fun RoomCard(
                     style = MaterialTheme.typography.bodySmall,
                 )
             }
-            RoomHistoryChart(history?.samples.orEmpty(), now, Modifier.fillMaxWidth().clickable(onClick = onOpenHistory))
+            RoomHistoryChart(
+                history?.samples.orEmpty(),
+                now,
+                Modifier.fillMaxWidth().clickable(onClick = onOpenHistory),
+                windows = history?.windows.orEmpty(),
+            )
+            WindowTexts.dashboardLine(history?.windows.orEmpty())?.let {
+                Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            }
             // Rooms without a thermometer (towel radiators) have nothing to learn from.
             if (room.actualTemperature != null) {
                 ModelTexts.summary(insight)?.let {

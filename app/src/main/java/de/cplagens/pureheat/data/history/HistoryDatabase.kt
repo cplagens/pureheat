@@ -23,6 +23,8 @@ data class RoomSample(
     val actualTemperature: Double?,
     val setPointTemperature: Double?,
     val valvePosition: Double?,
+    /** Relative humidity in %, helps to detect an open window (since DB v3). */
+    val humidity: Int? = null,
 )
 
 /** One snapshot of a single floor heating channel. */
@@ -105,7 +107,7 @@ interface HistoryDao {
 
 @Database(
     entities = [RoomSample::class, CircuitSample::class, WeatherSample::class],
-    version = 2,
+    version = 3,
     exportSchema = false,
 )
 abstract class HistoryDatabase : RoomDatabase() {
@@ -122,9 +124,16 @@ abstract class HistoryDatabase : RoomDatabase() {
             }
         }
 
+        /** v3: humidity per room sample. */
+        private val MIGRATION_2_3 = object : Migration(2, 3) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `room_sample` ADD COLUMN `humidity` INTEGER")
+            }
+        }
+
         fun create(context: Context): HistoryDatabase =
             Room.databaseBuilder(context, HistoryDatabase::class.java, "history.db")
-                .addMigrations(MIGRATION_1_2)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
                 .build()
     }
 }

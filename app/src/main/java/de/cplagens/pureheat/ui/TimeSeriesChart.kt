@@ -55,6 +55,9 @@ fun TimeSeriesChart(
     onSelect: (Long?) -> Unit,
     modifier: Modifier = Modifier,
     yLabel: (Double) -> String? = { null },
+    /** Highlighted time ranges drawn behind the series (end null = until [end]). */
+    bands: List<Pair<Long, Long?>> = emptyList(),
+    bandColor: Color = Color.Transparent,
 ) {
     val grid = MaterialTheme.colorScheme.outlineVariant
     val cursor = MaterialTheme.colorScheme.onSurface
@@ -78,6 +81,11 @@ fun TimeSeriesChart(
         fun x(t: Long) = ((t - start).toFloat() / span) * size.width
         fun y(v: Double) = (size.height * (1 - (v - yMin) / (yMax - yMin))).toFloat()
 
+        bands.forEach { (from, to) ->
+            val left = x(maxOf(from, start))
+            val right = x(minOf(to ?: end, end))
+            if (right > left) drawRect(bandColor, Offset(left, 0f), androidx.compose.ui.geometry.Size(right - left, size.height))
+        }
         timeTicks(start, end).forEach { t ->
             drawLine(grid, Offset(x(t), 0f), Offset(x(t), size.height), strokeWidth = 1f)
         }

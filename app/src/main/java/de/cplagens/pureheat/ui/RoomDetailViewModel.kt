@@ -9,6 +9,8 @@ import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.ThermalPhase
 import de.cplagens.pureheat.data.history.WeatherSample
+import de.cplagens.pureheat.data.history.WindowDetector
+import de.cplagens.pureheat.data.history.WindowEvent
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -36,6 +38,8 @@ data class RoomDetailState(
     val circuits: Map<Pair<String, Int>, List<CircuitSample>> = emptyMap(),
     val weather: List<WeatherSample> = emptyList(),
     val phases: List<ThermalPhase> = emptyList(),
+    /** Detected open-window times in the range. */
+    val windows: List<WindowEvent> = emptyList(),
 )
 
 /** All recorded data of one room for the selected time range (read-only). */
@@ -53,6 +57,7 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
             repository.weatherHistorySince(start),
         ) { rooms, circuits, weather ->
             val samples = rooms.filter { it.roomId == roomId }
+            val windows = WindowDetector.detect(samples)
             RoomDetailState(
                 range = r,
                 start = start,
@@ -60,7 +65,9 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
                 samples = samples,
                 circuits = circuits.groupBy { it.deviceId to it.channelIndex },
                 weather = weather,
-                phases = HistoryAnalysis.phases(samples, weather),
+                // Same as the model: open-window times are not regular heat loss.
+                phases = HistoryAnalysis.phases(WindowDetector.withoutWindowTimes(samples, windows), weather),
+                windows = windows,
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), RoomDetailState())

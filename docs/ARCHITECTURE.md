@@ -51,6 +51,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
 | `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 2): `room_sample`, `circuit_sample`, `weather_sample` |
 | `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Phasen „Ventil offen/zu“ (mit Totzeit-Tiefpunkt und Ende des freien Aufheizens) |
+| `history/WindowDetection.kt` | Reine Heuristik: Fenster offen aus Temperatursturz/-anstieg (+ Luftfeuchte) bei geschlossenem Ventil; Ausklammern dieser Zeiten fürs Modell |
 | `model/RoomModel.kt` | Reines Wärmemodell je Raum (k, P, Totzeit), Anpassung aus Phasen, Vorhersage Aufheiz-/Abkühlzeit; `SetPointLevels` (Spar-/Komforttemperatur aus Sollwerten) |
 | `model/RoomInsight.kt` | Modell + Spar/Komfort + Außentemperatur je Raum, mit fertigen Vorhersagen |
 | **ui/** | |
@@ -87,15 +88,17 @@ Ressourcen: adaptives Icon in `res/mipmap-anydpi-v26/`, Vordergrund/Hintergrund/
 3. Profil erneut laden und mit dem gesendeten vergleichen; Abweichung → Fehlermeldung.
 „Rückgängig“ spielt das Backup auf demselben Weg zurück.
 
-## Datenmodell (Room, `history.db`, Version 2)
+## Datenmodell (Room, `history.db`, Version 3)
 
 | Tabelle | Schlüssel | Felder |
 |---|---|---|
-| `room_sample` | roomId + timestamp | actualTemperature, setPointTemperature, valvePosition (max. der Kanäle bzw. Gruppenwert) |
+| `room_sample` | roomId + timestamp | actualTemperature, setPointTemperature, valvePosition (max. der Kanäle bzw. Gruppenwert), humidity (ab v3) |
 | `circuit_sample` | deviceId + channelIndex + timestamp | valvePosition |
 | `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`) |
 
-Migration 1 → 2 legt `weather_sample` an, vorhandene Daten bleiben erhalten.
+Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidity`; vorhandene Daten
+bleiben erhalten. Die REST-Server-Adresse wird in SharedPreferences `hmip_server` gecacht
+(neuer Lookup nur nach Fehler – der Lookup-Dienst antwortet bei zu vielen Anfragen mit 418).
 Größe: ca. 1 700 Zeilen/Tag → bei 60 Tagen wenige MB.
 
 ## Homematic IP Cloud-API (inoffiziell)
@@ -151,7 +154,7 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
 
 `./gradlew testDebugUnitTest` – JVM-Unit-Tests für die reinen Kotlin-Teile:
 `HeatingStateParserTest`, `HeatingProfileTest`, `HistoryAnalysisTest`, `ThermalPhaseTest`,
-`PollingPolicyTest`, `RoomModelTest` (simulierter Raum mit bekannten Parametern).
+`PollingPolicyTest`, `RoomModelTest` (simulierter Raum mit bekannten Parametern), `WindowDetectorTest`.
 JSON-Beispiele in Tests sind anonymisiert.
 
 ## Debugging

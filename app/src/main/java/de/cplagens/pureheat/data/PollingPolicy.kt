@@ -13,9 +13,13 @@ object PollingPolicy {
     const val STABLE_MINUTES = 30L
     const val NIGHT_MINUTES = 60L
 
-    /** A valve moving by this much or a setpoint change counts as "something is happening". */
+    /**
+     * A valve moving by this much, a setpoint change or a quick temperature change (e.g. a window
+     * being opened) counts as "something is happening".
+     */
     const val VALVE_CHANGE = 0.1
     const val SETPOINT_CHANGE = 0.25
+    const val TEMPERATURE_CHANGE = 0.3
 
     /**
      * @param latest   room samples of the most recent recording
@@ -32,7 +36,8 @@ object PollingPolicy {
         return latest.any { now ->
             val prev = before[now.roomId] ?: return@any false
             differs(now.valvePosition, prev.valvePosition, VALVE_CHANGE) ||
-                differs(now.setPointTemperature, prev.setPointTemperature, SETPOINT_CHANGE)
+                differs(now.setPointTemperature, prev.setPointTemperature, SETPOINT_CHANGE) ||
+                differs(now.actualTemperature, prev.actualTemperature, TEMPERATURE_CHANGE)
         }
     }
 

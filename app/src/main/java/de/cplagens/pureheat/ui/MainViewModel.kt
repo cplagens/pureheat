@@ -9,6 +9,8 @@ import de.cplagens.pureheat.data.HistoryWorker
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.StalledHeating
+import de.cplagens.pureheat.data.history.WindowDetector
+import de.cplagens.pureheat.data.history.WindowEvent
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.HeatingState
 import de.cplagens.pureheat.hmip.HmipClient
@@ -20,8 +22,12 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-/** Last 24 h of one room plus the derived warning, if any. */
-data class RoomHistory(val samples: List<RoomSample>, val stalled: StalledHeating?)
+/** Last 24 h of one room plus the derived warning and detected open-window times. */
+data class RoomHistory(
+    val samples: List<RoomSample>,
+    val stalled: StalledHeating?,
+    val windows: List<WindowEvent> = emptyList(),
+)
 
 sealed interface UiState {
     data class Setup(val waitingForButton: Boolean = false, val busy: Boolean = false, val error: String? = null) : UiState
@@ -52,7 +58,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             var insightsAt = 0L
             repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS).collect { samples ->
                 val history = samples.groupBy { it.roomId }
-                    .mapValues { (_, s) -> RoomHistory(s, HistoryAnalysis.stalledHeating(s)) }
+                    .mapValues { (_, s) -> RoomHistory(s, HistoryAnalysis.stalledHeating(s), WindowDetector.detect(s)) }
                 _ui.update { (it as? UiState.Dashboard)?.copy(history = history) ?: it }
                 // The model uses up to 60 days of data and changes slowly: refit at most every 30 min.
                 val now = System.currentTimeMillis()

@@ -5,7 +5,8 @@ import org.junit.Assert.assertEquals
 import org.junit.Test
 
 class PollingPolicyTest {
-    private fun s(room: String, valve: Double?, setPoint: Double? = 21.0) = RoomSample(room, 0, 21.0, setPoint, valve)
+    private fun s(room: String, valve: Double?, setPoint: Double? = 21.0, actual: Double? = 21.0) =
+        RoomSample(room, 0, actual, setPoint, valve)
 
     @Test
     fun valveMovingMeansActive() {
@@ -19,6 +20,14 @@ class PollingPolicyTest {
         val prev = listOf(s("a", 0.0, 17.0))
         val now = listOf(s("a", 0.0, 21.0))
         assertEquals(PollingPolicy.ACTIVE_MINUTES, PollingPolicy.nextDelayMinutes(now, prev, localHour = 12))
+    }
+
+    @Test
+    fun quickTemperatureDropMeansActive() {
+        // e.g. a window opened at night
+        val prev = listOf(s("a", 0.0, 15.0, actual = 23.2))
+        val now = listOf(s("a", 0.0, 15.0, actual = 22.7))
+        assertEquals(PollingPolicy.ACTIVE_MINUTES, PollingPolicy.nextDelayMinutes(now, prev, localHour = 23))
     }
 
     @Test

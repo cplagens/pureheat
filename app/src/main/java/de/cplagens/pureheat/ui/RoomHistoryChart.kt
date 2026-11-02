@@ -21,6 +21,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
 import androidx.compose.ui.graphics.PathEffect
@@ -33,8 +34,12 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
+import de.cplagens.pureheat.data.history.WindowEvent
 
 private const val WINDOW_MS = 24 * 60 * 60 * 1000L
+
+/** Background band for detected open-window times (also used in the detail view). */
+internal val WindowBandColor = Color(0xFF29B6F6).copy(alpha = 0.22f)
 
 /**
  * Last 24 h of one room as two small panels on a shared time axis: temperature (actual
@@ -42,7 +47,12 @@ private const val WINDOW_MS = 24 * 60 * 60 * 1000L
  * one chart with two y-axes, because °C and % have nothing in common.
  */
 @Composable
-fun RoomHistoryChart(samples: List<RoomSample>, now: Long, modifier: Modifier = Modifier) {
+fun RoomHistoryChart(
+    samples: List<RoomSample>,
+    now: Long,
+    modifier: Modifier = Modifier,
+    windows: List<WindowEvent> = emptyList(),
+) {
     val start = now - WINDOW_MS
     val visible = samples.filter { it.timestamp >= start }
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
@@ -73,6 +83,7 @@ fun RoomHistoryChart(samples: List<RoomSample>, now: Long, modifier: Modifier = 
             LegendItem("Ist", actualColor, dashed = false)
             LegendItem("Soll", setPointColor, dashed = true)
             LegendItem("Ventil", HeatingColor.copy(alpha = 0.5f), block = true)
+            if (windows.any { (it.end ?: now) >= start }) LegendItem("Fenster", WindowBandColor, block = true)
             Spacer(Modifier.weight(1f))
             if (actualTemps.isNotEmpty()) {
                 Text(
@@ -87,6 +98,12 @@ fun RoomHistoryChart(samples: List<RoomSample>, now: Long, modifier: Modifier = 
             fun x(t: Long) = ((t - start).toFloat() / WINDOW_MS) * size.width
             fun y(v: Double) = (size.height * (1 - (v - minT) / (maxT - minT))).toFloat()
 
+            // Detected open-window times as a light band behind the lines.
+            windows.forEach { w ->
+                val left = x(maxOf(w.start, start))
+                val right = x(w.end ?: now)
+                if (right > left) drawRect(WindowBandColor, Offset(left, 0f), Size(right - left, size.height))
+            }
             drawLine(gridColor, Offset(0f, size.height), Offset(size.width, size.height), strokeWidth = 1.dp.toPx())
             setPointRuns.forEach { run ->
                 drawPath(

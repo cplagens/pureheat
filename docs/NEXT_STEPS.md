@@ -74,6 +74,34 @@ Heizzeit/Kosten das spart.
 - Übersichtsdiagramm: Ist/Soll jetzt als durchgehende Linien über Aufzeichnungslücken
   hinweg; die Detailansicht zeigt Lücken weiterhin.
 
+## Fenster-offen-Erkennung (2026-11-02)
+
+Nutzer-Info: In den Zimmern 1–3 sind nachts die Fenster offen. Es gibt keine Fensterkontakte.
+
+- `data/history/WindowDetection.kt` (reines Kotlin, `WindowDetectorTest`): **geöffnet**, wenn bei
+  geschlossenem Ventil die Temperatur zwischen zwei Messpunkten um ≥ 0,3 K mit ≥ 0,6 K/h fällt
+  (oder ≥ 0,2 K zusammen mit ≥ 4 %rH Luftfeuchte-Abfall); **geschlossen** bei Wiederanstieg
+  ≥ 0,2 K ohne Heizen, sonst Ende bei Heizbeginn, Lücke > 2,5 h oder nach 16 h.
+- Luftfeuchte wird seit DB-Version 3 je Raum gespeichert (`room_sample.humidity`).
+- `PollingPolicy`: Temperaturänderung ≥ 0,3 K zählt als „aktiv“ → 15-min-Abruf, damit der
+  Sturz beim Öffnen sichtbar wird.
+- Modell: Fenster-offen-Zeiten werden aus den Phasen ausgeklammert (`withoutWindowTimes`).
+- Anzeige: hellblaues Band in Übersicht und Detailansicht, Zeile „Fenster vermutlich offen …“,
+  Liste in der Detailansicht, Hinweis in der Modellkarte.
+- **Erste Prüfung mit echten Daten (Nacht 1.–2.11., nur stündliche Messpunkte):**
+  Zimmer 2 erkannt 20:51–01:11 (−1,6 K; Ende wegen Heizbeginn 03:00 – Fenster war vermutlich
+  länger offen), Zimmer 3 erkannt 23:10–07:31 (−1,9 K), **Zimmer 1 nicht erkannt** (gleichmäßig
+  ~0,3 K/h, kein Sturz sichtbar).
+- Offen / Ideen:
+  1. Nach Aufhebung der Akku-Einschränkung (dichtere Messpunkte) erneut prüfen, v. a. Zimmer 1.
+  2. Zweites Kriterium, sobald k für geschlossene Fenster bekannt ist: Abkühlung deutlich
+     schneller als vom Modell erwartet (z. B. > 3×) → Fenster offen, auch ohne Sturz.
+  3. Luftfeuchte-Kriterium an echten Daten kalibrieren (Abfall beim Öffnen? Anstieg beim Schließen?).
+  4. Ende besser erkennen, wenn morgens die Heizung startet, solange das Fenster noch offen ist
+     (Ventil offen, Temperatur fällt weiter → Fenster noch offen).
+  5. Hinweis an den Nutzer, wenn das Heizprofil bei offenem Fenster heizt (Zimmer 2: Heizbeginn
+     03:00, Fenster vermutlich noch offen → Energie verloren).
+
 ## Offen: am Gerät prüfen
 
 1. Außen-Linie in der Detailansicht nach einigen Aufzeichnungen (erste `weather_sample`-Zeilen).

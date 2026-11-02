@@ -190,6 +190,7 @@ class HeatingRepository(
         actualTemperature = actualTemperature,
         setPointTemperature = setPointTemperature,
         valvePosition = circuits.mapNotNull { it.valvePosition }.maxOrNull() ?: valvePosition,
+        humidity = humidity,
     )
 
     private companion object {

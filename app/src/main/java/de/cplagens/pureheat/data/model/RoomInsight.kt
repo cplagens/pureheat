@@ -3,6 +3,8 @@ package de.cplagens.pureheat.data.model
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WeatherSample
+import de.cplagens.pureheat.data.history.WindowDetector
+import de.cplagens.pureheat.data.history.WindowEvent
 
 /** What the app has learned about one room, plus the inputs for its predictions. */
 data class RoomInsight(
@@ -11,6 +13,8 @@ data class RoomInsight(
     val levels: SetPointLevels?,
     /** Latest recorded outside temperature (the forecast replaces this in a later step). */
     val outside: Double?,
+    /** Detected open-window times in the analysed history; excluded from the model. */
+    val windowEvents: List<WindowEvent> = emptyList(),
 ) {
     /** Setback → comfort, e.g. in the morning. */
     val heatUp: Prediction
@@ -29,10 +33,13 @@ data class RoomInsight(
         fun forAllRooms(samples: List<RoomSample>, weather: List<WeatherSample>, now: Long): Map<String, RoomInsight> {
             val outside = weather.lastOrNull { it.outsideTemperature != null }?.outsideTemperature
             return samples.groupBy { it.roomId }.mapValues { (_, s) ->
+                val windows = WindowDetector.detect(s)
                 RoomInsight(
-                    model = RoomModelFitter.fit(HistoryAnalysis.phases(s, weather)),
+                    // An open window is not the room's normal heat loss: leave those times out.
+                    model = RoomModelFitter.fit(HistoryAnalysis.phases(WindowDetector.withoutWindowTimes(s, windows), weather)),
                     levels = SetPointLevels.from(s.filter { it.timestamp >= now - LEVEL_WINDOW_MS }),
                     outside = outside,
+                    windowEvents = windows,
                 )
             }
         }
