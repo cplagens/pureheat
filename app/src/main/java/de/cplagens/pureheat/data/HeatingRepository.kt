@@ -33,7 +33,17 @@ class HeatingRepository(
     private val dao: HistoryDao,
     private val client: HmipClient = HmipClient(),
 ) {
-    @Volatile private var restUrl: String? = null
+    /**
+     * REST server from the lookup, kept across processes: every app start and every background
+     * job used to do a lookup, and the lookup service answered 418 when asked too often.
+     */
+    private val serverPrefs = context.getSharedPreferences("hmip_server", Context.MODE_PRIVATE)
+
+    @Volatile private var restUrl: String? = serverPrefs.getString(KEY_REST_URL, null)
+        set(value) {
+            field = value
+            serverPrefs.edit().putString(KEY_REST_URL, value).apply()
+        }
 
     /** Throws on network/API errors; callers turn them into UI messages. */
     suspend fun fetch(creds: Credentials): HeatingState = api(creds) { rest ->
@@ -184,6 +194,7 @@ class HeatingRepository(
 
     private companion object {
         const val TAG = "PureHeat"
+        const val KEY_REST_URL = "rest_url"
         const val MIN_SAMPLE_INTERVAL_MS = 4 * 60 * 1000L
         // 60 days: enough for the room model to see different outside temperatures (~2 MB).
         const val RETENTION_MS = 60 * 24 * 60 * 60 * 1000L

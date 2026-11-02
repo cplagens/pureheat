@@ -70,6 +70,7 @@ fun DashboardScreen(
             }
             if (state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
             state.error?.let { Text(it, color = MaterialTheme.colorScheme.error) }
+            BatteryHint(Modifier.padding(top = 8.dp))
         }
 
         val rooms = state.state?.rooms.orEmpty()

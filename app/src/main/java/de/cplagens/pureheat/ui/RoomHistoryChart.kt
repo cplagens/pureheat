@@ -55,9 +55,11 @@ fun RoomHistoryChart(samples: List<RoomSample>, now: Long, modifier: Modifier = 
     val setPointColor = muted
     val gridColor = MaterialTheme.colorScheme.outlineVariant
 
-    val actualRuns = runs(visible) { it.actualTemperature }
-    val setPointRuns = runs(visible) { it.setPointTemperature }
-    val valveRuns = runs(visible) { it.valvePosition?.coerceIn(0.0, 1.0) }
+    // Overview: temperatures as one connected line even across recording gaps (Android may delay
+    // background jobs for hours); the detail view keeps the gaps visible.
+    val actualRuns = runs(visible, breakOnGaps = false) { it.actualTemperature }
+    val setPointRuns = runs(visible, breakOnGaps = false) { it.setPointTemperature }
+    val valveRuns = runs(visible, breakOnGaps = true) { it.valvePosition?.coerceIn(0.0, 1.0) }
 
     val temps = (actualRuns + setPointRuns).flatten().map { it.second }
     val actualTemps = actualRuns.flatten().map { it.second }
@@ -90,7 +92,11 @@ fun RoomHistoryChart(samples: List<RoomSample>, now: Long, modifier: Modifier = 
                 drawPath(
                     stepPath(run, ::x, ::y),
                     setPointColor,
-                    style = Stroke(1.5.dp.toPx(), pathEffect = PathEffect.dashPathEffect(floatArrayOf(6f, 6f))),
+                    // Long dashes: short ones looked like a dotted, broken line on a phone.
+                    style = Stroke(
+                        1.5.dp.toPx(),
+                        pathEffect = PathEffect.dashPathEffect(floatArrayOf(6.dp.toPx(), 3.dp.toPx())),
+                    ),
                 )
             }
             actualRuns.forEach { run -> drawLineRun(run, ::x, ::y, actualColor) }
@@ -132,7 +138,7 @@ private fun LegendItem(label: String, color: Color, dashed: Boolean = false, blo
                         Offset(0f, size.height / 2),
                         Offset(size.width, size.height / 2),
                         strokeWidth = 2.dp.toPx(),
-                        pathEffect = if (dashed) PathEffect.dashPathEffect(floatArrayOf(4f, 3f)) else null,
+                        pathEffect = if (dashed) PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 2.dp.toPx())) else null,
                     )
                 }
             }
@@ -142,8 +148,12 @@ private fun LegendItem(label: String, color: Color, dashed: Boolean = false, blo
     }
 }
 
-/** Splits the samples into continuous runs; a missing value or a gap > 1 h breaks the line. */
-private fun runs(samples: List<RoomSample>, value: (RoomSample) -> Double?): List<List<Pair<Long, Double>>> {
+/** Splits the samples into continuous runs; a missing value (and with [breakOnGaps] a gap > 1 h) breaks the line. */
+private fun runs(
+    samples: List<RoomSample>,
+    breakOnGaps: Boolean,
+    value: (RoomSample) -> Double?,
+): List<List<Pair<Long, Double>>> {
     val out = mutableListOf<MutableList<Pair<Long, Double>>>()
     var prev: Long? = null
     for (s in samples) {
@@ -152,7 +162,7 @@ private fun runs(samples: List<RoomSample>, value: (RoomSample) -> Double?): Lis
             prev = null
             continue
         }
-        if (prev == null || s.timestamp - prev > HistoryAnalysis.MAX_GAP_MILLIS) out.add(mutableListOf())
+        if (prev == null || (breakOnGaps && s.timestamp - prev > HistoryAnalysis.MAX_GAP_MILLIS)) out.add(mutableListOf())
         out.last() += s.timestamp to v
         prev = s.timestamp
     }

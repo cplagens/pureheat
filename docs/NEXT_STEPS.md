@@ -49,6 +49,31 @@ Heizzeit/Kosten das spart.
 - Lücken im Verlauf vom 2026-11-01 nachmittags stammen von `am force-stop` beim Entwickeln
   (das pausiert WorkManager-Jobs bis zum nächsten App-Start) – kein Fehler der App.
 
+## Auswertung der ersten 28 h Verlauf (2026-11-02)
+
+- **Android drosselt die Hintergrundjobs** über App-Standby-Buckets: im Laufe des Tages
+  ACTIVE → WORKING_SET (10:08) → FREQUENT (13:46) → RARE (18:08). Folge: tagsüber 60 statt
+  30 min, dann **9 h ohne Aufzeichnung** (10:34–19:35). Nur 36 Aufzeichnungen in 28 h.
+  Abhilfe in der App: Hinweis-Karte (`ui/BatteryHint.kt`) → App-Info → Akku →
+  „Nicht eingeschränkt“ (`isIgnoringBatteryOptimizations`). Danach erneut messen.
+- **Lookup-Dienst antwortete einmal 418** (zu viele Lookups: jeder Prozessstart machte einen).
+  REST-URL wird jetzt in SharedPreferences `hmip_server` gecacht, neuer Lookup nur nach Fehler.
+- **Physik plausibel** (Zimmer 2 nach dem Lösen des Ventilstifts): nachts Ventil zu,
+  23,2 → 21,0 °C in 8 h bei ~7 °C außen (k ≈ 0,02/h); morgens ab 03:00 Ventil offen, Raum
+  kühlt noch bis ~04:30 weiter (Totzeit ~1,5 h), dann 20,6 → 22,8 °C in 4 h (~0,55 K/h,
+  P ≈ 0,8 K/h); Soll 23 °C gegen 10:30 erreicht.
+- Übrige Räume: Schlafzimmer kühlen nachts mit k ≈ 0,017–0,026/h ab. Bad und WC liegen
+  ganztägig bei 25–27 °C über Soll (Handtuchheizkörper mit Soll 26–27 °C heizen den Raum),
+  Küche/Wohnzimmer bleibt ohne Heizen bei 23–24 °C → diese Räume liefern kaum
+  „Ventil offen“-Phasen; das Modell wird dort lange „lernt noch“ zeigen.
+- **Vorhersage verbessern (Vorschlag, noch offen):** „Spar → Komfort“ (z. B. 15 → 24 °C)
+  ist unrealistisch, weil die Räume nachts nur auf ~21 °C absinken. Besser:
+  Aufheizen ab der *typischen Temperatur am Ende der Absenkung* (Median der Ist-Temperatur
+  beim Sollwert-Anstieg) und Abkühlen als „nach X h Absenkung noch ca. Y °C“
+  (`T(t) = Tₐ + (T₀ − Tₐ)·e^(−k t)`, X = typische Absenkdauer).
+- Übersichtsdiagramm: Ist/Soll jetzt als durchgehende Linien über Aufzeichnungslücken
+  hinweg; die Detailansicht zeigt Lücken weiterhin.
+
 ## Offen: am Gerät prüfen
 
 1. Außen-Linie in der Detailansicht nach einigen Aufzeichnungen (erste `weather_sample`-Zeilen).
