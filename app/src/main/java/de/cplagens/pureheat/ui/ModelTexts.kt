@@ -23,7 +23,7 @@ internal object ModelTexts {
         val levels = insight.levels ?: return ctx.getString(R.string.model_no_setback)
         val outside = insight.outside ?: return null
         return ctx.getString(
-            R.string.model_summary,
+            if (insight.outsideIsForecast) R.string.model_summary_forecast else R.string.model_summary,
             levels.setback,
             levels.comfort,
             phrase(ctx, insight.heatUp, levels.comfort, outside),

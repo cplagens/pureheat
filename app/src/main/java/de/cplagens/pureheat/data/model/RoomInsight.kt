@@ -11,8 +11,10 @@ data class RoomInsight(
     val model: RoomModel,
     /** Setback/comfort temperature from the last 7 days of setpoints. */
     val levels: SetPointLevels?,
-    /** Latest recorded outside temperature (the forecast replaces this in a later step). */
+    /** Outside temperature used for the predictions: forecast mean of the next 12 h, else the last measurement. */
     val outside: Double?,
+    /** True if [outside] comes from the forecast. */
+    val outsideIsForecast: Boolean = false,
     /** Detected open-window times in the analysed history; excluded from the model. */
     val windowEvents: List<WindowEvent> = emptyList(),
 ) {
@@ -30,8 +32,13 @@ data class RoomInsight(
         private const val LEVEL_WINDOW_MS = 7 * 24 * 3_600_000L
 
         /** [samples] and [weather] sorted by time; [samples] of all rooms. */
-        fun forAllRooms(samples: List<RoomSample>, weather: List<WeatherSample>, now: Long): Map<String, RoomInsight> {
-            val outside = weather.lastOrNull { it.outsideTemperature != null }?.outsideTemperature
+        fun forAllRooms(
+            samples: List<RoomSample>,
+            weather: List<WeatherSample>,
+            now: Long,
+            forecastOutside: Double? = null,
+        ): Map<String, RoomInsight> {
+            val outside = forecastOutside ?: weather.lastOrNull { it.outsideTemperature != null }?.outsideTemperature
             return samples.groupBy { it.roomId }.mapValues { (_, s) ->
                 val windows = WindowDetector.detect(s)
                 RoomInsight(
@@ -39,6 +46,7 @@ data class RoomInsight(
                     model = RoomModelFitter.fit(HistoryAnalysis.phases(WindowDetector.withoutWindowTimes(s, windows), weather)),
                     levels = SetPointLevels.from(s.filter { it.timestamp >= now - LEVEL_WINDOW_MS }),
                     outside = outside,
+                    outsideIsForecast = forecastOutside != null,
                     windowEvents = windows,
                 )
             }

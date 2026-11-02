@@ -39,6 +39,8 @@ sealed interface UiState {
         val history: Map<String, RoomHistory> = emptyMap(),
         /** Learned room model and heat-up/cool-down predictions per room id. */
         val insights: Map<String, RoomInsight> = emptyMap(),
+        /** Forecast min/max outside temperature for the next 24 h, if available. */
+        val forecastRange: ClosedFloatingPointRange<Double>? = null,
     ) : UiState
 }
 
@@ -54,6 +56,14 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     val ui: StateFlow<UiState> = _ui.asStateFlow()
 
     init {
+        viewModelScope.launch {
+            repository.forecastSince(System.currentTimeMillis()).collect { hours ->
+                val now = System.currentTimeMillis()
+                val next = hours.filter { it.timestamp in now..(now + HISTORY_WINDOW_MS) }.map { it.temperature }
+                val range = if (next.isEmpty()) null else next.min()..next.max()
+                _ui.update { (it as? UiState.Dashboard)?.copy(forecastRange = range) ?: it }
+            }
+        }
         viewModelScope.launch {
             var insightsAt = 0L
             repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS).collect { samples ->

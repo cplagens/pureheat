@@ -18,6 +18,14 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
 | Standort | `home.location`: `city`, `latitude`, `longitude` – als **Strings** | 2026-11-01 |
 | Unbelegte Kanäle | Fußbodenheizungsaktor meldet unbelegte Ausgänge ohne Gruppe und ohne `valvePosition` (`ADJUSTMENT_TOO_SMALL`) | 2026-11-01 |
 | Fensterkontakte | keine vorhanden → `windowState` immer null; Fenster nur über den Temperaturverlauf erkennbar | 2026-11-02 |
+| Lookup-Cache | REST-URL in SharedPreferences: nach Prozess-Neustart kein `getHost` mehr (am Gerät bestätigt) | 2026-11-02 |
+| Luftfeuchte | `groups[*].humidity` (ganzzahlig, % rF) je Raum; seit DB v3 aufgezeichnet | 2026-11-02 |
+
+## Open-Meteo
+
+- Antwort mit `timeformat=unixtime` und `timezone=UTC`: `hourly.time[]` (Sekunden) und
+  `hourly.temperature_2m[]` (einzelne Werte können `null` sein). ~5 KB für 3 Tage.
+- Erste Prognose am 2026-11-02 abends: nächste 24 h 4–10 °C (gemessen 6,7 °C) – plausibel.
 
 ## Android
 

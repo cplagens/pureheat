@@ -72,6 +72,8 @@ fun RoomDetailScreen(
     val actual = state.samples.mapNotNull { s -> s.actualTemperature?.let { s.timestamp to it } }
     val setPoint = state.samples.mapNotNull { s -> s.setPointTemperature?.let { s.timestamp to it } }
     val outside = state.weather.mapNotNull { w -> w.outsideTemperature?.let { w.timestamp to it } }
+    val humidity = state.samples.mapNotNull { s -> s.humidity?.let { s.timestamp to it.toDouble() } }
+    val humidityColor = MaterialTheme.colorScheme.secondary
     val temps = (actual + setPoint + outside).map { it.second }
     val yMin = (temps.minOrNull() ?: 15.0).let { kotlin.math.floor(it) - 0.5 }
     val yMax = (temps.maxOrNull() ?: 25.0).let { kotlin.math.ceil(it) + 0.5 }
@@ -112,6 +114,7 @@ fun RoomDetailScreen(
                     actual.nearest(t)?.let { add(ctx.getString(R.string.value_actual, it)) }
                     setPoint.nearest(t)?.let { add(ctx.getString(R.string.value_setpoint, it)) }
                     outside.nearest(t)?.let { add(ctx.getString(R.string.value_outside, it)) }
+                    humidity.nearest(t)?.let { add(ctx.getString(R.string.value_humidity, it.toInt())) }
                     channels.forEach { (label, pts) ->
                         pts.nearest(t)?.let { add(ctx.getString(R.string.value_valve, label, (it * 100).toInt())) }
                     }
@@ -177,6 +180,32 @@ fun RoomDetailScreen(
                         )
                     }
                     TimeAxis(state.start, state.end)
+                }
+            }
+        }
+
+        // Humidity has its own chart: % and °C don't share a scale (no second y-axis).
+        if (humidity.size >= 2) {
+            item {
+                val hMid = (humidity.minOf { it.second } + humidity.maxOf { it.second }) / 2
+                Card(Modifier.fillMaxWidth()) {
+                    Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                        Text(stringResource(R.string.humidity_title), style = MaterialTheme.typography.labelLarge)
+                        TimeSeriesChart(
+                            series = listOf(ChartSeries("humidity", humidityColor, humidity)),
+                            start = state.start,
+                            end = state.end,
+                            yMin = kotlin.math.floor(minOf(humidity.minOf { it.second }, hMid - 5)),
+                            yMax = kotlin.math.ceil(maxOf(humidity.maxOf { it.second }, hMid + 5)),
+                            selected = selected,
+                            onSelect = { selected = it },
+                            yLabel = { ctx.getString(R.string.percent, it.toInt()) },
+                            modifier = Modifier.fillMaxWidth().height(80.dp),
+                            bands = state.windows.map { it.start to it.end },
+                            bandColor = WindowBandColor,
+                        )
+                        TimeAxis(state.start, state.end)
+                    }
                 }
             }
         }

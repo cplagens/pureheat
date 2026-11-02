@@ -1,6 +1,7 @@
 # PureHeat – Nächste Schritte
 
-Stand: 2026-11-01. Dieses Dokument ist der Einstieg für eine neue Agent-Session.
+Stand: 2026-11-02. Dieses Dokument ist der Einstieg für eine neue Agent-Session.
+**Nächster Schritt: Schritt 5 (Probelauf).** Daneben offen: Übersetzungen (siehe „Mehrsprachigkeit“).
 Erst `CLAUDE.md` (Regeln) und [ARCHITECTURE.md](ARCHITECTURE.md) (Aufbau, API-Erkenntnisse) lesen.
 
 ## Ziel
@@ -20,13 +21,15 @@ Heizzeit/Kosten das spart.
 - **Schreiben nur mit Einwilligung:** zuerst nur Vorschläge (Bestätigung pro Speichern wie heute);
   Automatik nur nach ausdrücklichem Einschalten pro Raum, mit Protokoll und Rückgängig.
 - **Wetterprognose von Open-Meteo** (kostenlos, ohne Konto). Standort aus `home.location`,
-  **auf 2 Nachkommastellen gerundet (~1 km)** – vom Nutzer so freigegeben. Einmal pro Tag abrufen.
+  **auf 2 Nachkommastellen gerundet (~1 km)** – vom Nutzer so freigegeben. Höchstens alle 6 h abrufen.
 - **Akku sparen** hat Priorität (Telefon ist praktisch immer an, soll aber nicht leiden):
   rechnen nur beim Laden, Abrufe adaptiv, keine Dauerverbindung.
 - **Später evtl. Raspberry Pi:** Modell, Prognose und Profilberechnung in **reinem Kotlin ohne
   Android-Abhängigkeiten** schreiben (wie `HistoryAnalysis`, `ProfileEditing`), damit sie später
   in ein JVM-Modul `:core` umziehen können. Vorerst bleibt alles auf dem Telefon.
-- UI-Text Deutsch; die Daten der Detailansicht bleiben 60 Tage gespeichert.
+- UI-Texte in Ressourcen (Englisch Standard, Deutsch für den Nutzer); Daten bleiben 60 Tage gespeichert.
+- **Messgrößen mit verschiedenen Einheiten nie auf einer gemeinsamen Achse** (z. B. °C und % rF):
+  eigene Felder mit gemeinsamer Zeitachse (so auch die Luftfeuchte, 2026-11-02).
 
 ## Erledigt (Schritt 1, 2026-11-01)
 
@@ -108,6 +111,12 @@ nächsten Tag besser zu lernen? Einschätzung: **vorerst nicht als Ersatz, spät
 - Entscheidung: Schritte 3–6 wie geplant mit dem Physikmodell; im Probelauf (Schritt 5) die
   Residuen speichern, damit später eine Grey-Box-Korrektur gelernt und gegen das reine Modell
   verglichen werden kann.
+- **Vom Nutzer ergänzt (2026-11-02):** Eine KI darf später auch **nur im Simulationsmodus**
+  laufen: Sie trifft parallel eigene Entscheidungen (Startzeiten/Profil), die nicht geschrieben
+  werden, und die App vergleicht, wie sie gegenüber dem Physikmodell und der Wirklichkeit
+  abgeschnitten hätte (Trefferquote, Heizzeit). Dafür den Probelauf (Schritt 5) so bauen, dass
+  mehrere „Strategien“ nebeneinander Vorhersagen ablegen können (Spalte `strategy`, z. B.
+  `physics`, später `greybox`/`ai`).
 
 ## Fenster-offen-Erkennung (2026-11-02)
 
@@ -215,19 +224,31 @@ Offen / beobachten:
    k aus Phasen mit kleinem Ventilwert schätzen (Erweiterung).
 4. Später (Schritt 5/6) Spar-/Komfortwerte direkt aus dem aktiven Heizprofil nehmen.
 
-## Schritt 4 – Wetterprognose
+## Schritt 4 – Wetterprognose (umgesetzt 2026-11-02)
 
-- `home.location` parsen (lat/lon, lenient), runden auf 2 Nachkommastellen.
-- Open-Meteo: `https://api.open-meteo.com/v1/forecast?latitude=..&longitude=..&hourly=temperature_2m&forecast_days=3&timezone=auto`
-- Neue Tabelle `forecast_sample(timestamp, temperature, fetchedAt)`; DB-Migration 2 → 3.
-- Abruf im Nachtjob; ohne Prognose mit aktueller Außentemperatur rechnen.
+- `home.location` (Strings) wird geparst und sofort auf 2 Nachkommastellen gerundet
+  (`GeoPoint.rounded`); nur diese Werte gehen an Open-Meteo.
+- `data/ForecastClient.kt`: `…/v1/forecast?latitude=..&longitude=..&hourly=temperature_2m&forecast_days=3&timeformat=unixtime&timezone=UTC`
+  (~5 KB). Kein Nachtjob nötig: der Abruf hängt am normalen Zustandsabruf, höchstens alle 6 h
+  (`HeatingRepository.refreshForecastIfDue`), Fehler werden ignoriert.
+- Tabelle `forecast_sample(timestamp, temperature, fetchedAt)`, DB-Migration 3 → 4; bei jedem
+  Abruf ersetzt, vergangene Stunden bleiben 6 h (für den Vergleich Prognose ↔ Messung).
+- Nutzung: Übersicht oben „Außen 6,7 °C · nächste 24 h 4–10 °C“; das Raummodell rechnet mit dem
+  Prognose-Mittel der nächsten 12 h (Text „Prognose X °C außen“), sonst mit dem Messwert.
+- Am Gerät geprüft: Prognose kommt an (Anzeige 4–10 °C am 2026-11-02 abends).
+- Offen: Prognose in der Detailansicht als Fortsetzung der Außen-Kurve in die Zukunft zeigen;
+  für Schritt 5/6 die stündliche Prognose zur jeweiligen Uhrzeit verwenden statt eines Mittels.
 
 ## Schritt 5 – Probelauf mit Trefferquote
 
 - Nachtjob erstellt pro Raum Vorhersagen für den nächsten Tag aus dem **aktuell aktiven Profil**:
   für jeden Wechsel Grund → Phase „Zieltemperatur erreicht um …“ und für jeden Wechsel
   Phase → Grund „Temperatur um … bei …“. Außerdem: wann *würde* die Optimal-Steuerung starten.
-- Tabelle `prediction(roomId, createdAt, targetTime, targetTemperature, predictedReachTime, actualReachTime?, ...)`.
+- Tabelle `prediction(roomId, strategy, createdAt, targetTime, targetTemperature, predictedReachTime, actualReachTime?, ...)`
+  – `strategy` erlaubt später KI/Grey-Box im Simulationsmodus neben dem Physikmodell.
+- Ein Nachtjob (`setRequiresCharging`, `setRequiresDeviceIdle`) ist hier sinnvoll: Profil(e) laden,
+  Vorhersagen erzeugen, Vortag auswerten. Profile dabei cachen (wird auch für die profilbewusste
+  Abfrage aus Schritt 2 gebraucht).
 - Am Folgetag mit `room_sample` auswerten → Fehler in Minuten, „pünktlich ±0,5 K“ ja/nein.
 - Anzeige pro Raum: „Vorhersage im Schnitt X min daneben, Ziel zu Y % pünktlich (14 Tage)“.
 - Schalter „Optimal-Steuerung aktivieren“ erst ab Schwelle (Vorschlag: ≥ 14 Tage Daten,

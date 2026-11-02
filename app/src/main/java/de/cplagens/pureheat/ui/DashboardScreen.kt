@@ -66,6 +66,14 @@ fun DashboardScreen(
                         state.lastUpdated?.let { DateFormat.getTimeInstance(DateFormat.SHORT).format(Date(it)) },
                     ).joinToString(" · ")
                     if (subtitle.isNotEmpty()) Text(subtitle, style = MaterialTheme.typography.bodySmall)
+                    // Outside now and the forecast span of the next 24 h (Open-Meteo, rounded location).
+                    val outsideLine = listOfNotNull(
+                        state.state?.outsideTemperature?.let { stringResource(R.string.outside_now, it) },
+                        state.forecastRange?.let { stringResource(R.string.forecast_24h, it.start, it.endInclusive) },
+                    ).joinToString(" · ")
+                    if (outsideLine.isNotEmpty()) {
+                        Text(outsideLine, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+                    }
                 }
                 TextButton(onClick = onRefresh, enabled = !state.loading) { Text(stringResource(R.string.refresh)) }
             }

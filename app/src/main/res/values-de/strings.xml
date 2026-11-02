@@ -75,6 +75,12 @@
     <string name="legend_window">Fenster</string>
     <string name="legend_outside">Außen</string>
     <string name="legend_window_detected">Fenster offen (erkannt)</string>
+    <string name="legend_humidity">Luftfeuchte</string>
+    <string name="humidity_range">%1$d–%2$d %% rF</string>
+    <string name="humidity_title">Luftfeuchte (% rF)</string>
+    <string name="value_humidity">%d %% rF</string>
+    <string name="outside_now">Außen %.1f °C</string>
+    <string name="forecast_24h">nächste 24 h %1$.0f–%2$.0f °C</string>
     <string name="actual_range">Ist %1$.1f–%2$.1f °C</string>
     <string name="marker_window_open">Fenster auf %s</string>
     <string name="marker_window_closed">zu %s</string>
@@ -129,6 +135,7 @@
     <string name="model_learning">Raummodell lernt noch (Ventil offen %1$d/%2$d, Ventil zu %3$d/%4$d verwertbare Phasen)</string>
     <string name="model_no_setback">Keine Absenkung im Heizprofil erkannt.</string>
     <string name="model_summary">%1$.1f → %2$.1f °C %3$s · zurück auf %1$.1f °C %4$s (bei %5$.0f °C außen)</string>
+    <string name="model_summary_forecast">%1$.1f → %2$.1f °C %3$s · zurück auf %1$.1f °C %4$s (Prognose %5$.0f °C außen)</string>
     <string name="model_in_about">in ca. %s</string>
     <string name="model_unreachable">bei %1$.0f °C außen nicht erreichbar (%2$.1f °C)</string>
     <string name="model_unknown">– noch unbekannt</string>
@@ -227,7 +234,7 @@
     <string name="help_valve_title">„Ventil offen“ heißt nicht „heizt“</string>
     <string name="help_valve_text">Das System kennt nur die Ventilstellung, nicht ob warmes Wasser fließt. Ein festsitzender Ventilstift, ein kalter Vorlauf der Zentralheizung oder Luft im Kreis sehen alle wie „Ventil offen“ aus. Ist ein Ventil stundenlang offen und der Raum wird nicht wärmer, zeigt die App eine Warnung – dann den Kreis am Verteiler prüfen.</string>
     <string name="help_chart_title">Verlaufsdiagramm</string>
-    <string name="help_chart_text">Das kleine Diagramm zeigt die letzten 24 Stunden: Ist-Temperatur (Linie), Solltemperatur (gestrichelt) und Ventilöffnung (Fläche darunter). Beschriftungen über dem Diagramm zeigen, wann ein Fenster geöffnet oder geschlossen wurde und wann sich der Sollwert geändert hat (auf 15 Minuten gerundet). Diagramm oder „Verlauf ›“ antippen für alle Daten bis 60 Tage – mit Außentemperatur, jedem Kanal und genauen Werten zu jedem Zeitpunkt.</string>
+    <string name="help_chart_text">Das kleine Diagramm zeigt die letzten 24 Stunden: Ist-Temperatur (Linie), Solltemperatur (gestrichelt), Ventilöffnung (Fläche darunter) und Luftfeuchte (eigenes Feld – % und °C haben keine gemeinsame Skala). Beschriftungen über dem Diagramm zeigen, wann ein Fenster geöffnet oder geschlossen wurde und wann sich der Sollwert geändert hat (auf 15 Minuten gerundet). Diagramm oder „Verlauf ›“ antippen für alle Daten bis 60 Tage – mit Außentemperatur, jedem Kanal und genauen Werten zu jedem Zeitpunkt. Oben in der Übersicht stehen die Außentemperatur und die Prognose für die nächsten 24 Stunden.</string>
     <string name="help_window_title">Fenster-offen-Erkennung</string>
     <string name="help_window_text">Ohne Fensterkontakte erkennt die App ein offenes Fenster an der Temperatur: ein schneller Sturz bei geschlossenem Ventil. Ein Wiederanstieg ohne Heizen gilt als „zu“. Startet die Heizung, während das Fenster vielleicht noch offen ist, schreibt die App nur „mindestens bis“. Am besten funktioniert die Erkennung mit dichten Aufzeichnungen (siehe „Akku“).</string>
     <string name="help_model_title">Raummodell und Vorhersagen</string>
@@ -239,5 +246,5 @@
     <string name="help_language_title">Sprache</string>
     <string name="help_language_text">Die App folgt der Systemsprache. Eine andere Sprache lässt sich unter „Info“ wählen oder (ab Android 13) in den Systemeinstellungen unter „App-Sprachen“.</string>
     <string name="help_privacy_title">Datenschutz</string>
-    <string name="help_privacy_text">Die App spricht nur mit der Homematic IP Cloud. Zugangsdaten und Verlauf bleiben auf diesem Telefon. PureHeat ist ein inoffizielles Projekt und nicht mit eQ-3 verbunden.</string>
+    <string name="help_privacy_text">Die App spricht mit der Homematic IP Cloud und für die Wetterprognose mit Open-Meteo (kostenlos, ohne Konto). Open-Meteo erhält nur den auf etwa 1 km gerundeten Standort des Hauses, wenige Male am Tag. Zugangsdaten und Verlauf bleiben auf diesem Telefon. PureHeat ist ein inoffizielles Projekt und nicht mit eQ-3 verbunden.</string>
 </resources>

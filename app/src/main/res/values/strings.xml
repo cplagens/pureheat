@@ -82,6 +82,12 @@
     <string name="legend_window">Window</string>
     <string name="legend_outside">Outside</string>
     <string name="legend_window_detected">Window open (detected)</string>
+    <string name="legend_humidity">Humidity</string>
+    <string name="humidity_range">%1$d–%2$d %% RH</string>
+    <string name="humidity_title">Humidity (% RH)</string>
+    <string name="value_humidity">%d %% RH</string>
+    <string name="outside_now">Outside %.1f °C</string>
+    <string name="forecast_24h">next 24 h %1$.0f–%2$.0f °C</string>
     <string name="actual_range">Actual %1$.1f–%2$.1f °C</string>
     <string name="marker_window_open">Window open %s</string>
     <string name="marker_window_closed">closed %s</string>
@@ -136,6 +142,7 @@
     <string name="model_learning">Room model still learning (valve open %1$d/%2$d, valve closed %3$d/%4$d usable phases)</string>
     <string name="model_no_setback">No setback detected in the heating profile.</string>
     <string name="model_summary">%1$.1f → %2$.1f °C %3$s · back to %1$.1f °C %4$s (at %5$.0f °C outside)</string>
+    <string name="model_summary_forecast">%1$.1f → %2$.1f °C %3$s · back to %1$.1f °C %4$s (forecast %5$.0f °C outside)</string>
     <string name="model_in_about">in about %s</string>
     <string name="model_unreachable">not reachable at %1$.0f °C outside (%2$.1f °C)</string>
     <string name="model_unknown">– not known yet</string>
@@ -234,7 +241,7 @@
     <string name="help_valve_title">“Valve open” is not “heating”</string>
     <string name="help_valve_text">The system only knows how far a valve is open, not whether warm water actually flows. A stuck valve pin, a cold supply from the central heating or air in the circuit all look like “valve open”. If a valve is open for hours and the room doesn\'t get warmer, the app shows a warning – check the circuit at the manifold then.</string>
     <string name="help_chart_title">History chart</string>
-    <string name="help_chart_text">The small chart shows the last 24 hours: actual temperature (line), target temperature (dashed) and valve opening (area below). Labels above the chart mark when a window was opened or closed and when the target changed (rounded to 15 minutes). Tap the chart or “History ›” for all data up to 60 days, with outside temperature, each channel and exact values at any time.</string>
+    <string name="help_chart_text">The small chart shows the last 24 hours: actual temperature (line), target temperature (dashed), valve opening (area below) and humidity (own panel – % and °C don\'t share a scale). Labels above the chart mark when a window was opened or closed and when the target changed (rounded to 15 minutes). Tap the chart or “History ›” for all data up to 60 days, with outside temperature, each channel and exact values at any time. The top of the overview shows the outside temperature and the forecast for the next 24 hours.</string>
     <string name="help_window_title">Open window detection</string>
     <string name="help_window_text">Without window contacts the app recognises an open window from the temperature: a quick drop while the valve is closed. A rise again without heating counts as “closed”. If the heating starts while the window may still be open, the app only says “at least until”. Detection works best with dense recordings (see “Battery”).</string>
     <string name="help_model_title">Room model and predictions</string>
@@ -246,5 +253,5 @@
     <string name="help_language_title">Language</string>
     <string name="help_language_text">The app follows the system language. You can choose another language under “Info” or (Android 13+) in the system settings under “App languages”.</string>
     <string name="help_privacy_title">Privacy</string>
-    <string name="help_privacy_text">The app only talks to the Homematic IP cloud. Access data and history stay on this phone. PureHeat is an unofficial project and not affiliated with eQ-3.</string>
+    <string name="help_privacy_text">The app talks to the Homematic IP cloud and, for the weather forecast, to Open-Meteo (free, no account). Open-Meteo only receives the location of the home rounded to about 1 km, a few times a day. Access data and history stay on this phone. PureHeat is an unofficial project and not affiliated with eQ-3.</string>
 </resources>

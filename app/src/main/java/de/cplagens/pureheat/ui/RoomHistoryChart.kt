@@ -73,6 +73,10 @@ fun RoomHistoryChart(
     val actualRuns = runs(visible, breakOnGaps = false) { it.actualTemperature }
     val setPointRuns = runs(visible, breakOnGaps = false) { it.setPointTemperature }
     val valveRuns = runs(visible, breakOnGaps = true) { it.valvePosition?.coerceIn(0.0, 1.0) }
+    // Humidity in its own panel: % and °C don't share a scale (no second y-axis).
+    val humidityRuns = runs(visible, breakOnGaps = false) { it.humidity?.toDouble() }
+    val humidities = humidityRuns.flatten().map { it.second }
+    val humidityColor = MaterialTheme.colorScheme.secondary
 
     val temps = (actualRuns + setPointRuns).flatten().map { it.second }
     val actualTemps = actualRuns.flatten().map { it.second }
@@ -138,6 +142,28 @@ fun RoomHistoryChart(
                     close()
                 }
                 drawPath(path, HeatingColor.copy(alpha = 0.5f))
+            }
+        }
+
+        if (humidities.size >= 2) {
+            val hMid = (humidities.min() + humidities.max()) / 2
+            // At least 10 %rH of range, so small fluctuations stay small.
+            val hMin = minOf(humidities.min(), hMid - 5)
+            val hMax = maxOf(humidities.max(), hMid + 5)
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                LegendItem(stringResource(R.string.legend_humidity), humidityColor)
+                Spacer(Modifier.weight(1f))
+                Text(
+                    stringResource(R.string.humidity_range, humidities.min().toInt(), humidities.max().toInt()),
+                    style = MaterialTheme.typography.labelSmall,
+                    color = muted,
+                )
+            }
+            Canvas(Modifier.fillMaxWidth().height(24.dp)) {
+                fun x(t: Long) = ((t - start).toFloat() / WINDOW_MS) * size.width
+                fun y(v: Double) = (size.height * (1 - (v - hMin) / (hMax - hMin))).toFloat()
+                drawLine(gridColor, Offset(0f, size.height), Offset(size.width, size.height), strokeWidth = 1.dp.toPx())
+                humidityRuns.forEach { run -> drawLineRun(run, ::x, ::y, humidityColor) }
             }
         }
 

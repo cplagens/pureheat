@@ -9,6 +9,7 @@ import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.HistoryDao
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WeatherSample
+import de.cplagens.pureheat.data.history.ForecastSample
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.HeatingProfile
 import de.cplagens.pureheat.hmip.HeatingProfileCodec
@@ -34,6 +35,7 @@ class HeatingRepository(
     private val store: CredentialStore,
     private val dao: HistoryDao,
     private val client: HmipClient = HmipClient(),
+    private val forecastClient: ForecastClient = ForecastClient(),
 ) {
     /**
      * REST server from the lookup, kept across processes: every app start and every background
@@ -56,9 +58,30 @@ class HeatingRepository(
         // adb exec-out run-as de.cplagens.pureheat cat files/last_state.json
         debugDump("last_state.json", raw)
         val state = HeatingStateParser.parse(raw)
-        record(state, System.currentTimeMillis())
+        val now = System.currentTimeMillis()
+        record(state, now)
+        refreshForecastIfDue(state, now)
         state
     }
+
+    /**
+     * Piggybacks on the regular fetch (no extra wake-up): at most every [FORECAST_INTERVAL_MS]
+     * one small request (~5 KB) to Open-Meteo with the rounded location. Failures are ignored –
+     * the app then works with the measured outside temperature.
+     */
+    private suspend fun refreshForecastIfDue(state: HeatingState, now: Long) {
+        val location = state.location ?: return
+        val last = dao.lastForecastFetch()
+        if (last != null && now - last < FORECAST_INTERVAL_MS) return
+        runCatching {
+            val hours = forecastClient.hourlyTemperature(location)
+            if (hours.isEmpty()) return
+            dao.insertForecast(hours.map { (t, v) -> ForecastSample(t, v, now) })
+            dao.pruneForecast(before = now - FORECAST_KEEP_PAST_MS, olderFetchThan = now)
+        }.onFailure { if (BuildConfig.DEBUG) Log.d(TAG, "Forecast failed: $it") }
+    }
+
+    fun forecastSince(since: Long): Flow<List<ForecastSample>> = dao.forecastSince(since)
 
     fun roomHistorySince(since: Long): Flow<List<RoomSample>> = dao.roomSamplesSince(since)
 
@@ -73,7 +96,10 @@ class HeatingRepository(
         val since = now - RETENTION_MS
         val samples = dao.roomSamplesSinceOnce(since)
         val weather = dao.weatherSamplesSinceOnce(since)
-        return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now) }
+        // Predictions are about the coming hours: use the forecast for them when available.
+        val forecast = dao.forecastBetween(now, now + PREDICTION_HORIZON_MS).map { it.temperature }
+        val forecastOutside = forecast.takeIf { it.isNotEmpty() }?.average()
+        return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside) }
     }
 
     /** Room samples of the last two recordings (newest first) for [PollingPolicy]. */
@@ -88,6 +114,7 @@ class HeatingRepository(
         dao.clearRooms()
         dao.clearCircuits()
         dao.clearWeather()
+        dao.clearForecast()
         withContext(Dispatchers.IO) { backupDir().deleteRecursively() }
     }
 
@@ -195,6 +222,10 @@ class HeatingRepository(
     private companion object {
         const val TAG = "PureHeat"
         const val KEY_REST_URL = "rest_url"
+        const val FORECAST_INTERVAL_MS = 6 * 3_600_000L
+        const val PREDICTION_HORIZON_MS = 12 * 3_600_000L
+        // Keep a few past hours so the probe run (step 5) can compare forecast and measurement.
+        const val FORECAST_KEEP_PAST_MS = 6 * 3_600_000L
         const val MIN_SAMPLE_INTERVAL_MS = 4 * 60 * 1000L
         // 60 days: enough for the room model to see different outside temperatures (~2 MB).
         const val RETENTION_MS = 60 * 24 * 60 * 60 * 1000L

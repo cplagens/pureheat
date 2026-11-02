@@ -62,7 +62,21 @@ data class HeatingState(
     val unassignedCircuits: List<HeatingCircuit>,
     /** Current outside temperature from the cloud's weather service (`home.weather.temperature`). */
     val outsideTemperature: Double? = null,
+    /** Location of the home, already rounded to ~1 km ([GeoPoint.rounded]); used for the forecast. */
+    val location: GeoPoint? = null,
 )
+
+/** Coordinates rounded to 2 decimals (~1 km) – the exact address never leaves the app. */
+data class GeoPoint(val latitude: Double, val longitude: Double) {
+    companion object {
+        fun rounded(latitude: Double, longitude: Double): GeoPoint? {
+            if (latitude !in -90.0..90.0 || longitude !in -180.0..180.0) return null
+            if (latitude == 0.0 && longitude == 0.0) return null
+            fun r(x: Double) = Math.round(x * 100) / 100.0
+            return GeoPoint(r(latitude), r(longitude))
+        }
+    }
+}
 
 /**
  * Turns the raw `getCurrentState` JSON into rooms and heating circuits.
@@ -144,6 +158,12 @@ object HeatingStateParser {
             rooms = rooms,
             unassignedCircuits = circuits.map { it.first }.filter { it !in assigned },
             outsideTemperature = state["home"].asObject()["weather"].asObject().dbl("temperature"),
+            location = state["home"].asObject()["location"].asObject().let { loc ->
+                // The cloud sends the coordinates as strings.
+                val lat = loc.dbl("latitude") ?: loc.str("latitude")?.toDoubleOrNull()
+                val lon = loc.dbl("longitude") ?: loc.str("longitude")?.toDoubleOrNull()
+                if (lat != null && lon != null) GeoPoint.rounded(lat, lon) else null
+            },
         )
     }
 

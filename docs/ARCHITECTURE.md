@@ -47,6 +47,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | **data/** | |
 | `CredentialStore.kt` | SGTIN + Auth-Token in app-privaten SharedPreferences |
 | `HeatingRepository.kt` | Einziger Zugang zur Cloud: Zustand holen + aufzeichnen, Profile laden/speichern (Backup vorher, Prüfung nachher), Debug-Dumps |
+| `ForecastClient.kt` | Open-Meteo-Abruf (stündliche Außentemperatur, 3 Tage) mit gerundetem Standort |
 | `HistoryWorker.kt` | Sich selbst neu planende Abrufkette (`history-chain`) + stündlicher `HistoryWatchdogWorker` |
 | `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
 | `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 2): `room_sample`, `circuit_sample`, `weather_sample` |
@@ -88,15 +89,17 @@ Ressourcen: adaptives Icon in `res/mipmap-anydpi-v26/`, Vordergrund/Hintergrund/
 3. Profil erneut laden und mit dem gesendeten vergleichen; Abweichung → Fehlermeldung.
 „Rückgängig“ spielt das Backup auf demselben Weg zurück.
 
-## Datenmodell (Room, `history.db`, Version 3)
+## Datenmodell (Room, `history.db`, Version 4)
 
 | Tabelle | Schlüssel | Felder |
 |---|---|---|
 | `room_sample` | roomId + timestamp | actualTemperature, setPointTemperature, valvePosition (max. der Kanäle bzw. Gruppenwert), humidity (ab v3) |
 | `circuit_sample` | deviceId + channelIndex + timestamp | valvePosition |
 | `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`) |
+| `forecast_sample` | timestamp | temperature (Open-Meteo, stündlich), fetchedAt; bei jedem Abruf ersetzt (ab v4) |
 
-Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidity`; vorhandene Daten
+Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidity`, 3 → 4 legt
+`forecast_sample` an; vorhandene Daten
 bleiben erhalten. Die REST-Server-Adresse wird in SharedPreferences `hmip_server` gecacht
 (neuer Lookup nur nach Fehler – der Lookup-Dienst antwortet bei zu vielen Anfragen mit 418).
 Größe: ca. 1 700 Zeilen/Tag → bei 60 Tagen wenige MB.

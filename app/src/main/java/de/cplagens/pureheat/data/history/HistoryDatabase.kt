@@ -47,6 +47,14 @@ data class WeatherSample(
     val outsideTemperature: Double?,
 )
 
+/** Hourly outside temperature forecast (Open-Meteo); replaced on every fetch (since DB v4). */
+@Entity(tableName = "forecast_sample")
+data class ForecastSample(
+    @PrimaryKey val timestamp: Long,
+    val temperature: Double,
+    val fetchedAt: Long,
+)
+
 @Dao
 interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -69,6 +77,25 @@ interface HistoryDao {
 
     @Query("DELETE FROM weather_sample")
     suspend fun clearWeather()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertForecast(samples: List<ForecastSample>)
+
+    /** Old forecast hours are dropped; past hours are covered by the measured weather_sample. */
+    @Query("DELETE FROM forecast_sample WHERE timestamp < :before OR fetchedAt < :olderFetchThan")
+    suspend fun pruneForecast(before: Long, olderFetchThan: Long)
+
+    @Query("SELECT * FROM forecast_sample WHERE timestamp >= :since ORDER BY timestamp")
+    fun forecastSince(since: Long): Flow<List<ForecastSample>>
+
+    @Query("SELECT * FROM forecast_sample WHERE timestamp BETWEEN :from AND :to ORDER BY timestamp")
+    suspend fun forecastBetween(from: Long, to: Long): List<ForecastSample>
+
+    @Query("SELECT MAX(fetchedAt) FROM forecast_sample")
+    suspend fun lastForecastFetch(): Long?
+
+    @Query("DELETE FROM forecast_sample")
+    suspend fun clearForecast()
 
     @Query("SELECT MAX(timestamp) FROM room_sample")
     suspend fun lastTimestamp(): Long?
@@ -106,8 +133,8 @@ interface HistoryDao {
 }
 
 @Database(
-    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class],
-    version = 3,
+    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class],
+    version = 4,
     exportSchema = false,
 )
 abstract class HistoryDatabase : RoomDatabase() {
@@ -131,9 +158,19 @@ abstract class HistoryDatabase : RoomDatabase() {
             }
         }
 
+        /** v4: outside temperature forecast. */
+        private val MIGRATION_3_4 = object : Migration(3, 4) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `forecast_sample` (`timestamp` INTEGER NOT NULL, " +
+                        "`temperature` REAL NOT NULL, `fetchedAt` INTEGER NOT NULL, PRIMARY KEY(`timestamp`))",
+                )
+            }
+        }
+
         fun create(context: Context): HistoryDatabase =
             Room.databaseBuilder(context, HistoryDatabase::class.java, "history.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
                 .build()
     }
 }
