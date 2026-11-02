@@ -11,6 +11,13 @@ import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WeatherSample
 import de.cplagens.pureheat.data.history.ForecastSample
 import de.cplagens.pureheat.data.model.RoomInsight
+import de.cplagens.pureheat.data.model.RoomModelFitter
+import de.cplagens.pureheat.data.history.PredictionEntity
+import de.cplagens.pureheat.data.history.WindowDetector
+import de.cplagens.pureheat.data.probe.HeatUpPrediction
+import de.cplagens.pureheat.data.probe.ProbeRun
+import de.cplagens.pureheat.data.probe.Strategy
+import java.time.ZoneId
 import de.cplagens.pureheat.hmip.HeatingProfile
 import de.cplagens.pureheat.hmip.HeatingProfileCodec
 import de.cplagens.pureheat.hmip.HeatingState
@@ -83,6 +90,76 @@ class HeatingRepository(
 
     fun forecastSince(since: Long): Flow<List<ForecastSample>> = dao.forecastSince(since)
 
+    // --- Probe run (step 5) -----------------------------------------------------------------
+
+    private val probePrefs = context.getSharedPreferences("probe", Context.MODE_PRIVATE)
+
+    fun predictionsSince(roomId: String, since: Long): Flow<List<PredictionEntity>> = dao.predictionsSince(roomId, since)
+
+    /**
+     * Runs the probe at most once per [PROBE_INTERVAL_MS]: in the background only while charging
+     * (or if the last run is older than [PROBE_OVERDUE_MS]), in the foreground always when due.
+     * Loads the active profile of each room (one small request per room) – reads only.
+     */
+    suspend fun maybeRunProbe(state: HeatingState, now: Long, charging: Boolean, foreground: Boolean) {
+        val last = probePrefs.getLong(KEY_PROBE_RUN, 0L)
+        val since = now - last
+        if (since < PROBE_INTERVAL_MS) return
+        if (!foreground && !charging && since < PROBE_OVERDUE_MS) return
+        probePrefs.edit().putLong(KEY_PROBE_RUN, now).apply()
+        runCatching { runProbe(state, now) }.onFailure { if (BuildConfig.DEBUG) Log.d(TAG, "Probe run failed: $it") }
+    }
+
+    private suspend fun runProbe(state: HeatingState, now: Long) {
+        val zone = ZoneId.systemDefault()
+        val samples = dao.roomSamplesSinceOnce(now - PROBE_EVAL_LOOKBACK_MS).groupBy { it.roomId }
+
+        // 1) Evaluate predictions whose time has come.
+        val evaluated = dao.openPredictions(now).mapNotNull { p ->
+            val roomSamples = samples[p.roomId].orEmpty()
+            val result = ProbeRun.evaluate(
+                HeatUpPrediction(p.eventTime, p.targetTemperature, p.startTemperature, p.predictedReach),
+                roomSamples,
+                WindowDetector.detect(roomSamples),
+                now,
+            ) ?: return@mapNotNull null
+            p.copy(evaluatedAt = now, actualReach = result.actualReach, outcome = result.outcome)
+        }
+        dao.insertPredictions(evaluated)
+
+        // 2) Predict the next 24 h from the active profiles, the room models and the forecast.
+        val insights = roomInsights(now)
+        val forecast = dao.forecastFrom(now - 3_600_000L)
+        val fallbackOutside = state.outsideTemperature ?: 5.0
+        val outsideAt: (Long) -> Double = { t ->
+            forecast.minByOrNull { kotlin.math.abs(it.timestamp - t) }
+                ?.takeIf { kotlin.math.abs(it.timestamp - t) <= 2 * 3_600_000L }?.temperature ?: fallbackOutside
+        }
+        val predictions = state.rooms.flatMap { room ->
+            val temp = room.actualTemperature ?: return@flatMap emptyList()
+            val ref = room.profiles.firstOrNull { it.index == room.activeProfile } ?: return@flatMap emptyList()
+            val profile = runCatching { loadProfile(room.id, ref.index, ref.profileId) }.getOrNull()
+                ?: return@flatMap emptyList()
+            val fitted = insights[room.id]?.model ?: RoomModelFitter.fit(emptyList())
+            val (model, source) = ProbeRun.modelFor(fitted)
+            ProbeRun.predict(model, temp, now, profile.days, zone, outsideAt).map {
+                PredictionEntity(
+                    roomId = room.id,
+                    strategy = Strategy.PHYSICS,
+                    eventTime = it.eventTime,
+                    createdAt = now,
+                    targetTemperature = it.target,
+                    startTemperature = it.startTemperature,
+                    predictedReach = it.predictedReach,
+                    modelSource = source,
+                )
+            }
+        }
+        dao.insertPredictions(predictions)
+        dao.deletePredictionsBefore(now - RETENTION_MS)
+        if (BuildConfig.DEBUG) Log.d(TAG, "Probe run: ${evaluated.size} evaluated, ${predictions.size} predicted")
+    }
+
     fun roomHistorySince(since: Long): Flow<List<RoomSample>> = dao.roomSamplesSince(since)
 
     fun circuitHistorySince(since: Long): Flow<List<CircuitSample>> = dao.circuitSamplesSince(since)
@@ -115,6 +192,8 @@ class HeatingRepository(
         dao.clearCircuits()
         dao.clearWeather()
         dao.clearForecast()
+        dao.clearPredictions()
+        probePrefs.edit().clear().apply()
         withContext(Dispatchers.IO) { backupDir().deleteRecursively() }
     }
 
@@ -224,6 +303,10 @@ class HeatingRepository(
         const val KEY_REST_URL = "rest_url"
         const val FORECAST_INTERVAL_MS = 6 * 3_600_000L
         const val PREDICTION_HORIZON_MS = 12 * 3_600_000L
+        const val KEY_PROBE_RUN = "last_run"
+        const val PROBE_INTERVAL_MS = 20 * 3_600_000L
+        const val PROBE_OVERDUE_MS = 36 * 3_600_000L
+        const val PROBE_EVAL_LOOKBACK_MS = 3 * 24 * 3_600_000L
         // Keep a few past hours so the probe run (step 5) can compare forecast and measurement.
         const val FORECAST_KEEP_PAST_MS = 6 * 3_600_000L
         const val MIN_SAMPLE_INTERVAL_MS = 4 * 60 * 1000L

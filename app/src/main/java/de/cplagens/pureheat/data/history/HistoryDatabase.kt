@@ -55,6 +55,29 @@ data class ForecastSample(
     val fetchedAt: Long,
 )
 
+/**
+ * One heat-up prediction of the probe run (step 5, since DB v5). [strategy] lets other models
+ * (grey box, AI in simulation mode) predict side by side with the physics model.
+ */
+@Entity(
+    tableName = "prediction",
+    primaryKeys = ["roomId", "strategy", "eventTime"],
+    indices = [Index("eventTime")],
+)
+data class PredictionEntity(
+    val roomId: String,
+    val strategy: String,
+    val eventTime: Long,
+    val createdAt: Long,
+    val targetTemperature: Double,
+    val startTemperature: Double,
+    val predictedReach: Long?,
+    val modelSource: String,
+    val evaluatedAt: Long? = null,
+    val actualReach: Long? = null,
+    val outcome: String? = null,
+)
+
 @Dao
 interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -97,6 +120,28 @@ interface HistoryDao {
     @Query("DELETE FROM forecast_sample")
     suspend fun clearForecast()
 
+    @Query("SELECT * FROM forecast_sample WHERE timestamp >= :from ORDER BY timestamp")
+    suspend fun forecastFrom(from: Long): List<ForecastSample>
+
+    /** Replaces predictions that are not evaluated yet (re-planned with newer data). */
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertPredictions(predictions: List<PredictionEntity>)
+
+    @Query("SELECT * FROM prediction WHERE evaluatedAt IS NULL AND eventTime < :now")
+    suspend fun openPredictions(now: Long): List<PredictionEntity>
+
+    @Query("SELECT * FROM prediction WHERE roomId = :roomId AND eventTime >= :since ORDER BY eventTime")
+    fun predictionsSince(roomId: String, since: Long): Flow<List<PredictionEntity>>
+
+    @Query("SELECT * FROM prediction WHERE eventTime >= :since ORDER BY eventTime")
+    suspend fun allPredictionsSince(since: Long): List<PredictionEntity>
+
+    @Query("DELETE FROM prediction WHERE eventTime < :before")
+    suspend fun deletePredictionsBefore(before: Long)
+
+    @Query("DELETE FROM prediction")
+    suspend fun clearPredictions()
+
     @Query("SELECT MAX(timestamp) FROM room_sample")
     suspend fun lastTimestamp(): Long?
 
@@ -133,8 +178,8 @@ interface HistoryDao {
 }
 
 @Database(
-    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class],
-    version = 4,
+    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class, PredictionEntity::class],
+    version = 5,
     exportSchema = false,
 )
 abstract class HistoryDatabase : RoomDatabase() {
@@ -168,9 +213,23 @@ abstract class HistoryDatabase : RoomDatabase() {
             }
         }
 
+        /** v5: probe run predictions. */
+        private val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `prediction` (`roomId` TEXT NOT NULL, `strategy` TEXT NOT NULL, " +
+                        "`eventTime` INTEGER NOT NULL, `createdAt` INTEGER NOT NULL, `targetTemperature` REAL NOT NULL, " +
+                        "`startTemperature` REAL NOT NULL, `predictedReach` INTEGER, `modelSource` TEXT NOT NULL, " +
+                        "`evaluatedAt` INTEGER, `actualReach` INTEGER, `outcome` TEXT, " +
+                        "PRIMARY KEY(`roomId`, `strategy`, `eventTime`))",
+                )
+                db.execSQL("CREATE INDEX IF NOT EXISTS `index_prediction_eventTime` ON `prediction` (`eventTime`)")
+            }
+        }
+
         fun create(context: Context): HistoryDatabase =
             Room.databaseBuilder(context, HistoryDatabase::class.java, "history.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
                 .build()
     }
 }

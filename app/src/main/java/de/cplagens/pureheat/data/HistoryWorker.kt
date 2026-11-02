@@ -30,7 +30,9 @@ class HistoryWorker(context: Context, params: WorkerParameters) : CoroutineWorke
         val app = applicationContext as PureHeatApp
         val creds = app.credentialStore.load() ?: return Result.success()
         val delay = try {
-            app.repository.fetch(creds)
+            val state = app.repository.fetch(creds)
+            // Daily probe run (step 5): preferably while charging, so it costs no battery.
+            app.repository.maybeRunProbe(state, System.currentTimeMillis(), isCharging(), foreground = false)
             val (latest, previous) = app.repository.lastTwoRecordings()
             PollingPolicy.nextDelayMinutes(latest, previous, Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
         } catch (e: Exception) {
@@ -40,6 +42,11 @@ class HistoryWorker(context: Context, params: WorkerParameters) : CoroutineWorke
         if (BuildConfig.DEBUG) Log.d("PureHeat", "HistoryWorker: next run in $delay min")
         enqueueNext(applicationContext, delay, ExistingWorkPolicy.APPEND_OR_REPLACE)
         return Result.success()
+    }
+
+    private fun isCharging(): Boolean {
+        val bm = applicationContext.getSystemService(Context.BATTERY_SERVICE) as android.os.BatteryManager
+        return bm.isCharging
     }
 
     companion object {

@@ -1,7 +1,8 @@
 # PureHeat – Nächste Schritte
 
 Stand: 2026-11-02. Dieses Dokument ist der Einstieg für eine neue Agent-Session.
-**Nächster Schritt: Schritt 5 (Probelauf).** Daneben offen: Übersetzungen (siehe „Mehrsprachigkeit“).
+**Nächste Schritte:** Übersetzungen (siehe „Mehrsprachigkeit“), dann Schritt 6 (Komfortzeiten und
+Optimal-Profil, zunächst nur als Vorschlag). Der Probelauf (Schritt 5) sammelt ab 2026-11-02 Daten.
 Erst `CLAUDE.md` (Regeln) und [ARCHITECTURE.md](ARCHITECTURE.md) (Aufbau, API-Erkenntnisse) lesen.
 
 ## Ziel
@@ -239,7 +240,35 @@ Offen / beobachten:
 - Offen: Prognose in der Detailansicht als Fortsetzung der Außen-Kurve in die Zukunft zeigen;
   für Schritt 5/6 die stündliche Prognose zur jeweiligen Uhrzeit verwenden statt eines Mittels.
 
-## Schritt 5 – Probelauf mit Trefferquote
+## Schritt 5 – Probelauf mit Trefferquote (umgesetzt 2026-11-02, sammelt jetzt Daten)
+
+Umgesetzt:
+- `data/model/RoomSimulator.kt`: Vorwärtssimulation (5-min-Schritte) wie ein Thermostat – Ventil
+  auf bei ≤ Soll − 0,2 K, zu bei Soll; Totzeit nur nach ≥ 2 h geschlossenem Ventil (Estrich noch
+  warm). Basis auch für Schritt 6 (Optimal-Profil) und 7 (Ersparnis).
+- `data/probe/ProbeRun.kt`: Vorhersage aller Soll-Anstiege (≥ 0,4 K) der nächsten 24 h aus dem
+  aktiven Profil, Raummodell und stündlicher Prognose; Auswertung nach 12 h: erreicht = Ist ≥
+  Ziel − 0,2 K; „pünktlich“ = ±30 min; nicht gewertet bei offenem Fenster (±2 h) oder manuellem
+  Sollwert. Solange ein Raum k/P nicht kennt: Startwerte k 0,02/h, P 0,8 K/h, Totzeit 1,5 h
+  (`ModelSource.PRIOR`, in der Anzeige „Startwerte“).
+- Tabelle `prediction` (DB v5) mit Spalte `strategy` (jetzt `physics`; später Grey-Box/KI im
+  Simulationsmodus daneben).
+- Tageslauf `HeatingRepository.maybeRunProbe`: höchstens alle 20 h; im Hintergrund nur beim
+  Laden (oder wenn > 36 h her), in der geöffneten App sofort. Lädt pro Raum das aktive Profil
+  (~1–2 KB je Raum). Kein eigener Nachtjob nötig – hängt an der Abrufkette.
+- Detailansicht: Karte „Probelauf“ mit Trefferquote (14 Tage), Freigabe-Status, geplanten und
+  ausgewerteten Vorhersagen; Hilfe-Abschnitt „Probelauf“.
+- Am Gerät: erster Lauf 2026-11-02 20:43 – 6 Profile geladen, 7 Vorhersagen.
+
+Offen / beobachten:
+1. Ab 2026-11-03 die ersten Auswertungen ansehen; Räume mit Nachtlüftung (Zimmer 1–3) werden
+   oft „zählt nicht“ sein, wenn das Fenster beim Heizbeginn noch offen ist.
+2. Sollwert-Niveau: kurzzeitige Testwerte (26 °C in Zimmer 2) ziehen das 90.-Perzentil noch bis
+   zu 7 Tage hoch – ggf. Werte aus dem Profil statt aus der Historie nehmen.
+3. Residuen (Vorhersage − Messung) zusätzlich als Zeitreihe speichern, wenn eine Grey-Box-
+   oder KI-Strategie dazukommt.
+
+Ursprünglicher Plan:
 
 - Nachtjob erstellt pro Raum Vorhersagen für den nächsten Tag aus dem **aktuell aktiven Profil**:
   für jeden Wechsel Grund → Phase „Zieltemperatur erreicht um …“ und für jeden Wechsel

@@ -20,6 +20,10 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.map
+import de.cplagens.pureheat.data.history.PredictionEntity
+import de.cplagens.pureheat.data.probe.Outcome
+import de.cplagens.pureheat.data.probe.ProbeScore
 import kotlinx.coroutines.launch
 import de.cplagens.pureheat.data.model.RoomInsight
 
@@ -85,6 +89,42 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
     init {
         viewModelScope.launch {
             _insight.value = runCatching { repository.roomInsights()[roomId] }.getOrNull()
+        }
+    }
+
+    /** Probe run of this room: predictions of the last 14 days plus the planned ones, and the score. */
+    val probe: StateFlow<ProbeState> = repository.predictionsSince(roomId, System.currentTimeMillis() - SCORE_WINDOW_MS)
+        .map { ProbeState.from(it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProbeState())
+
+    private companion object {
+        const val SCORE_WINDOW_MS = 14 * 24 * 3_600_000L
+    }
+}
+
+data class ProbeState(
+    val predictions: List<PredictionEntity> = emptyList(),
+    val score: ProbeScore = ProbeScore(0, 0, null, 0),
+) {
+    companion object {
+        fun from(predictions: List<PredictionEntity>): ProbeState {
+            // Disturbed ones (open window, manual change) don't count.
+            val counted = predictions.filter { it.outcome != null && it.outcome != Outcome.DISTURBED }
+            val errors = counted.mapNotNull { p ->
+                val a = p.actualReach
+                val b = p.predictedReach
+                if (a != null && b != null) kotlin.math.abs(a - b) / 60_000 else null
+            }
+            val days = counted.map { it.eventTime / 86_400_000L }.distinct().size
+            return ProbeState(
+                predictions = predictions,
+                score = ProbeScore(
+                    evaluated = counted.size,
+                    hits = counted.count { it.outcome == Outcome.HIT },
+                    meanAbsErrorMinutes = errors.takeIf { it.isNotEmpty() }?.average()?.toLong(),
+                    days = days,
+                ),
+            )
         }
     }
 }

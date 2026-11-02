@@ -40,6 +40,9 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.history.PhaseKind
 import de.cplagens.pureheat.data.history.ThermalPhase
+import de.cplagens.pureheat.data.history.PredictionEntity
+import de.cplagens.pureheat.data.probe.ModelSource
+import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.hmip.Room
 import java.util.Date
@@ -60,6 +63,7 @@ fun RoomDetailScreen(
 ) {
     val state by vm.ui.collectAsStateWithLifecycle()
     val insight by vm.insight.collectAsStateWithLifecycle()
+    val probe by vm.probe.collectAsStateWithLifecycle()
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
     val ctx = LocalContext.current
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
@@ -212,6 +216,7 @@ fun RoomDetailScreen(
 
         if (room.actualTemperature != null) {
             item { ModelCard(insight) }
+            item { ProbeCard(probe) }
             item {
                 Text(stringResource(R.string.windows_title), style = MaterialTheme.typography.titleMedium)
                 if (state.windows.isEmpty()) {
@@ -276,6 +281,72 @@ private fun ModelCard(insight: RoomInsight?) {
             Text(stringResource(R.string.model_explanation), style = MaterialTheme.typography.bodySmall, color = muted)
         }
     }
+}
+
+/** Probe run (step 5): how well the predictions matched reality. Nothing is written to the heating. */
+@Composable
+private fun ProbeCard(probe: ProbeState) {
+    val ctx = LocalContext.current
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val s = probe.score
+    Card(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(stringResource(R.string.probe_title), style = MaterialTheme.typography.labelLarge)
+            Text(stringResource(R.string.probe_explanation), style = MaterialTheme.typography.bodySmall, color = muted)
+            if (probe.predictions.isEmpty()) {
+                Text(stringResource(R.string.probe_none), style = MaterialTheme.typography.bodySmall)
+                return@Column
+            }
+            if (s.evaluated > 0) {
+                Text(
+                    stringResource(
+                        R.string.probe_score,
+                        s.evaluated,
+                        (s.hitRate * 100).toInt(),
+                        s.meanAbsErrorMinutes?.toString() ?: "–",
+                        s.days,
+                    ),
+                    style = MaterialTheme.typography.bodyMedium,
+                )
+            }
+            Text(
+                stringResource(if (s.trustworthy) R.string.probe_ready else R.string.probe_not_ready),
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
+            val now = System.currentTimeMillis()
+            // Planned first, then the most recent results.
+            val planned = probe.predictions.filter { it.eventTime >= now }.take(3)
+            val past = probe.predictions.filter { it.eventTime < now }.asReversed().take(8)
+            (planned + past).forEach { p -> Text(describePrediction(ctx, p, now), style = MaterialTheme.typography.bodySmall) }
+        }
+    }
+}
+
+private fun describePrediction(ctx: Context, p: PredictionEntity, now: Long): String {
+    val time: (Long) -> String = { DateFormat.getTimeFormat(ctx).format(Date(it)) }
+    val event = dayTime(ctx, p.eventTime, "EEE Hm")
+    val predicted = p.predictedReach?.let(time) ?: ctx.getString(R.string.probe_not_reached)
+    val prior = if (p.modelSource == ModelSource.PRIOR) ctx.getString(R.string.probe_prior) else ""
+    if (p.eventTime >= now || p.outcome == null) {
+        return ctx.getString(R.string.probe_planned, event, p.targetTemperature, predicted) + prior
+    }
+    val actual = p.actualReach?.let(time) ?: ctx.getString(R.string.probe_not_reached)
+    val delta = if (p.actualReach != null && p.predictedReach != null) {
+        ctx.getString(R.string.probe_delta, (p.actualReach - p.predictedReach) / 60_000)
+    } else {
+        ""
+    }
+    val outcome = ctx.getString(
+        when (p.outcome) {
+            Outcome.HIT -> R.string.outcome_hit
+            Outcome.EARLY -> R.string.outcome_early
+            Outcome.LATE -> R.string.outcome_late
+            Outcome.NOT_REACHED -> R.string.outcome_not_reached
+            else -> R.string.outcome_disturbed
+        },
+    )
+    return ctx.getString(R.string.probe_result, event, p.targetTemperature, predicted, actual, delta, outcome) + prior
 }
 
 @Composable

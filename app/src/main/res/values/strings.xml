@@ -158,6 +158,24 @@
     <string name="model_levels">Setback/comfort temperature (from the setpoints of the last 7 days): %1$.1f / %2$.1f °C</string>
     <string name="model_explanation">The model assumes that the room heats up evenly with the valve open and cools towards the outside temperature with the valve closed. The more days with different weather, the more accurate it gets.</string>
 
+    <!-- Probe run -->
+    <string name="probe_title">Probe run (prediction vs. reality)</string>
+    <string name="probe_explanation">Once a day the app predicts from the active profile, the room model and the forecast when each heat-up will reach its target, and compares this with the measurement afterwards. Nothing is changed at the heating. Times with an open window or a manual change don\'t count.</string>
+    <string name="probe_none">No predictions yet – the first ones are made at the next daily run.</string>
+    <string name="probe_score">Evaluated: %1$d · on time (±30 min): %2$d %% · off by %3$s min on average · %4$d days</string>
+    <string name="probe_ready">Accurate enough: the optimal control can be offered for this room.</string>
+    <string name="probe_not_ready">The optimal control is offered after 14 days with ≥ 80 % on time and ≤ 30 min average deviation.</string>
+    <string name="probe_planned">Planned %1$s → %2$.1f °C: expected %3$s</string>
+    <string name="probe_result">%1$s → %2$.1f °C: expected %3$s · actual %4$s%5$s · %6$s</string>
+    <string name="probe_delta">" (%+d min)"</string>
+    <string name="probe_not_reached">not reached</string>
+    <string name="probe_prior">" · starting values"</string>
+    <string name="outcome_hit">on time</string>
+    <string name="outcome_early">earlier</string>
+    <string name="outcome_late">later</string>
+    <string name="outcome_not_reached">not reached</string>
+    <string name="outcome_disturbed">not counted (window/manual change)</string>
+
     <!-- Heating profiles -->
     <string name="profiles_title">Heating profiles</string>
     <string name="profile_n">Profile %s</string>
@@ -246,6 +264,8 @@
     <string name="help_window_text">Without window contacts the app recognises an open window from the temperature: a quick drop while the valve is closed. A rise again without heating counts as “closed”. If the heating starts while the window may still be open, the app only says “at least until”. Detection works best with dense recordings (see “Battery”).</string>
     <string name="help_model_title">Room model and predictions</string>
     <string name="help_model_text">From the recorded phases the app learns per room how fast it loses heat (k), how strongly the floor heating heats it (P) and how long the screed takes to respond (dead time). From this it predicts how long the room needs from setback to comfort temperature and back at the current outside temperature. Open-window times are left out. Until enough phases have been seen, it shows “still learning”.</string>
+    <string name="help_probe_title">Probe run</string>
+    <string name="help_probe_text">Before the app may ever control the heating, it has to prove that its predictions are right. Once a day it predicts for each room when the next heat-ups of the active profile will reach their target, and checks this against the measurement afterwards. The detail view shows the hit rate. Only after 14 days with at least 80 % on time is an optimal control offered – and you switch it on yourself.</string>
     <string name="help_profiles_title">Heating profiles</string>
     <string name="help_profiles_text">“Heating profile ›” shows the weekly profiles of a room. Tap a day to edit it: drag the edges of the phases, set start, end and temperature precisely, copy a day to others. Before saving, the app lists every change, backs up the old version, saves and then reads the profile back to check it. “Undo last save” restores the backup. Nothing is written without your confirmation.</string>
     <string name="help_battery_title">Battery and data</string>

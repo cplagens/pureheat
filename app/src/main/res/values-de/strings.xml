@@ -151,6 +151,24 @@
     <string name="model_levels">Spar-/Komforttemperatur (aus den Sollwerten der letzten 7 Tage): %1$.1f / %2$.1f °C</string>
     <string name="model_explanation">Das Modell nimmt an, dass der Raum mit offenem Ventil gleichmäßig heizt und mit geschlossenem Ventil Richtung Außentemperatur abkühlt. Je mehr Tage mit unterschiedlichem Wetter, desto genauer.</string>
 
+    <!-- Probelauf -->
+    <string name="probe_title">Probelauf (Vorhersage vs. Wirklichkeit)</string>
+    <string name="probe_explanation">Einmal am Tag sagt die App aus dem aktiven Heizprofil, dem Raummodell und der Prognose vorher, wann jede Aufheizphase ihr Ziel erreicht, und vergleicht das danach mit der Messung. An der Heizung wird nichts verändert. Zeiten mit offenem Fenster oder manueller Änderung zählen nicht.</string>
+    <string name="probe_none">Noch keine Vorhersagen – die ersten entstehen beim nächsten Tageslauf.</string>
+    <string name="probe_score">Bewertet: %1$d · pünktlich (±30 min): %2$d %% · im Schnitt %3$s min daneben · %4$d Tage</string>
+    <string name="probe_ready">Genau genug: Für diesen Raum kann die Optimal-Steuerung angeboten werden.</string>
+    <string name="probe_not_ready">Die Optimal-Steuerung wird angeboten ab 14 Tagen mit ≥ 80 % pünktlich und ≤ 30 min mittlerer Abweichung.</string>
+    <string name="probe_planned">Geplant %1$s → %2$.1f °C: erwartet %3$s</string>
+    <string name="probe_result">%1$s → %2$.1f °C: erwartet %3$s · tatsächlich %4$s%5$s · %6$s</string>
+    <string name="probe_delta">" (%+d min)"</string>
+    <string name="probe_not_reached">nicht erreicht</string>
+    <string name="probe_prior">" · Startwerte"</string>
+    <string name="outcome_hit">pünktlich</string>
+    <string name="outcome_early">früher</string>
+    <string name="outcome_late">später</string>
+    <string name="outcome_not_reached">nicht erreicht</string>
+    <string name="outcome_disturbed">zählt nicht (Fenster/manuelle Änderung)</string>
+
     <!-- Heizprofile -->
     <string name="profiles_title">Heizprofile</string>
     <string name="profile_n">Profil %s</string>
@@ -239,6 +257,8 @@
     <string name="help_window_text">Ohne Fensterkontakte erkennt die App ein offenes Fenster an der Temperatur: ein schneller Sturz bei geschlossenem Ventil. Ein Wiederanstieg ohne Heizen gilt als „zu“. Startet die Heizung, während das Fenster vielleicht noch offen ist, schreibt die App nur „mindestens bis“. Am besten funktioniert die Erkennung mit dichten Aufzeichnungen (siehe „Akku“).</string>
     <string name="help_model_title">Raummodell und Vorhersagen</string>
     <string name="help_model_text">Aus den aufgezeichneten Phasen lernt die App für jeden Raum, wie schnell er Wärme verliert (k), wie stark die Fußbodenheizung ihn aufheizt (P) und wie lange der Estrich braucht, bis er reagiert (Totzeit). Daraus sagt sie vorher, wie lange der Raum bei der aktuellen Außentemperatur von der Spar- zur Komforttemperatur und zurück braucht. Fenster-offen-Zeiten werden ausgeklammert. Bis genug Phasen beobachtet wurden, steht dort „lernt noch“.</string>
+    <string name="help_probe_title">Probelauf</string>
+    <string name="help_probe_text">Bevor die App jemals die Heizung steuern darf, muss sie zeigen, dass ihre Vorhersagen stimmen. Einmal am Tag sagt sie für jeden Raum vorher, wann die nächsten Aufheizphasen des aktiven Profils ihr Ziel erreichen, und prüft das danach an der Messung. Die Detailansicht zeigt die Trefferquote. Erst nach 14 Tagen mit mindestens 80 % pünktlich wird eine Optimal-Steuerung angeboten – und du schaltest sie selbst ein.</string>
     <string name="help_profiles_title">Heizprofile</string>
     <string name="help_profiles_text">„Heizprofil ›“ zeigt die Wochenprofile eines Raums. Einen Tag antippen zum Bearbeiten: Ränder der Phasen ziehen, Beginn, Ende und Temperatur genau einstellen, einen Tag auf andere übertragen. Vor dem Speichern listet die App jede Änderung auf, sichert die alte Version, speichert und liest das Profil zur Kontrolle zurück. „Letzte Speicherung rückgängig“ stellt die Sicherung wieder her. Ohne deine Bestätigung wird nichts geschrieben.</string>
     <string name="help_battery_title">Akku und Daten</string>

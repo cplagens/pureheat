@@ -54,6 +54,8 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Phasen „Ventil offen/zu“ (mit Totzeit-Tiefpunkt und Ende des freien Aufheizens) |
 | `history/WindowDetection.kt` | Reine Heuristik: Fenster offen aus Temperatursturz/-anstieg (+ Luftfeuchte) bei geschlossenem Ventil; Ausklammern dieser Zeiten fürs Modell |
 | `model/RoomModel.kt` | Reines Wärmemodell je Raum (k, P, Totzeit), Anpassung aus Phasen, Vorhersage Aufheiz-/Abkühlzeit; `SetPointLevels` (Spar-/Komforttemperatur aus Sollwerten) |
+| `model/RoomSimulator.kt` | Reine Vorwärtssimulation eines Raums (Thermostat-Verhalten, Totzeit, Prognose) |
+| `probe/ProbeRun.kt` | Reiner Probelauf: Vorhersage der Aufheizzeiten aus dem aktiven Profil, Auswertung gegen die Messung, Trefferquote |
 | `model/RoomInsight.kt` | Modell + Spar/Komfort + Außentemperatur je Raum, mit fertigen Vorhersagen |
 | **ui/** | |
 | `MainViewModel.kt` | Setup/Registrierung, Polling alle 5 min solange sichtbar, 24-h-Verlauf + Warnungen fürs Dashboard |
@@ -89,13 +91,14 @@ Ressourcen: adaptives Icon in `res/mipmap-anydpi-v26/`, Vordergrund/Hintergrund/
 3. Profil erneut laden und mit dem gesendeten vergleichen; Abweichung → Fehlermeldung.
 „Rückgängig“ spielt das Backup auf demselben Weg zurück.
 
-## Datenmodell (Room, `history.db`, Version 4)
+## Datenmodell (Room, `history.db`, Version 5)
 
 | Tabelle | Schlüssel | Felder |
 |---|---|---|
 | `room_sample` | roomId + timestamp | actualTemperature, setPointTemperature, valvePosition (max. der Kanäle bzw. Gruppenwert), humidity (ab v3) |
 | `circuit_sample` | deviceId + channelIndex + timestamp | valvePosition |
 | `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`) |
+| `prediction` | roomId + strategy + eventTime | Probelauf: Ziel, Starttemperatur, vorhergesagte/tatsächliche Erreichzeit, Modellquelle (fit/prior), Ergebnis (ab v5) |
 | `forecast_sample` | timestamp | temperature (Open-Meteo, stündlich), fetchedAt; bei jedem Abruf ersetzt (ab v4) |
 
 Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidity`, 3 → 4 legt
@@ -175,7 +178,8 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
 
 `./gradlew testDebugUnitTest` – JVM-Unit-Tests für die reinen Kotlin-Teile:
 `HeatingStateParserTest`, `HeatingProfileTest`, `HistoryAnalysisTest`, `ThermalPhaseTest`,
-`PollingPolicyTest`, `RoomModelTest` (simulierter Raum mit bekannten Parametern), `WindowDetectorTest`.
+`PollingPolicyTest`, `RoomModelTest` (simulierter Raum mit bekannten Parametern), `WindowDetectorTest`,
+`ForecastTest`, `ProbeRunTest`.
 JSON-Beispiele in Tests sind anonymisiert.
 
 ## Debugging
