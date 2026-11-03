@@ -1,10 +1,7 @@
 # PureHeat – Nächste Schritte
 
-Stand: 2026-11-03. Dieses Dokument ist der Einstieg für eine neue Agent-Session.
-**Nächste Schritte:** Raumeigenschaften am Gerät prüfen (Gemini Nano verfügbar? Diktieren?),
-dann Schritt 6 (Komfortzeiten und Optimal-Profil, zunächst nur als Vorschlag). Der Probelauf
-(Schritt 5) sammelt ab 2026-11-02 Daten.
-Erst `CLAUDE.md` (Regeln) und [ARCHITECTURE.md](ARCHITECTURE.md) (Aufbau, API-Erkenntnisse) lesen.
+Roadmap und ausführliches Protokoll je Schritt. **Einstieg ist [STATUS.md](STATUS.md)** – dieses
+Dokument nur abschnittsweise lesen (Überschrift per Grep suchen).
 
 ## Ziel
 
@@ -29,7 +26,13 @@ Heizzeit/Kosten das spart.
 - **Später evtl. Raspberry Pi:** Modell, Prognose und Profilberechnung in **reinem Kotlin ohne
   Android-Abhängigkeiten** schreiben (wie `HistoryAnalysis`, `ProfileEditing`), damit sie später
   in ein JVM-Modul `:core` umziehen können. Vorerst bleibt alles auf dem Telefon.
-- UI-Texte in Ressourcen (Englisch Standard, Deutsch für den Nutzer); Daten bleiben 60 Tage gespeichert.
+- UI-Texte in Ressourcen (Englisch Standard, Deutsch für den Nutzer + 10 weitere Sprachen).
+- **Aufbewahrung 2 Jahre** (seit 2026-11-03, vorher 60 Tage): Trainingsdaten für eine spätere
+  KI/Grey-Box im Simulationsmodus über ganze Heizperioden. Das Raummodell rechnet weiter nur mit
+  den letzten 60 Tagen (`MODEL_WINDOW_MS`), Vorhersagen (`prediction`) bleiben ebenfalls 2 Jahre.
+- **Detailansicht konfigurierbar** (2026-11-03): „Ansicht“ blendet Bereiche aus (Temperatur,
+  Ventile, Luftfeuchte, Raumeigenschaften, Modell, Probelauf, Fenster, Phasen); gilt für alle
+  Räume, gespeichert werden die ausgeblendeten (`ViewSettings`), Standard: alles sichtbar.
 - **Messgrößen mit verschiedenen Einheiten nie auf einer gemeinsamen Achse** (z. B. °C und % rF):
   eigene Felder mit gemeinsamer Zeitachse (so auch die Luftfeuchte, 2026-11-02).
 

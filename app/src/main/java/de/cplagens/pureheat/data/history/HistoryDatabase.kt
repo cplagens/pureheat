@@ -155,8 +155,8 @@ interface HistoryDao {
     @Query("SELECT * FROM room_sample WHERE timestamp >= :since ORDER BY timestamp")
     fun roomSamplesSince(since: Long): Flow<List<RoomSample>>
 
-    @Query("SELECT * FROM room_sample WHERE roomId = :roomId ORDER BY timestamp")
-    suspend fun roomSamples(roomId: String): List<RoomSample>
+    @Query("SELECT * FROM room_sample WHERE roomId = :roomId AND timestamp >= :since ORDER BY timestamp")
+    suspend fun roomSamples(roomId: String, since: Long): List<RoomSample>
 
     @Query("SELECT * FROM room_sample WHERE timestamp >= :since ORDER BY timestamp")
     suspend fun roomSamplesSinceOnce(since: Long): List<RoomSample>

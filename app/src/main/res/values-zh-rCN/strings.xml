@@ -331,4 +331,10 @@
     <string name="usage_hall">走廊</string>
     <string name="help_props_title">房间属性</string>
     <string name="help_props_text">在房间历史中的“描述房间 ›”里，您可以用自己的话描述房间，输入或语音均可 – 例如面积、层高、几扇窗朝哪个方向、玻璃、外墙、顶层阁楼或位于地下室之上、地面材料、卷帘、火炉、用作卧室、夜间开窗通风。在具备设备端 AI（Gemini Nano）的设备上，应用用它来识别属性，否则按关键词识别；保存前请检查并修正结果。在房间模型从历史中学习之前，这些属性决定其初始值（例如地毯升温更慢，顶层阁楼房间散热更快）。今后朝南的窗户将用于考虑日照。</string>
+
+    <string name="view_customize">视图</string>
+    <string name="view_title">在房间视图中显示</string>
+    <string name="section_valves">阀门开度</string>
+    <string name="section_probe">试运行</string>
+    <string name="section_phases">阶段</string>
 </resources>

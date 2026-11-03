@@ -357,4 +357,11 @@
     <string name="help_language_text">The app follows the system language. You can choose another language under “Info” or (Android 13+) in the system settings under “App languages”.</string>
     <string name="help_privacy_title">Privacy</string>
     <string name="help_privacy_text">The app talks to the Homematic IP cloud and, for the weather forecast, to Open-Meteo (free, no account). Open-Meteo only receives the location of the home rounded to about 1 km, a few times a day. Access data and history stay on this phone. PureHeat is an unofficial project and not affiliated with eQ-3.</string>
+
+    <!-- Customisable detail view -->
+    <string name="view_customize">View</string>
+    <string name="view_title">Shown in the room view</string>
+    <string name="section_valves">Valve opening</string>
+    <string name="section_probe">Probe run</string>
+    <string name="section_phases">Phases</string>
 </resources>

@@ -334,4 +334,10 @@
     <string name="usage_hall">Gang</string>
     <string name="help_props_title">Kamereigenschappen</string>
     <string name="help_props_text">Onder ‘Kamer beschrijven ›’ in de geschiedenis van een kamer beschrijf je die in je eigen woorden, getypt of gedicteerd – bijv. grootte, plafondhoogte, hoeveel ramen op welke windrichting, beglazing, buitenmuren, zolder of boven een kelder, vloerbedekking, rolluiken, een kachel, gebruik als slaapkamer, ’s nachts raam op een kier. Op apparaten met AI op het apparaat (Gemini Nano) herkent de app de eigenschappen daarmee, anders via trefwoorden; je controleert en corrigeert het resultaat voor het opslaan. Tot het kamermodel uit de geschiedenis heeft geleerd, bepalen deze eigenschappen de startwaarden (bijv. tapijt verwarmt langzamer, een kamer onder het dak verliest sneller warmte). Later helpen ramen op het zuiden om zonneschijn mee te nemen.</string>
+
+    <string name="view_customize">Weergave</string>
+    <string name="view_title">Tonen in de kamerweergave</string>
+    <string name="section_valves">Klepopening</string>
+    <string name="section_probe">Proefrun</string>
+    <string name="section_phases">Fasen</string>
 </resources>

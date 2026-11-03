@@ -337,4 +337,10 @@
     <string name="usage_hall">Couloir</string>
     <string name="help_props_title">Caractéristiques de la pièce</string>
     <string name="help_props_text">Sous « Décrire la pièce › » dans l’historique d’une pièce, vous la décrivez avec vos propres mots, tapés ou dictés – p. ex. surface, hauteur sous plafond, combien de fenêtres et leur orientation, vitrage, murs extérieurs, sous les combles ou au-dessus d’une cave, revêtement de sol, volets roulants, un poêle, usage en chambre, fenêtre entrouverte la nuit. Sur les appareils dotés d’une IA intégrée (Gemini Nano), l’app reconnaît les caractéristiques avec elle, sinon par mots-clés ; vous vérifiez et corrigez le résultat avant d’enregistrer. Tant que le modèle n’a pas appris de l’historique, ces caractéristiques déterminent ses valeurs de départ (p. ex. la moquette chauffe plus lentement, une pièce sous les combles perd sa chaleur plus vite). Plus tard, les fenêtres au sud aideront à tenir compte du soleil.</string>
+
+    <string name="view_customize">Affichage</string>
+    <string name="view_title">Afficher dans la vue de la pièce</string>
+    <string name="section_valves">Ouverture des vannes</string>
+    <string name="section_probe">Essai</string>
+    <string name="section_phases">Phases</string>
 </resources>

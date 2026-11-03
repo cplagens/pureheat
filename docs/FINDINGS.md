@@ -33,6 +33,16 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   stufenweise herabgestuft (ACTIVE → WORKING_SET → FREQUENT → RARE). Gemessen: tagsüber 60 statt
   30 min Abstand, dann 9 h ganz ohne Aufzeichnung. Abhilfe: Akku → „Nicht eingeschränkt“ (die App
   zeigt dafür eine Hinweiskarte). Diagnose: `adb shell dumpsys usagestats | grep pureheat`.
+- **Wirkung von „Nicht eingeschränkt“ (gemessen 2026-11-03):** 66 Aufzeichnungen in 22 h
+  (2.11. 19:35 – 3.11. 17:52), nachts wie geplant alle 60 min, tagsüber 15–42 min, keine Lücke
+  über 62 min (vorher: 36 in 28 h mit 9 h Lücke).
+- **DB-Wachstum:** ~380 `room_sample`- + ~330 `circuit_sample`-Zeilen/Tag, ~120 KB/Tag inkl.
+  WAL → bei 2 Jahren Aufbewahrung ca. 90 MB (vertretbar; seit 2026-11-03 2 Jahre statt 60 Tage).
+- **ML Kit `genai-prompt` 1.0.0-beta5 ist mit Kotlin 2.4 gebaut** – mit Kotlin 2.2 scheitert der
+  Build („incompatible version of Kotlin“). Projekt daher auf Kotlin 2.4.21; `kotlinOptions`
+  durch `kotlin { compilerOptions { jvmTarget } }` ersetzt. KSP 2.3.13 läuft damit.
+- Lint (`StringFormatInvalid`) hält in Texten ohne Platzhalter „% a“, „% e“, „% H“ für
+  Formatangaben – in Übersetzungen umformulieren („procent“, „(%)“).
 - `am force-stop` pausiert alle WorkManager-Jobs bis zum nächsten App-Start (beim Entwickeln
   entstehen so Lücken).
 - WorkManager-Jobs liegen im Namespace `androidx.work.systemjobscheduler`; zum Erzwingen:
@@ -74,5 +84,9 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   Soll), sonst wird sie durch das „Temperatur halten“ unterschätzt.
 - „Spar → Komfort“ aus den Sollwerten (z. B. 15 → 24 °C) ist unrealistisch, weil die Räume nachts
   nur auf ~21 °C absinken – besser von der typischen Morgentemperatur aus rechnen (siehe NEXT_STEPS).
+- **Erste Probelauf-Auswertung (2026-11-03, 7 Vorhersagen, alle mit Startwerten):** 5 „zählt
+  nicht“ (Fenster offen bzw. manuelle Änderung – erwartbar in den Zimmern mit Nachtlüftung),
+  2 „früher“: beide als „nicht erreichbar“ vorhergesagt, aber erreicht (Ziel 25 bzw. 23 °C in
+  Räumen, die von anderen Wärmequellen warm sind). Noch keine Aussage zur Genauigkeit möglich.
 - Ereigniszeiten werden auf 15 min gerundet angezeigt, weil die Messpunkte bis zu 1 h auseinander
   liegen. „Fenster zu“ wird nur angezeigt, wenn das Schließen am Wiederanstieg erkannt wurde.

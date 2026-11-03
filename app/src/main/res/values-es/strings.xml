@@ -337,4 +337,10 @@
     <string name="usage_hall">Pasillo</string>
     <string name="help_props_title">Características de la habitación</string>
     <string name="help_props_text">En «Describir la habitación ›», dentro del historial de una habitación, la describe con sus propias palabras, escritas o dictadas – p. ej. tamaño, altura del techo, cuántas ventanas y hacia dónde, acristalamiento, paredes exteriores, bajo cubierta o sobre un sótano, suelo, persianas, una estufa, uso como dormitorio, ventana entreabierta por la noche. En dispositivos con IA integrada (Gemini Nano) la app reconoce las características con ella, si no por palabras clave; usted revisa y corrige el resultado antes de guardar. Hasta que el modelo haya aprendido del historial, estas características fijan sus valores iniciales (p. ej. la moqueta calienta más despacio, una habitación bajo cubierta pierde calor más rápido). Más adelante, las ventanas al sur ayudarán a tener en cuenta el sol.</string>
+
+    <string name="view_customize">Vista</string>
+    <string name="view_title">Mostrar en la vista de la habitación</string>
+    <string name="section_valves">Apertura de válvulas</string>
+    <string name="section_probe">Prueba</string>
+    <string name="section_phases">Fases</string>
 </resources>

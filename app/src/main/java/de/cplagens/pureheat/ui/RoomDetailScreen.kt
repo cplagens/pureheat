@@ -45,6 +45,10 @@ import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.data.room.RoomProperties
+import de.cplagens.pureheat.data.DetailSection
+import androidx.compose.foundation.selection.toggleable
+import androidx.compose.material3.AlertDialog
+import androidx.compose.material3.Checkbox
 import de.cplagens.pureheat.hmip.Room
 import java.util.Date
 import kotlin.math.abs
@@ -65,6 +69,9 @@ fun RoomDetailScreen(
 ) {
     val state by vm.ui.collectAsStateWithLifecycle()
     val description by vm.description.collectAsStateWithLifecycle()
+    val hidden by vm.hiddenSections.collectAsStateWithLifecycle()
+    val shown: (DetailSection) -> Boolean = { it !in hidden }
+    var customizing by rememberSaveable { mutableStateOf(false) }
     val insight by vm.insight.collectAsStateWithLifecycle()
     val probe by vm.probe.collectAsStateWithLifecycle()
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
@@ -103,6 +110,7 @@ fun RoomDetailScreen(
                 TextButton(onClick = onBack, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.back_rooms)) }
                 Spacer(Modifier.width(8.dp))
                 Text(room.label.trim(), style = MaterialTheme.typography.titleLarge, modifier = Modifier.weight(1f))
+                TextButton(onClick = { customizing = true }) { Text(stringResource(R.string.view_customize)) }
             }
             FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 HistoryRange.entries.forEach { r ->
@@ -115,7 +123,7 @@ fun RoomDetailScreen(
             }
         }
 
-        item {
+        if (shown(DetailSection.TEMPERATURE) || shown(DetailSection.VALVES) || shown(DetailSection.HUMIDITY)) item {
             val values = selected?.let { t ->
                 buildList {
                     actual.nearest(t)?.let { add(ctx.getString(R.string.value_actual, it)) }
@@ -130,7 +138,7 @@ fun RoomDetailScreen(
             Readout(selected, values, onClear = { selected = null })
         }
 
-        item {
+        if (shown(DetailSection.TEMPERATURE)) item {
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(stringResource(R.string.temperature), style = MaterialTheme.typography.labelLarge)
@@ -169,7 +177,7 @@ fun RoomDetailScreen(
             }
         }
 
-        item {
+        if (shown(DetailSection.VALVES)) item {
             Card(Modifier.fillMaxWidth()) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(stringResource(R.string.valve_opening_title), style = MaterialTheme.typography.labelLarge)
@@ -192,7 +200,7 @@ fun RoomDetailScreen(
         }
 
         // Humidity has its own chart: % and °C don't share a scale (no second y-axis).
-        if (humidity.size >= 2) {
+        if (humidity.size >= 2 && shown(DetailSection.HUMIDITY)) {
             item {
                 val hMid = (humidity.minOf { it.second } + humidity.maxOf { it.second }) / 2
                 Card(Modifier.fillMaxWidth()) {
@@ -218,29 +226,72 @@ fun RoomDetailScreen(
         }
 
         if (room.actualTemperature != null) {
-            item { PropertiesCard(description?.properties, onOpenProperties) }
-            item { ModelCard(insight) }
-            item { ProbeCard(probe) }
-            item {
-                Text(stringResource(R.string.windows_title), style = MaterialTheme.typography.titleMedium)
-                if (state.windows.isEmpty()) {
-                    Text(stringResource(R.string.windows_none), style = MaterialTheme.typography.bodySmall, color = muted)
+            if (shown(DetailSection.PROPERTIES)) item { PropertiesCard(description?.properties, onOpenProperties) }
+            if (shown(DetailSection.MODEL)) item { ModelCard(insight) }
+            if (shown(DetailSection.PROBE)) item { ProbeCard(probe) }
+            if (shown(DetailSection.WINDOWS)) {
+                item {
+                    Text(stringResource(R.string.windows_title), style = MaterialTheme.typography.titleMedium)
+                    if (state.windows.isEmpty()) {
+                        Text(stringResource(R.string.windows_none), style = MaterialTheme.typography.bodySmall, color = muted)
+                    }
                 }
-            }
-            items(state.windows.asReversed().take(20), key = { "window-${it.start}" }) {
-                Text(WindowTexts.describe(ctx, it), style = MaterialTheme.typography.bodySmall)
+                items(state.windows.asReversed().take(20), key = { "window-${it.start}" }) {
+                    Text(WindowTexts.describe(ctx, it), style = MaterialTheme.typography.bodySmall)
+                }
             }
         }
 
-        item {
-            Text(stringResource(R.string.phases_title), style = MaterialTheme.typography.titleMedium)
-            PhaseSummary(state.phases)
+        if (shown(DetailSection.PHASES)) {
+            item {
+                Text(stringResource(R.string.phases_title), style = MaterialTheme.typography.titleMedium)
+                PhaseSummary(state.phases)
+            }
+            items(state.phases.asReversed().take(30), key = { "${it.kind}-${it.start}" }) { PhaseRow(it) }
         }
-        items(state.phases.asReversed().take(30), key = { "${it.kind}-${it.start}" }) { PhaseRow(it) }
-        if (state.phases.isEmpty()) {
+        if (shown(DetailSection.PHASES) && state.phases.isEmpty()) {
             item { Text(stringResource(R.string.phases_none), style = MaterialTheme.typography.bodySmall, color = muted) }
         }
     }
+
+    if (customizing) {
+        SectionsDialog(hidden, vm::setSectionVisible, onDismiss = { customizing = false })
+    }
+}
+
+/** Which sections the detail view shows (same for all rooms; default: all). */
+@Composable
+private fun SectionsDialog(hidden: Set<DetailSection>, onChange: (DetailSection, Boolean) -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.view_title)) },
+        text = {
+            Column {
+                DetailSection.entries.forEach { s ->
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier.fillMaxWidth().toggleable(value = s !in hidden, onValueChange = { onChange(s, it) }),
+                    ) {
+                        Checkbox(checked = s !in hidden, onCheckedChange = null)
+                        Spacer(Modifier.width(8.dp))
+                        Text(stringResource(sectionLabel(s)), style = MaterialTheme.typography.bodyMedium)
+                    }
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } },
+    )
+}
+
+private fun sectionLabel(s: DetailSection) = when (s) {
+    DetailSection.TEMPERATURE -> R.string.temperature
+    DetailSection.VALVES -> R.string.section_valves
+    DetailSection.HUMIDITY -> R.string.legend_humidity
+    DetailSection.PROPERTIES -> R.string.props_title
+    DetailSection.MODEL -> R.string.model_title
+    DetailSection.PROBE -> R.string.section_probe
+    DetailSection.WINDOWS -> R.string.legend_window_detected
+    DetailSection.PHASES -> R.string.section_phases
 }
 
 /** What the user told about the room (see [RoomPropertiesScreen]). */

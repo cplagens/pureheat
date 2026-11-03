@@ -340,4 +340,10 @@
     <string name="usage_hall">Korytarz</string>
     <string name="help_props_title">Właściwości pomieszczenia</string>
     <string name="help_props_text">W „Opisz pomieszczenie ›” w historii pomieszczenia opisujesz je własnymi słowami, wpisanymi lub podyktowanymi – np. wielkość, wysokość, ile okien i w którą stronę, szyby, ściany zewnętrzne, poddasze lub nad piwnicą, podłoga, rolety, piec, użycie jako sypialnia, uchylone okno w nocy. Na urządzeniach z AI na urządzeniu (Gemini Nano) aplikacja rozpoznaje właściwości za jej pomocą, w przeciwnym razie po słowach kluczowych; przed zapisem sprawdzasz i poprawiasz wynik. Dopóki model nie nauczy się z historii, te właściwości wyznaczają jego wartości startowe (np. wykładzina grzeje wolniej, pomieszczenie na poddaszu szybciej traci ciepło). Później okna na południe pomogą uwzględnić nasłonecznienie.</string>
+
+    <string name="view_customize">Widok</string>
+    <string name="view_title">Pokazuj w widoku pomieszczenia</string>
+    <string name="section_valves">Otwarcie zaworów</string>
+    <string name="section_probe">Próba</string>
+    <string name="section_phases">Fazy</string>
 </resources>

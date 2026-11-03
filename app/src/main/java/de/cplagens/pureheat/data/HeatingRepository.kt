@@ -169,11 +169,13 @@ class HeatingRepository(
 
     fun weatherHistorySince(since: Long): Flow<List<WeatherSample>> = dao.weatherSamplesSince(since)
 
-    suspend fun roomSamples(roomId: String): List<RoomSample> = dao.roomSamples(roomId)
+    /** Samples of one room within the model window (not the whole two-year history). */
+    suspend fun roomSamples(roomId: String): List<RoomSample> =
+        dao.roomSamples(roomId, System.currentTimeMillis() - MODEL_WINDOW_MS)
 
-    /** Room model, setpoint levels and predictions for every room, from the full history. */
+    /** Room model, setpoint levels and predictions for every room, from the last [MODEL_WINDOW_MS]. */
     suspend fun roomInsights(now: Long = System.currentTimeMillis()): Map<String, RoomInsight> {
-        val since = now - RETENTION_MS
+        val since = now - MODEL_WINDOW_MS
         val samples = dao.roomSamplesSinceOnce(since)
         val weather = dao.weatherSamplesSinceOnce(since)
         // Predictions are about the coming hours: use the forecast for them when available.
@@ -314,7 +316,10 @@ class HeatingRepository(
         // Keep a few past hours so the probe run (step 5) can compare forecast and measurement.
         const val FORECAST_KEEP_PAST_MS = 6 * 3_600_000L
         const val MIN_SAMPLE_INTERVAL_MS = 4 * 60 * 1000L
-        // 60 days: enough for the room model to see different outside temperatures (~2 MB).
-        const val RETENTION_MS = 60 * 24 * 60 * 60 * 1000L
+        // Two years: training data for a later AI/grey-box model in simulation mode (whole heating
+        // seasons). Measured ~120 KB/day → roughly 90 MB after two years.
+        const val RETENTION_MS = 730 * 24 * 60 * 60 * 1000L
+        // The room model only looks at recent weeks: fast to compute and follows changes in the building.
+        const val MODEL_WINDOW_MS = 60 * 24 * 60 * 60 * 1000L
     }
 }

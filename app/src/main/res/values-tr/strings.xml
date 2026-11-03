@@ -334,4 +334,10 @@
     <string name="usage_hall">Koridor</string>
     <string name="help_props_title">Oda özellikleri</string>
     <string name="help_props_text">Bir odanın geçmişindeki “Odayı tanımla ›” altında odayı kendi sözlerinizle, yazarak veya dikte ederek tanımlarsınız – örn. boyut, tavan yüksekliği, kaç pencerenin hangi yöne baktığı, cam, dış duvarlar, çatı katı veya bodrumun üstü, zemin kaplaması, panjurlar, bir soba, yatak odası olarak kullanım, geceleri aralık pencere. Cihaz üzerinde yapay zekâsı olan cihazlarda (Gemini Nano) uygulama özellikleri onunla, aksi halde anahtar kelimelerle tanır; kaydetmeden önce sonucu kontrol edip düzeltirsiniz. Oda modeli geçmişten öğrenene kadar bu özellikler başlangıç değerlerini belirler (örn. halı daha yavaş ısınır, çatı katındaki oda ısıyı daha hızlı kaybeder). İleride güneye bakan pencereler güneş ışığını hesaba katmaya yardımcı olacak.</string>
+
+    <string name="view_customize">Görünüm</string>
+    <string name="view_title">Oda görünümünde göster</string>
+    <string name="section_valves">Vana açıklığı</string>
+    <string name="section_probe">Deneme</string>
+    <string name="section_phases">Evreler</string>
 </resources>

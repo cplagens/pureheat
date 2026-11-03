@@ -4,11 +4,13 @@ import android.app.Application
 import de.cplagens.pureheat.data.CredentialStore
 import de.cplagens.pureheat.data.HeatingRepository
 import de.cplagens.pureheat.data.HistoryWorker
+import de.cplagens.pureheat.data.ViewSettings
 import de.cplagens.pureheat.data.history.HistoryDatabase
 
 class PureHeatApp : Application() {
     val credentialStore by lazy { CredentialStore(this) }
     val repository by lazy { HeatingRepository(this, credentialStore, HistoryDatabase.create(this).dao()) }
+    val viewSettings by lazy { ViewSettings(this) }
 
     override fun onCreate() {
         super.onCreate()

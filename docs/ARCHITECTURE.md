@@ -85,7 +85,7 @@ Ressourcen: adaptives Icon in `res/mipmap-anydpi-v26/`, Vordergrund/Hintergrund/
 2. Ggf. Lookup des REST-Servers (gecacht, nach Fehler neu).
 3. `getCurrentState` (~95 KB JSON) → `HeatingStateParser.parse()`.
 4. `record()`: höchstens alle 4 min ein Datensatz je Raum, je Kanal und ein Wetterwert;
-   Löschen von allem älter als 60 Tage.
+   Löschen von allem älter als 2 Jahre (Raummodell: nur die letzten 60 Tage).
 5. UI beobachtet die Room-Tabellen als `Flow`.
 
 ### Profile schreiben
@@ -110,7 +110,9 @@ Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidi
 `forecast_sample` an; vorhandene Daten
 bleiben erhalten. Die REST-Server-Adresse wird in SharedPreferences `hmip_server` gecacht
 (neuer Lookup nur nach Fehler – der Lookup-Dienst antwortet bei zu vielen Anfragen mit 418).
-Größe: ca. 1 700 Zeilen/Tag → bei 60 Tagen wenige MB.
+Größe gemessen: ca. 710 Zeilen bzw. 120 KB/Tag → nach 2 Jahren ca. 90 MB.
+Einstellungen außerhalb der DB: `room_descriptions` (Raumeigenschaften), `view_settings`
+(ausgeblendete Bereiche der Detailansicht), `probe`, `hmip_server`.
 
 ## Homematic IP Cloud-API (inoffiziell)
 

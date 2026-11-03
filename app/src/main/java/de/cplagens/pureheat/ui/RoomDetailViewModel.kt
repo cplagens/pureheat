@@ -6,6 +6,7 @@ import de.cplagens.pureheat.R
 import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import de.cplagens.pureheat.PureHeatApp
+import de.cplagens.pureheat.data.DetailSection
 import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
@@ -82,6 +83,13 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
     fun setRange(r: HistoryRange) {
         range.value = r
     }
+
+    private val viewSettings = (app as PureHeatApp).viewSettings
+
+    /** Sections the user has hidden in the detail view (same for all rooms). */
+    val hiddenSections: StateFlow<Set<DetailSection>> = viewSettings.hidden
+
+    fun setSectionVisible(section: DetailSection, visible: Boolean) = viewSettings.setVisible(section, visible)
 
     /** The user's description of the room (properties screen). */
     val description: StateFlow<RoomDescription?> = repository.descriptions.all

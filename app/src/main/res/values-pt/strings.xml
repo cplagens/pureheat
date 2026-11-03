@@ -337,4 +337,10 @@
     <string name="usage_hall">Corredor</string>
     <string name="help_props_title">Características da divisão</string>
     <string name="help_props_text">Em «Descrever a divisão ›», no histórico de uma divisão, descreve-a por palavras suas, escritas ou ditadas – p. ex. tamanho, pé-direito, quantas janelas e para onde estão viradas, vidro, paredes exteriores, sótão ou sobre uma cave, pavimento, estores, uma salamandra, uso como quarto, janela entreaberta à noite. Em dispositivos com IA integrada (Gemini Nano) a app reconhece as características com ela, caso contrário por palavras-chave; verifica e corrige o resultado antes de guardar. Até o modelo ter aprendido com o histórico, estas características definem os seus valores iniciais (p. ex. a alcatifa aquece mais devagar, uma divisão no sótão perde calor mais depressa). Mais tarde, as janelas a sul ajudarão a ter em conta o sol.</string>
+
+    <string name="view_customize">Vista</string>
+    <string name="view_title">Mostrar na vista da divisão</string>
+    <string name="section_valves">Abertura das válvulas</string>
+    <string name="section_probe">Teste</string>
+    <string name="section_phases">Fases</string>
 </resources>

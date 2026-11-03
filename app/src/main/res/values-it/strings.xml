@@ -337,4 +337,10 @@
     <string name="usage_hall">Corridoio</string>
     <string name="help_props_title">Caratteristiche della stanza</string>
     <string name="help_props_text">In «Descrivi la stanza ›» nella cronologia di una stanza la descrivi con parole tue, scritte o dettate – ad es. dimensioni, altezza del soffitto, quante finestre e in che direzione, vetro, pareti esterne, sottotetto o sopra una cantina, pavimento, tapparelle, una stufa, uso come camera da letto, finestra a ribalta di notte. Sui dispositivi con IA integrata (Gemini Nano) l’app riconosce le caratteristiche con essa, altrimenti tramite parole chiave; controlli e correggi il risultato prima di salvare. Finché il modello della stanza non ha imparato dalla cronologia, queste caratteristiche ne determinano i valori iniziali (ad es. la moquette scalda più lentamente, una stanza nel sottotetto perde calore più in fretta). In seguito le finestre a sud aiuteranno a tenere conto del sole.</string>
+
+    <string name="view_customize">Vista</string>
+    <string name="view_title">Mostra nella vista della stanza</string>
+    <string name="section_valves">Apertura valvole</string>
+    <string name="section_probe">Prova</string>
+    <string name="section_phases">Fasi</string>
 </resources>

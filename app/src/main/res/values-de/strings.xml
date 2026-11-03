@@ -350,4 +350,10 @@
     <string name="usage_hall">Flur</string>
     <string name="help_props_title">Raumeigenschaften</string>
     <string name="help_props_text">Unter „Raum beschreiben ›“ im Verlauf eines Raums beschreibst du ihn in eigenen Worten, getippt oder diktiert – z. B. Größe, Raumhöhe, wie viele Fenster in welche Richtung zeigen, Verglasung, Außenwände, Dachgeschoss oder über dem Keller, Bodenbelag, Rollläden, ein Ofen, Nutzung als Schlafzimmer, nachts gekipptes Fenster. Auf Geräten mit KI auf dem Gerät (Gemini Nano) erkennt die App die Eigenschaften damit, sonst per Stichwörtern; du prüfst und korrigierst das Ergebnis vor dem Speichern. Bis das Raummodell aus dem Verlauf gelernt hat, bestimmen diese Eigenschaften seine Startwerte (z. B. heizt Teppich langsamer, ein Raum unterm Dach verliert schneller Wärme). Später helfen Südfenster, Sonnenschein zu berücksichtigen.</string>
+
+    <string name="view_customize">Ansicht</string>
+    <string name="view_title">In der Raumansicht anzeigen</string>
+    <string name="section_valves">Ventilöffnung</string>
+    <string name="section_probe">Probelauf</string>
+    <string name="section_phases">Phasen</string>
 </resources>

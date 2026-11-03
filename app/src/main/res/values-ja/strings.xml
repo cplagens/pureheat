@@ -331,4 +331,10 @@
     <string name="usage_hall">廊下</string>
     <string name="help_props_title">部屋の特性</string>
     <string name="help_props_text">部屋の履歴にある「部屋を説明 ›」で、部屋を自分の言葉で説明します（入力または音声入力）。例: 広さ、天井高、窓の数と向き、ガラス、外壁、屋根裏や地下室の上か、床材、シャッター、ストーブ、寝室としての利用、夜間に窓を少し開けているか。端末上の AI（Gemini Nano）がある端末ではそれを使って、ない場合はキーワードで特性を認識します。保存前に結果を確認・修正してください。部屋モデルが履歴から学習するまでは、これらの特性が初期値を決めます（例: カーペットは暖まりにくく、屋根裏の部屋は熱を失いやすい）。今後は南向きの窓を使って日射も考慮する予定です。</string>
+
+    <string name="view_customize">表示</string>
+    <string name="view_title">部屋の画面に表示する項目</string>
+    <string name="section_valves">バルブ開度</string>
+    <string name="section_probe">試行</string>
+    <string name="section_phases">フェーズ</string>
 </resources>
