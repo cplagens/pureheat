@@ -43,6 +43,10 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   durch `kotlin { compilerOptions { jvmTarget } }` ersetzt. KSP 2.3.13 läuft damit.
 - Lint (`StringFormatInvalid`) hält in Texten ohne Platzhalter „% a“, „% e“, „% H“ für
   Formatangaben – in Übersetzungen umformulieren („procent“, „(%)“).
+- **Telefon des Nutzers (2026-11-03):** Galaxy S25 Ultra (SM-S938B), Android 17;
+  `com.google.android.aicore` installiert und aktiv (Gemini Nano möglich), Google-App vorhanden
+  (System-Spracheingabe für „Diktieren“). Ob Nano schon heruntergeladen ist, zeigt erst der erste
+  Aufruf von „Eigenschaften erkennen“ (Hinweis unter dem Knopf; Debug-Log `Nano: …`).
 - `am force-stop` pausiert alle WorkManager-Jobs bis zum nächsten App-Start (beim Entwickeln
   entstehen so Lücken).
 - WorkManager-Jobs liegen im Namespace `androidx.work.systemjobscheduler`; zum Erzwingen:

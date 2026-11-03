@@ -19,9 +19,11 @@ Details je Schritt: `NEXT_STEPS.md` (Abschnitt per Grep suchen), Messungen: `FIN
   Detailansicht, schlankere Doku (diese Datei, CLAUDE.md).
 
 ## Nächste Aufgaben
-1. **Am Gerät prüfen** (App-Version dieser Session ist evtl. noch nicht installiert):
-   Raumeigenschaften (Ist Gemini Nano verfügbar? Diktieren? Erkennung deutscher Sätze?),
-   „Ansicht“-Dialog, durchgehende Kurven, Sprachwechsel auf eine der neuen Sprachen.
+1. **Am Gerät prüfen** (Version mit allen Änderungen ist installiert, Commit `7240af0`; AICore
+   und Google-Spracheingabe sind vorhanden, siehe FINDINGS): Raumeigenschaften end-to-end
+   (welcher Hinweis erscheint – KI oder Stichwörter? Qualität bei deutschen Sätzen? Diktieren),
+   „Ansicht“-Dialog, durchgehende Kurven, Sprachwechsel. UI nur bedienen, wenn der Nutzer das
+   Telefon gerade nicht selbst benutzt (vorher `mCurrentFocus` prüfen).
 2. Probelauf-Ergebnisse nach einigen Tagen ansehen (Trefferquote je Raum; Startwerte vs. gelernt).
 3. Schritt 6: Komfortzeiten + Optimal-Profil als Vorschlag (NEXT_STEPS „Schritt 6“); Nutzung
    aus den Raumeigenschaften (Schlafzimmer, Bad …) als Vorschlag für Komfortzeiten.
