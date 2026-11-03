@@ -80,7 +80,8 @@ data class RoomProperties(
             fun prim(key: String): JsonPrimitive? = (o[key] as? JsonPrimitive)?.takeIf { it !is JsonNull }
             fun double(key: String) = prim(key)?.let { it.doubleOrNull ?: it.content.replace(',', '.').toDoubleOrNull() }
             fun int(key: String) = prim(key)?.let { it.intOrNull ?: it.doubleOrNull?.toInt() }
-            fun bool(key: String) = prim(key)?.booleanOrNull
+            // Only "true" counts: Gemini Nano answers false for things the text doesn't mention.
+            fun bool(key: String) = prim(key)?.booleanOrNull?.takeIf { it }
             fun <E : Enum<E>> enum(values: Array<E>, e: JsonElement?): E? =
                 (e as? JsonPrimitive)?.takeIf { it.isString }?.content?.trim()?.let { s ->
                     values.firstOrNull { it.name.equals(s.replace('-', '_').replace(' ', '_'), ignoreCase = true) }

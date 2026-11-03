@@ -4,6 +4,18 @@ Android app (Kotlin 2.4, Jetpack Compose) that reads a Homematic IP floor heatin
 Homematic IP Cloud (Access Point HmIP-HAP) and shows what the official app doesn't: which circuit is
 heating, how far each valve is open, a learned per-room thermal model and a probe run of its predictions.
 
+## "mach weiter" / "weiter" / "continue"
+When the user only says this (or similar, without a new task): read `docs/STATUS.md`, take the first
+open item under "Nächste Aufgaben" and work on it right away – no need to ask which one. Skip items
+that need the user (e.g. tapping on the phone while they use it, a decision, pushing) and say so
+briefly; if an item is blocked, continue with the next one. At the end update STATUS.md as described
+below and report in a few lines what was done and what is next.
+
+## Code review
+`/pureheat-review` (skill in `.claude/skills/pureheat-review/`, optional argument `diff` | `full` | path)
+checks secrets, security, privacy, write safety, bugs, languages, battery, performance, accessibility
+and tests; open findings are kept in `docs/REVIEW.md`. Use it when the user asks for a review.
+
 ## Start of a session (keep token use low)
 1. Read **`docs/STATUS.md`** only (short: current state, next tasks, open device checks). It is the
    hand-off between sessions – don't reconstruct context from old transcripts.

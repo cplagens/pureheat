@@ -138,6 +138,8 @@ Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zei
   `RoomProperties.fromJson`), ergänzt um den **Stichwort-Fallback** `KeywordExtractor` (Deutsch +
   Englisch, reines Kotlin, getestet). Ohne Nano nur Stichwörter; ist Nano herunterladbar, stößt
   die App den System-Download an. Kein Cloud-Dienst, kein API-Schlüssel (Repo ist öffentlich).
+  Zusammenführen (seit Gerätetest 2026-11-03): **Stichwort-Treffer gewinnen**, Nano füllt den Rest;
+  Ja/Nein von Nano nur bei `true` (siehe FINDINGS). Am Telefon des Nutzers läuft Nano.
   Dafür Kotlin 2.2.10 → **2.4.21** (die ML-Kit-Bibliothek ist mit 2.4 gebaut).
 - Speicherung: SharedPreferences `room_descriptions` (`RoomDescriptionStore`), nicht in der
   Verlaufs-DB (Einstellung, keine Messung; überlebt die 60-Tage-Grenze), beim Abmelden gelöscht.

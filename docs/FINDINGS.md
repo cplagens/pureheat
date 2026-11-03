@@ -47,6 +47,10 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   `com.google.android.aicore` installiert und aktiv (Gemini Nano möglich), Google-App vorhanden
   (System-Spracheingabe für „Diktieren“). Ob Nano schon heruntergeladen ist, zeigt erst der erste
   Aufruf von „Eigenschaften erkennen“ (Hinweis unter dem Knopf; Debug-Log `Nano: …`).
+- **Gemini Nano am Gerät getestet (2026-11-03):** verfügbar, Antwort in ~2 s, liefert JSON in
+  einem ```json-Block (wird abgeschnitten). Schwächen: „1. Stock“ → `GROUND` (amerikanische
+  Zählweise) und `false` für nicht erwähnte Ja/Nein-Felder statt `null`. Deshalb: Stichwort-Treffer
+  gewinnen, Nano füllt Lücken; von Nano zählt bei Ja/Nein nur `true`.
 - `am force-stop` pausiert alle WorkManager-Jobs bis zum nächsten App-Start (beim Entwickeln
   entstehen so Lücken).
 - WorkManager-Jobs liegen im Namespace `androidx.work.systemjobscheduler`; zum Erzwingen:

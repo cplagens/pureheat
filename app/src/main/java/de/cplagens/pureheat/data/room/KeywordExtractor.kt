@@ -119,8 +119,8 @@ object KeywordExtractor {
     }
 
     private fun aboveUnheated(t: String): Boolean? =
-        if (has(t, "(?:ü|ue)ber (?:dem |einem |der |einer )?(?:unbeheizten |kalten )?(?:keller|garage)",
-                "above (?:the |an |a )?(?:unheated |cold )?(?:basement|cellar|garage)", "(?:ü|ue)ber unbeheizt")
+        if (has(t, "(?:ü|ue)ber (?:dem |einem |der |einer )?(?:unbeheizt\\p{L}* |kalt\\p{L}* )?(?:tief)?(?:keller|garage)",
+                "above (?:the |an |a )?(?:unheated |cold )?(?:underground )?(?:basement|cellar|garage|car park)", "(?:ü|ue)ber unbeheizt")
         ) true else null
 
     private fun position(t: String): Position? = when {

@@ -81,6 +81,31 @@ class RoomPropertiesTest {
     }
 
     @Test
+    fun modelFalseMeansUnknown() {
+        // Gemini Nano answered like this for a text that mentions neither shutters nor ventilation.
+        val o = Json.parseToJsonElement("""{"shutters":false,"ventilatesAtNight":false,"aboveUnheated":true}""").jsonObject
+        val p = RoomProperties.fromJson(o)
+        assertNull(p.shutters)
+        assertNull(p.ventilatesAtNight)
+        assertEquals(true, p.aboveUnheated)
+    }
+
+    @Test
+    fun keywordsWinOverModelForFloor() {
+        // Real case: Nano said GROUND for "1. Stock" (first floor above ground in German).
+        val text = "keine Fenster, Raumhöhe 2,75 m, Fliesen, 1. Stock, über unbeheizter Tiefgarage, 10 m²"
+        val keywords = KeywordExtractor.extract(text)
+        val model = RoomProperties(position = Position.GROUND, areaM2 = 10.0, windowCount = 0)
+        val merged = keywords.mergedWith(model)
+        assertEquals(Position.UPPER, merged.position)
+        assertEquals(true, merged.aboveUnheated)
+        assertEquals(FloorCovering.TILE, merged.floorCovering)
+        assertEquals(2.75, merged.ceilingHeightM!!, 0.01)
+        assertEquals(10.0, merged.areaM2!!, 0.01)
+        assertEquals(0, merged.windowCount)
+    }
+
+    @Test
     fun mergeKeepsAiValuesAndFillsGaps() {
         val ai = RoomProperties(areaM2 = 20.0, glazing = Glazing.TRIPLE)
         val keywords = RoomProperties(areaM2 = 25.0, floorCovering = FloorCovering.TILE)

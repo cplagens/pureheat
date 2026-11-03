@@ -46,7 +46,9 @@ class RoomDescriber {
                 val ai = runCatching { withTimeoutOrNull(AI_TIMEOUT_MS) { askModel(text) } }
                     .onFailure { if (BuildConfig.DEBUG) Log.d(TAG, "Nano failed: $it") }
                     .getOrNull()
-                if (ai != null) Extraction(ai.mergedWith(keywords), ExtractionSource.AI) else Extraction(keywords, ExtractionSource.KEYWORDS)
+                // Keyword hits are exact, tested German/English patterns and win (e.g. Nano reads
+                // "1. Stock" as ground floor); the model fills in everything else and other languages.
+                if (ai != null) Extraction(keywords.mergedWith(ai), ExtractionSource.AI) else Extraction(keywords, ExtractionSource.KEYWORDS)
             }
             FeatureStatus.DOWNLOADABLE, FeatureStatus.DOWNLOADING -> {
                 if (status == FeatureStatus.DOWNLOADABLE) startDownload()
@@ -104,7 +106,7 @@ class RoomDescriber {
             "windowDirections": directions the windows face, list of "N","NE","E","SE","S","SW","W","NW",
             "glazing": "SINGLE", "DOUBLE" or "TRIPLE",
             "exteriorWalls": number of walls to the outside (integer 0-4),
-            "position": "BASEMENT", "GROUND", "UPPER" or "ATTIC" (directly under the roof),
+            "position": "BASEMENT", "GROUND" (ground floor only), "UPPER" (any floor above the ground floor, e.g. German "1. Stock", "OG") or "ATTIC" (directly under the roof),
             "aboveUnheated": true if the room is above an unheated cellar or garage,
             "floorCovering": "TILE" (tiles, stone), "WOOD" (parquet, floorboards), "LAMINATE" (laminate, vinyl) or "CARPET",
             "shutters": true if there are roller shutters or blinds,
