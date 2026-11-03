@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="refresh">Odśwież</string>
+    <string name="help">Pomoc</string>
+    <string name="info">Info</string>
+    <string name="logout">Wyloguj</string>
+    <string name="close">Zamknij</string>
+    <string name="cancel">Anuluj</string>
+    <string name="save">Zapisz</string>
+    <string name="save_ellipsis">Zapisz …</string>
+    <string name="discard">Odrzuć</string>
+    <string name="dismiss">Ukryj</string>
+    <string name="apply">Zastosuj</string>
+    <string name="activate">Aktywuj</string>
+    <string name="remove">Usuń</string>
+    <string name="back">‹ Wstecz</string>
+    <string name="back_rooms">‹ Pomieszczenia</string>
+    <string name="unknown">nieznane</string>
+    <string name="now">teraz</string>
+    <string name="ago_24h">24 h temu</string>
+    <string name="temperature">Temperatura</string>
+    <string name="temp_c">%.1f °C</string>
+    <string name="temp_c0">%.0f °C</string>
+    <string name="percent">%d %%</string>
+    <string name="version">Wersja %s</string>
+    <string name="language">Język</string>
+    <string name="system_language">Język systemu</string>
+
+    <string name="day_mo">Pn</string>
+    <string name="day_tu">Wt</string>
+    <string name="day_we">Śr</string>
+    <string name="day_th">Cz</string>
+    <string name="day_fr">Pt</string>
+    <string name="day_sa">So</string>
+    <string name="day_su">Nd</string>
+
+    <string name="duration_min">%d min</string>
+    <string name="duration_h">%d h</string>
+    <string name="duration_h_min">%1$d h %2$d min</string>
+    <string name="duration_over_day">ponad 24 h</string>
+
+    <string name="setup_title">Połącz access point</string>
+    <string name="setup_sgtin_hint">SGTIN (ID access pointa) jest nadrukowany na etykiecie pod spodem access pointa, np. 3014-F711-A000-…</string>
+    <string name="setup_sgtin">SGTIN</string>
+    <string name="setup_pin">PIN (tylko jeśli ustawiony w aplikacji)</string>
+    <string name="setup_connect">Połącz</string>
+    <string name="setup_press_button">Teraz naciśnij niebieski przycisk na access poincie …</string>
+
+    <plurals name="rooms_valve_open">
+        <item quantity="one">Zawór otwarty w %d pomieszczeniu</item>
+        <item quantity="few">Zawór otwarty w %d pomieszczeniach</item>
+        <item quantity="many">Zawór otwarty w %d pomieszczeniach</item>
+        <item quantity="other">Zawór otwarty w %d pomieszczeniach</item>
+    </plurals>
+    <string name="unassigned_circuits">Nieprzypisane do pomieszczenia</string>
+    <string name="valve_open">Zawór otwarty</string>
+    <string name="room_values">Rzeczywista %1$s · Zadana %2$s</string>
+    <string name="room_humidity">" · %d %% RH"</string>
+    <string name="room_window_contact_open">" · okno otwarte"</string>
+    <string name="valve_room">Zawór (pomieszczenie)</string>
+    <string name="channel_n">Kanał %d</string>
+    <string name="channel_state">%1$s: %2$s</string>
+    <string name="stalled_warning">⚠ Zawór otwarty od %1$.1f h, temperatura tylko %2$+.1f °C – czy ciepło dociera?</string>
+    <string name="history_link">Historia ›</string>
+    <string name="profile_link">Profil grzewczy ›</string>
+
+    <string name="history_recording">Zapisywanie historii …</string>
+    <string name="legend_actual">Rzeczywista</string>
+    <string name="legend_setpoint">Zadana</string>
+    <string name="legend_valve">Zawór</string>
+    <string name="legend_window">Okno</string>
+    <string name="legend_outside">Na zewnątrz</string>
+    <string name="legend_window_detected">Okno otwarte (wykryte)</string>
+    <string name="legend_humidity">Wilgotność</string>
+    <string name="humidity_range">%1$d–%2$d %% RH</string>
+    <string name="humidity_title">Wilgotność (% RH)</string>
+    <string name="value_humidity">%d %% RH</string>
+    <string name="outside_now">Na zewnątrz %.1f °C</string>
+    <string name="forecast_24h">następne 24 h %1$.0f–%2$.0f °C</string>
+    <string name="actual_range">Rzeczywista %1$.1f–%2$.1f °C</string>
+    <string name="marker_window_open">Okno otwarte %s</string>
+    <string name="marker_window_closed">zamknięte %s</string>
+    <string name="marker_setpoint">Zadana %1$s %2$s</string>
+
+    <string name="battery_title">Unikaj luk w historii</string>
+    <string name="battery_text">Android spowalnia zapis w tle, bo aplikacja jest rzadko otwierana – powstają luki trwające kilka godzin. Rozwiązanie: Informacje o aplikacji → Bateria → „Bez ograniczeń”. PureHeat i tak pobiera dane tylko co 15–60 minut.</string>
+    <string name="battery_open_settings">Otwórz informacje o aplikacji</string>
+
+    <string name="range_24h">24 h</string>
+    <string name="range_3d">3 dni</string>
+    <string name="range_7d">7 dni</string>
+    <string name="range_14d">14 dni</string>
+    <string name="range_60d">60 dni</string>
+    <string name="readout_hint">Dotknij lub przesuń palcem po wykresie, aby zobaczyć wartości w danym momencie.</string>
+    <string name="readout_no_values">Brak wartości w tym momencie.</string>
+    <string name="value_actual">Rzeczywista %.1f °C</string>
+    <string name="value_setpoint">Zadana %.1f °C</string>
+    <string name="value_outside">Na zewnątrz %.1f °C</string>
+    <string name="value_valve">%1$s %2$d %%</string>
+    <string name="too_little_data">Za mało danych w tym okresie.</string>
+    <string name="valve_opening_title">Otwarcie zaworu (0–100 %)</string>
+    <string name="windows_title">Okno otwarte (wykryte z krzywej temperatury)</string>
+    <string name="windows_none">Nic nie wykryto w tym okresie. Wykrywany jest szybki spadek temperatury przy zamkniętym zaworze (≥ 0,3 K przy ≥ 0,6 K/h); koniec to ponowny wzrost bez grzania.</string>
+    <string name="phases_title">Fazy (zawór otwarty lub zamknięty przez ≥ 1 h)</string>
+    <string name="phases_none">Nie wykryto jeszcze fazy trwającej co najmniej godzinę. Fazy powstają, gdy zawór dłużej pozostaje otwarty (nagrzewanie) lub zamknięty (stygnięcie).</string>
+    <plurals name="phases">
+        <item quantity="one">%d faza</item>
+        <item quantity="few">%d fazy</item>
+        <item quantity="many">%d faz</item>
+        <item quantity="other">%d fazy</item>
+    </plurals>
+    <string name="phase_summary_open">Zawór otwarty: średnio %1$+.2f °C/h (%2$s)</string>
+    <string name="phase_summary_closed">Zawór zamknięty: średnio %1$+.2f °C/h (%2$s)</string>
+    <string name="phase_open">▲ Zawór otwarty · %1$s–%2$s</string>
+    <string name="phase_closed">▼ Zawór zamknięty · %1$s–%2$s</string>
+    <string name="phase_detail">%1$.1f → %2$.1f °C w %3$d h %4$d min (%5$+.2f °C/h)</string>
+    <string name="phase_outside">" · na zewnątrz śr. %.1f °C"</string>
+
+    <string name="window_open_since">Okno prawdopodobnie otwarte od %1$s (−%2$.1f K)</string>
+    <string name="window_open_from_to">Okno prawdopodobnie otwarte: %1$s–%2$s (−%3$.1f K)</string>
+    <string name="window_open_at_least">Okno prawdopodobnie otwarte od %1$s, co najmniej do %2$s (−%3$.1f K)</string>
+    <string name="window_end_now">teraz</string>
+    <string name="window_end_unknown">co najmniej %s (koniec niewykrywalny)</string>
+    <string name="window_event">%1$s–%2$s · %3$.1f → %4$.1f °C</string>
+    <string name="window_humidity_drop">" · wilgotność −%d %%"</string>
+
+    <string name="model_title">Model pomieszczenia</string>
+    <string name="model_computing">Obliczanie …</string>
+    <string name="model_learning">Model jeszcze się uczy (zawór otwarty %1$d/%2$d, zawór zamknięty %3$d/%4$d użytecznych faz)</string>
+    <string name="model_no_setback">Nie wykryto obniżenia w profilu grzewczym.</string>
+    <string name="model_summary">%1$.1f → %2$.1f °C %3$s · powrót do %1$.1f °C %4$s (przy %5$.0f °C na zewnątrz)</string>
+    <string name="model_summary_forecast">%1$.1f → %2$.1f °C %3$s · powrót do %1$.1f °C %4$s (prognoza %5$.0f °C na zewnątrz)</string>
+    <string name="model_in_about">w ok. %s</string>
+    <string name="model_unreachable">nieosiągalne przy %1$.0f °C na zewnątrz (%2$.1f °C)</string>
+    <string name="model_unknown">– jeszcze nieznane</string>
+    <string name="model_parameters">Strata ciepła k: %1$s · Moc grzania P: %2$s · Czas martwy: %3$s</string>
+    <string name="model_k">%.3f/h</string>
+    <string name="model_p">%.2f °C/h</string>
+    <string name="model_phases">Użyteczne fazy: zawór otwarty %1$d, zawór zamknięty %2$d</string>
+    <string name="model_spread">" · rozrzut k: ±%d %%"</string>
+    <plurals name="model_windows_excluded">
+        <item quantity="one">" · %d× wykryto otwarte okno, pominięte w nauce"</item>
+        <item quantity="few">" · %d× wykryto otwarte okno, pominięte w nauce"</item>
+        <item quantity="many">" · %d× wykryto otwarte okno, pominięte w nauce"</item>
+        <item quantity="other">" · %d× wykryto otwarte okno, pominięte w nauce"</item>
+    </plurals>
+    <string name="model_levels">Temperatura obniżona/komfortowa (z wartości zadanych z ostatnich 7 dni): %1$.1f / %2$.1f °C</string>
+    <string name="model_explanation">Model zakłada, że pomieszczenie nagrzewa się równomiernie przy otwartym zaworze i stygnie w kierunku temperatury zewnętrznej przy zamkniętym zaworze. Im więcej dni o różnej pogodzie, tym jest dokładniejszy.</string>
+
+    <string name="probe_title">Próba (prognoza a rzeczywistość)</string>
+    <string name="probe_explanation">Raz dziennie aplikacja przewiduje na podstawie aktywnego profilu, modelu pomieszczenia i prognozy pogody, kiedy każde nagrzewanie osiągnie wartość zadaną, a potem porównuje to z pomiarem. W ogrzewaniu nic nie jest zmieniane. Okresy z otwartym oknem lub ręczną zmianą się nie liczą.</string>
+    <string name="probe_none">Brak prognoz – pierwsze powstaną przy następnym dziennym przebiegu.</string>
+    <string name="probe_score">Ocenione: %1$d · na czas (±30 min): %2$d %% · średnio %3$s min odchylenia · %4$d dni</string>
+    <string name="probe_ready">Wystarczająco dokładne: dla tego pomieszczenia można zaproponować optymalne sterowanie.</string>
+    <string name="probe_not_ready">Optymalne sterowanie jest proponowane po 14 dniach z ≥ 80 % na czas i ≤ 30 min średniego odchylenia.</string>
+    <string name="probe_planned">Zaplanowane %1$s → %2$.1f °C: oczekiwane %3$s</string>
+    <string name="probe_result">%1$s → %2$.1f °C: oczekiwane %3$s · faktycznie %4$s%5$s · %6$s</string>
+    <string name="probe_delta">" (%+d min)"</string>
+    <string name="probe_not_reached">nieosiągnięte</string>
+    <string name="probe_prior">" · wartości startowe"</string>
+    <string name="outcome_hit">na czas</string>
+    <string name="outcome_early">wcześniej</string>
+    <string name="outcome_late">później</string>
+    <string name="outcome_not_reached">nieosiągnięte</string>
+    <string name="outcome_disturbed">nie liczy się (okno/ręczna zmiana)</string>
+
+    <string name="profiles_title">Profile grzewcze</string>
+    <string name="profile_n">Profil %s</string>
+    <string name="profile_active_suffix">%s · aktywny</string>
+    <string name="profile_save_first">Najpierw zapisz lub odrzuć, aby zmienić profil.</string>
+    <string name="profile_activate">Aktywuj %s</string>
+    <string name="profile_activate_q">Aktywować %s?</string>
+    <string name="profile_activate_text">Pomieszczenie „%s” będzie wtedy ogrzewane według tego profilu tygodniowego.</string>
+    <string name="profile_week_hint">Tydzień – dotknij dnia, aby go edytować</string>
+    <string name="profile_day_unreadable">nieczytelny</string>
+    <string name="profile_rate">Z historii: to pomieszczenie nagrzewa się zwykle o ok. %.2f °C na godzinę.</string>
+    <string name="profile_rate_unknown">Gdy zapisze się wystarczająco historii, aplikacja pokaże tutaj, jak szybko nagrzewa się pomieszczenie.</string>
+    <string name="profile_optimum_tip">Wskazówka: z „Optimum Start/Stop” w aplikacji Homematic IP system sam uczy się czasu wstępnego nagrzewania.</string>
+    <string name="profile_undo">Cofnij ostatni zapis</string>
+    <string name="profile_saved">Zapisano i sprawdzono.</string>
+    <string name="profile_saved_also">Zapisano i sprawdzono. Zastosowano też w %d innych pomieszczeniach.</string>
+    <string name="profile_saved_partly">Zapisano. Nie udało się zastosować w: %s.</string>
+    <string name="profile_now_active">%s jest teraz aktywny.</string>
+    <string name="profile_restored">Przywrócono poprzednią wersję.</string>
+    <string name="save_changes_q">Zapisać zmiany?</string>
+    <string name="save_backup_note">Poprzednia wersja zostanie zachowana i można ją przywrócić.</string>
+    <string name="save_also_rooms">Zastosuj zmienione dni także w:</string>
+    <string name="diff_period">%1$s–%2$s %3$.1f °C</string>
+    <string name="diff_no_period">brak fazy grzania</string>
+    <string name="diff_periods">%1$s: %2$s → %3$s</string>
+    <string name="diff_base">%1$s: temperatura bazowa %2$.1f → %3$.1f °C</string>
+    <string name="diff_both">%1$s: %2$s → %3$s; temperatura bazowa %4$.1f → %5$.1f °C</string>
+    <string name="editor_drag_hint">Przeciągnij krawędzie faz grzania lub ustaw je dokładnie poniżej</string>
+    <string name="editor_phase">Faza %1$d: %2$s–%3$s</string>
+    <string name="editor_start">Początek</string>
+    <string name="editor_end">Koniec</string>
+    <string name="editor_add_phase">+ Dodaj fazę grzania</string>
+    <string name="editor_max_phases">Maksymalnie %d faz grzania</string>
+    <string name="editor_base">Temperatura bazowa (poza fazami)</string>
+    <string name="editor_copy_to">Kopiuj ten dzień do:</string>
+    <string name="editor_workdays">Pn–Pt</string>
+    <string name="editor_weekend">So–Nd</string>
+    <string name="editor_all_days">Wszystkie</string>
+    <string name="preheat_start">Aby o %1$s mieć %2$.1f °C, ogrzewanie musiałoby ruszyć ok. %4$s przy ok. %3$.2f °C/h. To górna granica – wylewka zwykle nie stygnie aż do temperatury bazowej.</string>
+    <string name="preheat_too_slow">Przy ok. %1$.2f °C/h pomieszczenie potrzebuje ponad 8 godzin, by przejść z %2$.1f do %3$.1f °C. Przy ogrzewaniu podłogowym wyższa temperatura bazowa działa zwykle lepiej niż głębokie obniżenie.</string>
+
+    <string name="about_text">Pokazuje, który obieg ogrzewania podłogowego jest teraz otwarty, zapisuje historię, uczy się zachowania każdego pomieszczenia i ułatwia edycję profili grzewczych. Za darmo, bez reklam, bez śledzenia. Nieoficjalny projekt, niezwiązany z eQ-3.</string>
+    <string name="support_text">Jeśli aplikacja Ci się podoba, dobrowolne wsparcie jest zawsze mile widziane. Nigdy nie jest wymagane i niczego nie odblokowuje.</string>
+    <string name="source_code">Kod źródłowy na GitHub</string>
+
+    <string name="err_unknown_host">Serwer %s jest nieosiągalny. Sprawdź połączenie z internetem i spróbuj ponownie.</string>
+    <string name="err_unknown_host_cloud">Serwer chmury jest nieosiągalny. Sprawdź połączenie z internetem i spróbuj ponownie.</string>
+    <string name="err_timeout">Przekroczono czas: chmura nie odpowiedziała na czas.</string>
+    <string name="err_no_connection">Nie można połączyć się z chmurą. Sprawdź połączenie z internetem.</string>
+    <string name="err_ssl">Nie udało się nawiązać bezpiecznego połączenia z chmurą (%s).</string>
+    <string name="err_network">Błąd sieci: %s</string>
+    <string name="err_unexpected">Nieoczekiwany błąd: %s</string>
+    <string name="err_with_context">%1$s: %2$s (%3$s)</string>
+    <string name="err_http_forbidden">Odmowa dostępu. Jeśli aplikacja została usunięta z access pointa: wyloguj się i połącz ponownie.</string>
+    <string name="err_http_not_found">Nie znaleziono access pointa. Sprawdź SGTIN.</string>
+    <string name="err_http_bad_request">Nieprawidłowe żądanie.</string>
+    <string name="err_http_too_many">Zbyt wiele żądań. Poczekaj chwilę.</string>
+    <string name="err_http_server">Chmura Homematic IP ma obecnie problem. Spróbuj ponownie później.</string>
+    <string name="err_http_unexpected">Nieoczekiwana odpowiedź chmury.</string>
+    <string name="err_button_timeout">Niebieski przycisk na access poincie nie został naciśnięty na czas.</string>
+    <string name="err_not_logged_in">Nie zalogowano.</string>
+    <string name="err_profile_mismatch">Profil został wysłany, ale chmura zwraca inne wartości. Sprawdź w aplikacji Homematic IP lub użyj „Cofnij”.</string>
+    <string name="ctx_lookup">Wyszukiwanie serwera nie powiodło się</string>
+    <string name="ctx_connection_request">Żądanie połączenia odrzucone</string>
+    <string name="ctx_token_request">Żądanie tokenu nie powiodło się</string>
+    <string name="ctx_token_confirm">Potwierdzenie tokenu nie powiodło się</string>
+    <string name="ctx_state">Nie udało się wczytać stanu</string>
+    <string name="ctx_profile_load">Nie udało się wczytać profilu grzewczego</string>
+    <string name="ctx_profile_save">Nie udało się zapisać profilu grzewczego</string>
+    <string name="ctx_profile_activate">Nie udało się aktywować profilu</string>
+
+    <string name="help_title">Pomoc</string>
+    <string name="help_intro">PureHeat odczytuje Twoje ogrzewanie podłogowe przez chmurę Homematic IP i pokazuje to, czego nie pokazuje oficjalna aplikacja: który zawór jest otwarty, jak każde pomieszczenie zachowuje się w czasie i jak można by je lepiej ogrzewać.</string>
+    <string name="help_start_title">Pierwsze kroki</string>
+    <string name="help_start_text">Wpisz SGTIN z etykiety pod spodem access pointa (i PIN, jeśli go ustawiono). Na prośbę naciśnij niebieski przycisk na access poincie. Token dostępu jest zapisywany tylko na tym telefonie.</string>
+    <string name="help_overview_title">Przegląd</string>
+    <string name="help_overview_text">Jedna karta na pomieszczenie: temperatura rzeczywista i zadana, wilgotność oraz otwarcie każdego zaworu (obiegu). Grzejniki łazienkowe z głowicą termostatyczną pojawiają się jako osobne pomieszczenia bez czujnika temperatury. Gdy aplikacja jest otwarta, przegląd odświeża się co 5 minut; „Odśwież” pobiera od razu.</string>
+    <string name="help_valve_title">„Zawór otwarty” to nie „grzeje”</string>
+    <string name="help_valve_text">System wie tylko, jak bardzo zawór jest otwarty, a nie czy ciepła woda naprawdę płynie. Zablokowany trzpień zaworu, zimne zasilanie z kotła lub powietrze w obiegu wyglądają jak „zawór otwarty”. Jeśli zawór jest otwarty godzinami, a pomieszczenie się nie nagrzewa, aplikacja pokazuje ostrzeżenie – sprawdź wtedy obieg na rozdzielaczu.</string>
+    <string name="help_chart_title">Wykres historii</string>
+    <string name="help_chart_text">Mały wykres pokazuje ostatnie 24 godziny: temperaturę rzeczywistą (linia), zadaną (przerywana), otwarcie zaworu (obszar pod spodem) i wilgotność (osobny panel – % i °C nie mają wspólnej skali). Etykiety nad wykresem pokazują, kiedy otwarto lub zamknięto okno i kiedy zmieniła się wartość zadana (zaokrąglone do 15 minut). Dotknij wykresu lub „Historia ›”, aby zobaczyć wszystkie dane do 60 dni, z temperaturą zewnętrzną, każdym kanałem i dokładnymi wartościami w dowolnym momencie. Na górze przeglądu widać temperaturę zewnętrzną i prognozę na następne 24 godziny.</string>
+    <string name="help_window_title">Wykrywanie otwartego okna</string>
+    <string name="help_window_text">Bez czujników okiennych aplikacja rozpoznaje otwarte okno po temperaturze: szybki spadek przy zamkniętym zaworze. Ponowny wzrost bez grzania liczy się jako „zamknięte”. Jeśli ogrzewanie rusza, gdy okno może być jeszcze otwarte, aplikacja podaje tylko „co najmniej do”. Wykrywanie działa najlepiej przy gęstym zapisie (zob. „Bateria”).</string>
+    <string name="help_model_title">Model pomieszczenia i prognozy</string>
+    <string name="help_model_text">Z zapisanych faz aplikacja uczy się dla każdego pomieszczenia, jak szybko traci ciepło (k), jak mocno ogrzewa je podłogówka (P) i ile czasu wylewka potrzebuje na reakcję (czas martwy). Na tej podstawie przewiduje, ile czasu pomieszczenie potrzebuje od temperatury obniżonej do komfortowej i z powrotem przy aktualnej temperaturze zewnętrznej. Okresy z otwartym oknem są pomijane. Dopóki faz jest za mało, pokazuje „jeszcze się uczy”.</string>
+    <string name="help_probe_title">Próba</string>
+    <string name="help_probe_text">Zanim aplikacja kiedykolwiek będzie mogła sterować ogrzewaniem, musi udowodnić, że jej prognozy są trafne. Raz dziennie przewiduje dla każdego pomieszczenia, kiedy kolejne nagrzewania aktywnego profilu osiągną wartość zadaną, a potem sprawdza to z pomiarem. Widok szczegółów pokazuje skuteczność. Dopiero po 14 dniach z co najmniej 80 % na czas proponowane jest optymalne sterowanie – i to Ty je włączasz.</string>
+    <string name="help_profiles_title">Profile grzewcze</string>
+    <string name="help_profiles_text">„Profil grzewczy ›” pokazuje profile tygodniowe pomieszczenia. Dotknij dnia, aby go edytować: przeciągnij krawędzie faz, ustaw dokładnie początek, koniec i temperaturę, skopiuj dzień na inne. Przed zapisem aplikacja wypisuje każdą zmianę, zachowuje starą wersję, zapisuje, a potem odczytuje profil, aby go sprawdzić. „Cofnij ostatni zapis” przywraca kopię. Nic nie jest zapisywane bez Twojego potwierdzenia.</string>
+    <string name="help_battery_title">Bateria i dane</string>
+    <string name="help_battery_text">W tle aplikacja pobiera dane co 15 minut, gdy coś się zmienia, w przeciwnym razie co 30 minut, a w nocy co 60 minut. Każde pobranie to ok. 100 KB. Android może opóźniać te zadania o godziny, jeśli aplikacja jest rzadko otwierana – dla pełnej historii ustaw Informacje o aplikacji → Bateria → „Bez ograniczeń”.</string>
+    <string name="help_language_title">Język</string>
+    <string name="help_language_text">Aplikacja używa języka systemu. Inny język możesz wybrać w „Info” lub (Android 13+) w ustawieniach systemu w „Języki aplikacji”.</string>
+    <string name="help_privacy_title">Prywatność</string>
+    <string name="help_privacy_text">Aplikacja komunikuje się z chmurą Homematic IP oraz, dla prognozy pogody, z Open-Meteo (za darmo, bez konta). Open-Meteo otrzymuje tylko lokalizację domu zaokrągloną do ok. 1 km, kilka razy dziennie. Dane dostępowe i historia pozostają na tym telefonie. PureHeat to nieoficjalny projekt, niezwiązany z eQ-3.</string>
+
+    <string name="props_title">Właściwości pomieszczenia</string>
+    <string name="props_link">Opisz pomieszczenie ›</string>
+    <string name="props_card_empty">Jeszcze nie opisano. Wielkość, okna, położenie i podłoga zwiększają dokładność wartości startowych modelu.</string>
+    <string name="props_intro">Opisz pomieszczenie własnymi słowami – wpisz lub podyktuj. Aplikacja rozpozna właściwości wpływające na ogrzewanie. Sprawdź je poniżej i zapisz. Wszystko zostaje na tym telefonie.</string>
+    <string name="props_text_label">Opis</string>
+    <string name="props_dictate">🎤 Dyktuj</string>
+    <string name="props_analyze">Rozpoznaj właściwości</string>
+    <string name="props_analyzing">Rozpoznawanie …</string>
+    <string name="props_ideas">Pomysły (dotknij, aby dodać):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>wysokość 2,5 m</item>
+        <item>2 okna na południe</item>
+        <item>1 okno na północ</item>
+        <item>potrójne szyby</item>
+        <item>2 ściany zewnętrzne</item>
+        <item>poddasze</item>
+        <item>nad nieogrzewaną piwnicą</item>
+        <item>płytki</item>
+        <item>parkiet</item>
+        <item>wykładzina</item>
+        <item>rolety zewnętrzne</item>
+        <item>grzejnik łazienkowy</item>
+        <item>piec na drewno</item>
+        <item>sypialnia</item>
+        <item>w nocy uchylone okno</item>
+    </string-array>
+    <string name="props_source_ai">Rozpoznano za pomocą AI na urządzeniu (Gemini Nano) – tekst nie opuszcza telefonu. Sprawdź.</string>
+    <string name="props_source_keywords">Rozpoznano po słowach kluczowych (tylko niemiecki i angielski) – to urządzenie nie ma AI na urządzeniu. Sprawdź i uzupełnij poniżej.</string>
+    <string name="props_source_downloading">Na razie rozpoznano po słowach kluczowych. System pobiera swój model AI; zostanie użyty następnym razem.</string>
+    <string name="props_nothing">Nic nie rozpoznano – wypełnij pola poniżej bezpośrednio.</string>
+    <string name="props_saved">Zapisano.</string>
+    <string name="props_effect">Wartości startowe modelu: strata ciepła k %1$s · moc grzania P %2$s · czas martwy %3$s. Obowiązują tylko, dopóki model nie nauczy się wystarczająco z historii.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Powierzchnia (m²)</string>
+    <string name="prop_height">Wysokość (m)</string>
+    <string name="prop_windows">Liczba okien</string>
+    <string name="prop_directions">Okna na</string>
+    <string name="prop_glazing">Szyby</string>
+    <string name="prop_walls">Ściany zewnętrzne</string>
+    <string name="prop_position">Położenie</string>
+    <string name="prop_above_unheated">Nad nieogrzewaną piwnicą/garażem</string>
+    <string name="prop_floor">Podłoga</string>
+    <string name="prop_shutters">Rolety/żaluzje</string>
+    <string name="prop_heat_sources">Inne źródła ciepła</string>
+    <string name="prop_usage">Przeznaczenie</string>
+    <string name="prop_night_vent">W nocy otwarte okno</string>
+    <string name="yes">Tak</string>
+    <string name="no">Nie</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NE</string>
+    <string name="dir_e">E</string>
+    <string name="dir_se">SE</string>
+    <string name="dir_s">S</string>
+    <string name="dir_sw">SW</string>
+    <string name="dir_w">W</string>
+    <string name="dir_nw">NW</string>
+    <string name="glazing_single">Pojedyncze</string>
+    <string name="glazing_double">Podwójne</string>
+    <string name="glazing_triple">Potrójne</string>
+    <string name="pos_basement">Piwnica</string>
+    <string name="pos_ground">Parter</string>
+    <string name="pos_upper">Piętro</string>
+    <string name="pos_attic">Poddasze</string>
+    <string name="floor_tile">Płytki/kamień</string>
+    <string name="floor_wood">Parkiet/drewno</string>
+    <string name="floor_laminate">Panele/winyl</string>
+    <string name="floor_carpet">Wykładzina</string>
+    <string name="heat_towel">Grzejnik łazienkowy</string>
+    <string name="heat_stove">Piec/kominek</string>
+    <string name="heat_electronics">Elektronika</string>
+    <string name="heat_cooking">Gotowanie</string>
+    <string name="usage_living">Salon</string>
+    <string name="usage_bedroom">Sypialnia</string>
+    <string name="usage_child">Pokój dziecka</string>
+    <string name="usage_kitchen">Kuchnia</string>
+    <string name="usage_bath">Łazienka</string>
+    <string name="usage_office">Biuro</string>
+    <string name="usage_hall">Korytarz</string>
+    <string name="help_props_title">Właściwości pomieszczenia</string>
+    <string name="help_props_text">W „Opisz pomieszczenie ›” w historii pomieszczenia opisujesz je własnymi słowami, wpisanymi lub podyktowanymi – np. wielkość, wysokość, ile okien i w którą stronę, szyby, ściany zewnętrzne, poddasze lub nad piwnicą, podłoga, rolety, piec, użycie jako sypialnia, uchylone okno w nocy. Na urządzeniach z AI na urządzeniu (Gemini Nano) aplikacja rozpoznaje właściwości za jej pomocą, w przeciwnym razie po słowach kluczowych; przed zapisem sprawdzasz i poprawiasz wynik. Dopóki model nie nauczy się z historii, te właściwości wyznaczają jego wartości startowe (np. wykładzina grzeje wolniej, pomieszczenie na poddaszu szybciej traci ciepło). Później okna na południe pomogą uwzględnić nasłonecznienie.</string>
+</resources>

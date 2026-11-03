@@ -1,6 +1,6 @@
 [versions]
 agp = "9.5.0"
-kotlin = "2.2.10"
+kotlin = "2.4.21"
 coreKtx = "1.15.0"
 lifecycle = "2.8.7"
 activityCompose = "1.9.3"
@@ -13,6 +13,7 @@ work = "2.12.0"
 appcompat = "1.8.0"
 room = "2.8.5"
 ksp = "2.3.13"
+genaiPrompt = "1.0.0-beta5"
 
 [libraries]
 androidx-core-ktx = { group = "androidx.core", name = "core-ktx", version.ref = "coreKtx" }
@@ -34,6 +35,7 @@ androidx-work-runtime-ktx = { group = "androidx.work", name = "work-runtime-ktx"
 androidx-room-runtime = { group = "androidx.room", name = "room-runtime", version.ref = "room" }
 androidx-room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
 androidx-room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
+mlkit-genai-prompt = { group = "com.google.mlkit", name = "genai-prompt", version.ref = "genaiPrompt" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }

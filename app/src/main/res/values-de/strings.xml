@@ -267,4 +267,87 @@
     <string name="help_language_text">Die App folgt der Systemsprache. Eine andere Sprache lässt sich unter „Info“ wählen oder (ab Android 13) in den Systemeinstellungen unter „App-Sprachen“.</string>
     <string name="help_privacy_title">Datenschutz</string>
     <string name="help_privacy_text">Die App spricht mit der Homematic IP Cloud und für die Wetterprognose mit Open-Meteo (kostenlos, ohne Konto). Open-Meteo erhält nur den auf etwa 1 km gerundeten Standort des Hauses, wenige Male am Tag. Zugangsdaten und Verlauf bleiben auf diesem Telefon. PureHeat ist ein inoffizielles Projekt und nicht mit eQ-3 verbunden.</string>
+
+    <!-- Raumeigenschaften -->
+    <string name="props_title">Raumeigenschaften</string>
+    <string name="props_link">Raum beschreiben ›</string>
+    <string name="props_card_empty">Noch nicht beschrieben. Größe, Fenster, Lage und Bodenbelag machen die Startwerte des Modells genauer.</string>
+    <string name="props_intro">Beschreibe den Raum in eigenen Worten – tippen oder diktieren. Die App erkennt daraus die Eigenschaften, die das Heizen beeinflussen. Prüfe sie unten und speichere. Alles bleibt auf diesem Telefon.</string>
+    <string name="props_text_label">Beschreibung</string>
+    <string name="props_dictate">🎤 Diktieren</string>
+    <string name="props_analyze">Eigenschaften erkennen</string>
+    <string name="props_analyzing">Erkenne …</string>
+    <string name="props_ideas">Ideen (antippen zum Übernehmen):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>Raumhöhe 2,5 m</item>
+        <item>2 Fenster nach Süden</item>
+        <item>1 Fenster nach Norden</item>
+        <item>Dreifachverglasung</item>
+        <item>2 Außenwände</item>
+        <item>Dachgeschoss unterm Dach</item>
+        <item>über unbeheiztem Keller</item>
+        <item>Fliesen</item>
+        <item>Parkett</item>
+        <item>Teppich</item>
+        <item>Rollläden</item>
+        <item>Handtuchheizkörper</item>
+        <item>Kaminofen</item>
+        <item>Schlafzimmer</item>
+        <item>nachts Fenster gekippt</item>
+    </string-array>
+    <string name="props_source_ai">Erkannt mit KI auf dem Gerät (Gemini Nano) – der Text verlässt das Telefon nicht. Bitte prüfen.</string>
+    <string name="props_source_keywords">Erkannt per Stichwörtern (nur Deutsch und Englisch) – dieses Gerät hat keine KI auf dem Gerät. Bitte unten prüfen und ergänzen.</string>
+    <string name="props_source_downloading">Vorerst per Stichwörtern erkannt. Das System lädt gerade sein KI-Modell; beim nächsten Mal wird es verwendet.</string>
+    <string name="props_nothing">Nichts erkannt – bitte die Felder unten direkt ausfüllen.</string>
+    <string name="props_saved">Gespeichert.</string>
+    <string name="props_effect">Startwerte für das Raummodell: Wärmeverlust k %1$s · Heizleistung P %2$s · Totzeit %3$s. Sie gelten nur, bis das Modell aus dem Verlauf selbst genug gelernt hat.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Fläche (m²)</string>
+    <string name="prop_height">Raumhöhe (m)</string>
+    <string name="prop_windows">Anzahl Fenster</string>
+    <string name="prop_directions">Fenster nach</string>
+    <string name="prop_glazing">Verglasung</string>
+    <string name="prop_walls">Außenwände</string>
+    <string name="prop_position">Lage</string>
+    <string name="prop_above_unheated">Über unbeheiztem Keller/Garage</string>
+    <string name="prop_floor">Bodenbelag</string>
+    <string name="prop_shutters">Rollläden/Jalousien</string>
+    <string name="prop_heat_sources">Weitere Wärmequellen</string>
+    <string name="prop_usage">Nutzung</string>
+    <string name="prop_night_vent">Nachts Fenster offen/gekippt</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nein</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NO</string>
+    <string name="dir_e">O</string>
+    <string name="dir_se">SO</string>
+    <string name="dir_s">S</string>
+    <string name="dir_sw">SW</string>
+    <string name="dir_w">W</string>
+    <string name="dir_nw">NW</string>
+    <string name="glazing_single">Einfach</string>
+    <string name="glazing_double">Zweifach</string>
+    <string name="glazing_triple">Dreifach</string>
+    <string name="pos_basement">Keller</string>
+    <string name="pos_ground">Erdgeschoss</string>
+    <string name="pos_upper">Obergeschoss</string>
+    <string name="pos_attic">Unterm Dach</string>
+    <string name="floor_tile">Fliesen/Stein</string>
+    <string name="floor_wood">Parkett/Holz</string>
+    <string name="floor_laminate">Laminat/Vinyl</string>
+    <string name="floor_carpet">Teppich</string>
+    <string name="heat_towel">Handtuchheizkörper</string>
+    <string name="heat_stove">Ofen/Kamin</string>
+    <string name="heat_electronics">Elektronik</string>
+    <string name="heat_cooking">Kochen</string>
+    <string name="usage_living">Wohnzimmer</string>
+    <string name="usage_bedroom">Schlafzimmer</string>
+    <string name="usage_child">Kinderzimmer</string>
+    <string name="usage_kitchen">Küche</string>
+    <string name="usage_bath">Bad</string>
+    <string name="usage_office">Büro</string>
+    <string name="usage_hall">Flur</string>
+    <string name="help_props_title">Raumeigenschaften</string>
+    <string name="help_props_text">Unter „Raum beschreiben ›“ im Verlauf eines Raums beschreibst du ihn in eigenen Worten, getippt oder diktiert – z. B. Größe, Raumhöhe, wie viele Fenster in welche Richtung zeigen, Verglasung, Außenwände, Dachgeschoss oder über dem Keller, Bodenbelag, Rollläden, ein Ofen, Nutzung als Schlafzimmer, nachts gekipptes Fenster. Auf Geräten mit KI auf dem Gerät (Gemini Nano) erkennt die App die Eigenschaften damit, sonst per Stichwörtern; du prüfst und korrigierst das Ergebnis vor dem Speichern. Bis das Raummodell aus dem Verlauf gelernt hat, bestimmen diese Eigenschaften seine Startwerte (z. B. heizt Teppich langsamer, ein Raum unterm Dach verliert schneller Wärme). Später helfen Südfenster, Sonnenschein zu berücksichtigen.</string>
 </resources>

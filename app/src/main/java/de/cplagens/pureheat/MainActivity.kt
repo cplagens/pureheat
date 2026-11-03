@@ -30,6 +30,8 @@ import de.cplagens.pureheat.ui.ProfileScreen
 import de.cplagens.pureheat.ui.ProfileViewModel
 import de.cplagens.pureheat.ui.RoomDetailScreen
 import de.cplagens.pureheat.ui.RoomDetailViewModel
+import de.cplagens.pureheat.ui.RoomPropertiesScreen
+import de.cplagens.pureheat.ui.RoomPropertiesViewModel
 import de.cplagens.pureheat.ui.SetupScreen
 import de.cplagens.pureheat.ui.UiState
 import kotlinx.coroutines.launch
@@ -51,6 +53,7 @@ class MainActivity : AppCompatActivity() {
                 Scaffold(Modifier.fillMaxSize()) { padding ->
                     var profileRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var historyRoomId by rememberSaveable { mutableStateOf<String?>(null) }
+                    var propertiesRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var showHelp by rememberSaveable { mutableStateOf(false) }
                     val screen = Modifier.padding(padding)
 
@@ -65,7 +68,19 @@ class MainActivity : AppCompatActivity() {
                             val rooms = s.state?.rooms.orEmpty()
                             val profileRoom = rooms.firstOrNull { it.id == profileRoomId }
                             val historyRoom = rooms.firstOrNull { it.id == historyRoomId }
+                            val propertiesRoom = rooms.firstOrNull { it.id == propertiesRoomId }
                             when {
+                                propertiesRoom != null -> {
+                                    BackHandler { propertiesRoomId = null }
+                                    RoomPropertiesScreen(
+                                        room = propertiesRoom,
+                                        vm = viewModel(key = "properties-${propertiesRoom.id}") {
+                                            RoomPropertiesViewModel(application, propertiesRoom.id)
+                                        },
+                                        onBack = { propertiesRoomId = null },
+                                        modifier = screen,
+                                    )
+                                }
                                 profileRoom != null -> {
                                     BackHandler { profileRoomId = null }
                                     ProfileScreen(
@@ -83,6 +98,7 @@ class MainActivity : AppCompatActivity() {
                                         room = historyRoom,
                                         vm = viewModel(key = "history-${historyRoom.id}") { RoomDetailViewModel(application, historyRoom.id) },
                                         onBack = { historyRoomId = null },
+                                        onOpenProperties = { propertiesRoomId = historyRoom.id },
                                         modifier = screen,
                                     )
                                 }

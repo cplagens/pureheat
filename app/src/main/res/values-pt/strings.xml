@@ -72,7 +72,7 @@
     <string name="legend_window_detected">Janela aberta (detetada)</string>
     <string name="legend_humidity">Humidade</string>
     <string name="humidity_range">%1$d–%2$d %% HR</string>
-    <string name="humidity_title">Humidade (% HR)</string>
+    <string name="humidity_title">Humidade relativa (%)</string>
     <string name="value_humidity">%d %% HR</string>
     <string name="outside_now">Exterior %.1f °C</string>
     <string name="forecast_24h">próximas 24 h %1$.0f–%2$.0f °C</string>
@@ -149,7 +149,7 @@
     <string name="probe_none">Ainda sem previsões – as primeiras são feitas na próxima execução diária.</string>
     <string name="probe_score">Avaliadas: %1$d · a tempo (±30 min): %2$d %% · desvio médio %3$s min · %4$d dias</string>
     <string name="probe_ready">Suficientemente preciso: o controlo ótimo pode ser proposto para esta divisão.</string>
-    <string name="probe_not_ready">O controlo ótimo é proposto após 14 dias com ≥ 80 % a tempo e ≤ 30 min de desvio médio.</string>
+    <string name="probe_not_ready">O controlo ótimo é proposto após 14 dias com ≥ 80 % pontuais e ≤ 30 min de desvio médio.</string>
     <string name="probe_planned">Previsto %1$s → %2$.1f °C: esperado %3$s</string>
     <string name="probe_result">%1$s → %2$.1f °C: esperado %3$s · real %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d min)"</string>
@@ -240,13 +240,13 @@
     <string name="help_valve_title">«Válvula aberta» não é «a aquecer»</string>
     <string name="help_valve_text">O sistema só sabe quanto uma válvula está aberta, não se a água quente circula realmente. Um pino de válvula preso, uma ida fria do aquecimento central ou ar no circuito parecem todos «válvula aberta». Se uma válvula estiver aberta durante horas e a divisão não aquecer, a app mostra um aviso – verifique então o circuito no coletor.</string>
     <string name="help_chart_title">Gráfico do histórico</string>
-    <string name="help_chart_text">O gráfico pequeno mostra as últimas 24 horas: temperatura real (linha), alvo (tracejado), abertura da válvula (área em baixo) e humidade (painel próprio – % e °C não partilham escala). As etiquetas acima do gráfico indicam quando uma janela foi aberta ou fechada e quando o alvo mudou (arredondado a 15 minutos). Toque no gráfico ou em «Histórico ›» para todos os dados até 60 dias, com temperatura exterior, cada canal e valores exatos em qualquer momento. No topo da vista geral aparecem a temperatura exterior e a previsão para as próximas 24 horas.</string>
+    <string name="help_chart_text">O gráfico pequeno mostra as últimas 24 horas: temperatura real (linha), alvo (tracejado), abertura da válvula (área em baixo) e humidade (painel próprio – percentagem e °C não partilham escala). As etiquetas acima do gráfico indicam quando uma janela foi aberta ou fechada e quando o alvo mudou (arredondado a 15 minutos). Toque no gráfico ou em «Histórico ›» para todos os dados até 60 dias, com temperatura exterior, cada canal e valores exatos em qualquer momento. No topo da vista geral aparecem a temperatura exterior e a previsão para as próximas 24 horas.</string>
     <string name="help_window_title">Deteção de janela aberta</string>
     <string name="help_window_text">Sem contactos de janela, a app reconhece uma janela aberta pela temperatura: uma descida rápida com a válvula fechada. Uma nova subida sem aquecimento conta como «fechada». Se o aquecimento arrancar enquanto a janela talvez ainda esteja aberta, a app indica apenas «pelo menos até». A deteção funciona melhor com registos densos (ver «Bateria»).</string>
     <string name="help_model_title">Modelo da divisão e previsões</string>
     <string name="help_model_text">A partir das fases registadas, a app aprende para cada divisão a rapidez com que perde calor (k), a força com que o piso radiante a aquece (P) e quanto tempo a betonilha demora a reagir (tempo morto). Com isso prevê quanto tempo a divisão precisa para passar da temperatura reduzida à de conforto e voltar, à temperatura exterior atual. Os períodos com janela aberta são excluídos. Enquanto não houver fases suficientes, mostra «ainda a aprender».</string>
     <string name="help_probe_title">Teste</string>
-    <string name="help_probe_text">Antes de a app poder alguma vez controlar o aquecimento, tem de provar que as suas previsões estão certas. Uma vez por dia prevê para cada divisão quando os próximos aquecimentos do perfil ativo atingirão o alvo, e depois verifica com a medição. A vista de detalhe mostra a taxa de acerto. Só após 14 dias com pelo menos 80 % a tempo é proposto um controlo ótimo – e é o utilizador que o ativa.</string>
+    <string name="help_probe_text">Antes de a app poder alguma vez controlar o aquecimento, tem de provar que as suas previsões estão certas. Uma vez por dia prevê para cada divisão quando os próximos aquecimentos do perfil ativo atingirão o alvo, e depois verifica com a medição. A vista de detalhe mostra a taxa de acerto. Só após 14 dias com pelo menos 80 % pontuais é proposto um controlo ótimo – e é o utilizador que o ativa.</string>
     <string name="help_profiles_title">Perfis de aquecimento</string>
     <string name="help_profiles_text">«Perfil de aquecimento ›» mostra os perfis semanais de uma divisão. Toque num dia para o editar: arraste as extremidades das fases, ajuste com precisão início, fim e temperatura, copie um dia para outros. Antes de guardar, a app lista cada alteração, faz uma cópia da versão anterior, guarda e volta a ler o perfil para o verificar. «Anular a última gravação» restaura a cópia. Nada é escrito sem a sua confirmação.</string>
     <string name="help_battery_title">Bateria e dados</string>
@@ -255,4 +255,86 @@
     <string name="help_language_text">A app segue o idioma do sistema. Pode escolher outro idioma em «Info» ou (Android 13+) nas definições do sistema, em «Idiomas das apps».</string>
     <string name="help_privacy_title">Privacidade</string>
     <string name="help_privacy_text">A app comunica com a nuvem Homematic IP e, para a previsão meteorológica, com o Open-Meteo (grátis, sem conta). O Open-Meteo recebe apenas a localização da casa arredondada a cerca de 1 km, algumas vezes por dia. Os dados de acesso e o histórico ficam neste telemóvel. O PureHeat é um projeto não oficial e sem ligação à eQ-3.</string>
+
+    <string name="props_title">Características da divisão</string>
+    <string name="props_link">Descrever a divisão ›</string>
+    <string name="props_card_empty">Ainda não descrita. Tamanho, janelas, localização e pavimento tornam os valores iniciais do modelo mais precisos.</string>
+    <string name="props_intro">Descreva a divisão por palavras suas – escreva ou dite. A app reconhece as características que influenciam o aquecimento. Verifique-as abaixo e guarde. Tudo fica neste telemóvel.</string>
+    <string name="props_text_label">Descrição</string>
+    <string name="props_dictate">🎤 Ditar</string>
+    <string name="props_analyze">Reconhecer características</string>
+    <string name="props_analyzing">A reconhecer …</string>
+    <string name="props_ideas">Ideias (toque para adicionar):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>pé-direito 2,5 m</item>
+        <item>2 janelas a sul</item>
+        <item>1 janela a norte</item>
+        <item>vidro triplo</item>
+        <item>2 paredes exteriores</item>
+        <item>no sótão</item>
+        <item>sobre uma cave sem aquecimento</item>
+        <item>mosaico</item>
+        <item>parquet</item>
+        <item>alcatifa</item>
+        <item>estores</item>
+        <item>toalheiro</item>
+        <item>salamandra</item>
+        <item>quarto</item>
+        <item>janela entreaberta à noite</item>
+    </string-array>
+    <string name="props_source_ai">Reconhecido com IA no dispositivo (Gemini Nano) – o texto não sai do telemóvel. Verifique.</string>
+    <string name="props_source_keywords">Reconhecido por palavras-chave (só alemão e inglês) – este dispositivo não tem IA integrada. Verifique e complete abaixo.</string>
+    <string name="props_source_downloading">Por agora reconhecido por palavras-chave. O sistema está a transferir o seu modelo de IA; será usado da próxima vez.</string>
+    <string name="props_nothing">Nada reconhecido – preencha diretamente os campos abaixo.</string>
+    <string name="props_saved">Guardado.</string>
+    <string name="props_effect">Valores iniciais do modelo: perda de calor k %1$s · potência P %2$s · tempo morto %3$s. Só se aplicam até o modelo ter aprendido o suficiente com o histórico.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Área (m²)</string>
+    <string name="prop_height">Pé-direito (m)</string>
+    <string name="prop_windows">Número de janelas</string>
+    <string name="prop_directions">Janelas viradas a</string>
+    <string name="prop_glazing">Vidro</string>
+    <string name="prop_walls">Paredes exteriores</string>
+    <string name="prop_position">Localização</string>
+    <string name="prop_above_unheated">Sobre cave/garagem sem aquecimento</string>
+    <string name="prop_floor">Pavimento</string>
+    <string name="prop_shutters">Estores/persianas</string>
+    <string name="prop_heat_sources">Outras fontes de calor</string>
+    <string name="prop_usage">Utilização</string>
+    <string name="prop_night_vent">Janela aberta à noite</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NE</string>
+    <string name="dir_e">E</string>
+    <string name="dir_se">SE</string>
+    <string name="dir_s">S</string>
+    <string name="dir_sw">SO</string>
+    <string name="dir_w">O</string>
+    <string name="dir_nw">NO</string>
+    <string name="glazing_single">Simples</string>
+    <string name="glazing_double">Duplo</string>
+    <string name="glazing_triple">Triplo</string>
+    <string name="pos_basement">Cave</string>
+    <string name="pos_ground">Rés-do-chão</string>
+    <string name="pos_upper">Andar superior</string>
+    <string name="pos_attic">Sótão</string>
+    <string name="floor_tile">Mosaico/pedra</string>
+    <string name="floor_wood">Parquet/madeira</string>
+    <string name="floor_laminate">Flutuante/vinílico</string>
+    <string name="floor_carpet">Alcatifa</string>
+    <string name="heat_towel">Toalheiro</string>
+    <string name="heat_stove">Salamandra/lareira</string>
+    <string name="heat_electronics">Eletrónica</string>
+    <string name="heat_cooking">Cozinhar</string>
+    <string name="usage_living">Sala de estar</string>
+    <string name="usage_bedroom">Quarto</string>
+    <string name="usage_child">Quarto de criança</string>
+    <string name="usage_kitchen">Cozinha</string>
+    <string name="usage_bath">Casa de banho</string>
+    <string name="usage_office">Escritório</string>
+    <string name="usage_hall">Corredor</string>
+    <string name="help_props_title">Características da divisão</string>
+    <string name="help_props_text">Em «Descrever a divisão ›», no histórico de uma divisão, descreve-a por palavras suas, escritas ou ditadas – p. ex. tamanho, pé-direito, quantas janelas e para onde estão viradas, vidro, paredes exteriores, sótão ou sobre uma cave, pavimento, estores, uma salamandra, uso como quarto, janela entreaberta à noite. Em dispositivos com IA integrada (Gemini Nano) a app reconhece as características com ela, caso contrário por palavras-chave; verifica e corrige o resultado antes de guardar. Até o modelo ter aprendido com o histórico, estas características definem os seus valores iniciais (p. ex. a alcatifa aquece mais devagar, uma divisão no sótão perde calor mais depressa). Mais tarde, as janelas a sul ajudarão a ter em conta o sol.</string>
 </resources>

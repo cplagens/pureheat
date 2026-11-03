@@ -237,7 +237,7 @@
     <string name="help_valve_title">‘Klep open’ is niet ‘verwarmt’</string>
     <string name="help_valve_text">Het systeem weet alleen hoe ver een klep open staat, niet of er echt warm water stroomt. Een vastzittende klepstift, een koude aanvoer van de centrale verwarming of lucht in de groep zien er allemaal uit als ‘klep open’. Als een klep urenlang open staat en de kamer niet warmer wordt, toont de app een waarschuwing – controleer dan de groep op de verdeler.</string>
     <string name="help_chart_title">Geschiedenisgrafiek</string>
-    <string name="help_chart_text">De kleine grafiek toont de laatste 24 uur: werkelijke temperatuur (lijn), doeltemperatuur (gestreept), klepopening (vlak eronder) en luchtvochtigheid (eigen paneel – % en °C delen geen schaal). Labels boven de grafiek geven aan wanneer een raam is geopend of gesloten en wanneer het doel veranderde (afgerond op 15 minuten). Tik op de grafiek of ‘Geschiedenis ›’ voor alle gegevens tot 60 dagen, met buitentemperatuur, elk kanaal en exacte waarden op elk moment. Bovenaan het overzicht staan de buitentemperatuur en de verwachting voor de komende 24 uur.</string>
+    <string name="help_chart_text">De kleine grafiek toont de laatste 24 uur: werkelijke temperatuur (lijn), doeltemperatuur (gestreept), klepopening (vlak eronder) en luchtvochtigheid (eigen paneel – procent en °C delen geen schaal). Labels boven de grafiek geven aan wanneer een raam is geopend of gesloten en wanneer het doel veranderde (afgerond op 15 minuten). Tik op de grafiek of ‘Geschiedenis ›’ voor alle gegevens tot 60 dagen, met buitentemperatuur, elk kanaal en exacte waarden op elk moment. Bovenaan het overzicht staan de buitentemperatuur en de verwachting voor de komende 24 uur.</string>
     <string name="help_window_title">Detectie van open ramen</string>
     <string name="help_window_text">Zonder raamcontacten herkent de app een open raam aan de temperatuur: een snelle daling bij gesloten klep. Een nieuwe stijging zonder verwarming telt als ‘dicht’. Als de verwarming start terwijl het raam misschien nog open is, zegt de app alleen ‘minstens tot’. De detectie werkt het best met dichte opnamen (zie ‘Batterij’).</string>
     <string name="help_model_title">Kamermodel en voorspellingen</string>
@@ -252,4 +252,86 @@
     <string name="help_language_text">De app volgt de systeemtaal. Je kunt een andere taal kiezen onder ‘Info’ of (Android 13+) in de systeeminstellingen onder ‘App-talen’.</string>
     <string name="help_privacy_title">Privacy</string>
     <string name="help_privacy_text">De app communiceert met de Homematic IP-cloud en, voor de weersverwachting, met Open-Meteo (gratis, geen account). Open-Meteo ontvangt alleen de locatie van de woning, afgerond op ongeveer 1 km, een paar keer per dag. Toegangsgegevens en geschiedenis blijven op deze telefoon. PureHeat is een onofficieel project en niet gelieerd aan eQ-3.</string>
+
+    <string name="props_title">Kamereigenschappen</string>
+    <string name="props_link">Kamer beschrijven ›</string>
+    <string name="props_card_empty">Nog niet beschreven. Grootte, ramen, ligging en vloerbedekking maken de startwaarden van het model nauwkeuriger.</string>
+    <string name="props_intro">Beschrijf de kamer in je eigen woorden – typen of dicteren. De app herkent daaruit de eigenschappen die het verwarmen beïnvloeden. Controleer ze hieronder en sla op. Alles blijft op deze telefoon.</string>
+    <string name="props_text_label">Beschrijving</string>
+    <string name="props_dictate">🎤 Dicteren</string>
+    <string name="props_analyze">Eigenschappen herkennen</string>
+    <string name="props_analyzing">Herkennen …</string>
+    <string name="props_ideas">Ideeën (tik om toe te voegen):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>plafondhoogte 2,5 m</item>
+        <item>2 ramen op het zuiden</item>
+        <item>1 raam op het noorden</item>
+        <item>triple glas</item>
+        <item>2 buitenmuren</item>
+        <item>op zolder onder het dak</item>
+        <item>boven een onverwarmde kelder</item>
+        <item>tegels</item>
+        <item>parket</item>
+        <item>vloerbedekking</item>
+        <item>rolluiken</item>
+        <item>handdoekradiator</item>
+        <item>houtkachel</item>
+        <item>slaapkamer</item>
+        <item>’s nachts raam op een kier</item>
+    </string-array>
+    <string name="props_source_ai">Herkend met AI op het apparaat (Gemini Nano) – de tekst verlaat de telefoon niet. Controleer het.</string>
+    <string name="props_source_keywords">Herkend via trefwoorden (alleen Duits en Engels) – dit apparaat heeft geen AI op het apparaat. Controleer en vul hieronder aan.</string>
+    <string name="props_source_downloading">Voorlopig herkend via trefwoorden. Het systeem downloadt zijn AI-model; de volgende keer wordt het gebruikt.</string>
+    <string name="props_nothing">Niets herkend – vul de velden hieronder direct in.</string>
+    <string name="props_saved">Opgeslagen.</string>
+    <string name="props_effect">Startwaarden voor het kamermodel: warmteverlies k %1$s · verwarmingsvermogen P %2$s · dode tijd %3$s. Ze gelden alleen tot het model zelf genoeg uit de geschiedenis heeft geleerd.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Oppervlakte (m²)</string>
+    <string name="prop_height">Plafondhoogte (m)</string>
+    <string name="prop_windows">Aantal ramen</string>
+    <string name="prop_directions">Ramen op het</string>
+    <string name="prop_glazing">Beglazing</string>
+    <string name="prop_walls">Buitenmuren</string>
+    <string name="prop_position">Ligging</string>
+    <string name="prop_above_unheated">Boven onverwarmde kelder/garage</string>
+    <string name="prop_floor">Vloerbedekking</string>
+    <string name="prop_shutters">Rolluiken/jaloezieën</string>
+    <string name="prop_heat_sources">Andere warmtebronnen</string>
+    <string name="prop_usage">Gebruik</string>
+    <string name="prop_night_vent">’s Nachts raam open</string>
+    <string name="yes">Ja</string>
+    <string name="no">Nee</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NO</string>
+    <string name="dir_e">O</string>
+    <string name="dir_se">ZO</string>
+    <string name="dir_s">Z</string>
+    <string name="dir_sw">ZW</string>
+    <string name="dir_w">W</string>
+    <string name="dir_nw">NW</string>
+    <string name="glazing_single">Enkel</string>
+    <string name="glazing_double">Dubbel</string>
+    <string name="glazing_triple">Triple</string>
+    <string name="pos_basement">Kelder</string>
+    <string name="pos_ground">Begane grond</string>
+    <string name="pos_upper">Verdieping</string>
+    <string name="pos_attic">Onder het dak</string>
+    <string name="floor_tile">Tegels/steen</string>
+    <string name="floor_wood">Parket/hout</string>
+    <string name="floor_laminate">Laminaat/vinyl</string>
+    <string name="floor_carpet">Vloerbedekking (tapijt)</string>
+    <string name="heat_towel">Handdoekradiator</string>
+    <string name="heat_stove">Kachel/open haard</string>
+    <string name="heat_electronics">Elektronica</string>
+    <string name="heat_cooking">Koken</string>
+    <string name="usage_living">Woonkamer</string>
+    <string name="usage_bedroom">Slaapkamer</string>
+    <string name="usage_child">Kinderkamer</string>
+    <string name="usage_kitchen">Keuken</string>
+    <string name="usage_bath">Badkamer</string>
+    <string name="usage_office">Kantoor</string>
+    <string name="usage_hall">Gang</string>
+    <string name="help_props_title">Kamereigenschappen</string>
+    <string name="help_props_text">Onder ‘Kamer beschrijven ›’ in de geschiedenis van een kamer beschrijf je die in je eigen woorden, getypt of gedicteerd – bijv. grootte, plafondhoogte, hoeveel ramen op welke windrichting, beglazing, buitenmuren, zolder of boven een kelder, vloerbedekking, rolluiken, een kachel, gebruik als slaapkamer, ’s nachts raam op een kier. Op apparaten met AI op het apparaat (Gemini Nano) herkent de app de eigenschappen daarmee, anders via trefwoorden; je controleert en corrigeert het resultaat voor het opslaan. Tot het kamermodel uit de geschiedenis heeft geleerd, bepalen deze eigenschappen de startwaarden (bijv. tapijt verwarmt langzamer, een kamer onder het dak verliest sneller warmte). Later helpen ramen op het zuiden om zonneschijn mee te nemen.</string>
 </resources>

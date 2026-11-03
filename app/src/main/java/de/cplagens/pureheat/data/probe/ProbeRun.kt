@@ -4,6 +4,8 @@ import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WindowEvent
 import de.cplagens.pureheat.data.model.RoomModel
 import de.cplagens.pureheat.data.model.RoomSimulator
+import de.cplagens.pureheat.data.room.RoomPriors
+import de.cplagens.pureheat.data.room.RoomProperties
 import de.cplagens.pureheat.hmip.ProfileDay
 import de.cplagens.pureheat.hmip.Weekday
 import java.time.Instant
@@ -71,13 +73,18 @@ object ProbeRun {
         return day.periods.firstOrNull { minute >= it.start && minute < it.end }?.temperature ?: day.baseTemperature
     }
 
-    /** Model to use: the fitted one if it knows k and P, else [PRIOR]. Returns the model and its source. */
-    fun modelFor(fitted: RoomModel): Pair<RoomModel, String> =
-        if (fitted.k != null && fitted.power != null) {
-            fitted.copy(deadTimeHours = fitted.deadTimeHours ?: PRIOR.deadTimeHours) to ModelSource.FIT
+    /**
+     * Model to use: the fitted one if it knows k and P, else [PRIOR] adjusted by the room's
+     * [properties] (see [RoomPriors]). Returns the model and its source.
+     */
+    fun modelFor(fitted: RoomModel, properties: RoomProperties? = null): Pair<RoomModel, String> {
+        val prior = RoomPriors.model(PRIOR, properties)
+        return if (fitted.k != null && fitted.power != null) {
+            fitted.copy(deadTimeHours = fitted.deadTimeHours ?: prior.deadTimeHours) to ModelSource.FIT
         } else {
-            PRIOR to ModelSource.PRIOR
+            prior to ModelSource.PRIOR
         }
+    }
 
     fun predict(
         model: RoomModel,

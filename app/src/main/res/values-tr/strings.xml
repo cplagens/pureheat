@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="refresh">Yenile</string>
+    <string name="help">Yardım</string>
+    <string name="info">Bilgi</string>
+    <string name="logout">Çıkış yap</string>
+    <string name="close">Kapat</string>
+    <string name="cancel">İptal</string>
+    <string name="save">Kaydet</string>
+    <string name="save_ellipsis">Kaydet …</string>
+    <string name="discard">Vazgeç</string>
+    <string name="dismiss">Gizle</string>
+    <string name="apply">Uygula</string>
+    <string name="activate">Etkinleştir</string>
+    <string name="remove">Kaldır</string>
+    <string name="back">‹ Geri</string>
+    <string name="back_rooms">‹ Odalar</string>
+    <string name="unknown">bilinmiyor</string>
+    <string name="now">şimdi</string>
+    <string name="ago_24h">24 sa önce</string>
+    <string name="temperature">Sıcaklık</string>
+    <string name="temp_c">%.1f °C</string>
+    <string name="temp_c0">%.0f °C</string>
+    <string name="percent">%%%d</string>
+    <string name="version">Sürüm %s</string>
+    <string name="language">Dil</string>
+    <string name="system_language">Sistem dili</string>
+
+    <string name="day_mo">Pzt</string>
+    <string name="day_tu">Sal</string>
+    <string name="day_we">Çar</string>
+    <string name="day_th">Per</string>
+    <string name="day_fr">Cum</string>
+    <string name="day_sa">Cmt</string>
+    <string name="day_su">Paz</string>
+
+    <string name="duration_min">%d dk</string>
+    <string name="duration_h">%d sa</string>
+    <string name="duration_h_min">%1$d sa %2$d dk</string>
+    <string name="duration_over_day">24 saatten fazla</string>
+
+    <string name="setup_title">Erişim noktasını bağla</string>
+    <string name="setup_sgtin_hint">SGTIN (erişim noktası kimliği) erişim noktasının altındaki etikette yazılıdır, örn. 3014-F711-A000-…</string>
+    <string name="setup_sgtin">SGTIN</string>
+    <string name="setup_pin">PIN (yalnızca uygulamada ayarlandıysa)</string>
+    <string name="setup_connect">Bağlan</string>
+    <string name="setup_press_button">Şimdi erişim noktasındaki mavi düğmeye basın …</string>
+
+    <plurals name="rooms_valve_open">
+        <item quantity="one">%d odada vana açık</item>
+        <item quantity="other">%d odada vana açık</item>
+    </plurals>
+    <string name="unassigned_circuits">Bir odaya atanmamış</string>
+    <string name="valve_open">Vana açık</string>
+    <string name="room_values">Gerçek %1$s · Hedef %2$s</string>
+    <string name="room_humidity">" · %%%d BN"</string>
+    <string name="room_window_contact_open">" · pencere açık"</string>
+    <string name="valve_room">Vana (oda)</string>
+    <string name="channel_n">Kanal %d</string>
+    <string name="channel_state">%1$s: %2$s</string>
+    <string name="stalled_warning">⚠ Vana %1$.1f saattir açık, sıcaklık yalnızca %2$+.1f °C – ısı geliyor mu?</string>
+    <string name="history_link">Geçmiş ›</string>
+    <string name="profile_link">Isıtma profili ›</string>
+
+    <string name="history_recording">Geçmiş kaydediliyor …</string>
+    <string name="legend_actual">Gerçek</string>
+    <string name="legend_setpoint">Hedef</string>
+    <string name="legend_valve">Vana</string>
+    <string name="legend_window">Pencere</string>
+    <string name="legend_outside">Dış</string>
+    <string name="legend_window_detected">Pencere açık (algılandı)</string>
+    <string name="legend_humidity">Nem</string>
+    <string name="humidity_range">%%%1$d–%2$d BN</string>
+    <string name="humidity_title">Bağıl nem (%)</string>
+    <string name="value_humidity">%%%d BN</string>
+    <string name="outside_now">Dış %.1f °C</string>
+    <string name="forecast_24h">sonraki 24 sa %1$.0f–%2$.0f °C</string>
+    <string name="actual_range">Gerçek %1$.1f–%2$.1f °C</string>
+    <string name="marker_window_open">Pencere açık %s</string>
+    <string name="marker_window_closed">kapalı %s</string>
+    <string name="marker_setpoint">Hedef %1$s %2$s</string>
+
+    <string name="battery_title">Geçmişteki boşlukları önleyin</string>
+    <string name="battery_text">Uygulama nadiren açıldığı için Android arka plandaki kaydı yavaşlatır – bu da birkaç saatlik boşluklara yol açar. Çözüm: Uygulama bilgisi → Pil → “Kısıtlanmamış”. PureHeat yine de yalnızca 15–60 dakikada bir veri alır.</string>
+    <string name="battery_open_settings">Uygulama bilgisini aç</string>
+
+    <string name="range_24h">24 sa</string>
+    <string name="range_3d">3 gün</string>
+    <string name="range_7d">7 gün</string>
+    <string name="range_14d">14 gün</string>
+    <string name="range_60d">60 gün</string>
+    <string name="readout_hint">O andaki değerleri görmek için bir grafiğe dokunun veya kaydırın.</string>
+    <string name="readout_no_values">Bu anda değer yok.</string>
+    <string name="value_actual">Gerçek %.1f °C</string>
+    <string name="value_setpoint">Hedef %.1f °C</string>
+    <string name="value_outside">Dış %.1f °C</string>
+    <string name="value_valve">%1$s %%%2$d</string>
+    <string name="too_little_data">Bu dönemde henüz yeterli veri yok.</string>
+    <string name="valve_opening_title">Vana açıklığı (%0–100)</string>
+    <string name="windows_title">Pencere açık (sıcaklık eğrisinden algılandı)</string>
+    <string name="windows_none">Bu dönemde bir şey algılanmadı. Vana kapalıyken hızlı bir sıcaklık düşüşü algılanır (≥ 0,3 K, ≥ 0,6 K/sa); bitiş, ısıtmasız yeniden yükselmedir.</string>
+    <string name="phases_title">Evreler (vana ≥ 1 sa açık veya kapalı)</string>
+    <string name="phases_none">Henüz en az bir saatlik evre algılanmadı. Evreler, vana uzun süre açık (ısınma) veya kapalı (soğuma) kaldığında oluşur.</string>
+    <plurals name="phases">
+        <item quantity="one">%d evre</item>
+        <item quantity="other">%d evre</item>
+    </plurals>
+    <string name="phase_summary_open">Vana açık: ortalama %1$+.2f °C/sa (%2$s)</string>
+    <string name="phase_summary_closed">Vana kapalı: ortalama %1$+.2f °C/sa (%2$s)</string>
+    <string name="phase_open">▲ Vana açık · %1$s–%2$s</string>
+    <string name="phase_closed">▼ Vana kapalı · %1$s–%2$s</string>
+    <string name="phase_detail">%3$d sa %4$d dk içinde %1$.1f → %2$.1f °C (%5$+.2f °C/sa)</string>
+    <string name="phase_outside">" · dış ort. %.1f °C"</string>
+
+    <string name="window_open_since">Pencere muhtemelen %1$s itibarıyla açık (−%2$.1f K)</string>
+    <string name="window_open_from_to">Pencere muhtemelen açıktı: %1$s–%2$s (−%3$.1f K)</string>
+    <string name="window_open_at_least">Pencere muhtemelen %1$s itibarıyla, en az %2$s saatine kadar açık (−%3$.1f K)</string>
+    <string name="window_end_now">şimdi</string>
+    <string name="window_end_unknown">en az %s (bitiş algılanamıyor)</string>
+    <string name="window_event">%1$s–%2$s · %3$.1f → %4$.1f °C</string>
+    <string name="window_humidity_drop">" · nem −%%%d"</string>
+
+    <string name="model_title">Oda modeli</string>
+    <string name="model_computing">Hesaplanıyor …</string>
+    <string name="model_learning">Oda modeli hâlâ öğreniyor (vana açık %1$d/%2$d, vana kapalı %3$d/%4$d kullanılabilir evre)</string>
+    <string name="model_no_setback">Isıtma profilinde düşürme algılanmadı.</string>
+    <string name="model_summary">%1$.1f → %2$.1f °C %3$s · %1$.1f °C\'ye dönüş %4$s (dışarıda %5$.0f °C iken)</string>
+    <string name="model_summary_forecast">%1$.1f → %2$.1f °C %3$s · %1$.1f °C\'ye dönüş %4$s (tahmin dışarıda %5$.0f °C)</string>
+    <string name="model_in_about">yaklaşık %s içinde</string>
+    <string name="model_unreachable">dışarıda %1$.0f °C iken ulaşılamaz (%2$.1f °C)</string>
+    <string name="model_unknown">– henüz bilinmiyor</string>
+    <string name="model_parameters">Isı kaybı k: %1$s · Isıtma gücü P: %2$s · Ölü zaman: %3$s</string>
+    <string name="model_k">%.3f/sa</string>
+    <string name="model_p">%.2f °C/sa</string>
+    <string name="model_phases">Kullanılabilir evreler: vana açık %1$d, vana kapalı %2$d</string>
+    <string name="model_spread">" · k sapması: ±%%%d"</string>
+    <plurals name="model_windows_excluded">
+        <item quantity="one">" · %d× açık pencere algılandı, öğrenmede dışarıda bırakıldı"</item>
+        <item quantity="other">" · %d× açık pencere algılandı, öğrenmede dışarıda bırakıldı"</item>
+    </plurals>
+    <string name="model_levels">Düşürme/konfor sıcaklığı (son 7 günün hedef değerlerinden): %1$.1f / %2$.1f °C</string>
+    <string name="model_explanation">Model, odanın vana açıkken düzenli ısındığını ve vana kapalıyken dış sıcaklığa doğru soğuduğunu varsayar. Farklı hava koşullarına sahip gün sayısı arttıkça daha doğru olur.</string>
+
+    <string name="probe_title">Deneme (tahmin ve gerçek)</string>
+    <string name="probe_explanation">Uygulama günde bir kez etkin profil, oda modeli ve hava tahmininden her ısınmanın hedefine ne zaman ulaşacağını tahmin eder ve sonra bunu ölçümle karşılaştırır. Isıtmada hiçbir şey değiştirilmez. Açık pencere veya elle değişiklik olan zamanlar sayılmaz.</string>
+    <string name="probe_none">Henüz tahmin yok – ilkleri bir sonraki günlük çalışmada yapılır.</string>
+    <string name="probe_score">Değerlendirilen: %1$d · zamanında (±30 dk): %%%2$d · ortalama %3$s dk sapma · %4$d gün</string>
+    <string name="probe_ready">Yeterince doğru: bu oda için optimum kontrol önerilebilir.</string>
+    <string name="probe_not_ready">Optimum kontrol, ≥ %80 zamanında ve ≤ 30 dk ortalama sapma ile 14 gün sonra önerilir.</string>
+    <string name="probe_planned">Planlanan %1$s → %2$.1f °C: beklenen %3$s</string>
+    <string name="probe_result">%1$s → %2$.1f °C: beklenen %3$s · gerçek %4$s%5$s · %6$s</string>
+    <string name="probe_delta">" (%+d dk)"</string>
+    <string name="probe_not_reached">ulaşılmadı</string>
+    <string name="probe_prior">" · başlangıç değerleri"</string>
+    <string name="outcome_hit">zamanında</string>
+    <string name="outcome_early">daha erken</string>
+    <string name="outcome_late">daha geç</string>
+    <string name="outcome_not_reached">ulaşılmadı</string>
+    <string name="outcome_disturbed">sayılmadı (pencere/elle değişiklik)</string>
+
+    <string name="profiles_title">Isıtma profilleri</string>
+    <string name="profile_n">Profil %s</string>
+    <string name="profile_active_suffix">%s · etkin</string>
+    <string name="profile_save_first">Profili değiştirmek için önce kaydedin veya vazgeçin.</string>
+    <string name="profile_activate">%s etkinleştir</string>
+    <string name="profile_activate_q">%s etkinleştirilsin mi?</string>
+    <string name="profile_activate_text">“%s” odası bundan sonra bu haftalık profile göre ısıtılacak.</string>
+    <string name="profile_week_hint">Hafta – düzenlemek için bir güne dokunun</string>
+    <string name="profile_day_unreadable">okunamıyor</string>
+    <string name="profile_rate">Geçmişe göre: bu oda genellikle saatte yaklaşık %.2f °C ısınır.</string>
+    <string name="profile_rate_unknown">Yeterli geçmiş kaydedildiğinde uygulama burada odanın ne kadar hızlı ısındığını gösterir.</string>
+    <string name="profile_optimum_tip">İpucu: Homematic IP uygulamasındaki “Optimum Start/Stop” ile sistem ön ısıtma süresini kendisi öğrenir.</string>
+    <string name="profile_undo">Son kaydı geri al</string>
+    <string name="profile_saved">Kaydedildi ve doğrulandı.</string>
+    <string name="profile_saved_also">Kaydedildi ve doğrulandı. Ayrıca %d diğer odaya uygulandı.</string>
+    <string name="profile_saved_partly">Kaydedildi. Şunlara uygulanamadı: %s.</string>
+    <string name="profile_now_active">%s artık etkin.</string>
+    <string name="profile_restored">Önceki sürüm geri yüklendi.</string>
+    <string name="save_changes_q">Değişiklikler kaydedilsin mi?</string>
+    <string name="save_backup_note">Önceki sürüm yedeklenir ve geri yüklenebilir.</string>
+    <string name="save_also_rooms">Değişen günleri şunlara da uygula:</string>
+    <string name="diff_period">%1$s–%2$s %3$.1f °C</string>
+    <string name="diff_no_period">ısıtma evresi yok</string>
+    <string name="diff_periods">%1$s: %2$s → %3$s</string>
+    <string name="diff_base">%1$s: temel sıcaklık %2$.1f → %3$.1f °C</string>
+    <string name="diff_both">%1$s: %2$s → %3$s; temel sıcaklık %4$.1f → %5$.1f °C</string>
+    <string name="editor_drag_hint">Isıtma evrelerinin kenarlarını sürükleyin veya aşağıda tam olarak ayarlayın</string>
+    <string name="editor_phase">Evre %1$d: %2$s–%3$s</string>
+    <string name="editor_start">Başlangıç</string>
+    <string name="editor_end">Bitiş</string>
+    <string name="editor_add_phase">+ Isıtma evresi ekle</string>
+    <string name="editor_max_phases">En fazla %d ısıtma evresi</string>
+    <string name="editor_base">Temel sıcaklık (evreler dışında)</string>
+    <string name="editor_copy_to">Bu günü şuraya kopyala:</string>
+    <string name="editor_workdays">Pzt–Cum</string>
+    <string name="editor_weekend">Cmt–Paz</string>
+    <string name="editor_all_days">Tümü</string>
+    <string name="preheat_start">Saat %1$s\'de %2$.1f °C olması için ısıtmanın yaklaşık %3$.2f °C/sa ile saat %4$s civarında başlaması gerekir. Bu bir üst sınırdır – şap genellikle temel sıcaklığa kadar soğumaz.</string>
+    <string name="preheat_too_slow">Yaklaşık %1$.2f °C/sa ile oda %2$.1f\'den %3$.1f °C\'ye çıkmak için 8 saatten fazla zamana ihtiyaç duyar. Yerden ısıtmada derin bir düşürme yerine daha yüksek bir temel sıcaklık genellikle daha iyi sonuç verir.</string>
+
+    <string name="about_text">Yerden ısıtmanızın hangi devresinin şu an açık olduğunu gösterir, geçmişi kaydeder, her odanın nasıl davrandığını öğrenir ve ısıtma profillerini kolayca düzenlemenizi sağlar. Ücretsiz, reklamsız, izlemesiz. Resmî olmayan proje, eQ-3 ile bağlantısı yoktur.</string>
+    <string name="support_text">Uygulamayı beğendiyseniz gönüllü bir katkı her zaman memnuniyetle karşılanır. Asla zorunlu değildir ve hiçbir şeyin kilidini açmaz.</string>
+    <string name="source_code">GitHub\'da kaynak kodu</string>
+
+    <string name="err_unknown_host">%s sunucusuna ulaşılamıyor. İnternet bağlantısını kontrol edip tekrar deneyin.</string>
+    <string name="err_unknown_host_cloud">Bulut sunucusuna ulaşılamıyor. İnternet bağlantısını kontrol edip tekrar deneyin.</string>
+    <string name="err_timeout">Zaman aşımı: bulut zamanında yanıt vermedi.</string>
+    <string name="err_no_connection">Buluta bağlanılamıyor. İnternet bağlantısını kontrol edin.</string>
+    <string name="err_ssl">Buluta güvenli bağlantı başarısız oldu (%s).</string>
+    <string name="err_network">Ağ hatası: %s</string>
+    <string name="err_unexpected">Beklenmeyen hata: %s</string>
+    <string name="err_with_context">%1$s: %2$s (%3$s)</string>
+    <string name="err_http_forbidden">Erişim reddedildi. Uygulama erişim noktasından kaldırıldıysa: çıkış yapıp yeniden bağlanın.</string>
+    <string name="err_http_not_found">Erişim noktası bulunamadı. SGTIN\'i kontrol edin.</string>
+    <string name="err_http_bad_request">Geçersiz istek.</string>
+    <string name="err_http_too_many">Çok fazla istek. Lütfen biraz bekleyin.</string>
+    <string name="err_http_server">Homematic IP bulutunda şu an bir sorun var. Lütfen daha sonra tekrar deneyin.</string>
+    <string name="err_http_unexpected">Buluttan beklenmeyen yanıt.</string>
+    <string name="err_button_timeout">Erişim noktasındaki mavi düğmeye zamanında basılmadı.</string>
+    <string name="err_not_logged_in">Oturum açılmadı.</string>
+    <string name="err_profile_mismatch">Profil gönderildi, ancak bulut farklı değerler döndürüyor. Homematic IP uygulamasında kontrol edin veya “Geri al”ı kullanın.</string>
+    <string name="ctx_lookup">Sunucu araması başarısız</string>
+    <string name="ctx_connection_request">Bağlantı isteği reddedildi</string>
+    <string name="ctx_token_request">Token isteği başarısız</string>
+    <string name="ctx_token_confirm">Token onayı başarısız</string>
+    <string name="ctx_state">Durum yüklenemedi</string>
+    <string name="ctx_profile_load">Isıtma profili yüklenemedi</string>
+    <string name="ctx_profile_save">Isıtma profili kaydedilemedi</string>
+    <string name="ctx_profile_activate">Profil etkinleştirilemedi</string>
+
+    <string name="help_title">Yardım</string>
+    <string name="help_intro">PureHeat yerden ısıtmanızı Homematic IP bulutu üzerinden okur ve resmî uygulamanın göstermediklerini gösterir: hangi vananın açık olduğunu, her odanın zaman içinde nasıl davrandığını ve nasıl daha iyi ısıtılabileceğini.</string>
+    <string name="help_start_title">Başlarken</string>
+    <string name="help_start_text">Erişim noktasının altındaki etiketteki SGTIN\'i (ve ayarladıysanız PIN\'i) girin. İstendiğinde erişim noktasındaki mavi düğmeye basın. Erişim tokenı yalnızca bu telefonda saklanır.</string>
+    <string name="help_overview_title">Genel bakış</string>
+    <string name="help_overview_text">Her oda için bir kart: gerçek ve hedef sıcaklık, nem ve her vananın (devrenin) açıklığı. Termostatik başlıklı havlupanlar, sıcaklık sensörü olmayan ayrı odalar olarak görünür. Uygulama açıkken genel bakış 5 dakikada bir yenilenir; “Yenile” hemen veri alır.</string>
+    <string name="help_valve_title">“Vana açık” “ısıtıyor” demek değildir</string>
+    <string name="help_valve_text">Sistem yalnızca vananın ne kadar açık olduğunu bilir, sıcak suyun gerçekten akıp akmadığını bilmez. Sıkışmış bir vana pimi, merkezi ısıtmadan gelen soğuk gidiş suyu veya devredeki hava, hepsi “vana açık” gibi görünür. Bir vana saatlerce açıkken oda ısınmıyorsa uygulama bir uyarı gösterir – o zaman kollektördeki devreyi kontrol edin.</string>
+    <string name="help_chart_title">Geçmiş grafiği</string>
+    <string name="help_chart_text">Küçük grafik son 24 saati gösterir: gerçek sıcaklık (çizgi), hedef sıcaklık (kesikli), vana açıklığı (alttaki alan) ve nem (ayrı panel – % ve °C aynı ölçeği paylaşmaz). Grafiğin üstündeki etiketler bir pencerenin ne zaman açılıp kapandığını ve hedefin ne zaman değiştiğini gösterir (15 dakikaya yuvarlanmış). Dış sıcaklık, her kanal ve herhangi bir andaki tam değerlerle 60 güne kadar tüm veriler için grafiğe veya “Geçmiş ›”e dokunun. Genel bakışın üstünde dış sıcaklık ve sonraki 24 saatin tahmini yer alır.</string>
+    <string name="help_window_title">Açık pencere algılama</string>
+    <string name="help_window_text">Pencere kontakları olmadan uygulama açık bir pencereyi sıcaklıktan tanır: vana kapalıyken hızlı bir düşüş. Isıtmasız yeniden yükselme “kapalı” sayılır. Pencere hâlâ açık olabilirken ısıtma başlarsa uygulama yalnızca “en az … kadar” der. Algılama sık kayıtlarla en iyi çalışır (bkz. “Pil”).</string>
+    <string name="help_model_title">Oda modeli ve tahminler</string>
+    <string name="help_model_text">Uygulama kaydedilen evrelerden her oda için ısıyı ne kadar hızlı kaybettiğini (k), yerden ısıtmanın onu ne kadar güçlü ısıttığını (P) ve şapın tepki vermesinin ne kadar sürdüğünü (ölü zaman) öğrenir. Buradan, mevcut dış sıcaklıkta odanın düşürme sıcaklığından konfor sıcaklığına ve geri dönmek için ne kadar süreye ihtiyaç duyduğunu tahmin eder. Açık pencere zamanları dışarıda bırakılır. Yeterli evre görülene kadar “hâlâ öğreniyor” gösterir.</string>
+    <string name="help_probe_title">Deneme</string>
+    <string name="help_probe_text">Uygulama ısıtmayı kontrol edebilmeden önce tahminlerinin doğru olduğunu kanıtlamalıdır. Günde bir kez her oda için etkin profilin sonraki ısınmalarının hedefe ne zaman ulaşacağını tahmin eder ve sonra bunu ölçümle karşılaştırır. Ayrıntı görünümü isabet oranını gösterir. Ancak en az %80 zamanında olan 14 günden sonra optimum kontrol önerilir – ve onu siz açarsınız.</string>
+    <string name="help_profiles_title">Isıtma profilleri</string>
+    <string name="help_profiles_text">“Isıtma profili ›” bir odanın haftalık profillerini gösterir. Düzenlemek için bir güne dokunun: evrelerin kenarlarını sürükleyin, başlangıç, bitiş ve sıcaklığı tam olarak ayarlayın, bir günü diğerlerine kopyalayın. Kaydetmeden önce uygulama her değişikliği listeler, eski sürümü yedekler, kaydeder ve sonra profili kontrol için geri okur. “Son kaydı geri al” yedeği geri yükler. Onayınız olmadan hiçbir şey yazılmaz.</string>
+    <string name="help_battery_title">Pil ve veri</string>
+    <string name="help_battery_text">Arka planda uygulama bir şey değişirken 15 dakikada bir, aksi halde 30 dakikada bir ve geceleri 60 dakikada bir veri alır. Her istek yaklaşık 100 KB\'tır. Uygulama nadiren açılırsa Android bu işleri saatlerce geciktirebilir – eksiksiz bir geçmiş için Uygulama bilgisi → Pil → “Kısıtlanmamış” seçin.</string>
+    <string name="help_language_title">Dil</string>
+    <string name="help_language_text">Uygulama sistem dilini izler. “Bilgi” altında veya (Android 13+) sistem ayarlarında “Uygulama dilleri” altında başka bir dil seçebilirsiniz.</string>
+    <string name="help_privacy_title">Gizlilik</string>
+    <string name="help_privacy_text">Uygulama Homematic IP bulutuyla ve hava tahmini için Open-Meteo ile (ücretsiz, hesap gerekmez) iletişim kurar. Open-Meteo günde birkaç kez yalnızca evin yaklaşık 1 km\'ye yuvarlanmış konumunu alır. Erişim verileri ve geçmiş bu telefonda kalır. PureHeat resmî olmayan bir projedir ve eQ-3 ile bağlantısı yoktur.</string>
+
+    <string name="props_title">Oda özellikleri</string>
+    <string name="props_link">Odayı tanımla ›</string>
+    <string name="props_card_empty">Henüz tanımlanmadı. Boyut, pencereler, konum ve zemin kaplaması modelin başlangıç değerlerini daha doğru yapar.</string>
+    <string name="props_intro">Odayı kendi sözlerinizle tanımlayın – yazın veya dikte edin. Uygulama ısıtmayı etkileyen özellikleri tanır. Aşağıda kontrol edip kaydedin. Her şey bu telefonda kalır.</string>
+    <string name="props_text_label">Açıklama</string>
+    <string name="props_dictate">🎤 Dikte et</string>
+    <string name="props_analyze">Özellikleri tanı</string>
+    <string name="props_analyzing">Tanınıyor …</string>
+    <string name="props_ideas">Fikirler (eklemek için dokunun):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>tavan yüksekliği 2,5 m</item>
+        <item>güneye bakan 2 pencere</item>
+        <item>kuzeye bakan 1 pencere</item>
+        <item>üçlü cam</item>
+        <item>2 dış duvar</item>
+        <item>çatı katı</item>
+        <item>ısıtılmayan bodrumun üstünde</item>
+        <item>fayans</item>
+        <item>parke</item>
+        <item>halı</item>
+        <item>panjur</item>
+        <item>havlupan</item>
+        <item>odun sobası</item>
+        <item>yatak odası</item>
+        <item>geceleri pencere aralık</item>
+    </string-array>
+    <string name="props_source_ai">Cihaz üzerindeki yapay zekâ ile tanındı (Gemini Nano) – metin telefondan çıkmaz. Lütfen kontrol edin.</string>
+    <string name="props_source_keywords">Anahtar kelimelerle tanındı (yalnızca Almanca ve İngilizce) – bu cihazda cihaz üzerinde yapay zekâ yok. Lütfen aşağıda kontrol edip tamamlayın.</string>
+    <string name="props_source_downloading">Şimdilik anahtar kelimelerle tanındı. Sistem yapay zekâ modelini indiriyor; bir sonraki sefer kullanılacak.</string>
+    <string name="props_nothing">Hiçbir şey tanınmadı – lütfen aşağıdaki alanları doğrudan doldurun.</string>
+    <string name="props_saved">Kaydedildi.</string>
+    <string name="props_effect">Oda modelinin başlangıç değerleri: ısı kaybı k %1$s · ısıtma gücü P %2$s · ölü zaman %3$s. Yalnızca model geçmişten yeterince öğrenene kadar geçerlidir.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Alan (m²)</string>
+    <string name="prop_height">Tavan yüksekliği (m)</string>
+    <string name="prop_windows">Pencere sayısı</string>
+    <string name="prop_directions">Pencere yönü</string>
+    <string name="prop_glazing">Cam</string>
+    <string name="prop_walls">Dış duvarlar</string>
+    <string name="prop_position">Konum</string>
+    <string name="prop_above_unheated">Isıtılmayan bodrum/garaj üstünde</string>
+    <string name="prop_floor">Zemin kaplaması</string>
+    <string name="prop_shutters">Panjur/stor</string>
+    <string name="prop_heat_sources">Diğer ısı kaynakları</string>
+    <string name="prop_usage">Kullanım</string>
+    <string name="prop_night_vent">Geceleri pencere açık</string>
+    <string name="yes">Evet</string>
+    <string name="no">Hayır</string>
+    <string name="dir_n">K</string>
+    <string name="dir_ne">KD</string>
+    <string name="dir_e">D</string>
+    <string name="dir_se">GD</string>
+    <string name="dir_s">G</string>
+    <string name="dir_sw">GB</string>
+    <string name="dir_w">B</string>
+    <string name="dir_nw">KB</string>
+    <string name="glazing_single">Tek</string>
+    <string name="glazing_double">Çift</string>
+    <string name="glazing_triple">Üçlü</string>
+    <string name="pos_basement">Bodrum</string>
+    <string name="pos_ground">Zemin kat</string>
+    <string name="pos_upper">Üst kat</string>
+    <string name="pos_attic">Çatı katı</string>
+    <string name="floor_tile">Fayans/taş</string>
+    <string name="floor_wood">Parke/ahşap</string>
+    <string name="floor_laminate">Laminat/vinil</string>
+    <string name="floor_carpet">Halı</string>
+    <string name="heat_towel">Havlupan</string>
+    <string name="heat_stove">Soba/şömine</string>
+    <string name="heat_electronics">Elektronik</string>
+    <string name="heat_cooking">Yemek pişirme</string>
+    <string name="usage_living">Oturma odası</string>
+    <string name="usage_bedroom">Yatak odası</string>
+    <string name="usage_child">Çocuk odası</string>
+    <string name="usage_kitchen">Mutfak</string>
+    <string name="usage_bath">Banyo</string>
+    <string name="usage_office">Çalışma odası</string>
+    <string name="usage_hall">Koridor</string>
+    <string name="help_props_title">Oda özellikleri</string>
+    <string name="help_props_text">Bir odanın geçmişindeki “Odayı tanımla ›” altında odayı kendi sözlerinizle, yazarak veya dikte ederek tanımlarsınız – örn. boyut, tavan yüksekliği, kaç pencerenin hangi yöne baktığı, cam, dış duvarlar, çatı katı veya bodrumun üstü, zemin kaplaması, panjurlar, bir soba, yatak odası olarak kullanım, geceleri aralık pencere. Cihaz üzerinde yapay zekâsı olan cihazlarda (Gemini Nano) uygulama özellikleri onunla, aksi halde anahtar kelimelerle tanır; kaydetmeden önce sonucu kontrol edip düzeltirsiniz. Oda modeli geçmişten öğrenene kadar bu özellikler başlangıç değerlerini belirler (örn. halı daha yavaş ısınır, çatı katındaki oda ısıyı daha hızlı kaybeder). İleride güneye bakan pencereler güneş ışığını hesaba katmaya yardımcı olacak.</string>
+</resources>

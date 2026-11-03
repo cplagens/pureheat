@@ -17,6 +17,7 @@ import de.cplagens.pureheat.data.history.WindowDetector
 import de.cplagens.pureheat.data.probe.HeatUpPrediction
 import de.cplagens.pureheat.data.probe.ProbeRun
 import de.cplagens.pureheat.data.probe.Strategy
+import de.cplagens.pureheat.data.room.RoomDescriptionStore
 import java.time.ZoneId
 import de.cplagens.pureheat.hmip.HeatingProfile
 import de.cplagens.pureheat.hmip.HeatingProfileCodec
@@ -43,6 +44,8 @@ class HeatingRepository(
     private val dao: HistoryDao,
     private val client: HmipClient = HmipClient(),
     private val forecastClient: ForecastClient = ForecastClient(),
+    /** What the user wrote about each room; adjusts the model's starting values. */
+    val descriptions: RoomDescriptionStore = RoomDescriptionStore(context),
 ) {
     /**
      * REST server from the lookup, kept across processes: every app start and every background
@@ -141,7 +144,7 @@ class HeatingRepository(
             val profile = runCatching { loadProfile(room.id, ref.index, ref.profileId) }.getOrNull()
                 ?: return@flatMap emptyList()
             val fitted = insights[room.id]?.model ?: RoomModelFitter.fit(emptyList())
-            val (model, source) = ProbeRun.modelFor(fitted)
+            val (model, source) = ProbeRun.modelFor(fitted, descriptions.get(room.id)?.properties)
             ProbeRun.predict(model, temp, now, profile.days, zone, outsideAt).map {
                 PredictionEntity(
                     roomId = room.id,
@@ -194,6 +197,7 @@ class HeatingRepository(
         dao.clearForecast()
         dao.clearPredictions()
         probePrefs.edit().clear().apply()
+        descriptions.clear()
         withContext(Dispatchers.IO) { backupDir().deleteRecursively() }
     }
 

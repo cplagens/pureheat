@@ -1,0 +1,343 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="refresh">Обновить</string>
+    <string name="help">Справка</string>
+    <string name="info">Инфо</string>
+    <string name="logout">Выйти</string>
+    <string name="close">Закрыть</string>
+    <string name="cancel">Отмена</string>
+    <string name="save">Сохранить</string>
+    <string name="save_ellipsis">Сохранить …</string>
+    <string name="discard">Отменить изменения</string>
+    <string name="dismiss">Скрыть</string>
+    <string name="apply">Применить</string>
+    <string name="activate">Активировать</string>
+    <string name="remove">Удалить</string>
+    <string name="back">‹ Назад</string>
+    <string name="back_rooms">‹ Комнаты</string>
+    <string name="unknown">неизвестно</string>
+    <string name="now">сейчас</string>
+    <string name="ago_24h">24 ч назад</string>
+    <string name="temperature">Температура</string>
+    <string name="temp_c">%.1f °C</string>
+    <string name="temp_c0">%.0f °C</string>
+    <string name="percent">%d %%</string>
+    <string name="version">Версия %s</string>
+    <string name="language">Язык</string>
+    <string name="system_language">Язык системы</string>
+
+    <string name="day_mo">Пн</string>
+    <string name="day_tu">Вт</string>
+    <string name="day_we">Ср</string>
+    <string name="day_th">Чт</string>
+    <string name="day_fr">Пт</string>
+    <string name="day_sa">Сб</string>
+    <string name="day_su">Вс</string>
+
+    <string name="duration_min">%d мин</string>
+    <string name="duration_h">%d ч</string>
+    <string name="duration_h_min">%1$d ч %2$d мин</string>
+    <string name="duration_over_day">более 24 ч</string>
+
+    <string name="setup_title">Подключить точку доступа</string>
+    <string name="setup_sgtin_hint">SGTIN (ID точки доступа) напечатан на наклейке снизу точки доступа, напр. 3014-F711-A000-…</string>
+    <string name="setup_sgtin">SGTIN</string>
+    <string name="setup_pin">PIN (только если задан в приложении)</string>
+    <string name="setup_connect">Подключить</string>
+    <string name="setup_press_button">Теперь нажмите синюю кнопку на точке доступа …</string>
+
+    <plurals name="rooms_valve_open">
+        <item quantity="one">Клапан открыт в %d комнате</item>
+        <item quantity="few">Клапан открыт в %d комнатах</item>
+        <item quantity="many">Клапан открыт в %d комнатах</item>
+        <item quantity="other">Клапан открыт в %d комнатах</item>
+    </plurals>
+    <string name="unassigned_circuits">Не привязано к комнате</string>
+    <string name="valve_open">Клапан открыт</string>
+    <string name="room_values">Факт %1$s · Цель %2$s</string>
+    <string name="room_humidity">" · %d %% отн. вл."</string>
+    <string name="room_window_contact_open">" · окно открыто"</string>
+    <string name="valve_room">Клапан (комната)</string>
+    <string name="channel_n">Канал %d</string>
+    <string name="channel_state">%1$s: %2$s</string>
+    <string name="stalled_warning">⚠ Клапан открыт %1$.1f ч, температура лишь %2$+.1f °C – поступает ли тепло?</string>
+    <string name="history_link">История ›</string>
+    <string name="profile_link">Профиль отопления ›</string>
+
+    <string name="history_recording">Запись истории …</string>
+    <string name="legend_actual">Факт</string>
+    <string name="legend_setpoint">Цель</string>
+    <string name="legend_valve">Клапан</string>
+    <string name="legend_window">Окно</string>
+    <string name="legend_outside">Снаружи</string>
+    <string name="legend_window_detected">Окно открыто (обнаружено)</string>
+    <string name="legend_humidity">Влажность</string>
+    <string name="humidity_range">%1$d–%2$d %% отн. вл.</string>
+    <string name="humidity_title">Влажность (% отн. вл.)</string>
+    <string name="value_humidity">%d %% отн. вл.</string>
+    <string name="outside_now">Снаружи %.1f °C</string>
+    <string name="forecast_24h">ближайшие 24 ч %1$.0f–%2$.0f °C</string>
+    <string name="actual_range">Факт %1$.1f–%2$.1f °C</string>
+    <string name="marker_window_open">Окно открыто %s</string>
+    <string name="marker_window_closed">закрыто %s</string>
+    <string name="marker_setpoint">Цель %1$s %2$s</string>
+
+    <string name="battery_title">Избегайте пропусков в истории</string>
+    <string name="battery_text">Android замедляет фоновую запись, потому что приложение редко открывается, – возникают пропуски в несколько часов. Решение: О приложении → Батарея → «Без ограничений». PureHeat всё равно запрашивает данные только раз в 15–60 минут.</string>
+    <string name="battery_open_settings">Открыть «О приложении»</string>
+
+    <string name="range_24h">24 ч</string>
+    <string name="range_3d">3 дня</string>
+    <string name="range_7d">7 дней</string>
+    <string name="range_14d">14 дней</string>
+    <string name="range_60d">60 дней</string>
+    <string name="readout_hint">Коснитесь графика или проведите по нему, чтобы увидеть значения в этот момент.</string>
+    <string name="readout_no_values">Нет значений в этот момент.</string>
+    <string name="value_actual">Факт %.1f °C</string>
+    <string name="value_setpoint">Цель %.1f °C</string>
+    <string name="value_outside">Снаружи %.1f °C</string>
+    <string name="value_valve">%1$s %2$d %%</string>
+    <string name="too_little_data">За этот период пока недостаточно данных.</string>
+    <string name="valve_opening_title">Открытие клапана (0–100 %)</string>
+    <string name="windows_title">Окно открыто (по кривой температуры)</string>
+    <string name="windows_none">За этот период ничего не обнаружено. Обнаруживается быстрое падение температуры при закрытом клапане (≥ 0,3 K при ≥ 0,6 K/ч); конец — новый рост без отопления.</string>
+    <string name="phases_title">Фазы (клапан открыт или закрыт ≥ 1 ч)</string>
+    <string name="phases_none">Пока не обнаружено ни одной фазы длительностью не менее часа. Фазы возникают, когда клапан долго остаётся открытым (нагрев) или закрытым (остывание).</string>
+    <plurals name="phases">
+        <item quantity="one">%d фаза</item>
+        <item quantity="few">%d фазы</item>
+        <item quantity="many">%d фаз</item>
+        <item quantity="other">%d фазы</item>
+    </plurals>
+    <string name="phase_summary_open">Клапан открыт: в среднем %1$+.2f °C/ч (%2$s)</string>
+    <string name="phase_summary_closed">Клапан закрыт: в среднем %1$+.2f °C/ч (%2$s)</string>
+    <string name="phase_open">▲ Клапан открыт · %1$s–%2$s</string>
+    <string name="phase_closed">▼ Клапан закрыт · %1$s–%2$s</string>
+    <string name="phase_detail">%1$.1f → %2$.1f °C за %3$d ч %4$d мин (%5$+.2f °C/ч)</string>
+    <string name="phase_outside">" · снаружи в ср. %.1f °C"</string>
+
+    <string name="window_open_since">Окно, вероятно, открыто с %1$s (−%2$.1f K)</string>
+    <string name="window_open_from_to">Окно, вероятно, было открыто: %1$s–%2$s (−%3$.1f K)</string>
+    <string name="window_open_at_least">Окно, вероятно, открыто с %1$s, как минимум до %2$s (−%3$.1f K)</string>
+    <string name="window_end_now">сейчас</string>
+    <string name="window_end_unknown">как минимум %s (конец не определить)</string>
+    <string name="window_event">%1$s–%2$s · %3$.1f → %4$.1f °C</string>
+    <string name="window_humidity_drop">" · влажность −%d %%"</string>
+
+    <string name="model_title">Модель комнаты</string>
+    <string name="model_computing">Расчёт …</string>
+    <string name="model_learning">Модель ещё обучается (клапан открыт %1$d/%2$d, клапан закрыт %3$d/%4$d пригодных фаз)</string>
+    <string name="model_no_setback">В профиле отопления не найдено снижения.</string>
+    <string name="model_summary">%1$.1f → %2$.1f °C %3$s · обратно до %1$.1f °C %4$s (при %5$.0f °C снаружи)</string>
+    <string name="model_summary_forecast">%1$.1f → %2$.1f °C %3$s · обратно до %1$.1f °C %4$s (прогноз %5$.0f °C снаружи)</string>
+    <string name="model_in_about">примерно за %s</string>
+    <string name="model_unreachable">недостижимо при %1$.0f °C снаружи (%2$.1f °C)</string>
+    <string name="model_unknown">– пока неизвестно</string>
+    <string name="model_parameters">Теплопотери k: %1$s · Мощность P: %2$s · Время запаздывания: %3$s</string>
+    <string name="model_k">%.3f/ч</string>
+    <string name="model_p">%.2f °C/ч</string>
+    <string name="model_phases">Пригодные фазы: клапан открыт %1$d, клапан закрыт %2$d</string>
+    <string name="model_spread">" · разброс k: ±%d %%"</string>
+    <plurals name="model_windows_excluded">
+        <item quantity="one">" · %d× обнаружено открытое окно, исключено из обучения"</item>
+        <item quantity="few">" · %d× обнаружено открытое окно, исключено из обучения"</item>
+        <item quantity="many">" · %d× обнаружено открытое окно, исключено из обучения"</item>
+        <item quantity="other">" · %d× обнаружено открытое окно, исключено из обучения"</item>
+    </plurals>
+    <string name="model_levels">Пониженная/комфортная температура (по уставкам за последние 7 дней): %1$.1f / %2$.1f °C</string>
+    <string name="model_explanation">Модель исходит из того, что комната равномерно нагревается при открытом клапане и остывает к уличной температуре при закрытом. Чем больше дней с разной погодой, тем она точнее.</string>
+
+    <string name="probe_title">Пробный прогон (прогноз и реальность)</string>
+    <string name="probe_explanation">Раз в день приложение по активному профилю, модели комнаты и прогнозу погоды предсказывает, когда каждый нагрев достигнет цели, а затем сравнивает это с измерением. В отоплении ничего не меняется. Периоды с открытым окном или ручным изменением не учитываются.</string>
+    <string name="probe_none">Прогнозов пока нет – первые будут сделаны при следующем ежедневном запуске.</string>
+    <string name="probe_score">Оценено: %1$d · вовремя (±30 мин): %2$d %% · в среднем отклонение %3$s мин · %4$d дн.</string>
+    <string name="probe_ready">Достаточно точно: для этой комнаты можно предложить оптимальное управление.</string>
+    <string name="probe_not_ready">Оптимальное управление предлагается через 14 дней при ≥ 80 % вовремя и ≤ 30 мин среднего отклонения.</string>
+    <string name="probe_planned">Запланировано %1$s → %2$.1f °C: ожидается %3$s</string>
+    <string name="probe_result">%1$s → %2$.1f °C: ожидалось %3$s · фактически %4$s%5$s · %6$s</string>
+    <string name="probe_delta">" (%+d мин)"</string>
+    <string name="probe_not_reached">не достигнуто</string>
+    <string name="probe_prior">" · начальные значения"</string>
+    <string name="outcome_hit">вовремя</string>
+    <string name="outcome_early">раньше</string>
+    <string name="outcome_late">позже</string>
+    <string name="outcome_not_reached">не достигнуто</string>
+    <string name="outcome_disturbed">не учтено (окно/ручное изменение)</string>
+
+    <string name="profiles_title">Профили отопления</string>
+    <string name="profile_n">Профиль %s</string>
+    <string name="profile_active_suffix">%s · активен</string>
+    <string name="profile_save_first">Сначала сохраните или отмените изменения, чтобы сменить профиль.</string>
+    <string name="profile_activate">Активировать %s</string>
+    <string name="profile_activate_q">Активировать %s?</string>
+    <string name="profile_activate_text">Комната «%s» будет отапливаться по этому недельному профилю.</string>
+    <string name="profile_week_hint">Неделя – коснитесь дня, чтобы изменить его</string>
+    <string name="profile_day_unreadable">не читается</string>
+    <string name="profile_rate">По истории: эта комната обычно нагревается примерно на %.2f °C в час.</string>
+    <string name="profile_rate_unknown">Когда накопится достаточно истории, приложение покажет здесь, как быстро нагревается комната.</string>
+    <string name="profile_optimum_tip">Совет: с «Optimum Start/Stop» в приложении Homematic IP система сама изучает время предварительного нагрева.</string>
+    <string name="profile_undo">Отменить последнее сохранение</string>
+    <string name="profile_saved">Сохранено и проверено.</string>
+    <string name="profile_saved_also">Сохранено и проверено. Также применено ещё к %d комнатам.</string>
+    <string name="profile_saved_partly">Сохранено. Не удалось применить к: %s.</string>
+    <string name="profile_now_active">%s теперь активен.</string>
+    <string name="profile_restored">Предыдущая версия восстановлена.</string>
+    <string name="save_changes_q">Сохранить изменения?</string>
+    <string name="save_backup_note">Предыдущая версия сохраняется и может быть восстановлена.</string>
+    <string name="save_also_rooms">Применить изменённые дни также к:</string>
+    <string name="diff_period">%1$s–%2$s %3$.1f °C</string>
+    <string name="diff_no_period">нет фазы нагрева</string>
+    <string name="diff_periods">%1$s: %2$s → %3$s</string>
+    <string name="diff_base">%1$s: базовая температура %2$.1f → %3$.1f °C</string>
+    <string name="diff_both">%1$s: %2$s → %3$s; базовая температура %4$.1f → %5$.1f °C</string>
+    <string name="editor_drag_hint">Перетащите края фаз нагрева или задайте их точно ниже</string>
+    <string name="editor_phase">Фаза %1$d: %2$s–%3$s</string>
+    <string name="editor_start">Начало</string>
+    <string name="editor_end">Конец</string>
+    <string name="editor_add_phase">+ Добавить фазу нагрева</string>
+    <string name="editor_max_phases">Не более %d фаз нагрева</string>
+    <string name="editor_base">Базовая температура (вне фаз)</string>
+    <string name="editor_copy_to">Копировать этот день в:</string>
+    <string name="editor_workdays">Пн–Пт</string>
+    <string name="editor_weekend">Сб–Вс</string>
+    <string name="editor_all_days">Все</string>
+    <string name="preheat_start">Чтобы к %1$s было %2$.1f °C, отопление должно включиться примерно в %4$s при скорости около %3$.2f °C/ч. Это верхняя граница – стяжка обычно не остывает полностью до базовой температуры.</string>
+    <string name="preheat_too_slow">При скорости около %1$.2f °C/ч комнате нужно более 8 часов, чтобы прогреться с %2$.1f до %3$.1f °C. При тёплом поле более высокая базовая температура обычно лучше, чем глубокое снижение.</string>
+
+    <string name="about_text">Показывает, какой контур тёплого пола сейчас открыт, записывает историю, изучает поведение каждой комнаты и упрощает редактирование профилей отопления. Бесплатно, без рекламы, без отслеживания. Неофициальный проект, не связан с eQ-3.</string>
+    <string name="support_text">Если приложение вам нравится, добровольная поддержка всегда приветствуется. Она никогда не обязательна и ничего не разблокирует.</string>
+    <string name="source_code">Исходный код на GitHub</string>
+
+    <string name="err_unknown_host">Сервер %s недоступен. Проверьте подключение к интернету и повторите попытку.</string>
+    <string name="err_unknown_host_cloud">Облачный сервер недоступен. Проверьте подключение к интернету и повторите попытку.</string>
+    <string name="err_timeout">Тайм-аут: облако не ответило вовремя.</string>
+    <string name="err_no_connection">Не удаётся подключиться к облаку. Проверьте подключение к интернету.</string>
+    <string name="err_ssl">Не удалось установить защищённое соединение с облаком (%s).</string>
+    <string name="err_network">Ошибка сети: %s</string>
+    <string name="err_unexpected">Непредвиденная ошибка: %s</string>
+    <string name="err_with_context">%1$s: %2$s (%3$s)</string>
+    <string name="err_http_forbidden">Доступ запрещён. Если приложение было удалено из точки доступа: выйдите и подключитесь снова.</string>
+    <string name="err_http_not_found">Точка доступа не найдена. Проверьте SGTIN.</string>
+    <string name="err_http_bad_request">Недопустимый запрос.</string>
+    <string name="err_http_too_many">Слишком много запросов. Подождите немного.</string>
+    <string name="err_http_server">В облаке Homematic IP сейчас проблема. Повторите попытку позже.</string>
+    <string name="err_http_unexpected">Неожиданный ответ облака.</string>
+    <string name="err_button_timeout">Синяя кнопка на точке доступа не была нажата вовремя.</string>
+    <string name="err_not_logged_in">Вход не выполнен.</string>
+    <string name="err_profile_mismatch">Профиль отправлен, но облако возвращает другие значения. Проверьте в приложении Homematic IP или используйте «Отменить».</string>
+    <string name="ctx_lookup">Не удалось найти сервер</string>
+    <string name="ctx_connection_request">Запрос на подключение отклонён</string>
+    <string name="ctx_token_request">Не удалось запросить токен</string>
+    <string name="ctx_token_confirm">Не удалось подтвердить токен</string>
+    <string name="ctx_state">Не удалось загрузить состояние</string>
+    <string name="ctx_profile_load">Не удалось загрузить профиль отопления</string>
+    <string name="ctx_profile_save">Не удалось сохранить профиль отопления</string>
+    <string name="ctx_profile_activate">Не удалось активировать профиль</string>
+
+    <string name="help_title">Справка</string>
+    <string name="help_intro">PureHeat считывает ваш тёплый пол через облако Homematic IP и показывает то, чего не показывает официальное приложение: какой клапан открыт, как каждая комната ведёт себя во времени и как её можно отапливать лучше.</string>
+    <string name="help_start_title">Начало работы</string>
+    <string name="help_start_text">Введите SGTIN с наклейки снизу точки доступа (и PIN, если он задан). По запросу нажмите синюю кнопку на точке доступа. Токен доступа хранится только на этом телефоне.</string>
+    <string name="help_overview_title">Обзор</string>
+    <string name="help_overview_text">Одна карточка на комнату: фактическая и целевая температура, влажность и открытие каждого клапана (контура). Полотенцесушители с термоголовкой отображаются как отдельные комнаты без датчика температуры. Пока приложение открыто, обзор обновляется каждые 5 минут; «Обновить» запрашивает сразу.</string>
+    <string name="help_valve_title">«Клапан открыт» — не значит «греет»</string>
+    <string name="help_valve_text">Система знает только, насколько открыт клапан, но не течёт ли на самом деле тёплая вода. Заклинивший шток клапана, холодная подача от котла или воздух в контуре — всё это выглядит как «клапан открыт». Если клапан открыт часами, а комната не нагревается, приложение показывает предупреждение – тогда проверьте контур на коллекторе.</string>
+    <string name="help_chart_title">График истории</string>
+    <string name="help_chart_text">Маленький график показывает последние 24 часа: фактическую температуру (линия), целевую (пунктир), открытие клапана (область снизу) и влажность (отдельная панель – % и °C не имеют общей шкалы). Метки над графиком показывают, когда открывали или закрывали окно и когда менялась цель (с округлением до 15 минут). Коснитесь графика или «История ›», чтобы увидеть все данные до 60 дней с уличной температурой, каждым каналом и точными значениями в любой момент. Вверху обзора указаны уличная температура и прогноз на ближайшие 24 часа.</string>
+    <string name="help_window_title">Обнаружение открытого окна</string>
+    <string name="help_window_text">Без оконных датчиков приложение распознаёт открытое окно по температуре: быстрое падение при закрытом клапане. Новый рост без отопления считается «закрыто». Если отопление включается, когда окно, возможно, ещё открыто, приложение пишет только «как минимум до». Обнаружение работает лучше всего при плотной записи (см. «Батарея»).</string>
+    <string name="help_model_title">Модель комнаты и прогнозы</string>
+    <string name="help_model_text">По записанным фазам приложение узнаёт для каждой комнаты, как быстро она теряет тепло (k), насколько сильно её греет тёплый пол (P) и сколько времени стяжке нужно для реакции (время запаздывания). Отсюда оно прогнозирует, сколько времени нужно комнате, чтобы перейти от пониженной температуры к комфортной и обратно при текущей уличной температуре. Периоды с открытым окном исключаются. Пока фаз недостаточно, отображается «ещё обучается».</string>
+    <string name="help_probe_title">Пробный прогон</string>
+    <string name="help_probe_text">Прежде чем приложение сможет когда-либо управлять отоплением, оно должно доказать, что его прогнозы верны. Раз в день оно предсказывает для каждой комнаты, когда следующие нагревы активного профиля достигнут цели, а потом сверяет это с измерением. Подробный вид показывает долю попаданий. Только после 14 дней с не менее чем 80 % вовремя предлагается оптимальное управление – и включаете его вы сами.</string>
+    <string name="help_profiles_title">Профили отопления</string>
+    <string name="help_profiles_text">«Профиль отопления ›» показывает недельные профили комнаты. Коснитесь дня, чтобы изменить его: перетаскивайте края фаз, точно задавайте начало, конец и температуру, копируйте день на другие. Перед сохранением приложение перечисляет все изменения, сохраняет старую версию, записывает и затем считывает профиль для проверки. «Отменить последнее сохранение» восстанавливает резервную копию. Ничего не записывается без вашего подтверждения.</string>
+    <string name="help_battery_title">Батарея и данные</string>
+    <string name="help_battery_text">В фоне приложение запрашивает данные каждые 15 минут, пока что-то меняется, иначе каждые 30 минут, а ночью каждые 60 минут. Каждый запрос — около 100 КБ. Android может откладывать эти задачи на часы, если приложение редко открывается, – для полной истории выберите О приложении → Батарея → «Без ограничений».</string>
+    <string name="help_language_title">Язык</string>
+    <string name="help_language_text">Приложение следует языку системы. Другой язык можно выбрать в «Инфо» или (Android 13+) в настройках системы в разделе «Языки приложений».</string>
+    <string name="help_privacy_title">Конфиденциальность</string>
+    <string name="help_privacy_text">Приложение обменивается данными с облаком Homematic IP и для прогноза погоды с Open-Meteo (бесплатно, без аккаунта). Open-Meteo получает лишь местоположение дома с округлением примерно до 1 км, несколько раз в день. Данные доступа и история остаются на этом телефоне. PureHeat — неофициальный проект, не связанный с eQ-3.</string>
+
+    <string name="props_title">Свойства комнаты</string>
+    <string name="props_link">Описать комнату ›</string>
+    <string name="props_card_empty">Пока не описана. Размер, окна, расположение и покрытие пола делают начальные значения модели точнее.</string>
+    <string name="props_intro">Опишите комнату своими словами – напечатайте или продиктуйте. Приложение распознает свойства, влияющие на отопление. Проверьте их ниже и сохраните. Всё остаётся на этом телефоне.</string>
+    <string name="props_text_label">Описание</string>
+    <string name="props_dictate">🎤 Продиктовать</string>
+    <string name="props_analyze">Распознать свойства</string>
+    <string name="props_analyzing">Распознавание …</string>
+    <string name="props_ideas">Идеи (коснитесь, чтобы добавить):</string>
+    <string-array name="props_examples">
+        <item>20 м²</item>
+        <item>высота потолка 2,5 м</item>
+        <item>2 окна на юг</item>
+        <item>1 окно на север</item>
+        <item>тройной стеклопакет</item>
+        <item>2 наружные стены</item>
+        <item>мансарда под крышей</item>
+        <item>над неотапливаемым подвалом</item>
+        <item>плитка</item>
+        <item>паркет</item>
+        <item>ковролин</item>
+        <item>рольставни</item>
+        <item>полотенцесушитель</item>
+        <item>дровяная печь</item>
+        <item>спальня</item>
+        <item>ночью окно на проветривании</item>
+    </string-array>
+    <string name="props_source_ai">Распознано с помощью ИИ на устройстве (Gemini Nano) – текст не покидает телефон. Проверьте.</string>
+    <string name="props_source_keywords">Распознано по ключевым словам (только немецкий и английский) – на этом устройстве нет ИИ на устройстве. Проверьте и дополните ниже.</string>
+    <string name="props_source_downloading">Пока распознано по ключевым словам. Система загружает свою модель ИИ; она будет использована в следующий раз.</string>
+    <string name="props_nothing">Ничего не распознано – заполните поля ниже вручную.</string>
+    <string name="props_saved">Сохранено.</string>
+    <string name="props_effect">Начальные значения модели комнаты: теплопотери k %1$s · мощность P %2$s · время запаздывания %3$s. Они действуют, только пока модель сама не научится достаточно по истории.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Площадь (м²)</string>
+    <string name="prop_height">Высота потолка (м)</string>
+    <string name="prop_windows">Количество окон</string>
+    <string name="prop_directions">Окна выходят на</string>
+    <string name="prop_glazing">Остекление</string>
+    <string name="prop_walls">Наружные стены</string>
+    <string name="prop_position">Расположение</string>
+    <string name="prop_above_unheated">Над неотапливаемым подвалом/гаражом</string>
+    <string name="prop_floor">Покрытие пола</string>
+    <string name="prop_shutters">Рольставни/жалюзи</string>
+    <string name="prop_heat_sources">Другие источники тепла</string>
+    <string name="prop_usage">Назначение</string>
+    <string name="prop_night_vent">Ночью окно открыто</string>
+    <string name="yes">Да</string>
+    <string name="no">Нет</string>
+    <string name="dir_n">С</string>
+    <string name="dir_ne">СВ</string>
+    <string name="dir_e">В</string>
+    <string name="dir_se">ЮВ</string>
+    <string name="dir_s">Ю</string>
+    <string name="dir_sw">ЮЗ</string>
+    <string name="dir_w">З</string>
+    <string name="dir_nw">СЗ</string>
+    <string name="glazing_single">Одинарное</string>
+    <string name="glazing_double">Двойное</string>
+    <string name="glazing_triple">Тройное</string>
+    <string name="pos_basement">Подвал</string>
+    <string name="pos_ground">Первый этаж</string>
+    <string name="pos_upper">Верхний этаж</string>
+    <string name="pos_attic">Под крышей</string>
+    <string name="floor_tile">Плитка/камень</string>
+    <string name="floor_wood">Паркет/дерево</string>
+    <string name="floor_laminate">Ламинат/винил</string>
+    <string name="floor_carpet">Ковролин</string>
+    <string name="heat_towel">Полотенцесушитель</string>
+    <string name="heat_stove">Печь/камин</string>
+    <string name="heat_electronics">Электроника</string>
+    <string name="heat_cooking">Готовка</string>
+    <string name="usage_living">Гостиная</string>
+    <string name="usage_bedroom">Спальня</string>
+    <string name="usage_child">Детская</string>
+    <string name="usage_kitchen">Кухня</string>
+    <string name="usage_bath">Ванная</string>
+    <string name="usage_office">Кабинет</string>
+    <string name="usage_hall">Коридор</string>
+    <string name="help_props_title">Свойства комнаты</string>
+    <string name="help_props_text">В разделе «Описать комнату ›» в истории комнаты вы описываете её своими словами, напечатав или продиктовав, – например, размер, высоту потолка, сколько окон и куда они выходят, остекление, наружные стены, мансарду или расположение над подвалом, покрытие пола, рольставни, печь, использование как спальни, окно на проветривании ночью. На устройствах с ИИ на устройстве (Gemini Nano) приложение распознаёт свойства с его помощью, иначе по ключевым словам; перед сохранением вы проверяете и исправляете результат. Пока модель комнаты не научилась по истории, эти свойства задают её начальные значения (например, ковролин греет медленнее, комната под крышей быстрее теряет тепло). Позже окна на юг помогут учитывать солнце.</string>
+</resources>

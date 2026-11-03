@@ -26,6 +26,7 @@ import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.probe.ProbeScore
 import kotlinx.coroutines.launch
 import de.cplagens.pureheat.data.model.RoomInsight
+import de.cplagens.pureheat.data.room.RoomDescription
 
 enum class HistoryRange(@StringRes val label: Int, val millis: Long) {
     DAY(R.string.range_24h, 24 * 3_600_000L),
@@ -81,6 +82,11 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
     fun setRange(r: HistoryRange) {
         range.value = r
     }
+
+    /** The user's description of the room (properties screen). */
+    val description: StateFlow<RoomDescription?> = repository.descriptions.all
+        .map { it[roomId] }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), repository.descriptions.get(roomId))
 
     /** Learned model of this room (always from the full 60 days, independent of [range]). */
     private val _insight = MutableStateFlow<RoomInsight?>(null)

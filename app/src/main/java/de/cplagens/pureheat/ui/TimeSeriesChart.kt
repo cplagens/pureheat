@@ -38,6 +38,11 @@ data class ChartSeries(
     val dashed: Boolean = false,
     /** Fill down to the baseline (used for valve opening). */
     val area: Boolean = false,
+    /**
+     * Break the line at recording gaps > 1 h. Off for temperature lines: Android may delay background
+     * jobs for hours, and a connected line reads better (as in the overview). Valve areas keep the gaps.
+     */
+    val breakOnGaps: Boolean = area,
 )
 
 /**
@@ -99,7 +104,7 @@ fun TimeSeriesChart(
         }
 
         series.forEach { s ->
-            splitRuns(s.points).forEach { run ->
+            splitRuns(s.points, s.breakOnGaps).forEach { run ->
                 val path = Path()
                 run.forEachIndexed { i, (t, v) ->
                     if (i == 0) {
@@ -167,12 +172,12 @@ private fun timeTicks(start: Long, end: Long): List<Long> {
     return out
 }
 
-/** A missing value or a gap > 1 h breaks a line. */
-private fun splitRuns(points: List<Pair<Long, Double>>): List<List<Pair<Long, Double>>> {
+/** With [breakOnGaps] a gap > 1 h breaks a line. */
+private fun splitRuns(points: List<Pair<Long, Double>>, breakOnGaps: Boolean): List<List<Pair<Long, Double>>> {
     val out = mutableListOf<MutableList<Pair<Long, Double>>>()
     var prev: Long? = null
     for (p in points) {
-        if (prev == null || p.first - prev > HistoryAnalysis.MAX_GAP_MILLIS) out.add(mutableListOf())
+        if (prev == null || (breakOnGaps && p.first - prev > HistoryAnalysis.MAX_GAP_MILLIS)) out.add(mutableListOf())
         out.last().add(p)
         prev = p.first
     }

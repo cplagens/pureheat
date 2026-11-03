@@ -37,7 +37,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | Datei | Aufgabe |
 |---|---|
 | `PureHeatApp.kt` | `Application`: hält `CredentialStore` und `HeatingRepository` (einfache manuelle DI), plant den `HistoryWorker` |
-| `MainActivity.kt` | Ein-Activity-App; Navigation per Zustand (`profileRoomId`, `historyRoomId`) + `BackHandler`; startet das 5-min-Polling nur im Zustand `STARTED` |
+| `MainActivity.kt` | Ein-Activity-App; Navigation per Zustand (`profileRoomId`, `historyRoomId`, `propertiesRoomId`) + `BackHandler`; startet das 5-min-Polling nur im Zustand `STARTED` |
 | `SupportLinks.kt` | Freiwillige Unterstützen-Links (wie in PureRemote) |
 | **hmip/** | |
 | `HmipClient.kt` | Cloud-API: Lookup, Client-Registrierung (blauer Knopf), `getCurrentState`, `getProfile`, `updateProfile`, `setActiveProfile` |
@@ -57,11 +57,16 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `model/RoomSimulator.kt` | Reine Vorwärtssimulation eines Raums (Thermostat-Verhalten, Totzeit, Prognose) |
 | `probe/ProbeRun.kt` | Reiner Probelauf: Vorhersage der Aufheizzeiten aus dem aktiven Profil, Auswertung gegen die Messung, Trefferquote |
 | `model/RoomInsight.kt` | Modell + Spar/Komfort + Außentemperatur je Raum, mit fertigen Vorhersagen |
+| `room/RoomProperties.kt` | Raumeigenschaften (Fläche, Fenster + Richtung, Verglasung, Außenwände, Lage, Bodenbelag, …), nachsichtiges JSON-Lesen, `RoomPriors` (Startwerte k/P/Totzeit aus den Eigenschaften) |
+| `room/KeywordExtractor.kt` | Reiner Stichwort-Fallback (Deutsch/Englisch): Freitext → `RoomProperties` |
+| `room/RoomDescriber.kt` | Gemini Nano auf dem Gerät (ML Kit Prompt API) + Stichwörter; stößt ggf. den System-Download an |
+| `room/RoomDescriptionStore.kt` | Text + Eigenschaften je Raum in SharedPreferences `room_descriptions` |
 | **ui/** | |
 | `MainViewModel.kt` | Setup/Registrierung, Polling alle 5 min solange sichtbar, 24-h-Verlauf + Warnungen fürs Dashboard |
 | `DashboardScreen.kt` | Raumkarten: Ist/Soll, Ventil je Kanal, 24-h-Diagramm, Links „Verlauf ›“ / „Heizprofil ›“ |
 | `RoomHistoryChart.kt` | Kompaktes 24-h-Diagramm (Temperatur oben, Ventil unten) |
-| `RoomDetailScreen.kt` / `RoomDetailViewModel.kt` | Detailansicht: Zeitraum 24 h–60 Tage, Ist/Soll/Außen, Ventil je Kanal, Werte per Antippen, Raummodell, erkannte Phasen |
+| `RoomDetailScreen.kt` / `RoomDetailViewModel.kt` | Detailansicht: Zeitraum 24 h–60 Tage, Ist/Soll/Außen, Ventil je Kanal, Werte per Antippen, Raumeigenschaften, Raummodell, Probelauf, erkannte Phasen |
+| `RoomPropertiesScreen.kt` / `RoomPropertiesViewModel.kt` | Raum beschreiben (tippen/diktieren, Beispiel-Stichwörter), Eigenschaften erkennen, prüfen/korrigieren, speichern |
 | `ModelTexts.kt` | Deutsche Texte für Modellvorhersagen (Dauer, „nicht erreichbar“, „lernt noch“) |
 | `TimeSeriesChart.kt` | Wiederverwendbares Zeitreihen-Diagramm mit gemeinsamem Zeit-Cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | Wochenprofile ansehen/bearbeiten/speichern/aktivieren/rückgängig |
@@ -152,8 +157,9 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
 ## Sprachen und Texte
 
 - Alle Texte in String-Ressourcen: `values/strings.xml` = Englisch (Standard und Rückfall für
-  nicht unterstützte Sprachen), `values-de/strings.xml` = Deutsch. Weitere Sprachen wie in
-  PureRemote geplant (siehe NEXT_STEPS).
+  nicht unterstützte Sprachen), dazu wie in PureRemote `values-de`, `-fr`, `-es`, `-it`, `-pt`, `-nl`,
+  `-pl`, `-tr`, `-ru`, `-ja`, `-zh-rCN`. Neue Schlüssel in alle Dateien; `lintDebug` prüft das.
+  Achtung: In Texten ohne Platzhalter kein „% “ vor a/e/h/d/s … – Lint hält das für ein Format.
 - Die App folgt der Systemsprache; eine eigene Wahl im Info-Dialog (`LanguagePicker`) bzw. ab
   Android 13 in den Systemeinstellungen „App-Sprachen“ (`res/xml/locales_config.xml`). Umsetzung
   wie in PureRemote: `AppCompatDelegate.setApplicationLocales`, deshalb ist `MainActivity` eine
@@ -173,13 +179,15 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
   (`files/last_state.json`, `files/last_profile.json`, Backups liegen nur app-privat auf dem Gerät).
 - Token nur in app-privaten SharedPreferences; `allowBackup=false`.
 - Schreibzugriffe nur für Heizprofile und nur nach Bestätigung (siehe `CLAUDE.md`).
+- Raumbeschreibungen werden nur auf dem Gerät ausgewertet (Gemini Nano über AICore oder
+  Stichwörter); Diktieren nutzt die System-Spracheingabe (deren Anbieter kann online erkennen).
 
 ## Tests
 
 `./gradlew testDebugUnitTest` – JVM-Unit-Tests für die reinen Kotlin-Teile:
 `HeatingStateParserTest`, `HeatingProfileTest`, `HistoryAnalysisTest`, `ThermalPhaseTest`,
 `PollingPolicyTest`, `RoomModelTest` (simulierter Raum mit bekannten Parametern), `WindowDetectorTest`,
-`ForecastTest`, `ProbeRunTest`.
+`ForecastTest`, `ProbeRunTest`, `RoomPropertiesTest` (Stichwörter, JSON, Startwerte).
 JSON-Beispiele in Tests sind anonymisiert.
 
 ## Debugging

@@ -72,7 +72,7 @@
     <string name="legend_window_detected">Fenêtre ouverte (détectée)</string>
     <string name="legend_humidity">Humidité</string>
     <string name="humidity_range">%1$d–%2$d %% HR</string>
-    <string name="humidity_title">Humidité (% HR)</string>
+    <string name="humidity_title">Humidité relative (%)</string>
     <string name="value_humidity">%d %% HR</string>
     <string name="outside_now">Extérieur %.1f °C</string>
     <string name="forecast_24h">prochaines 24 h %1$.0f–%2$.0f °C</string>
@@ -240,7 +240,7 @@
     <string name="help_valve_title">« Vanne ouverte » ne veut pas dire « chauffe »</string>
     <string name="help_valve_text">Le système ne connaît que l’ouverture de la vanne, pas si de l’eau chaude circule vraiment. Une tige de vanne bloquée, un départ froid du chauffage central ou de l’air dans le circuit ressemblent tous à « vanne ouverte ». Si une vanne reste ouverte des heures sans que la pièce se réchauffe, l’app affiche un avertissement – vérifiez alors le circuit au collecteur.</string>
     <string name="help_chart_title">Graphique d’historique</string>
-    <string name="help_chart_text">Le petit graphique montre les 24 dernières heures : température réelle (ligne), consigne (pointillés), ouverture de vanne (surface en dessous) et humidité (panneau séparé – % et °C n’ont pas la même échelle). Les libellés au-dessus indiquent quand une fenêtre a été ouverte ou fermée et quand la consigne a changé (arrondi à 15 minutes). Touchez le graphique ou « Historique › » pour toutes les données jusqu’à 60 jours, avec la température extérieure, chaque canal et les valeurs exactes à tout moment. En haut de la vue d’ensemble figurent la température extérieure et la prévision pour les prochaines 24 heures.</string>
+    <string name="help_chart_text">Le petit graphique montre les 24 dernières heures : température réelle (ligne), consigne (pointillés), ouverture de vanne (surface en dessous) et humidité (panneau séparé – pourcentage et °C n’ont pas la même échelle). Les libellés au-dessus indiquent quand une fenêtre a été ouverte ou fermée et quand la consigne a changé (arrondi à 15 minutes). Touchez le graphique ou « Historique › » pour toutes les données jusqu’à 60 jours, avec la température extérieure, chaque canal et les valeurs exactes à tout moment. En haut de la vue d’ensemble figurent la température extérieure et la prévision pour les prochaines 24 heures.</string>
     <string name="help_window_title">Détection de fenêtre ouverte</string>
     <string name="help_window_text">Sans contacts de fenêtre, l’app reconnaît une fenêtre ouverte à la température : une chute rapide vanne fermée. Une remontée sans chauffage compte comme « fermée ». Si le chauffage démarre alors que la fenêtre est peut-être encore ouverte, l’app indique seulement « au moins jusqu’à ». La détection fonctionne mieux avec des enregistrements denses (voir « Batterie »).</string>
     <string name="help_model_title">Modèle de pièce et prévisions</string>
@@ -255,4 +255,86 @@
     <string name="help_language_text">L’app suit la langue du système. Vous pouvez choisir une autre langue sous « Info » ou (Android 13+) dans les paramètres système, sous « Langues des applications ».</string>
     <string name="help_privacy_title">Confidentialité</string>
     <string name="help_privacy_text">L’app communique avec le cloud Homematic IP et, pour la prévision météo, avec Open-Meteo (gratuit, sans compte). Open-Meteo ne reçoit que la position du logement arrondie à environ 1 km, quelques fois par jour. Les données d’accès et l’historique restent sur ce téléphone. PureHeat est un projet non officiel, sans lien avec eQ-3.</string>
+
+    <string name="props_title">Caractéristiques de la pièce</string>
+    <string name="props_link">Décrire la pièce ›</string>
+    <string name="props_card_empty">Pas encore décrite. Surface, fenêtres, emplacement et revêtement de sol rendent les valeurs de départ du modèle plus précises.</string>
+    <string name="props_intro">Décrivez la pièce avec vos propres mots – à taper ou à dicter. L’app en déduit les caractéristiques qui influencent le chauffage. Vérifiez-les ci-dessous et enregistrez. Tout reste sur ce téléphone.</string>
+    <string name="props_text_label">Description</string>
+    <string name="props_dictate">🎤 Dicter</string>
+    <string name="props_analyze">Reconnaître les caractéristiques</string>
+    <string name="props_analyzing">Reconnaissance …</string>
+    <string name="props_ideas">Idées (touchez pour ajouter) :</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>hauteur sous plafond 2,5 m</item>
+        <item>2 fenêtres au sud</item>
+        <item>1 fenêtre au nord</item>
+        <item>triple vitrage</item>
+        <item>2 murs extérieurs</item>
+        <item>sous les combles</item>
+        <item>au-dessus d’une cave non chauffée</item>
+        <item>carrelage</item>
+        <item>parquet</item>
+        <item>moquette</item>
+        <item>volets roulants</item>
+        <item>sèche-serviettes</item>
+        <item>poêle à bois</item>
+        <item>chambre</item>
+        <item>fenêtre entrouverte la nuit</item>
+    </string-array>
+    <string name="props_source_ai">Reconnu par l’IA sur l’appareil (Gemini Nano) – le texte ne quitte pas le téléphone. Veuillez vérifier.</string>
+    <string name="props_source_keywords">Reconnu par mots-clés (allemand et anglais uniquement) – cet appareil n’a pas d’IA intégrée. Veuillez vérifier et compléter ci-dessous.</string>
+    <string name="props_source_downloading">Reconnu par mots-clés pour l’instant. Le système télécharge son modèle d’IA ; il sera utilisé la prochaine fois.</string>
+    <string name="props_nothing">Rien reconnu – veuillez remplir directement les champs ci-dessous.</string>
+    <string name="props_saved">Enregistré.</string>
+    <string name="props_effect">Valeurs de départ du modèle : déperdition k %1$s · puissance P %2$s · temps mort %3$s. Elles ne s’appliquent que jusqu’à ce que le modèle ait suffisamment appris de l’historique.</string>
+    <string name="props_value">%1$s : %2$s</string>
+    <string name="prop_area">Surface (m²)</string>
+    <string name="prop_height">Hauteur sous plafond (m)</string>
+    <string name="prop_windows">Nombre de fenêtres</string>
+    <string name="prop_directions">Fenêtres orientées</string>
+    <string name="prop_glazing">Vitrage</string>
+    <string name="prop_walls">Murs extérieurs</string>
+    <string name="prop_position">Emplacement</string>
+    <string name="prop_above_unheated">Au-dessus d’une cave/d’un garage non chauffé</string>
+    <string name="prop_floor">Revêtement de sol</string>
+    <string name="prop_shutters">Volets roulants/stores</string>
+    <string name="prop_heat_sources">Autres sources de chaleur</string>
+    <string name="prop_usage">Usage</string>
+    <string name="prop_night_vent">Fenêtre ouverte la nuit</string>
+    <string name="yes">Oui</string>
+    <string name="no">Non</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NE</string>
+    <string name="dir_e">E</string>
+    <string name="dir_se">SE</string>
+    <string name="dir_s">S</string>
+    <string name="dir_sw">SO</string>
+    <string name="dir_w">O</string>
+    <string name="dir_nw">NO</string>
+    <string name="glazing_single">Simple</string>
+    <string name="glazing_double">Double</string>
+    <string name="glazing_triple">Triple</string>
+    <string name="pos_basement">Sous-sol</string>
+    <string name="pos_ground">Rez-de-chaussée</string>
+    <string name="pos_upper">Étage</string>
+    <string name="pos_attic">Sous les combles</string>
+    <string name="floor_tile">Carrelage/pierre</string>
+    <string name="floor_wood">Parquet/bois</string>
+    <string name="floor_laminate">Stratifié/vinyle</string>
+    <string name="floor_carpet">Moquette</string>
+    <string name="heat_towel">Sèche-serviettes</string>
+    <string name="heat_stove">Poêle/cheminée</string>
+    <string name="heat_electronics">Électronique</string>
+    <string name="heat_cooking">Cuisine</string>
+    <string name="usage_living">Séjour</string>
+    <string name="usage_bedroom">Chambre</string>
+    <string name="usage_child">Chambre d’enfant</string>
+    <string name="usage_kitchen">Cuisine</string>
+    <string name="usage_bath">Salle de bain</string>
+    <string name="usage_office">Bureau</string>
+    <string name="usage_hall">Couloir</string>
+    <string name="help_props_title">Caractéristiques de la pièce</string>
+    <string name="help_props_text">Sous « Décrire la pièce › » dans l’historique d’une pièce, vous la décrivez avec vos propres mots, tapés ou dictés – p. ex. surface, hauteur sous plafond, combien de fenêtres et leur orientation, vitrage, murs extérieurs, sous les combles ou au-dessus d’une cave, revêtement de sol, volets roulants, un poêle, usage en chambre, fenêtre entrouverte la nuit. Sur les appareils dotés d’une IA intégrée (Gemini Nano), l’app reconnaît les caractéristiques avec elle, sinon par mots-clés ; vous vérifiez et corrigez le résultat avant d’enregistrer. Tant que le modèle n’a pas appris de l’historique, ces caractéristiques déterminent ses valeurs de départ (p. ex. la moquette chauffe plus lentement, une pièce sous les combles perd sa chaleur plus vite). Plus tard, les fenêtres au sud aideront à tenir compte du soleil.</string>
 </resources>

@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="refresh">刷新</string>
+    <string name="help">帮助</string>
+    <string name="info">信息</string>
+    <string name="logout">退出登录</string>
+    <string name="close">关闭</string>
+    <string name="cancel">取消</string>
+    <string name="save">保存</string>
+    <string name="save_ellipsis">保存 …</string>
+    <string name="discard">放弃</string>
+    <string name="dismiss">隐藏</string>
+    <string name="apply">应用</string>
+    <string name="activate">启用</string>
+    <string name="remove">删除</string>
+    <string name="back">‹ 返回</string>
+    <string name="back_rooms">‹ 房间</string>
+    <string name="unknown">未知</string>
+    <string name="now">现在</string>
+    <string name="ago_24h">24 小时前</string>
+    <string name="temperature">温度</string>
+    <string name="temp_c">%.1f °C</string>
+    <string name="temp_c0">%.0f °C</string>
+    <string name="percent">%d %%</string>
+    <string name="version">版本 %s</string>
+    <string name="language">语言</string>
+    <string name="system_language">系统语言</string>
+
+    <string name="day_mo">一</string>
+    <string name="day_tu">二</string>
+    <string name="day_we">三</string>
+    <string name="day_th">四</string>
+    <string name="day_fr">五</string>
+    <string name="day_sa">六</string>
+    <string name="day_su">日</string>
+
+    <string name="duration_min">%d 分钟</string>
+    <string name="duration_h">%d 小时</string>
+    <string name="duration_h_min">%1$d 小时 %2$d 分钟</string>
+    <string name="duration_over_day">超过 24 小时</string>
+
+    <string name="setup_title">连接接入点</string>
+    <string name="setup_sgtin_hint">SGTIN（接入点 ID）印在接入点底部的标签上，例如 3014-F711-A000-…</string>
+    <string name="setup_sgtin">SGTIN</string>
+    <string name="setup_pin">PIN（仅当在应用中设置过）</string>
+    <string name="setup_connect">连接</string>
+    <string name="setup_press_button">现在请按接入点上的蓝色按钮 …</string>
+
+    <plurals name="rooms_valve_open">
+        <item quantity="other">%d 个房间阀门打开</item>
+    </plurals>
+    <string name="unassigned_circuits">未分配到房间</string>
+    <string name="valve_open">阀门打开</string>
+    <string name="room_values">实际 %1$s · 目标 %2$s</string>
+    <string name="room_humidity">" · 湿度 %d %%"</string>
+    <string name="room_window_contact_open">" · 窗户打开"</string>
+    <string name="valve_room">阀门（房间）</string>
+    <string name="channel_n">通道 %d</string>
+    <string name="channel_state">%1$s：%2$s</string>
+    <string name="stalled_warning">⚠ 阀门已打开 %1$.1f 小时，温度仅变化 %2$+.1f °C – 热量到达了吗？</string>
+    <string name="history_link">历史 ›</string>
+    <string name="profile_link">供暖计划 ›</string>
+
+    <string name="history_recording">正在记录历史 …</string>
+    <string name="legend_actual">实际</string>
+    <string name="legend_setpoint">目标</string>
+    <string name="legend_valve">阀门</string>
+    <string name="legend_window">窗户</string>
+    <string name="legend_outside">室外</string>
+    <string name="legend_window_detected">窗户打开（检测）</string>
+    <string name="legend_humidity">湿度</string>
+    <string name="humidity_range">湿度 %1$d–%2$d %%</string>
+    <string name="humidity_title">湿度（%）</string>
+    <string name="value_humidity">湿度 %d %%</string>
+    <string name="outside_now">室外 %.1f °C</string>
+    <string name="forecast_24h">未来 24 小时 %1$.0f–%2$.0f °C</string>
+    <string name="actual_range">实际 %1$.1f–%2$.1f °C</string>
+    <string name="marker_window_open">开窗 %s</string>
+    <string name="marker_window_closed">关窗 %s</string>
+    <string name="marker_setpoint">目标 %1$s %2$s</string>
+
+    <string name="battery_title">避免历史记录出现空缺</string>
+    <string name="battery_text">由于应用很少打开，Android 会减慢后台记录，导致出现数小时的空缺。解决方法：应用信息 → 电池 → “不受限制”。PureHeat 仍然只会每 15–60 分钟获取一次数据。</string>
+    <string name="battery_open_settings">打开应用信息</string>
+
+    <string name="range_24h">24 小时</string>
+    <string name="range_3d">3 天</string>
+    <string name="range_7d">7 天</string>
+    <string name="range_14d">14 天</string>
+    <string name="range_60d">60 天</string>
+    <string name="readout_hint">点按或滑过图表即可查看该时刻的数值。</string>
+    <string name="readout_no_values">该时刻没有数值。</string>
+    <string name="value_actual">实际 %.1f °C</string>
+    <string name="value_setpoint">目标 %.1f °C</string>
+    <string name="value_outside">室外 %.1f °C</string>
+    <string name="value_valve">%1$s %2$d %%</string>
+    <string name="too_little_data">此时间段内数据尚不足。</string>
+    <string name="valve_opening_title">阀门开度（0–100 %）</string>
+    <string name="windows_title">窗户打开（根据温度曲线检测）</string>
+    <string name="windows_none">此时间段内未检测到。检测依据是阀门关闭时温度快速下降（≥ 0.3 K，速率 ≥ 0.6 K/小时）；在无供暖情况下温度重新上升即为结束。</string>
+    <string name="phases_title">阶段（阀门打开或关闭 ≥ 1 小时）</string>
+    <string name="phases_none">尚未检测到至少一小时的阶段。当阀门长时间保持打开（升温）或关闭（降温）时会形成阶段。</string>
+    <plurals name="phases">
+        <item quantity="other">%d 个阶段</item>
+    </plurals>
+    <string name="phase_summary_open">阀门打开：平均 %1$+.2f °C/小时（%2$s）</string>
+    <string name="phase_summary_closed">阀门关闭：平均 %1$+.2f °C/小时（%2$s）</string>
+    <string name="phase_open">▲ 阀门打开 · %1$s–%2$s</string>
+    <string name="phase_closed">▼ 阀门关闭 · %1$s–%2$s</string>
+    <string name="phase_detail">%3$d 小时 %4$d 分钟内 %1$.1f → %2$.1f °C（%5$+.2f °C/小时）</string>
+    <string name="phase_outside">" · 室外平均 %.1f °C"</string>
+
+    <string name="window_open_since">窗户可能自 %1$s 起打开（−%2$.1f K）</string>
+    <string name="window_open_from_to">窗户可能打开过：%1$s–%2$s（−%3$.1f K）</string>
+    <string name="window_open_at_least">窗户可能自 %1$s 起打开，至少到 %2$s（−%3$.1f K）</string>
+    <string name="window_end_now">现在</string>
+    <string name="window_end_unknown">至少 %s（无法检测结束）</string>
+    <string name="window_event">%1$s–%2$s · %3$.1f → %4$.1f °C</string>
+    <string name="window_humidity_drop">" · 湿度 −%d %%"</string>
+
+    <string name="model_title">房间模型</string>
+    <string name="model_computing">正在计算 …</string>
+    <string name="model_learning">房间模型仍在学习（可用阶段：阀门打开 %1$d/%2$d，阀门关闭 %3$d/%4$d）</string>
+    <string name="model_no_setback">供暖计划中未检测到降温时段。</string>
+    <string name="model_summary">%1$.1f → %2$.1f °C %3$s · 回到 %1$.1f °C %4$s（室外 %5$.0f °C 时）</string>
+    <string name="model_summary_forecast">%1$.1f → %2$.1f °C %3$s · 回到 %1$.1f °C %4$s（预报室外 %5$.0f °C）</string>
+    <string name="model_in_about">约 %s</string>
+    <string name="model_unreachable">室外 %1$.0f °C 时无法达到（%2$.1f °C）</string>
+    <string name="model_unknown">– 尚未知</string>
+    <string name="model_parameters">热损失 k：%1$s · 供暖功率 P：%2$s · 滞后时间：%3$s</string>
+    <string name="model_k">%.3f/小时</string>
+    <string name="model_p">%.2f °C/小时</string>
+    <string name="model_phases">可用阶段：阀门打开 %1$d，阀门关闭 %2$d</string>
+    <string name="model_spread">" · k 的离散度：±%d %%"</string>
+    <plurals name="model_windows_excluded">
+        <item quantity="other">" · 检测到 %d 次开窗，学习时已排除"</item>
+    </plurals>
+    <string name="model_levels">降温/舒适温度（根据过去 7 天的设定值）：%1$.1f / %2$.1f °C</string>
+    <string name="model_explanation">该模型假设阀门打开时房间均匀升温，阀门关闭时向室外温度方向降温。不同天气的天数越多，模型越准确。</string>
+
+    <string name="probe_title">试运行（预测与实际）</string>
+    <string name="probe_explanation">应用每天根据当前计划、房间模型和天气预报预测每次升温何时达到目标，之后再与测量值比较。不会对供暖做任何更改。开窗或手动更改的时段不计入。</string>
+    <string name="probe_none">尚无预测 – 第一批预测将在下一次每日运行时生成。</string>
+    <string name="probe_score">已评估：%1$d · 准时（±30 分钟）：%2$d %% · 平均偏差 %3$s 分钟 · %4$d 天</string>
+    <string name="probe_ready">足够准确：可以为此房间提供最优控制。</string>
+    <string name="probe_not_ready">在 14 天内准时率 ≥ 80 % 且平均偏差 ≤ 30 分钟后，才会提供最优控制。</string>
+    <string name="probe_planned">计划 %1$s → %2$.1f °C：预计 %3$s</string>
+    <string name="probe_result">%1$s → %2$.1f °C：预计 %3$s · 实际 %4$s%5$s · %6$s</string>
+    <string name="probe_delta">" (%+d 分钟)"</string>
+    <string name="probe_not_reached">未达到</string>
+    <string name="probe_prior">" · 初始值"</string>
+    <string name="outcome_hit">准时</string>
+    <string name="outcome_early">提前</string>
+    <string name="outcome_late">推迟</string>
+    <string name="outcome_not_reached">未达到</string>
+    <string name="outcome_disturbed">不计入（开窗/手动更改）</string>
+
+    <string name="profiles_title">供暖计划</string>
+    <string name="profile_n">计划 %s</string>
+    <string name="profile_active_suffix">%s · 当前</string>
+    <string name="profile_save_first">请先保存或放弃更改再切换计划。</string>
+    <string name="profile_activate">启用 %s</string>
+    <string name="profile_activate_q">启用 %s？</string>
+    <string name="profile_activate_text">房间“%s”将按此周计划供暖。</string>
+    <string name="profile_week_hint">一周 – 点按某天进行编辑</string>
+    <string name="profile_day_unreadable">无法读取</string>
+    <string name="profile_rate">根据历史：此房间通常每小时升温约 %.2f °C。</string>
+    <string name="profile_rate_unknown">记录足够的历史后，应用会在此显示房间的升温速度。</string>
+    <string name="profile_optimum_tip">提示：在 Homematic IP 应用中使用“Optimum Start/Stop”，系统会自行学习预热时间。</string>
+    <string name="profile_undo">撤销上次保存</string>
+    <string name="profile_saved">已保存并验证。</string>
+    <string name="profile_saved_also">已保存并验证。同时应用到其他 %d 个房间。</string>
+    <string name="profile_saved_partly">已保存。无法应用到：%s。</string>
+    <string name="profile_now_active">%s 现已启用。</string>
+    <string name="profile_restored">已恢复上一版本。</string>
+    <string name="save_changes_q">保存更改？</string>
+    <string name="save_backup_note">上一版本会被备份，可以恢复。</string>
+    <string name="save_also_rooms">将更改的日期也应用到：</string>
+    <string name="diff_period">%1$s–%2$s %3$.1f °C</string>
+    <string name="diff_no_period">无供暖阶段</string>
+    <string name="diff_periods">%1$s：%2$s → %3$s</string>
+    <string name="diff_base">%1$s：基础温度 %2$.1f → %3$.1f °C</string>
+    <string name="diff_both">%1$s：%2$s → %3$s；基础温度 %4$.1f → %5$.1f °C</string>
+    <string name="editor_drag_hint">拖动供暖阶段的边缘，或在下方精确设置</string>
+    <string name="editor_phase">阶段 %1$d：%2$s–%3$s</string>
+    <string name="editor_start">开始</string>
+    <string name="editor_end">结束</string>
+    <string name="editor_add_phase">+ 添加供暖阶段</string>
+    <string name="editor_max_phases">最多 %d 个供暖阶段</string>
+    <string name="editor_base">基础温度（阶段之外）</string>
+    <string name="editor_copy_to">将此日复制到：</string>
+    <string name="editor_workdays">一–五</string>
+    <string name="editor_weekend">六–日</string>
+    <string name="editor_all_days">全部</string>
+    <string name="preheat_start">要在 %1$s 达到 %2$.1f °C，按约 %3$.2f °C/小时计算，供暖需在约 %4$s 开始。这是上限 – 地面找平层通常不会完全降到基础温度。</string>
+    <string name="preheat_too_slow">按约 %1$.2f °C/小时计算，房间从 %2$.1f °C 升到 %3$.1f °C 需要超过 8 小时。对于地暖，较高的基础温度通常比大幅降温效果更好。</string>
+
+    <string name="about_text">显示地暖当前打开的回路，记录历史，学习每个房间的特性，并让供暖计划编辑变得简单。免费、无广告、无跟踪。非官方项目，与 eQ-3 无关。</string>
+    <string name="support_text">如果您喜欢这个应用，随时欢迎自愿支持。这从来不是必需的，也不会解锁任何功能。</string>
+    <string name="source_code">GitHub 上的源代码</string>
+
+    <string name="err_unknown_host">无法访问服务器 %s。请检查网络连接后重试。</string>
+    <string name="err_unknown_host_cloud">无法访问云服务器。请检查网络连接后重试。</string>
+    <string name="err_timeout">超时：云端未及时响应。</string>
+    <string name="err_no_connection">无法连接到云端。请检查网络连接。</string>
+    <string name="err_ssl">与云端的安全连接失败（%s）。</string>
+    <string name="err_network">网络错误：%s</string>
+    <string name="err_unexpected">意外错误：%s</string>
+    <string name="err_with_context">%1$s：%2$s（%3$s）</string>
+    <string name="err_http_forbidden">访问被拒绝。如果应用已从接入点移除：请退出登录并重新连接。</string>
+    <string name="err_http_not_found">未找到接入点。请检查 SGTIN。</string>
+    <string name="err_http_bad_request">无效请求。</string>
+    <string name="err_http_too_many">请求过多。请稍候。</string>
+    <string name="err_http_server">Homematic IP 云端当前出现问题。请稍后重试。</string>
+    <string name="err_http_unexpected">云端返回了意外响应。</string>
+    <string name="err_button_timeout">未及时按下接入点上的蓝色按钮。</string>
+    <string name="err_not_logged_in">未登录。</string>
+    <string name="err_profile_mismatch">计划已发送，但云端返回了不同的值。请在 Homematic IP 应用中检查或使用“撤销”。</string>
+    <string name="ctx_lookup">查找服务器失败</string>
+    <string name="ctx_connection_request">连接请求被拒绝</string>
+    <string name="ctx_token_request">请求令牌失败</string>
+    <string name="ctx_token_confirm">确认令牌失败</string>
+    <string name="ctx_state">无法加载状态</string>
+    <string name="ctx_profile_load">无法加载供暖计划</string>
+    <string name="ctx_profile_save">无法保存供暖计划</string>
+    <string name="ctx_profile_activate">无法启用计划</string>
+
+    <string name="help_title">帮助</string>
+    <string name="help_intro">PureHeat 通过 Homematic IP 云读取您的地暖，并显示官方应用不显示的内容：哪个阀门打开、每个房间随时间如何变化，以及如何更好地供暖。</string>
+    <string name="help_start_title">入门</string>
+    <string name="help_start_text">输入接入点底部标签上的 SGTIN（如果设置过 PIN，也一并输入）。在提示时按接入点上的蓝色按钮。访问令牌仅保存在此手机上。</string>
+    <string name="help_overview_title">概览</string>
+    <string name="help_overview_text">每个房间一张卡片：实际和目标温度、湿度以及每个阀门（回路）的开度。带温控头的毛巾架显示为没有温度传感器的独立房间。应用打开时概览每 5 分钟刷新一次；“刷新”会立即获取。</string>
+    <string name="help_valve_title">“阀门打开”不等于“正在供暖”</string>
+    <string name="help_valve_text">系统只知道阀门打开了多少，不知道热水是否真的在流动。阀门顶针卡住、集中供暖的供水是冷的或回路中有空气，看起来都像“阀门打开”。如果阀门打开数小时而房间没有变暖，应用会显示警告 – 此时请检查分水器上的回路。</string>
+    <string name="help_chart_title">历史图表</string>
+    <string name="help_chart_text">小图表显示过去 24 小时：实际温度（实线）、目标温度（虚线）、阀门开度（下方区域）和湿度（单独面板 – % 和 °C 不共用刻度）。图表上方的标签标示窗户何时打开或关闭以及目标何时改变（四舍五入到 15 分钟）。点按图表或“历史 ›”可查看最多 60 天的全部数据，包括室外温度、每个通道以及任意时刻的精确数值。概览顶部显示室外温度和未来 24 小时的预报。</string>
+    <string name="help_window_title">开窗检测</string>
+    <string name="help_window_text">没有窗户传感器时，应用通过温度识别开窗：阀门关闭时温度快速下降。在无供暖情况下温度重新上升则视为“关窗”。如果供暖开始时窗户可能仍开着，应用只会显示“至少到”。记录越密集，检测效果越好（见“电池”）。</string>
+    <string name="help_model_title">房间模型与预测</string>
+    <string name="help_model_text">应用根据记录的阶段学习每个房间散热的速度（k）、地暖加热的强度（P）以及找平层的响应时间（滞后时间）。据此预测在当前室外温度下，房间从降温温度升到舒适温度以及降回所需的时间。开窗时段会被排除。在阶段数量足够之前，会显示“仍在学习”。</string>
+    <string name="help_probe_title">试运行</string>
+    <string name="help_probe_text">在应用可能控制供暖之前，它必须证明自己的预测是正确的。它每天为每个房间预测当前计划的下一次升温何时达到目标，之后再与测量值核对。详情页显示命中率。只有在 14 天内准时率至少达到 80 % 后才会提供最优控制 – 并由您亲自开启。</string>
+    <string name="help_profiles_title">供暖计划</string>
+    <string name="help_profiles_text">“供暖计划 ›”显示房间的周计划。点按某天进行编辑：拖动阶段边缘，精确设置开始、结束和温度，将某天复制到其他天。保存前，应用会列出每项更改、备份旧版本、保存，然后回读计划进行核对。“撤销上次保存”会恢复备份。未经您确认不会写入任何内容。</string>
+    <string name="help_battery_title">电池与数据</string>
+    <string name="help_battery_text">在后台，当有变化时应用每 15 分钟获取一次，否则每 30 分钟一次，夜间每 60 分钟一次。每次获取约 100 KB。如果应用很少打开，Android 可能会将这些任务推迟数小时 – 如需完整历史，请设置 应用信息 → 电池 → “不受限制”。</string>
+    <string name="help_language_title">语言</string>
+    <string name="help_language_text">应用跟随系统语言。您可以在“信息”中或（Android 13 及以上）在系统设置的“应用语言”中选择其他语言。</string>
+    <string name="help_privacy_title">隐私</string>
+    <string name="help_privacy_text">应用与 Homematic IP 云通信，并为天气预报与 Open-Meteo（免费、无需账户）通信。Open-Meteo 每天仅几次收到四舍五入到约 1 公里的住宅位置。访问数据和历史保留在此手机上。PureHeat 是非官方项目，与 eQ-3 无关。</string>
+
+    <string name="props_title">房间属性</string>
+    <string name="props_link">描述房间 ›</string>
+    <string name="props_card_empty">尚未描述。面积、窗户、位置和地面材料能让模型的初始值更准确。</string>
+    <string name="props_intro">用您自己的话描述房间（输入或语音）。应用会识别影响供暖的属性。请在下方检查后保存。所有内容都保留在此手机上。</string>
+    <string name="props_text_label">描述</string>
+    <string name="props_dictate">🎤 语音输入</string>
+    <string name="props_analyze">识别属性</string>
+    <string name="props_analyzing">正在识别 …</string>
+    <string name="props_ideas">提示（点按添加）：</string>
+    <string-array name="props_examples">
+        <item>20 平方米</item>
+        <item>层高 2.5 米</item>
+        <item>2 扇朝南的窗</item>
+        <item>1 扇朝北的窗</item>
+        <item>三层玻璃</item>
+        <item>2 面外墙</item>
+        <item>顶层阁楼</item>
+        <item>位于无供暖地下室之上</item>
+        <item>瓷砖</item>
+        <item>实木地板</item>
+        <item>地毯</item>
+        <item>卷帘</item>
+        <item>毛巾架</item>
+        <item>柴火炉</item>
+        <item>卧室</item>
+        <item>夜间开窗通风</item>
+    </string-array>
+    <string name="props_source_ai">已用设备端 AI（Gemini Nano）识别 – 文本不会离开手机。请检查。</string>
+    <string name="props_source_keywords">已按关键词识别（仅限德语和英语） – 此设备没有设备端 AI。请在下方检查并补充。</string>
+    <string name="props_source_downloading">暂时按关键词识别。系统正在下载其 AI 模型，下次将会使用。</string>
+    <string name="props_nothing">未识别到任何内容 – 请直接填写下方字段。</string>
+    <string name="props_saved">已保存。</string>
+    <string name="props_effect">房间模型的初始值：热损失 k %1$s · 供暖功率 P %2$s · 滞后时间 %3$s。仅在模型从历史中学到足够内容之前使用。</string>
+    <string name="props_value">%1$s：%2$s</string>
+    <string name="prop_area">面积（平方米）</string>
+    <string name="prop_height">层高（米）</string>
+    <string name="prop_windows">窗户数量</string>
+    <string name="prop_directions">窗户朝向</string>
+    <string name="prop_glazing">玻璃</string>
+    <string name="prop_walls">外墙</string>
+    <string name="prop_position">位置</string>
+    <string name="prop_above_unheated">位于无供暖地下室/车库之上</string>
+    <string name="prop_floor">地面材料</string>
+    <string name="prop_shutters">卷帘/百叶窗</string>
+    <string name="prop_heat_sources">其他热源</string>
+    <string name="prop_usage">用途</string>
+    <string name="prop_night_vent">夜间开窗</string>
+    <string name="yes">是</string>
+    <string name="no">否</string>
+    <string name="dir_n">北</string>
+    <string name="dir_ne">东北</string>
+    <string name="dir_e">东</string>
+    <string name="dir_se">东南</string>
+    <string name="dir_s">南</string>
+    <string name="dir_sw">西南</string>
+    <string name="dir_w">西</string>
+    <string name="dir_nw">西北</string>
+    <string name="glazing_single">单层</string>
+    <string name="glazing_double">双层</string>
+    <string name="glazing_triple">三层</string>
+    <string name="pos_basement">地下室</string>
+    <string name="pos_ground">底层</string>
+    <string name="pos_upper">楼上</string>
+    <string name="pos_attic">顶层阁楼</string>
+    <string name="floor_tile">瓷砖/石材</string>
+    <string name="floor_wood">实木地板/木材</string>
+    <string name="floor_laminate">复合地板/PVC</string>
+    <string name="floor_carpet">地毯</string>
+    <string name="heat_towel">毛巾架</string>
+    <string name="heat_stove">火炉/壁炉</string>
+    <string name="heat_electronics">电子设备</string>
+    <string name="heat_cooking">烹饪</string>
+    <string name="usage_living">客厅</string>
+    <string name="usage_bedroom">卧室</string>
+    <string name="usage_child">儿童房</string>
+    <string name="usage_kitchen">厨房</string>
+    <string name="usage_bath">浴室</string>
+    <string name="usage_office">书房</string>
+    <string name="usage_hall">走廊</string>
+    <string name="help_props_title">房间属性</string>
+    <string name="help_props_text">在房间历史中的“描述房间 ›”里，您可以用自己的话描述房间，输入或语音均可 – 例如面积、层高、几扇窗朝哪个方向、玻璃、外墙、顶层阁楼或位于地下室之上、地面材料、卷帘、火炉、用作卧室、夜间开窗通风。在具备设备端 AI（Gemini Nano）的设备上，应用用它来识别属性，否则按关键词识别；保存前请检查并修正结果。在房间模型从历史中学习之前，这些属性决定其初始值（例如地毯升温更慢，顶层阁楼房间散热更快）。今后朝南的窗户将用于考虑日照。</string>
+</resources>

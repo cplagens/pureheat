@@ -240,7 +240,7 @@
     <string name="help_valve_title">«Valvola aperta» non significa «riscalda»</string>
     <string name="help_valve_text">Il sistema sa solo quanto è aperta una valvola, non se l’acqua calda scorre davvero. Un perno della valvola bloccato, una mandata fredda dal riscaldamento centrale o aria nel circuito sembrano tutti «valvola aperta». Se una valvola resta aperta per ore e la stanza non si scalda, l’app mostra un avviso – controlla allora il circuito sul collettore.</string>
     <string name="help_chart_title">Grafico della cronologia</string>
-    <string name="help_chart_text">Il grafico piccolo mostra le ultime 24 ore: temperatura effettiva (linea), obiettivo (tratteggiato), apertura valvola (area sotto) e umidità (pannello separato – % e °C non condividono la scala). Le etichette sopra il grafico indicano quando una finestra è stata aperta o chiusa e quando è cambiato l’obiettivo (arrotondato a 15 minuti). Tocca il grafico o «Cronologia ›» per tutti i dati fino a 60 giorni, con temperatura esterna, ogni canale e valori esatti in qualsiasi momento. In alto nella panoramica ci sono la temperatura esterna e la previsione per le prossime 24 ore.</string>
+    <string name="help_chart_text">Il grafico piccolo mostra le ultime 24 ore: temperatura effettiva (linea), obiettivo (tratteggiato), apertura valvola (area sotto) e umidità (pannello separato – percentuale e °C non condividono la scala). Le etichette sopra il grafico indicano quando una finestra è stata aperta o chiusa e quando è cambiato l’obiettivo (arrotondato a 15 minuti). Tocca il grafico o «Cronologia ›» per tutti i dati fino a 60 giorni, con temperatura esterna, ogni canale e valori esatti in qualsiasi momento. In alto nella panoramica ci sono la temperatura esterna e la previsione per le prossime 24 ore.</string>
     <string name="help_window_title">Rilevamento finestra aperta</string>
     <string name="help_window_text">Senza contatti per finestre l’app riconosce una finestra aperta dalla temperatura: un calo rapido a valvola chiusa. Una nuova risalita senza riscaldamento conta come «chiusa». Se il riscaldamento parte mentre la finestra potrebbe essere ancora aperta, l’app indica solo «almeno fino alle». Il rilevamento funziona meglio con registrazioni fitte (vedi «Batteria»).</string>
     <string name="help_model_title">Modello della stanza e previsioni</string>
@@ -255,4 +255,86 @@
     <string name="help_language_text">L’app segue la lingua di sistema. Puoi scegliere un’altra lingua in «Info» o (Android 13+) nelle impostazioni di sistema, in «Lingue delle app».</string>
     <string name="help_privacy_title">Privacy</string>
     <string name="help_privacy_text">L’app comunica con il cloud Homematic IP e, per le previsioni meteo, con Open-Meteo (gratuito, senza account). Open-Meteo riceve solo la posizione della casa arrotondata a circa 1 km, poche volte al giorno. Dati di accesso e cronologia restano su questo telefono. PureHeat è un progetto non ufficiale e non affiliato a eQ-3.</string>
+
+    <string name="props_title">Caratteristiche della stanza</string>
+    <string name="props_link">Descrivi la stanza ›</string>
+    <string name="props_card_empty">Non ancora descritta. Dimensioni, finestre, posizione e pavimento rendono più precisi i valori iniziali del modello.</string>
+    <string name="props_intro">Descrivi la stanza con parole tue – scrivendo o dettando. L’app riconosce le caratteristiche che influenzano il riscaldamento. Controllale qui sotto e salva. Tutto resta su questo telefono.</string>
+    <string name="props_text_label">Descrizione</string>
+    <string name="props_dictate">🎤 Detta</string>
+    <string name="props_analyze">Riconosci caratteristiche</string>
+    <string name="props_analyzing">Riconoscimento …</string>
+    <string name="props_ideas">Idee (tocca per aggiungere):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>altezza soffitto 2,5 m</item>
+        <item>2 finestre a sud</item>
+        <item>1 finestra a nord</item>
+        <item>triplo vetro</item>
+        <item>2 pareti esterne</item>
+        <item>sottotetto</item>
+        <item>sopra una cantina non riscaldata</item>
+        <item>piastrelle</item>
+        <item>parquet</item>
+        <item>moquette</item>
+        <item>tapparelle</item>
+        <item>scaldasalviette</item>
+        <item>stufa a legna</item>
+        <item>camera da letto</item>
+        <item>finestra a ribalta di notte</item>
+    </string-array>
+    <string name="props_source_ai">Riconosciuto con l’IA sul dispositivo (Gemini Nano) – il testo non lascia il telefono. Controlla.</string>
+    <string name="props_source_keywords">Riconosciuto tramite parole chiave (solo tedesco e inglese) – questo dispositivo non ha un’IA integrata. Controlla e completa qui sotto.</string>
+    <string name="props_source_downloading">Per ora riconosciuto tramite parole chiave. Il sistema sta scaricando il suo modello di IA; verrà usato la prossima volta.</string>
+    <string name="props_nothing">Nulla riconosciuto – compila direttamente i campi qui sotto.</string>
+    <string name="props_saved">Salvato.</string>
+    <string name="props_effect">Valori iniziali del modello: dispersione k %1$s · potenza P %2$s · tempo morto %3$s. Valgono solo finché il modello non ha imparato abbastanza dalla cronologia.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Superficie (m²)</string>
+    <string name="prop_height">Altezza soffitto (m)</string>
+    <string name="prop_windows">Numero di finestre</string>
+    <string name="prop_directions">Finestre verso</string>
+    <string name="prop_glazing">Vetro</string>
+    <string name="prop_walls">Pareti esterne</string>
+    <string name="prop_position">Posizione</string>
+    <string name="prop_above_unheated">Sopra cantina/garage non riscaldato</string>
+    <string name="prop_floor">Pavimento</string>
+    <string name="prop_shutters">Tapparelle/tende</string>
+    <string name="prop_heat_sources">Altre fonti di calore</string>
+    <string name="prop_usage">Uso</string>
+    <string name="prop_night_vent">Finestra aperta di notte</string>
+    <string name="yes">Sì</string>
+    <string name="no">No</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NE</string>
+    <string name="dir_e">E</string>
+    <string name="dir_se">SE</string>
+    <string name="dir_s">S</string>
+    <string name="dir_sw">SO</string>
+    <string name="dir_w">O</string>
+    <string name="dir_nw">NO</string>
+    <string name="glazing_single">Singolo</string>
+    <string name="glazing_double">Doppio</string>
+    <string name="glazing_triple">Triplo</string>
+    <string name="pos_basement">Seminterrato</string>
+    <string name="pos_ground">Piano terra</string>
+    <string name="pos_upper">Piano superiore</string>
+    <string name="pos_attic">Sottotetto</string>
+    <string name="floor_tile">Piastrelle/pietra</string>
+    <string name="floor_wood">Parquet/legno</string>
+    <string name="floor_laminate">Laminato/vinile</string>
+    <string name="floor_carpet">Moquette</string>
+    <string name="heat_towel">Scaldasalviette</string>
+    <string name="heat_stove">Stufa/camino</string>
+    <string name="heat_electronics">Elettronica</string>
+    <string name="heat_cooking">Cucina</string>
+    <string name="usage_living">Soggiorno</string>
+    <string name="usage_bedroom">Camera da letto</string>
+    <string name="usage_child">Cameretta</string>
+    <string name="usage_kitchen">Cucina</string>
+    <string name="usage_bath">Bagno</string>
+    <string name="usage_office">Studio</string>
+    <string name="usage_hall">Corridoio</string>
+    <string name="help_props_title">Caratteristiche della stanza</string>
+    <string name="help_props_text">In «Descrivi la stanza ›» nella cronologia di una stanza la descrivi con parole tue, scritte o dettate – ad es. dimensioni, altezza del soffitto, quante finestre e in che direzione, vetro, pareti esterne, sottotetto o sopra una cantina, pavimento, tapparelle, una stufa, uso come camera da letto, finestra a ribalta di notte. Sui dispositivi con IA integrata (Gemini Nano) l’app riconosce le caratteristiche con essa, altrimenti tramite parole chiave; controlli e correggi il risultato prima di salvare. Finché il modello della stanza non ha imparato dalla cronologia, queste caratteristiche ne determinano i valori iniziali (ad es. la moquette scalda più lentamente, una stanza nel sottotetto perde calore più in fretta). In seguito le finestre a sud aiuteranno a tenere conto del sole.</string>
 </resources>

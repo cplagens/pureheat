@@ -176,6 +176,87 @@
     <string name="outcome_not_reached">not reached</string>
     <string name="outcome_disturbed">not counted (window/manual change)</string>
 
+    <!-- Room properties (free text → structured, on-device AI or keywords) -->
+    <string name="props_title">Room properties</string>
+    <string name="props_link">Describe room ›</string>
+    <string name="props_card_empty">Not described yet. Size, windows, position and floor covering make the model\'s starting values more accurate.</string>
+    <string name="props_intro">Describe the room in your own words – type or dictate. The app recognises the properties that affect heating. Check them below and save. Everything stays on this phone.</string>
+    <string name="props_text_label">Description</string>
+    <string name="props_dictate">🎤 Dictate</string>
+    <string name="props_analyze">Recognise properties</string>
+    <string name="props_analyzing">Recognising …</string>
+    <string name="props_ideas">Ideas (tap to add):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>ceiling height 2.5 m</item>
+        <item>2 windows facing south</item>
+        <item>1 window facing north</item>
+        <item>triple glazing</item>
+        <item>2 exterior walls</item>
+        <item>top floor under the roof</item>
+        <item>above an unheated cellar</item>
+        <item>tiles</item>
+        <item>parquet</item>
+        <item>carpet</item>
+        <item>roller shutters</item>
+        <item>towel radiator</item>
+        <item>wood stove</item>
+        <item>bedroom</item>
+        <item>window tilted at night</item>
+    </string-array>
+    <string name="props_source_ai">Recognised with on-device AI (Gemini Nano) – the text doesn\'t leave the phone. Please check.</string>
+    <string name="props_source_keywords">Recognised by keywords (English and German only) – this device has no on-device AI. Please check and complete below.</string>
+    <string name="props_source_downloading">Recognised by keywords for now. The system is downloading its on-device AI model; it will be used next time.</string>
+    <string name="props_nothing">Nothing recognised – please fill in the fields below directly.</string>
+    <string name="props_saved">Saved.</string>
+    <string name="props_effect">Starting values for the room model: heat loss k %1$s · heating power P %2$s · dead time %3$s. They only apply until the model has learned enough from the history itself.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Floor area (m²)</string>
+    <string name="prop_height">Ceiling height (m)</string>
+    <string name="prop_windows">Number of windows</string>
+    <string name="prop_directions">Windows facing</string>
+    <string name="prop_glazing">Glazing</string>
+    <string name="prop_walls">Exterior walls</string>
+    <string name="prop_position">Position</string>
+    <string name="prop_above_unheated">Above unheated cellar/garage</string>
+    <string name="prop_floor">Floor covering</string>
+    <string name="prop_shutters">Roller shutters/blinds</string>
+    <string name="prop_heat_sources">Other heat sources</string>
+    <string name="prop_usage">Use</string>
+    <string name="prop_night_vent">Window open/tilted at night</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NE</string>
+    <string name="dir_e">E</string>
+    <string name="dir_se">SE</string>
+    <string name="dir_s">S</string>
+    <string name="dir_sw">SW</string>
+    <string name="dir_w">W</string>
+    <string name="dir_nw">NW</string>
+    <string name="glazing_single">Single</string>
+    <string name="glazing_double">Double</string>
+    <string name="glazing_triple">Triple</string>
+    <string name="pos_basement">Basement</string>
+    <string name="pos_ground">Ground floor</string>
+    <string name="pos_upper">Upper floor</string>
+    <string name="pos_attic">Under the roof</string>
+    <string name="floor_tile">Tiles/stone</string>
+    <string name="floor_wood">Parquet/wood</string>
+    <string name="floor_laminate">Laminate/vinyl</string>
+    <string name="floor_carpet">Carpet</string>
+    <string name="heat_towel">Towel radiator</string>
+    <string name="heat_stove">Stove/fireplace</string>
+    <string name="heat_electronics">Electronics</string>
+    <string name="heat_cooking">Cooking</string>
+    <string name="usage_living">Living room</string>
+    <string name="usage_bedroom">Bedroom</string>
+    <string name="usage_child">Children\'s room</string>
+    <string name="usage_kitchen">Kitchen</string>
+    <string name="usage_bath">Bathroom</string>
+    <string name="usage_office">Office</string>
+    <string name="usage_hall">Hall</string>
+
     <!-- Heating profiles -->
     <string name="profiles_title">Heating profiles</string>
     <string name="profile_n">Profile %s</string>
@@ -259,13 +340,15 @@
     <string name="help_valve_title">“Valve open” is not “heating”</string>
     <string name="help_valve_text">The system only knows how far a valve is open, not whether warm water actually flows. A stuck valve pin, a cold supply from the central heating or air in the circuit all look like “valve open”. If a valve is open for hours and the room doesn\'t get warmer, the app shows a warning – check the circuit at the manifold then.</string>
     <string name="help_chart_title">History chart</string>
-    <string name="help_chart_text">The small chart shows the last 24 hours: actual temperature (line), target temperature (dashed), valve opening (area below) and humidity (own panel – % and °C don\'t share a scale). Labels above the chart mark when a window was opened or closed and when the target changed (rounded to 15 minutes). Tap the chart or “History ›” for all data up to 60 days, with outside temperature, each channel and exact values at any time. The top of the overview shows the outside temperature and the forecast for the next 24 hours.</string>
+    <string name="help_chart_text">The small chart shows the last 24 hours: actual temperature (line), target temperature (dashed), valve opening (area below) and humidity (own panel – percent and °C don\'t share a scale). Labels above the chart mark when a window was opened or closed and when the target changed (rounded to 15 minutes). Tap the chart or “History ›” for all data up to 60 days, with outside temperature, each channel and exact values at any time. The top of the overview shows the outside temperature and the forecast for the next 24 hours.</string>
     <string name="help_window_title">Open window detection</string>
     <string name="help_window_text">Without window contacts the app recognises an open window from the temperature: a quick drop while the valve is closed. A rise again without heating counts as “closed”. If the heating starts while the window may still be open, the app only says “at least until”. Detection works best with dense recordings (see “Battery”).</string>
     <string name="help_model_title">Room model and predictions</string>
     <string name="help_model_text">From the recorded phases the app learns per room how fast it loses heat (k), how strongly the floor heating heats it (P) and how long the screed takes to respond (dead time). From this it predicts how long the room needs from setback to comfort temperature and back at the current outside temperature. Open-window times are left out. Until enough phases have been seen, it shows “still learning”.</string>
     <string name="help_probe_title">Probe run</string>
     <string name="help_probe_text">Before the app may ever control the heating, it has to prove that its predictions are right. Once a day it predicts for each room when the next heat-ups of the active profile will reach their target, and checks this against the measurement afterwards. The detail view shows the hit rate. Only after 14 days with at least 80 % on time is an optimal control offered – and you switch it on yourself.</string>
+    <string name="help_props_title">Room properties</string>
+    <string name="help_props_text">Under “Describe room ›” in the history of a room you describe it in your own words, typed or dictated – e.g. size, ceiling height, how many windows face which direction, glazing, exterior walls, top floor or above a cellar, floor covering, roller shutters, a stove, use as bedroom, window tilted at night. On devices with on-device AI (Gemini Nano) the app recognises the properties with it, otherwise by keywords; you check and correct the result before saving. Until the room model has learned from the history, these properties set its starting values (e.g. carpet heats more slowly, an attic room loses heat faster). Later, south windows will help to account for sunshine.</string>
     <string name="help_profiles_title">Heating profiles</string>
     <string name="help_profiles_text">“Heating profile ›” shows the weekly profiles of a room. Tap a day to edit it: drag the edges of the phases, set start, end and temperature precisely, copy a day to others. Before saving, the app lists every change, backs up the old version, saves and then reads the profile back to check it. “Undo last save” restores the backup. Nothing is written without your confirmation.</string>
     <string name="help_battery_title">Battery and data</string>

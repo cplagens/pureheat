@@ -72,7 +72,7 @@
     <string name="legend_window_detected">Ventana abierta (detectada)</string>
     <string name="legend_humidity">Humedad</string>
     <string name="humidity_range">%1$d–%2$d %% HR</string>
-    <string name="humidity_title">Humedad (% HR)</string>
+    <string name="humidity_title">Humedad relativa (%)</string>
     <string name="value_humidity">%d %% HR</string>
     <string name="outside_now">Exterior %.1f °C</string>
     <string name="forecast_24h">próximas 24 h %1$.0f–%2$.0f °C</string>
@@ -149,7 +149,7 @@
     <string name="probe_none">Aún no hay predicciones – las primeras se hacen en la próxima ejecución diaria.</string>
     <string name="probe_score">Evaluadas: %1$d · a tiempo (±30 min): %2$d %% · desviación media %3$s min · %4$d días</string>
     <string name="probe_ready">Suficientemente preciso: se puede ofrecer el control óptimo para esta habitación.</string>
-    <string name="probe_not_ready">El control óptimo se ofrece tras 14 días con ≥ 80 % a tiempo y ≤ 30 min de desviación media.</string>
+    <string name="probe_not_ready">El control óptimo se ofrece tras 14 días con ≥ 80 % puntuales y ≤ 30 min de desviación media.</string>
     <string name="probe_planned">Previsto %1$s → %2$.1f °C: esperado %3$s</string>
     <string name="probe_result">%1$s → %2$.1f °C: esperado %3$s · real %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d min)"</string>
@@ -246,7 +246,7 @@
     <string name="help_model_title">Modelo de habitación y predicciones</string>
     <string name="help_model_text">A partir de las fases registradas, la app aprende para cada habitación lo rápido que pierde calor (k), con qué fuerza la calienta el suelo radiante (P) y cuánto tarda el solado en reaccionar (tiempo muerto). Con ello predice cuánto necesita la habitación para pasar de la temperatura reducida a la de confort y volver, con la temperatura exterior actual. Los periodos con ventana abierta se excluyen. Mientras no haya suficientes fases, muestra «aún aprendiendo».</string>
     <string name="help_probe_title">Prueba</string>
-    <string name="help_probe_text">Antes de que la app pueda controlar la calefacción, tiene que demostrar que sus predicciones son correctas. Una vez al día predice para cada habitación cuándo los próximos calentamientos del perfil activo alcanzarán su objetivo, y lo comprueba después con la medición. La vista de detalle muestra la tasa de aciertos. Solo tras 14 días con al menos 80 % a tiempo se ofrece un control óptimo – y usted mismo lo activa.</string>
+    <string name="help_probe_text">Antes de que la app pueda controlar la calefacción, tiene que demostrar que sus predicciones son correctas. Una vez al día predice para cada habitación cuándo los próximos calentamientos del perfil activo alcanzarán su objetivo, y lo comprueba después con la medición. La vista de detalle muestra la tasa de aciertos. Solo tras 14 días con al menos un 80 % puntual se ofrece un control óptimo – y usted mismo lo activa.</string>
     <string name="help_profiles_title">Perfiles de calefacción</string>
     <string name="help_profiles_text">«Perfil de calefacción ›» muestra los perfiles semanales de una habitación. Toque un día para editarlo: arrastre los bordes de las fases, ajuste con precisión inicio, fin y temperatura, copie un día a otros. Antes de guardar, la app lista cada cambio, hace una copia de la versión anterior, guarda y vuelve a leer el perfil para comprobarlo. «Deshacer el último guardado» restaura la copia. No se escribe nada sin su confirmación.</string>
     <string name="help_battery_title">Batería y datos</string>
@@ -255,4 +255,86 @@
     <string name="help_language_text">La app sigue el idioma del sistema. Puede elegir otro idioma en «Info» o (Android 13+) en los ajustes del sistema, en «Idiomas de las aplicaciones».</string>
     <string name="help_privacy_title">Privacidad</string>
     <string name="help_privacy_text">La app se comunica con la nube Homematic IP y, para la previsión del tiempo, con Open-Meteo (gratis, sin cuenta). Open-Meteo solo recibe la ubicación de la vivienda redondeada a aproximadamente 1 km, unas pocas veces al día. Los datos de acceso y el historial permanecen en este teléfono. PureHeat es un proyecto no oficial y sin relación con eQ-3.</string>
+
+    <string name="props_title">Características de la habitación</string>
+    <string name="props_link">Describir la habitación ›</string>
+    <string name="props_card_empty">Aún sin describir. El tamaño, las ventanas, la ubicación y el suelo hacen más precisos los valores iniciales del modelo.</string>
+    <string name="props_intro">Describa la habitación con sus propias palabras – escriba o dicte. La app reconoce las características que influyen en la calefacción. Revíselas abajo y guarde. Todo se queda en este teléfono.</string>
+    <string name="props_text_label">Descripción</string>
+    <string name="props_dictate">🎤 Dictar</string>
+    <string name="props_analyze">Reconocer características</string>
+    <string name="props_analyzing">Reconociendo …</string>
+    <string name="props_ideas">Ideas (toque para añadir):</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>altura del techo 2,5 m</item>
+        <item>2 ventanas al sur</item>
+        <item>1 ventana al norte</item>
+        <item>triple acristalamiento</item>
+        <item>2 paredes exteriores</item>
+        <item>bajo cubierta</item>
+        <item>sobre un sótano sin calefacción</item>
+        <item>baldosas</item>
+        <item>parqué</item>
+        <item>moqueta</item>
+        <item>persianas</item>
+        <item>toallero eléctrico</item>
+        <item>estufa de leña</item>
+        <item>dormitorio</item>
+        <item>ventana entreabierta por la noche</item>
+    </string-array>
+    <string name="props_source_ai">Reconocido con IA en el dispositivo (Gemini Nano) – el texto no sale del teléfono. Revíselo.</string>
+    <string name="props_source_keywords">Reconocido por palabras clave (solo alemán e inglés) – este dispositivo no tiene IA integrada. Revíselo y complételo abajo.</string>
+    <string name="props_source_downloading">De momento reconocido por palabras clave. El sistema está descargando su modelo de IA; se usará la próxima vez.</string>
+    <string name="props_nothing">No se reconoció nada – rellene directamente los campos de abajo.</string>
+    <string name="props_saved">Guardado.</string>
+    <string name="props_effect">Valores iniciales del modelo: pérdida de calor k %1$s · potencia P %2$s · tiempo muerto %3$s. Solo se aplican hasta que el modelo haya aprendido lo suficiente del historial.</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">Superficie (m²)</string>
+    <string name="prop_height">Altura del techo (m)</string>
+    <string name="prop_windows">Número de ventanas</string>
+    <string name="prop_directions">Ventanas hacia</string>
+    <string name="prop_glazing">Acristalamiento</string>
+    <string name="prop_walls">Paredes exteriores</string>
+    <string name="prop_position">Ubicación</string>
+    <string name="prop_above_unheated">Sobre sótano/garaje sin calefacción</string>
+    <string name="prop_floor">Suelo</string>
+    <string name="prop_shutters">Persianas/estores</string>
+    <string name="prop_heat_sources">Otras fuentes de calor</string>
+    <string name="prop_usage">Uso</string>
+    <string name="prop_night_vent">Ventana abierta por la noche</string>
+    <string name="yes">Sí</string>
+    <string name="no">No</string>
+    <string name="dir_n">N</string>
+    <string name="dir_ne">NE</string>
+    <string name="dir_e">E</string>
+    <string name="dir_se">SE</string>
+    <string name="dir_s">S</string>
+    <string name="dir_sw">SO</string>
+    <string name="dir_w">O</string>
+    <string name="dir_nw">NO</string>
+    <string name="glazing_single">Simple</string>
+    <string name="glazing_double">Doble</string>
+    <string name="glazing_triple">Triple</string>
+    <string name="pos_basement">Sótano</string>
+    <string name="pos_ground">Planta baja</string>
+    <string name="pos_upper">Planta alta</string>
+    <string name="pos_attic">Bajo cubierta</string>
+    <string name="floor_tile">Baldosas/piedra</string>
+    <string name="floor_wood">Parqué/madera</string>
+    <string name="floor_laminate">Laminado/vinilo</string>
+    <string name="floor_carpet">Moqueta</string>
+    <string name="heat_towel">Toallero</string>
+    <string name="heat_stove">Estufa/chimenea</string>
+    <string name="heat_electronics">Electrónica</string>
+    <string name="heat_cooking">Cocinar</string>
+    <string name="usage_living">Salón</string>
+    <string name="usage_bedroom">Dormitorio</string>
+    <string name="usage_child">Habitación infantil</string>
+    <string name="usage_kitchen">Cocina</string>
+    <string name="usage_bath">Baño</string>
+    <string name="usage_office">Despacho</string>
+    <string name="usage_hall">Pasillo</string>
+    <string name="help_props_title">Características de la habitación</string>
+    <string name="help_props_text">En «Describir la habitación ›», dentro del historial de una habitación, la describe con sus propias palabras, escritas o dictadas – p. ej. tamaño, altura del techo, cuántas ventanas y hacia dónde, acristalamiento, paredes exteriores, bajo cubierta o sobre un sótano, suelo, persianas, una estufa, uso como dormitorio, ventana entreabierta por la noche. En dispositivos con IA integrada (Gemini Nano) la app reconoce las características con ella, si no por palabras clave; usted revisa y corrige el resultado antes de guardar. Hasta que el modelo haya aprendido del historial, estas características fijan sus valores iniciales (p. ej. la moqueta calienta más despacio, una habitación bajo cubierta pierde calor más rápido). Más adelante, las ventanas al sur ayudarán a tener en cuenta el sol.</string>
 </resources>

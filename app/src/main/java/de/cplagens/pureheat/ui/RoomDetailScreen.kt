@@ -44,6 +44,7 @@ import de.cplagens.pureheat.data.history.PredictionEntity
 import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.model.RoomInsight
+import de.cplagens.pureheat.data.room.RoomProperties
 import de.cplagens.pureheat.hmip.Room
 import java.util.Date
 import kotlin.math.abs
@@ -59,9 +60,11 @@ fun RoomDetailScreen(
     room: Room,
     vm: RoomDetailViewModel,
     onBack: () -> Unit,
+    onOpenProperties: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by vm.ui.collectAsStateWithLifecycle()
+    val description by vm.description.collectAsStateWithLifecycle()
     val insight by vm.insight.collectAsStateWithLifecycle()
     val probe by vm.probe.collectAsStateWithLifecycle()
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
@@ -215,6 +218,7 @@ fun RoomDetailScreen(
         }
 
         if (room.actualTemperature != null) {
+            item { PropertiesCard(description?.properties, onOpenProperties) }
             item { ModelCard(insight) }
             item { ProbeCard(probe) }
             item {
@@ -235,6 +239,23 @@ fun RoomDetailScreen(
         items(state.phases.asReversed().take(30), key = { "${it.kind}-${it.start}" }) { PhaseRow(it) }
         if (state.phases.isEmpty()) {
             item { Text(stringResource(R.string.phases_none), style = MaterialTheme.typography.bodySmall, color = muted) }
+        }
+    }
+}
+
+/** What the user told about the room (see [RoomPropertiesScreen]). */
+@Composable
+private fun PropertiesCard(properties: RoomProperties?, onOpen: () -> Unit) {
+    val ctx = LocalContext.current
+    Card(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
+            Text(stringResource(R.string.props_title), style = MaterialTheme.typography.labelLarge)
+            if (properties == null || properties.isEmpty) {
+                Text(stringResource(R.string.props_card_empty), style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            } else {
+                Text(propertiesSummary(ctx, properties), style = MaterialTheme.typography.bodySmall)
+            }
+            TextButton(onClick = onOpen, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.props_link)) }
         }
     }
 }

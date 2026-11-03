@@ -1,8 +1,9 @@
 # PureHeat – Nächste Schritte
 
-Stand: 2026-11-02. Dieses Dokument ist der Einstieg für eine neue Agent-Session.
-**Nächste Schritte:** Übersetzungen (siehe „Mehrsprachigkeit“), dann Schritt 6 (Komfortzeiten und
-Optimal-Profil, zunächst nur als Vorschlag). Der Probelauf (Schritt 5) sammelt ab 2026-11-02 Daten.
+Stand: 2026-11-03. Dieses Dokument ist der Einstieg für eine neue Agent-Session.
+**Nächste Schritte:** Raumeigenschaften am Gerät prüfen (Gemini Nano verfügbar? Diktieren?),
+dann Schritt 6 (Komfortzeiten und Optimal-Profil, zunächst nur als Vorschlag). Der Probelauf
+(Schritt 5) sammelt ab 2026-11-02 Daten.
 Erst `CLAUDE.md` (Regeln) und [ARCHITECTURE.md](ARCHITECTURE.md) (Aufbau, API-Erkenntnisse) lesen.
 
 ## Ziel
@@ -76,17 +77,17 @@ Heizzeit/Kosten das spart.
   beim Sollwert-Anstieg) und Abkühlen als „nach X h Absenkung noch ca. Y °C“
   (`T(t) = Tₐ + (T₀ − Tₐ)·e^(−k t)`, X = typische Absenkdauer).
 - Übersichtsdiagramm: Ist/Soll jetzt als durchgehende Linien über Aufzeichnungslücken
-  hinweg; die Detailansicht zeigt Lücken weiterhin.
+  hinweg. Seit 2026-11-03 (Nutzerwunsch) auch in der Detailansicht (`ChartSeries.breakOnGaps`);
+  nur die Ventil-Flächen zeigen Lücken > 1 h weiterhin.
 
 ## Mehrsprachigkeit und Hilfe (2026-11-02)
 
 - Umgesetzt: alle Texte in Ressourcen, Englisch (Standard) + Deutsch, Systemsprache wird befolgt,
   Sprachwahl im Info-Dialog und (Android 13+) in den System-„App-Sprachen“, Hilfe-Bildschirm.
-- **Offen:** Übersetzungen wie in PureRemote für **fr, es, it, pt, nl, pl, tr, ru, ja, zh-CN**:
-  je eine `values-<tag>/strings.xml` mit allen Schlüsseln aus `values/strings.xml` (inkl. Plurals –
-  für ru/pl die Formen one/few/many/other, für ja/zh nur other), dann die Sprache in `Lang.kt` und
-  `res/xml/locales_config.xml` eintragen. Mit `./gradlew lintDebug` auf `MissingTranslation`/
-  `StringFormatInvalid` prüfen. Bis dahin bietet die App nur en/de an.
+- **Erledigt 2026-11-03:** Übersetzungen wie in PureRemote für **fr, es, it, pt, nl, pl, tr, ru,
+  ja, zh-CN** (Plurals: ru/pl one/few/many/other, fr/es/it/pt zusätzlich many, ja/zh nur other),
+  in `Lang.kt` und `locales_config.xml` eingetragen. Neue Schlüssel immer in alle 12 Dateien.
+  Maschinell erstellt – Muttersprachler-Rückmeldungen willkommen.
 - Auf dem Gerät prüfen: Sprachwechsel im Info-Dialog (Activity wird neu aufgebaut), englische
   Oberfläche, Hilfe-Bildschirm.
 
@@ -118,6 +119,51 @@ nächsten Tag besser zu lernen? Einschätzung: **vorerst nicht als Ersatz, spät
   abgeschnitten hätte (Trefferquote, Heizzeit). Dafür den Probelauf (Schritt 5) so bauen, dass
   mehrere „Strategien“ nebeneinander Vorhersagen ablegen können (Spalte `strategy`, z. B.
   `physics`, später `greybox`/`ai`).
+
+## Raumeigenschaften per Freitext/Sprache (umgesetzt 2026-11-03)
+
+Nutzerwunsch: pro Raum Eigenschaften als Text oder gesprochen eingeben, per KI daraus strukturierte
+Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zeigen.
+
+- Bildschirm `ui/RoomPropertiesScreen.kt` (Detailansicht → Karte „Raumeigenschaften“ →
+  „Raum beschreiben ›“): Freitext, „🎤 Diktieren“ (System-Spracheingabe per
+  `RecognizerIntent`, keine eigene Mikrofon-Berechtigung), antippbare Beispiel-Stichwörter
+  (`props_examples`), „Eigenschaften erkennen“, danach alle Felder als Chips/Zahlenfelder zum
+  Prüfen und Korrigieren, Speichern. Zeigt, welche Startwerte (k, P, Totzeit) sich daraus ergeben.
+- Erkennung (`data/room/RoomDescriber.kt`): **Gemini Nano auf dem Gerät** über ML Kit Prompt API
+  (`com.google.mlkit:genai-prompt`, JSON-Antwort, nachsichtig gelesen in
+  `RoomProperties.fromJson`), ergänzt um den **Stichwort-Fallback** `KeywordExtractor` (Deutsch +
+  Englisch, reines Kotlin, getestet). Ohne Nano nur Stichwörter; ist Nano herunterladbar, stößt
+  die App den System-Download an. Kein Cloud-Dienst, kein API-Schlüssel (Repo ist öffentlich).
+  Dafür Kotlin 2.2.10 → **2.4.21** (die ML-Kit-Bibliothek ist mit 2.4 gebaut).
+- Speicherung: SharedPreferences `room_descriptions` (`RoomDescriptionStore`), nicht in der
+  Verlaufs-DB (Einstellung, keine Messung; überlebt die 60-Tage-Grenze), beim Abmelden gelöscht.
+- Felder (`RoomProperties`) und warum sie zählen:
+  | Feld | Wirkung |
+  |---|---|
+  | Fläche, Raumhöhe | Luftvolumen/Speicher; mit Fensterzahl → Glasanteil; P ∝ 2,5 m / Höhe |
+  | Anzahl Fenster, Himmelsrichtungen | Wärmeverlust (k); **Süd-/Westfenster = Sonnengewinn** (später mit Strahlungsprognose) |
+  | Verglasung (1/2/3-fach) | k ×1,3 / ×1 / ×0,85 |
+  | Außenwände (0–4) | k ×0,7 … ×1,3 |
+  | Lage (Keller/EG/OG/unterm Dach), über unbeheiztem Keller | Dach k ×1,2, über Keller k ×1,1 |
+  | Bodenbelag | **stärkster Hebel für P und Totzeit** bei Fußbodenheizung: Fliesen P ×1,15 / Totzeit −0,25 h, Parkett ×0,85 / +0,25 h, Teppich ×0,7 / +0,5 h |
+  | Rollläden | später: geringere Nachtverluste, wenn geschlossen |
+  | weitere Wärmequellen (Handtuchheizkörper, Ofen, Elektronik, Kochen) | erklärt „warm ohne Ventil“; später Grey-Box-Korrektur |
+  | Nutzung (Schlafzimmer, Bad, …) | später: Vorschlag für Komfortzeiten (Schritt 6) |
+  | nachts Fenster gekippt | k ×1,1; Erwartung für die Fenster-offen-Erkennung |
+- Verwendung jetzt: nur als **Startwerte** (`RoomPriors.model`, in `ProbeRun.modelFor`), solange
+  das Raummodell k/P noch nicht selbst gelernt hat – das gelernte Modell gewinnt immer.
+  Faktoren sind grobe Physik-Heuristik, keine Messung; mit dem Probelauf prüfen, ob Startwerte mit
+  Eigenschaften besser treffen als ohne.
+- Offen / Ideen:
+  1. Am Gerät prüfen: Ist Gemini Nano auf dem Telefon verfügbar (`checkStatus`)? Diktieren?
+  2. **Sonnengewinn**: Open-Meteo `shortwave_radiation` mit abrufen; Fensterfläche × Richtung ×
+     Strahlung als zusätzlicher Term (Grey Box), v. a. für Süd-/Westzimmer an sonnigen Tagen.
+  3. Weitere sinnvolle Angaben: Wohnungslage (Nachbarwohnungen beheizt?), Nachbarräume
+     (unbeheizt/kühl), Belegung (wie viele Personen wann), Vorlauftemperatur/Heizkurve der
+     Zentralheizung, Verlegeabstand der Heizrohre, Estrichdicke – erst aufnehmen, wenn das
+     Modell sie nutzen kann.
+  4. Bei vielen Räumen gemeinsame Größen (Gebäude, Verglasung) einmal für alle eingeben.
 
 ## Fenster-offen-Erkennung (2026-11-02)
 

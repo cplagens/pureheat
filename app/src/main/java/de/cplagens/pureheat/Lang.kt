@@ -11,12 +11,21 @@ import androidx.core.os.LocaleListCompat
 object Lang {
     /**
      * Language tag → name in that language. Only languages with a complete values-<tag>/strings.xml;
-     * new languages also go into res/xml/locales_config.xml. Planned (as in PureRemote): fr, es, it,
-     * pt, nl, pl, tr, ru, ja, zh-CN – see docs/NEXT_STEPS.md.
+     * new languages also go into res/xml/locales_config.xml. Same set as in PureRemote.
      */
     val options = listOf(
         "en" to "English",
         "de" to "Deutsch",
+        "fr" to "Français",
+        "es" to "Español",
+        "it" to "Italiano",
+        "pt" to "Português",
+        "nl" to "Nederlands",
+        "pl" to "Polski",
+        "tr" to "Türkçe",
+        "ru" to "Русский",
+        "ja" to "日本語",
+        "zh-CN" to "简体中文",
     )
 
     /** "" = system language */

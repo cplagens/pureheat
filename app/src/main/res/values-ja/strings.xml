@@ -1,0 +1,334 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="refresh">更新</string>
+    <string name="help">ヘルプ</string>
+    <string name="info">情報</string>
+    <string name="logout">ログアウト</string>
+    <string name="close">閉じる</string>
+    <string name="cancel">キャンセル</string>
+    <string name="save">保存</string>
+    <string name="save_ellipsis">保存 …</string>
+    <string name="discard">破棄</string>
+    <string name="dismiss">非表示</string>
+    <string name="apply">適用</string>
+    <string name="activate">有効にする</string>
+    <string name="remove">削除</string>
+    <string name="back">‹ 戻る</string>
+    <string name="back_rooms">‹ 部屋</string>
+    <string name="unknown">不明</string>
+    <string name="now">現在</string>
+    <string name="ago_24h">24 時間前</string>
+    <string name="temperature">温度</string>
+    <string name="temp_c">%.1f °C</string>
+    <string name="temp_c0">%.0f °C</string>
+    <string name="percent">%d %%</string>
+    <string name="version">バージョン %s</string>
+    <string name="language">言語</string>
+    <string name="system_language">システムの言語</string>
+
+    <string name="day_mo">月</string>
+    <string name="day_tu">火</string>
+    <string name="day_we">水</string>
+    <string name="day_th">木</string>
+    <string name="day_fr">金</string>
+    <string name="day_sa">土</string>
+    <string name="day_su">日</string>
+
+    <string name="duration_min">%d 分</string>
+    <string name="duration_h">%d 時間</string>
+    <string name="duration_h_min">%1$d 時間 %2$d 分</string>
+    <string name="duration_over_day">24 時間以上</string>
+
+    <string name="setup_title">アクセスポイントを接続</string>
+    <string name="setup_sgtin_hint">SGTIN（アクセスポイント ID）はアクセスポイント底面のラベルに記載されています。例: 3014-F711-A000-…</string>
+    <string name="setup_sgtin">SGTIN</string>
+    <string name="setup_pin">PIN（アプリで設定した場合のみ）</string>
+    <string name="setup_connect">接続</string>
+    <string name="setup_press_button">アクセスポイントの青いボタンを押してください …</string>
+
+    <plurals name="rooms_valve_open">
+        <item quantity="other">%d 部屋でバルブが開いています</item>
+    </plurals>
+    <string name="unassigned_circuits">部屋に割り当てられていません</string>
+    <string name="valve_open">バルブ開</string>
+    <string name="room_values">実測 %1$s · 目標 %2$s</string>
+    <string name="room_humidity">" · 湿度 %d %%"</string>
+    <string name="room_window_contact_open">" · 窓が開いています"</string>
+    <string name="valve_room">バルブ（部屋）</string>
+    <string name="channel_n">チャンネル %d</string>
+    <string name="channel_state">%1$s: %2$s</string>
+    <string name="stalled_warning">⚠ バルブが %1$.1f 時間開いていますが、温度は %2$+.1f °C のみ – 熱は届いていますか？</string>
+    <string name="history_link">履歴 ›</string>
+    <string name="profile_link">暖房プロファイル ›</string>
+
+    <string name="history_recording">履歴を記録中 …</string>
+    <string name="legend_actual">実測</string>
+    <string name="legend_setpoint">目標</string>
+    <string name="legend_valve">バルブ</string>
+    <string name="legend_window">窓</string>
+    <string name="legend_outside">外気</string>
+    <string name="legend_window_detected">窓が開いている（検出）</string>
+    <string name="legend_humidity">湿度</string>
+    <string name="humidity_range">湿度 %1$d–%2$d %%</string>
+    <string name="humidity_title">湿度（%）</string>
+    <string name="value_humidity">湿度 %d %%</string>
+    <string name="outside_now">外気 %.1f °C</string>
+    <string name="forecast_24h">今後 24 時間 %1$.0f–%2$.0f °C</string>
+    <string name="actual_range">実測 %1$.1f–%2$.1f °C</string>
+    <string name="marker_window_open">窓開 %s</string>
+    <string name="marker_window_closed">閉 %s</string>
+    <string name="marker_setpoint">目標 %1$s %2$s</string>
+
+    <string name="battery_title">履歴の欠落を防ぐ</string>
+    <string name="battery_text">アプリをあまり開かないため、Android がバックグラウンドの記録を遅らせ、数時間の欠落が生じています。対処: アプリ情報 → バッテリー → 「制限なし」。PureHeat はそれでも 15〜60 分ごとにしか取得しません。</string>
+    <string name="battery_open_settings">アプリ情報を開く</string>
+
+    <string name="range_24h">24 時間</string>
+    <string name="range_3d">3 日</string>
+    <string name="range_7d">7 日</string>
+    <string name="range_14d">14 日</string>
+    <string name="range_60d">60 日</string>
+    <string name="readout_hint">グラフをタップまたはスワイプすると、その時点の値が表示されます。</string>
+    <string name="readout_no_values">この時点の値はありません。</string>
+    <string name="value_actual">実測 %.1f °C</string>
+    <string name="value_setpoint">目標 %.1f °C</string>
+    <string name="value_outside">外気 %.1f °C</string>
+    <string name="value_valve">%1$s %2$d %%</string>
+    <string name="too_little_data">この期間のデータはまだ不足しています。</string>
+    <string name="valve_opening_title">バルブ開度（0–100 %）</string>
+    <string name="windows_title">窓が開いている（温度曲線から検出）</string>
+    <string name="windows_none">この期間には検出されませんでした。バルブが閉じている状態での急な温度低下（≥ 0.3 K、≥ 0.6 K/時）を検出し、暖房なしで再び上昇した時点を終了とします。</string>
+    <string name="phases_title">フェーズ（バルブが 1 時間以上開または閉）</string>
+    <string name="phases_none">1 時間以上のフェーズはまだ検出されていません。バルブが長時間開いている（加熱）か閉じている（冷却）とフェーズになります。</string>
+    <plurals name="phases">
+        <item quantity="other">%d フェーズ</item>
+    </plurals>
+    <string name="phase_summary_open">バルブ開: 平均 %1$+.2f °C/時（%2$s）</string>
+    <string name="phase_summary_closed">バルブ閉: 平均 %1$+.2f °C/時（%2$s）</string>
+    <string name="phase_open">▲ バルブ開 · %1$s–%2$s</string>
+    <string name="phase_closed">▼ バルブ閉 · %1$s–%2$s</string>
+    <string name="phase_detail">%3$d 時間 %4$d 分で %1$.1f → %2$.1f °C（%5$+.2f °C/時）</string>
+    <string name="phase_outside">" · 外気平均 %.1f °C"</string>
+
+    <string name="window_open_since">%1$s から窓が開いている可能性（−%2$.1f K）</string>
+    <string name="window_open_from_to">窓が開いていた可能性: %1$s–%2$s（−%3$.1f K）</string>
+    <string name="window_open_at_least">%1$s から少なくとも %2$s まで窓が開いていた可能性（−%3$.1f K）</string>
+    <string name="window_end_now">現在</string>
+    <string name="window_end_unknown">少なくとも %s（終了は検出不可）</string>
+    <string name="window_event">%1$s–%2$s · %3$.1f → %4$.1f °C</string>
+    <string name="window_humidity_drop">" · 湿度 −%d %%"</string>
+
+    <string name="model_title">部屋モデル</string>
+    <string name="model_computing">計算中 …</string>
+    <string name="model_learning">部屋モデルは学習中です（使用可能なフェーズ: バルブ開 %1$d/%2$d、バルブ閉 %3$d/%4$d）</string>
+    <string name="model_no_setback">暖房プロファイルに温度低下は見つかりませんでした。</string>
+    <string name="model_summary">%1$.1f → %2$.1f °C %3$s · %1$.1f °C に戻るまで %4$s（外気 %5$.0f °C）</string>
+    <string name="model_summary_forecast">%1$.1f → %2$.1f °C %3$s · %1$.1f °C に戻るまで %4$s（予報 外気 %5$.0f °C）</string>
+    <string name="model_in_about">約 %s</string>
+    <string name="model_unreachable">外気 %1$.0f °C では到達不可（%2$.1f °C）</string>
+    <string name="model_unknown">– まだ不明</string>
+    <string name="model_parameters">熱損失 k: %1$s · 暖房出力 P: %2$s · むだ時間: %3$s</string>
+    <string name="model_k">%.3f/時</string>
+    <string name="model_p">%.2f °C/時</string>
+    <string name="model_phases">使用可能なフェーズ: バルブ開 %1$d、バルブ閉 %2$d</string>
+    <string name="model_spread">" · k のばらつき: ±%d %%"</string>
+    <plurals name="model_windows_excluded">
+        <item quantity="other">" · 窓開を %d 回検出し、学習から除外"</item>
+    </plurals>
+    <string name="model_levels">低下／快適温度（過去 7 日間の設定値より）: %1$.1f / %2$.1f °C</string>
+    <string name="model_explanation">このモデルは、バルブが開いていると部屋が一定の速さで暖まり、閉じていると外気温に向かって冷えると仮定しています。さまざまな天候の日が増えるほど精度が上がります。</string>
+
+    <string name="probe_title">試行（予測と実際）</string>
+    <string name="probe_explanation">アプリは 1 日 1 回、有効なプロファイル・部屋モデル・天気予報から各加熱が目標に達する時刻を予測し、後で測定値と比較します。暖房には何も変更を加えません。窓が開いていた時間や手動変更があった時間は数えません。</string>
+    <string name="probe_none">まだ予測はありません – 最初の予測は次回の日次実行で行われます。</string>
+    <string name="probe_score">評価済み: %1$d · 時間どおり（±30 分）: %2$d %% · 平均ずれ %3$s 分 · %4$d 日</string>
+    <string name="probe_ready">十分な精度: この部屋には最適制御を提案できます。</string>
+    <string name="probe_not_ready">最適制御は、14 日間で時間どおり ≥ 80 %、平均ずれ ≤ 30 分になると提案されます。</string>
+    <string name="probe_planned">予定 %1$s → %2$.1f °C: 予測 %3$s</string>
+    <string name="probe_result">%1$s → %2$.1f °C: 予測 %3$s · 実際 %4$s%5$s · %6$s</string>
+    <string name="probe_delta">" (%+d 分)"</string>
+    <string name="probe_not_reached">未到達</string>
+    <string name="probe_prior">" · 初期値"</string>
+    <string name="outcome_hit">時間どおり</string>
+    <string name="outcome_early">早い</string>
+    <string name="outcome_late">遅い</string>
+    <string name="outcome_not_reached">未到達</string>
+    <string name="outcome_disturbed">対象外（窓／手動変更）</string>
+
+    <string name="profiles_title">暖房プロファイル</string>
+    <string name="profile_n">プロファイル %s</string>
+    <string name="profile_active_suffix">%s · 有効</string>
+    <string name="profile_save_first">プロファイルを切り替えるには、先に保存または破棄してください。</string>
+    <string name="profile_activate">%s を有効にする</string>
+    <string name="profile_activate_q">%s を有効にしますか？</string>
+    <string name="profile_activate_text">部屋「%s」はこの週間プロファイルに従って暖房されます。</string>
+    <string name="profile_week_hint">週 – 日をタップして編集</string>
+    <string name="profile_day_unreadable">読み取れません</string>
+    <string name="profile_rate">履歴より: この部屋は通常 1 時間に約 %.2f °C 暖まります。</string>
+    <string name="profile_rate_unknown">十分な履歴が記録されると、部屋の暖まる速さがここに表示されます。</string>
+    <string name="profile_optimum_tip">ヒント: Homematic IP アプリの「Optimum Start/Stop」を使うと、システムが予熱時間を自ら学習します。</string>
+    <string name="profile_undo">最後の保存を元に戻す</string>
+    <string name="profile_saved">保存して確認しました。</string>
+    <string name="profile_saved_also">保存して確認しました。他の %d 部屋にも適用しました。</string>
+    <string name="profile_saved_partly">保存しました。次には適用できませんでした: %s。</string>
+    <string name="profile_now_active">%s が有効になりました。</string>
+    <string name="profile_restored">以前のバージョンを復元しました。</string>
+    <string name="save_changes_q">変更を保存しますか？</string>
+    <string name="save_backup_note">以前のバージョンはバックアップされ、復元できます。</string>
+    <string name="save_also_rooms">変更した日を次にも適用:</string>
+    <string name="diff_period">%1$s–%2$s %3$.1f °C</string>
+    <string name="diff_no_period">暖房フェーズなし</string>
+    <string name="diff_periods">%1$s: %2$s → %3$s</string>
+    <string name="diff_base">%1$s: 基本温度 %2$.1f → %3$.1f °C</string>
+    <string name="diff_both">%1$s: %2$s → %3$s、基本温度 %4$.1f → %5$.1f °C</string>
+    <string name="editor_drag_hint">暖房フェーズの端をドラッグするか、下で正確に設定します</string>
+    <string name="editor_phase">フェーズ %1$d: %2$s–%3$s</string>
+    <string name="editor_start">開始</string>
+    <string name="editor_end">終了</string>
+    <string name="editor_add_phase">+ 暖房フェーズを追加</string>
+    <string name="editor_max_phases">暖房フェーズは最大 %d 個</string>
+    <string name="editor_base">基本温度（フェーズ外）</string>
+    <string name="editor_copy_to">この日をコピー:</string>
+    <string name="editor_workdays">月–金</string>
+    <string name="editor_weekend">土–日</string>
+    <string name="editor_all_days">すべて</string>
+    <string name="preheat_start">%1$s に %2$.1f °C にするには、約 %3$.2f °C/時で %4$s ごろに暖房を開始する必要があります。これは上限です – 通常、床スラブは基本温度まで冷えきりません。</string>
+    <string name="preheat_too_slow">約 %1$.2f °C/時では、部屋が %2$.1f °C から %3$.1f °C になるまで 8 時間以上かかります。床暖房では、大きく温度を下げるより基本温度を高めにするほうが通常うまくいきます。</string>
+
+    <string name="about_text">床暖房のどの回路が開いているかを表示し、履歴を記録し、各部屋の挙動を学習し、暖房プロファイルを簡単に編集できます。無料・広告なし・トラッキングなし。非公式プロジェクトで、eQ-3 とは無関係です。</string>
+    <string name="support_text">アプリを気に入っていただけたら、任意のご支援はいつでも歓迎です。必須ではなく、何かが解放されることもありません。</string>
+    <string name="source_code">GitHub のソースコード</string>
+
+    <string name="err_unknown_host">サーバー %s に接続できません。インターネット接続を確認して再試行してください。</string>
+    <string name="err_unknown_host_cloud">クラウドサーバーに接続できません。インターネット接続を確認して再試行してください。</string>
+    <string name="err_timeout">タイムアウト: クラウドが時間内に応答しませんでした。</string>
+    <string name="err_no_connection">クラウドに接続できません。インターネット接続を確認してください。</string>
+    <string name="err_ssl">クラウドへの安全な接続に失敗しました（%s）。</string>
+    <string name="err_network">ネットワークエラー: %s</string>
+    <string name="err_unexpected">予期しないエラー: %s</string>
+    <string name="err_with_context">%1$s: %2$s（%3$s）</string>
+    <string name="err_http_forbidden">アクセスが拒否されました。アプリがアクセスポイントから削除された場合は、ログアウトして再接続してください。</string>
+    <string name="err_http_not_found">アクセスポイントが見つかりません。SGTIN を確認してください。</string>
+    <string name="err_http_bad_request">無効なリクエストです。</string>
+    <string name="err_http_too_many">リクエストが多すぎます。しばらくお待ちください。</string>
+    <string name="err_http_server">Homematic IP クラウドで問題が発生しています。後でもう一度お試しください。</string>
+    <string name="err_http_unexpected">クラウドから予期しない応答がありました。</string>
+    <string name="err_button_timeout">アクセスポイントの青いボタンが時間内に押されませんでした。</string>
+    <string name="err_not_logged_in">ログインしていません。</string>
+    <string name="err_profile_mismatch">プロファイルは送信されましたが、クラウドが異なる値を返しています。Homematic IP アプリで確認するか、「元に戻す」を使用してください。</string>
+    <string name="ctx_lookup">サーバーの検索に失敗しました</string>
+    <string name="ctx_connection_request">接続リクエストが拒否されました</string>
+    <string name="ctx_token_request">トークンの要求に失敗しました</string>
+    <string name="ctx_token_confirm">トークンの確認に失敗しました</string>
+    <string name="ctx_state">状態を読み込めませんでした</string>
+    <string name="ctx_profile_load">暖房プロファイルを読み込めませんでした</string>
+    <string name="ctx_profile_save">暖房プロファイルを保存できませんでした</string>
+    <string name="ctx_profile_activate">プロファイルを有効にできませんでした</string>
+
+    <string name="help_title">ヘルプ</string>
+    <string name="help_intro">PureHeat は Homematic IP クラウド経由で床暖房を読み取り、公式アプリが表示しない情報を表示します。どのバルブが開いているか、各部屋が時間とともにどう変化するか、どうすればより上手に暖房できるかです。</string>
+    <string name="help_start_title">はじめに</string>
+    <string name="help_start_text">アクセスポイント底面のラベルにある SGTIN（設定している場合は PIN も）を入力します。求められたら、アクセスポイントの青いボタンを押してください。アクセストークンはこのスマートフォンにのみ保存されます。</string>
+    <string name="help_overview_title">概要</string>
+    <string name="help_overview_text">部屋ごとに 1 枚のカード: 実測温度と目標温度、湿度、各バルブ（回路）の開度。サーモスタットヘッド付きのタオルウォーマーは、温度センサーのない独立した部屋として表示されます。アプリを開いている間は 5 分ごとに更新され、「更新」ですぐに取得します。</string>
+    <string name="help_valve_title">「バルブ開」は「暖房中」ではありません</string>
+    <string name="help_valve_text">システムが知っているのはバルブの開度だけで、温水が実際に流れているかどうかはわかりません。バルブピンの固着、セントラルヒーティングからの冷たい供給水、回路内の空気は、どれも「バルブ開」に見えます。バルブが何時間も開いているのに部屋が暖まらない場合、アプリは警告を表示します – その場合はマニホールドで回路を確認してください。</string>
+    <string name="help_chart_title">履歴グラフ</string>
+    <string name="help_chart_text">小さなグラフは過去 24 時間を表示します: 実測温度（線）、目標温度（破線）、バルブ開度（下の領域）、湿度（別パネル – % と °C は同じ目盛りを共有しません）。グラフ上のラベルは、窓が開閉された時刻と目標が変わった時刻を示します（15 分単位で丸め）。グラフまたは「履歴 ›」をタップすると、外気温、各チャンネル、任意の時点の正確な値を含む最大 60 日分のデータが表示されます。概要の上部には外気温と今後 24 時間の予報が表示されます。</string>
+    <string name="help_window_title">窓開検出</string>
+    <string name="help_window_text">窓センサーがなくても、アプリは温度から窓が開いていることを認識します: バルブが閉じている間の急な低下です。暖房なしで再び上昇すると「閉」とみなします。窓がまだ開いている可能性があるうちに暖房が始まった場合、アプリは「少なくとも … まで」とだけ表示します。検出は記録が密なほどうまく機能します（「バッテリー」を参照）。</string>
+    <string name="help_model_title">部屋モデルと予測</string>
+    <string name="help_model_text">記録されたフェーズから、アプリは部屋ごとに熱を失う速さ（k）、床暖房が暖める強さ（P）、床スラブが反応するまでの時間（むだ時間）を学習します。そこから、現在の外気温で部屋が低下温度から快適温度へ、またその逆に変わるのにかかる時間を予測します。窓が開いていた時間は除外されます。フェーズが十分でない間は「学習中」と表示します。</string>
+    <string name="help_probe_title">試行</string>
+    <string name="help_probe_text">アプリが暖房を制御できるようになる前に、予測が正しいことを証明しなければなりません。1 日 1 回、各部屋について有効なプロファイルの次の加熱が目標に達する時刻を予測し、後で測定値と照合します。詳細画面に的中率が表示されます。14 日間で少なくとも 80 % が時間どおりになって初めて最適制御が提案され、それを有効にするのはあなた自身です。</string>
+    <string name="help_profiles_title">暖房プロファイル</string>
+    <string name="help_profiles_text">「暖房プロファイル ›」には部屋の週間プロファイルが表示されます。日をタップして編集します: フェーズの端をドラッグし、開始・終了・温度を正確に設定し、ある日を他の日にコピーできます。保存前にアプリはすべての変更を一覧表示し、旧バージョンをバックアップしてから保存し、プロファイルを読み戻して確認します。「最後の保存を元に戻す」でバックアップを復元します。確認なしに書き込まれることはありません。</string>
+    <string name="help_battery_title">バッテリーとデータ</string>
+    <string name="help_battery_text">バックグラウンドでは、何かが変化している間は 15 分ごと、それ以外は 30 分ごと、夜間は 60 分ごとに取得します。1 回の取得は約 100 KB です。アプリをあまり開かないと Android がこれらの処理を何時間も遅らせることがあります – 完全な履歴のためには、アプリ情報 → バッテリー → 「制限なし」を設定してください。</string>
+    <string name="help_language_title">言語</string>
+    <string name="help_language_text">アプリはシステムの言語に従います。「情報」または（Android 13 以降）システム設定の「アプリの言語」で別の言語を選べます。</string>
+    <string name="help_privacy_title">プライバシー</string>
+    <string name="help_privacy_text">アプリは Homematic IP クラウドと、天気予報のために Open-Meteo（無料・アカウント不要）と通信します。Open-Meteo が受け取るのは約 1 km 単位に丸めた住居の位置だけで、1 日に数回です。アクセス情報と履歴はこのスマートフォンに残ります。PureHeat は非公式プロジェクトで、eQ-3 とは無関係です。</string>
+
+    <string name="props_title">部屋の特性</string>
+    <string name="props_link">部屋を説明 ›</string>
+    <string name="props_card_empty">まだ説明がありません。広さ・窓・位置・床材があると、モデルの初期値がより正確になります。</string>
+    <string name="props_intro">部屋を自分の言葉で説明してください（入力または音声入力）。アプリが暖房に影響する特性を認識します。下で確認して保存してください。すべてこのスマートフォンに保存されます。</string>
+    <string name="props_text_label">説明</string>
+    <string name="props_dictate">🎤 音声入力</string>
+    <string name="props_analyze">特性を認識</string>
+    <string name="props_analyzing">認識中 …</string>
+    <string name="props_ideas">ヒント（タップで追加）:</string>
+    <string-array name="props_examples">
+        <item>20 m²</item>
+        <item>天井高 2.5 m</item>
+        <item>南向きの窓 2 つ</item>
+        <item>北向きの窓 1 つ</item>
+        <item>トリプルガラス</item>
+        <item>外壁 2 面</item>
+        <item>屋根裏・最上階</item>
+        <item>暖房のない地下室の上</item>
+        <item>タイル</item>
+        <item>フローリング</item>
+        <item>カーペット</item>
+        <item>シャッター</item>
+        <item>タオルウォーマー</item>
+        <item>薪ストーブ</item>
+        <item>寝室</item>
+        <item>夜は窓を少し開けている</item>
+    </string-array>
+    <string name="props_source_ai">端末上の AI（Gemini Nano）で認識しました – テキストはスマートフォンの外に出ません。確認してください。</string>
+    <string name="props_source_keywords">キーワードで認識しました（ドイツ語と英語のみ） – この端末には端末上の AI がありません。下で確認して補ってください。</string>
+    <string name="props_source_downloading">今回はキーワードで認識しました。システムが AI モデルをダウンロード中で、次回から使われます。</string>
+    <string name="props_nothing">何も認識されませんでした – 下の項目を直接入力してください。</string>
+    <string name="props_saved">保存しました。</string>
+    <string name="props_effect">部屋モデルの初期値: 熱損失 k %1$s · 暖房出力 P %2$s · むだ時間 %3$s。モデルが履歴から十分に学習するまでの間だけ使われます。</string>
+    <string name="props_value">%1$s: %2$s</string>
+    <string name="prop_area">床面積（m²）</string>
+    <string name="prop_height">天井高（m）</string>
+    <string name="prop_windows">窓の数</string>
+    <string name="prop_directions">窓の向き</string>
+    <string name="prop_glazing">ガラス</string>
+    <string name="prop_walls">外壁</string>
+    <string name="prop_position">位置</string>
+    <string name="prop_above_unheated">暖房のない地下室／車庫の上</string>
+    <string name="prop_floor">床材</string>
+    <string name="prop_shutters">シャッター／ブラインド</string>
+    <string name="prop_heat_sources">その他の熱源</string>
+    <string name="prop_usage">用途</string>
+    <string name="prop_night_vent">夜間に窓を開けている</string>
+    <string name="yes">はい</string>
+    <string name="no">いいえ</string>
+    <string name="dir_n">北</string>
+    <string name="dir_ne">北東</string>
+    <string name="dir_e">東</string>
+    <string name="dir_se">南東</string>
+    <string name="dir_s">南</string>
+    <string name="dir_sw">南西</string>
+    <string name="dir_w">西</string>
+    <string name="dir_nw">北西</string>
+    <string name="glazing_single">単板</string>
+    <string name="glazing_double">ペア</string>
+    <string name="glazing_triple">トリプル</string>
+    <string name="pos_basement">地下</string>
+    <string name="pos_ground">1 階</string>
+    <string name="pos_upper">上階</string>
+    <string name="pos_attic">屋根裏</string>
+    <string name="floor_tile">タイル／石</string>
+    <string name="floor_wood">フローリング／木</string>
+    <string name="floor_laminate">ラミネート／ビニール</string>
+    <string name="floor_carpet">カーペット</string>
+    <string name="heat_towel">タオルウォーマー</string>
+    <string name="heat_stove">ストーブ／暖炉</string>
+    <string name="heat_electronics">電子機器</string>
+    <string name="heat_cooking">調理</string>
+    <string name="usage_living">リビング</string>
+    <string name="usage_bedroom">寝室</string>
+    <string name="usage_child">子ども部屋</string>
+    <string name="usage_kitchen">キッチン</string>
+    <string name="usage_bath">浴室</string>
+    <string name="usage_office">書斎</string>
+    <string name="usage_hall">廊下</string>
+    <string name="help_props_title">部屋の特性</string>
+    <string name="help_props_text">部屋の履歴にある「部屋を説明 ›」で、部屋を自分の言葉で説明します（入力または音声入力）。例: 広さ、天井高、窓の数と向き、ガラス、外壁、屋根裏や地下室の上か、床材、シャッター、ストーブ、寝室としての利用、夜間に窓を少し開けているか。端末上の AI（Gemini Nano）がある端末ではそれを使って、ない場合はキーワードで特性を認識します。保存前に結果を確認・修正してください。部屋モデルが履歴から学習するまでは、これらの特性が初期値を決めます（例: カーペットは暖まりにくく、屋根裏の部屋は熱を失いやすい）。今後は南向きの窓を使って日射も考慮する予定です。</string>
+</resources>
