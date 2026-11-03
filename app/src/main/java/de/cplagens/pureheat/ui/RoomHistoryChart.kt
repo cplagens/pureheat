@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import android.content.res.Configuration
@@ -38,6 +43,7 @@ import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WindowEvent
+import de.cplagens.pureheat.data.history.BathingEvent
 
 private const val WINDOW_MS = 24 * 60 * 60 * 1000L
 
@@ -55,6 +61,7 @@ fun RoomHistoryChart(
     now: Long,
     modifier: Modifier = Modifier,
     windows: List<WindowEvent> = emptyList(),
+    bathing: List<BathingEvent> = emptyList(),
 ) {
     val start = now - WINDOW_MS
     val visible = samples.filter { it.timestamp >= start }
@@ -103,7 +110,7 @@ fun RoomHistoryChart(
             }
         }
 
-        MarkerStrip(chartMarkers(LocalContext.current, visible, windows, start, now), start, now)
+        MarkerStrip(chartMarkers(LocalContext.current, visible, windows, start, now, bathing), start, now)
 
         Canvas(Modifier.fillMaxWidth().height(56.dp)) {
             fun x(t: Long) = ((t - start).toFloat() / WINDOW_MS) * size.width

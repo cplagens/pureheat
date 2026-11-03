@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import android.content.Context
@@ -29,6 +34,7 @@ import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
+import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
@@ -84,6 +90,7 @@ fun ProfileScreen(
     var expandedDay by rememberSaveable { mutableStateOf<Weekday?>(null) }
     var confirmSave by remember { mutableStateOf(false) }
     var confirmActivate by remember { mutableStateOf<ProfileRef?>(null) }
+    var renaming by remember { mutableStateOf<ProfileRef?>(null) }
     val profile = state.edited
     val busy = state.loading || state.saving
 
@@ -125,9 +132,14 @@ fun ProfileScreen(
                 )
             }
             state.selected?.let { sel ->
-                if (sel.index != room.activeProfile && !state.dirty) {
-                    OutlinedButton(onClick = { confirmActivate = sel }, enabled = !busy) {
-                        Text(stringResource(R.string.profile_activate, sel.displayName.asString()))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    if (sel.index != room.activeProfile && !state.dirty) {
+                        OutlinedButton(onClick = { confirmActivate = sel }, enabled = !busy) {
+                            Text(stringResource(R.string.profile_activate, sel.displayName.asString()))
+                        }
+                    }
+                    if (!state.dirty) {
+                        TextButton(onClick = { renaming = sel }, enabled = !busy) { Text(stringResource(R.string.profile_rename)) }
                     }
                 }
             }
@@ -227,6 +239,45 @@ fun ProfileScreen(
             dismissButton = { TextButton(onClick = { confirmActivate = null }) { Text(stringResource(R.string.cancel)) } },
         )
     }
+
+    renaming?.let { ref ->
+        RenameDialog(
+            current = ref.displayName.asString(),
+            onConfirm = { name ->
+                renaming = null
+                vm.rename(ref, name, onChanged)
+            },
+            onDismiss = { renaming = null },
+        )
+    }
+}
+
+/** New profile name; the dialog itself is the confirmation for the cloud write. */
+@Composable
+private fun RenameDialog(current: String, onConfirm: (String) -> Unit, onDismiss: () -> Unit) {
+    var name by rememberSaveable { mutableStateOf(current) }
+    val clean = name.trim()
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.profile_rename_q)) },
+        text = {
+            Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
+                OutlinedTextField(
+                    value = name,
+                    onValueChange = { name = it.take(ProfileViewModel.MAX_NAME_LENGTH) },
+                    singleLine = true,
+                    label = { Text(stringResource(R.string.profile_name)) },
+                )
+                Text(stringResource(R.string.profile_rename_note), style = MaterialTheme.typography.bodySmall)
+            }
+        },
+        confirmButton = {
+            TextButton(onClick = { onConfirm(clean) }, enabled = clean.isNotEmpty() && clean != current) {
+                Text(stringResource(R.string.save))
+            }
+        },
+        dismissButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.cancel)) } },
+    )
 }
 
 @Composable

@@ -40,7 +40,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `MainActivity.kt` | Ein-Activity-App; Navigation per Zustand (`profileRoomId`, `historyRoomId`, `propertiesRoomId`) + `BackHandler`; startet das 5-min-Polling nur im Zustand `STARTED` |
 | `SupportLinks.kt` | Freiwillige Unterstützen-Links (wie in PureRemote) |
 | **hmip/** | |
-| `HmipClient.kt` | Cloud-API: Lookup, Client-Registrierung (blauer Knopf), `getCurrentState`, `getProfile`, `updateProfile`, `setActiveProfile` |
+| `HmipClient.kt` | Cloud-API: Lookup, Client-Registrierung (blauer Knopf), `getCurrentState`, `getProfile`, `updateProfile` (auch Umbenennen: `name` im Profil), `setActiveProfile` |
 | `ErrorMessages.kt` | Exceptions → deutsche Fehlermeldungen (`toUserMessage()`), HTTP-Fehlerhinweise |
 | `HeatingState.kt` | `HeatingStateParser`: Roh-JSON → `HeatingState` (Räume, Heizkreise, Profil-Referenzen, Außentemperatur) |
 | `HeatingProfile.kt` | `HeatingProfileCodec` (Profil-JSON lesen/schreiben, unbekannte Felder bleiben erhalten), `ProfileEditing` (reine Bearbeitungslogik) |
@@ -52,6 +52,8 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
 | `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 2): `room_sample`, `circuit_sample`, `weather_sample` |
 | `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Phasen „Ventil offen/zu“ (mit Totzeit-Tiefpunkt und Ende des freien Aufheizens) |
+| `history/BathingDetection.kt` | Reine Heuristik: Duschen/Baden aus schnellem Luftfeuchte-Anstieg; Ausklammern fürs Modell |
+| `RoomOrder.kt` | Reine Logik: Reihenfolge der Raumkarten (Thermostate hinter ihrem Raum, gespeicherte Reihenfolge) |
 | `history/WindowDetection.kt` | Reine Heuristik: Fenster offen aus Temperatursturz/-anstieg (+ Luftfeuchte) bei geschlossenem Ventil; Ausklammern dieser Zeiten fürs Modell |
 | `model/RoomModel.kt` | Reines Wärmemodell je Raum (k, P, Totzeit), Anpassung aus Phasen, Vorhersage Aufheiz-/Abkühlzeit; `SetPointLevels` (Spar-/Komforttemperatur aus Sollwerten) |
 | `model/RoomSimulator.kt` | Reine Vorwärtssimulation eines Raums (Thermostat-Verhalten, Totzeit, Prognose) |

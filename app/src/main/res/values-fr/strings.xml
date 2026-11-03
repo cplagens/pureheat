@@ -282,6 +282,8 @@
         <item>poêle à bois</item>
         <item>chambre</item>
         <item>fenêtre entrouverte la nuit</item>
+        <item>douche</item>
+        <item>baignoire</item>
     </string-array>
     <string name="props_source_ai">Reconnu par l’IA sur l’appareil (Gemini Nano) – le texte ne quitte pas le téléphone. Veuillez vérifier.</string>
     <string name="props_source_keywords">Reconnu par mots-clés (allemand et anglais uniquement) – cet appareil n’a pas d’IA intégrée. Veuillez vérifier et compléter ci-dessous.</string>
@@ -343,4 +345,29 @@
     <string name="section_valves">Ouverture des vannes</string>
     <string name="section_probe">Essai</string>
     <string name="section_phases">Phases</string>
+
+    <string name="profile_rename">Renommer</string>
+    <string name="profile_rename_q">Renommer le programme</string>
+    <string name="profile_name">Nom</string>
+    <string name="profile_rename_note">Le nouveau nom est enregistré dans le cloud Homematic IP et apparaît aussi dans l’app officielle.</string>
+    <string name="profile_renamed">Renommé en « %s ».</string>
+    <string name="err_profile_name_not_stored">Le cloud n’a pas enregistré le nouveau nom (le renommage n’est pas documenté officiellement). L’ancien nom est conservé.</string>
+    <string name="prop_shower">Douche</string>
+    <string name="prop_bathtub">Baignoire</string>
+    <string name="marker_bathing">Douche/bain %s</string>
+    <string name="bathing_title">Douche/bain (détecté)</string>
+    <string name="bathing_none">Rien détecté sur cette période. Est détectée une hausse rapide de l’humidité sans baisse de température.</string>
+    <string name="bathing_explanation">Détecté à la hausse rapide de l’humidité. Le modèle de la pièce exclut ces périodes : c’est l’eau chaude qui chauffe la pièce, pas le plancher chauffant.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% HR</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Ordre</string>
+    <string name="room_order_title">Ordre des pièces</string>
+    <string name="room_order_reset">Par défaut</string>
+    <string name="move_up">Monter</string>
+    <string name="move_down">Descendre</string>
+    <string name="help_bathing_title">Douche et bain</string>
+    <string name="help_bathing_text">Dans les pièces décrites comme salle de bain ou avec douche ou baignoire, l’app reconnaît la douche et le bain à une hausse rapide de l’humidité (au moins 5 points en quelques minutes) sans baisse de température. Ces moments sont marqués dans les graphiques et listés dans la vue de la pièce. Le modèle les exclut, car c’est l’eau chaude qui chauffe la pièce, pas le plancher chauffant. Par défaut, les thermostats dont le nom contient celui d’une pièce (p. ex. un sèche-serviettes) apparaissent juste après cette pièce ; « Ordre » dans la vue d’ensemble permet d’organiser les pièces vous-même.</string>
+    <string name="help_oss_title">Open source</string>
+    <string name="help_oss_text">PureHeat est open source sous licence Apache 2.0. Le code source, les notes de version et la manière de contribuer sont sur GitHub ; les rapports de bugs et les idées y sont les bienvenus.</string>
+    <string name="about_license">Open source · Licence Apache 2.0 · © 2026 Christian Plagens</string>
 </resources>

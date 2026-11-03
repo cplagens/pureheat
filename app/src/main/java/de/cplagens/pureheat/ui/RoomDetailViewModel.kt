@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import android.app.Application
@@ -8,6 +13,8 @@ import androidx.lifecycle.viewModelScope
 import de.cplagens.pureheat.PureHeatApp
 import de.cplagens.pureheat.data.DetailSection
 import de.cplagens.pureheat.data.history.CircuitSample
+import de.cplagens.pureheat.data.history.BathingDetector
+import de.cplagens.pureheat.data.history.BathingEvent
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.ThermalPhase
@@ -48,6 +55,8 @@ data class RoomDetailState(
     val phases: List<ThermalPhase> = emptyList(),
     /** Detected open-window times in the range. */
     val windows: List<WindowEvent> = emptyList(),
+    /** Detected showering/bathing (only for rooms described as bathroom or with shower/bathtub). */
+    val bathing: List<BathingEvent> = emptyList(),
 )
 
 /** All recorded data of one room for the selected time range (read-only). */
@@ -63,9 +72,11 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
             repository.roomHistorySince(start),
             repository.circuitHistorySince(start),
             repository.weatherHistorySince(start),
-        ) { rooms, circuits, weather ->
+            repository.descriptions.all,
+        ) { rooms, circuits, weather, descriptions ->
             val samples = rooms.filter { it.roomId == roomId }
             val windows = WindowDetector.detect(samples)
+            val allBathing = BathingDetector.detect(samples)
             RoomDetailState(
                 range = r,
                 start = start,
@@ -73,9 +84,13 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
                 samples = samples,
                 circuits = circuits.groupBy { it.deviceId to it.channelIndex },
                 weather = weather,
-                // Same as the model: open-window times are not regular heat loss.
-                phases = HistoryAnalysis.phases(WindowDetector.withoutWindowTimes(samples, windows), weather),
+                // Same as the model: open-window and hot-water times are not the floor heating's doing.
+                phases = HistoryAnalysis.phases(
+                    BathingDetector.withoutBathingTimes(WindowDetector.withoutWindowTimes(samples, windows), allBathing),
+                    weather,
+                ),
                 windows = windows,
+                bathing = if (descriptions[roomId]?.properties?.hasBathing == true) allBathing else emptyList(),
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), RoomDetailState())

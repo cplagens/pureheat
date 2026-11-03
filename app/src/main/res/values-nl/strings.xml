@@ -279,6 +279,8 @@
         <item>houtkachel</item>
         <item>slaapkamer</item>
         <item>’s nachts raam op een kier</item>
+        <item>douche</item>
+        <item>bad</item>
     </string-array>
     <string name="props_source_ai">Herkend met AI op het apparaat (Gemini Nano) – de tekst verlaat de telefoon niet. Controleer het.</string>
     <string name="props_source_keywords">Herkend via trefwoorden (alleen Duits en Engels) – dit apparaat heeft geen AI op het apparaat. Controleer en vul hieronder aan.</string>
@@ -340,4 +342,29 @@
     <string name="section_valves">Klepopening</string>
     <string name="section_probe">Proefrun</string>
     <string name="section_phases">Fasen</string>
+
+    <string name="profile_rename">Hernoemen</string>
+    <string name="profile_rename_q">Profiel hernoemen</string>
+    <string name="profile_name">Naam</string>
+    <string name="profile_rename_note">De nieuwe naam wordt in de Homematic IP-cloud opgeslagen en verschijnt ook in de officiële app.</string>
+    <string name="profile_renamed">Hernoemd naar ‘%s’.</string>
+    <string name="err_profile_name_not_stored">De cloud heeft de nieuwe naam niet opgeslagen (hernoemen is niet officieel gedocumenteerd). De oude naam blijft.</string>
+    <string name="prop_shower">Douche</string>
+    <string name="prop_bathtub">Bad (kuip)</string>
+    <string name="marker_bathing">Douchen/baden %s</string>
+    <string name="bathing_title">Douchen/baden (gedetecteerd)</string>
+    <string name="bathing_none">Niets gedetecteerd in deze periode. Gedetecteerd wordt een snelle stijging van de luchtvochtigheid terwijl de temperatuur niet daalt.</string>
+    <string name="bathing_explanation">Gedetecteerd aan een snelle stijging van de luchtvochtigheid. Het kamermodel laat deze tijden weg: het warme water verwarmt de kamer, niet de vloerverwarming.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% RV</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Volgorde</string>
+    <string name="room_order_title">Volgorde van de kamers</string>
+    <string name="room_order_reset">Standaard</string>
+    <string name="move_up">Omhoog</string>
+    <string name="move_down">Omlaag</string>
+    <string name="help_bathing_title">Douchen en baden</string>
+    <string name="help_bathing_text">In kamers die als badkamer of met douche of bad zijn beschreven, herkent de app douchen en baden aan een snelle stijging van de luchtvochtigheid (minstens 5 procentpunten binnen enkele minuten) terwijl de temperatuur niet daalt. Die momenten worden in de grafieken gemarkeerd en in de kamerweergave opgesomd. Het model laat ze weg, omdat het warme water de kamer verwarmt, niet de vloerverwarming. Standaard staan thermostaten waarvan de naam de naam van een kamer bevat (bijv. een handdoekradiator) direct na die kamer; met ‘Volgorde’ in het overzicht kun je de kamers zelf ordenen.</string>
+    <string name="help_oss_title">Open source</string>
+    <string name="help_oss_text">PureHeat is open source onder de Apache-licentie 2.0. Broncode, release notes en hoe je kunt bijdragen staan op GitHub; bugmeldingen en ideeën zijn daar welkom.</string>
+    <string name="about_license">Open source · Apache-licentie 2.0 · © 2026 Christian Plagens</string>
 </resources>

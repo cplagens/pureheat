@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +24,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.platform.LocalUriHandler
 import de.cplagens.pureheat.R
+import de.cplagens.pureheat.SupportLinks
 
 @androidx.compose.ui.tooling.preview.Preview(name = "de", locale = "de", widthDp = 360, heightDp = 900)
 @androidx.compose.ui.tooling.preview.Preview(name = "en", locale = "en", widthDp = 360, heightDp = 900)
@@ -40,6 +47,7 @@ fun HelpScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
         R.string.help_model_title to R.string.help_model_text,
         R.string.help_probe_title to R.string.help_probe_text,
         R.string.help_props_title to R.string.help_props_text,
+        R.string.help_bathing_title to R.string.help_bathing_text,
         R.string.help_profiles_title to R.string.help_profiles_text,
         R.string.help_battery_title to R.string.help_battery_text,
         R.string.help_language_title to R.string.help_language_text,
@@ -63,6 +71,19 @@ fun HelpScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
                 Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
                     Text(stringResource(title), style = MaterialTheme.typography.titleMedium)
                     Text(stringResource(text), style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+        // Open source: link to the repository (issues, contributions, licence).
+        item {
+            val uri = LocalUriHandler.current
+            Card(Modifier.fillMaxWidth()) {
+                Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+                    Text(stringResource(R.string.help_oss_title), style = MaterialTheme.typography.titleMedium)
+                    Text(stringResource(R.string.help_oss_text), style = MaterialTheme.typography.bodyMedium)
+                    TextButton(onClick = { uri.openUri(SupportLinks.SOURCE_CODE) }, contentPadding = PaddingValues(0.dp)) {
+                        Text(stringResource(R.string.source_code))
+                    }
                 }
             }
         }

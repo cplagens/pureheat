@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import androidx.compose.foundation.Canvas
@@ -12,6 +17,7 @@ import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WindowEvent
+import de.cplagens.pureheat.data.history.BathingEvent
 import android.content.Context
 import de.cplagens.pureheat.R
 import kotlin.math.abs
@@ -23,7 +29,7 @@ data class ChartMarker(val time: Long, val label: String)
 private const val QUARTER_MS = 15 * 60_000L
 
 /**
- * Window opened/closed and setpoint changes, with the time rounded to 15 min (the samples are
+ * Window opened/closed, showering/bathing and setpoint changes, with the time rounded to 15 min (the samples are
  * up to an hour apart, so the exact minute would suggest more precision than we have).
  */
 fun chartMarkers(
@@ -32,8 +38,12 @@ fun chartMarkers(
     windows: List<WindowEvent>,
     start: Long,
     end: Long,
+    bathing: List<BathingEvent> = emptyList(),
 ): List<ChartMarker> {
     val out = mutableListOf<ChartMarker>()
+    bathing.filter { it.start in start..end }.forEach { b ->
+        out += ChartMarker(b.start, ctx.getString(R.string.marker_bathing, clock(ctx, b.start)))
+    }
     windows.forEach { w ->
         if (w.start in start..end) out += ChartMarker(w.start, ctx.getString(R.string.marker_window_open, clock(ctx, w.start)))
         // Only claim "closed" when we saw it; otherwise we just know it was open at least until then.

@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.data.room
 
 import de.cplagens.pureheat.data.probe.ProbeRun
@@ -78,6 +83,18 @@ class RoomPropertiesTest {
         assertEquals(Glazing.DOUBLE, p.glazing)
         assertNull("unknown enum ignored", p.floorCovering)
         assertEquals(listOf(HeatSource.STOVE), p.heatSources)
+    }
+
+    @Test
+    fun showerAndBathtub() {
+        val de = KeywordExtractor.extract("Bad mit Dusche und Badewanne, 8 qm")
+        assertEquals(true, de.shower)
+        assertEquals(true, de.bathtub)
+        assertTrue(de.hasBathing)
+        val en = KeywordExtractor.extract("Guest WC with a shower")
+        assertEquals(true, en.shower)
+        assertNull(en.bathtub)
+        assertTrue(!KeywordExtractor.extract("Bedroom, 14 m2").hasBathing)
     }
 
     @Test

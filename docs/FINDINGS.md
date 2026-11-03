@@ -92,6 +92,14 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   Soll), sonst wird sie durch das „Temperatur halten“ unterschätzt.
 - „Spar → Komfort“ aus den Sollwerten (z. B. 15 → 24 °C) ist unrealistisch, weil die Räume nachts
   nur auf ~21 °C absinken – besser von der typischen Morgentemperatur aus rechnen (siehe NEXT_STEPS).
+- **Duschen/Baden in den Daten (2026-11-03):** Luftfeuchte-Sprünge zwischen zwei Messpunkten,
+  z. B. +15 %rH in 5 min bei +0,3 K (Bad, abends), +5 %rH in 15 min bei +0,3 K, morgens/abends
+  +4–5 %rH in weiteren Räumen. Danach fällt die Feuchte über ~1–2 h zurück. Daraus die Schwellen
+  von `BathingDetector` (≥ 5 %rH bei ≥ 10 %rH/h, Temperatur fällt nicht). Kochen sieht ähnlich aus
+  → Anzeige nur in Räumen mit Bad/Dusche/Wanne, aus dem Modell werden alle ausgeklammert.
+- **Profilname:** `getProfile` liefert keinen Namen; er steht nur im Zustand
+  (`groups[].profiles[].name`). Umbenennen probeweise über `updateProfile` mit `name` im
+  Profilobjekt, geprüft per neuem `getCurrentState` – am echten System noch nicht ausprobiert.
 - **Erste Probelauf-Auswertung (2026-11-03, 7 Vorhersagen, alle mit Startwerten):** 5 „zählt
   nicht“ (Fenster offen bzw. manuelle Änderung – erwartbar in den Zimmern mit Nachtlüftung),
   2 „früher“: beide als „nicht erreichbar“ vorhergesagt, aber erreicht (Ziel 25 bzw. 23 °C in

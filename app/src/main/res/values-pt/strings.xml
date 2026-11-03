@@ -282,6 +282,8 @@
         <item>salamandra</item>
         <item>quarto</item>
         <item>janela entreaberta à noite</item>
+        <item>duche</item>
+        <item>banheira</item>
     </string-array>
     <string name="props_source_ai">Reconhecido com IA no dispositivo (Gemini Nano) – o texto não sai do telemóvel. Verifique.</string>
     <string name="props_source_keywords">Reconhecido por palavras-chave (só alemão e inglês) – este dispositivo não tem IA integrada. Verifique e complete abaixo.</string>
@@ -343,4 +345,29 @@
     <string name="section_valves">Abertura das válvulas</string>
     <string name="section_probe">Teste</string>
     <string name="section_phases">Fases</string>
+
+    <string name="profile_rename">Mudar o nome</string>
+    <string name="profile_rename_q">Mudar o nome do perfil</string>
+    <string name="profile_name">Nome</string>
+    <string name="profile_rename_note">O novo nome é guardado na nuvem Homematic IP e também aparece na app oficial.</string>
+    <string name="profile_renamed">Nome alterado para «%s».</string>
+    <string name="err_profile_name_not_stored">A nuvem não guardou o novo nome (mudar o nome não está documentado oficialmente). Mantém-se o nome anterior.</string>
+    <string name="prop_shower">Duche</string>
+    <string name="prop_bathtub">Banheira</string>
+    <string name="marker_bathing">Duche/banho %s</string>
+    <string name="bathing_title">Duche/banho (detetado)</string>
+    <string name="bathing_none">Nada detetado neste período. É detetada uma subida rápida da humidade sem descida da temperatura.</string>
+    <string name="bathing_explanation">Detetado pela subida rápida da humidade. O modelo da divisão exclui estes períodos: é a água quente que aquece a divisão, não o piso radiante.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% HR</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Ordem</string>
+    <string name="room_order_title">Ordem das divisões</string>
+    <string name="room_order_reset">Predefinida</string>
+    <string name="move_up">Mover para cima</string>
+    <string name="move_down">Mover para baixo</string>
+    <string name="help_bathing_title">Duche e banho</string>
+    <string name="help_bathing_text">Nas divisões descritas como casa de banho ou com duche ou banheira, a app reconhece o duche e o banho por uma subida rápida da humidade (pelo menos 5 pontos em poucos minutos) sem descida da temperatura. Esses momentos são marcados nos gráficos e listados na vista da divisão. O modelo exclui-os, porque é a água quente que aquece a divisão, não o piso radiante. Por predefinição, os termostatos cujo nome contém o de uma divisão (p. ex. um toalheiro) aparecem logo a seguir a essa divisão; com «Ordem» na vista geral pode ordenar as divisões como quiser.</string>
+    <string name="help_oss_title">Código aberto</string>
+    <string name="help_oss_text">O PureHeat é código aberto sob a licença Apache 2.0. O código-fonte, as notas de versão e como contribuir estão no GitHub; relatórios de erros e ideias são bem-vindos.</string>
+    <string name="about_license">Código aberto · Licença Apache 2.0 · © 2026 Christian Plagens</string>
 </resources>

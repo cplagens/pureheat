@@ -295,6 +295,8 @@
         <item>Kaminofen</item>
         <item>Schlafzimmer</item>
         <item>nachts Fenster gekippt</item>
+        <item>Dusche</item>
+        <item>Badewanne</item>
     </string-array>
     <string name="props_source_ai">Erkannt mit KI auf dem Gerät (Gemini Nano) – der Text verlässt das Telefon nicht. Bitte prüfen.</string>
     <string name="props_source_keywords">Erkannt per Stichwörtern (nur Deutsch und Englisch) – dieses Gerät hat keine KI auf dem Gerät. Bitte unten prüfen und ergänzen.</string>
@@ -356,4 +358,29 @@
     <string name="section_valves">Ventilöffnung</string>
     <string name="section_probe">Probelauf</string>
     <string name="section_phases">Phasen</string>
+
+    <string name="profile_rename">Umbenennen</string>
+    <string name="profile_rename_q">Profil umbenennen</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_rename_note">Der neue Name wird in der Homematic IP Cloud gespeichert und erscheint auch in der offiziellen App.</string>
+    <string name="profile_renamed">Umbenannt in „%s“.</string>
+    <string name="err_profile_name_not_stored">Die Cloud hat den neuen Namen nicht übernommen (Umbenennen ist nicht offiziell dokumentiert). Der alte Name bleibt.</string>
+    <string name="prop_shower">Dusche</string>
+    <string name="prop_bathtub">Badewanne</string>
+    <string name="marker_bathing">Duschen/Baden %s</string>
+    <string name="bathing_title">Duschen/Baden (erkannt)</string>
+    <string name="bathing_none">In diesem Zeitraum nichts erkannt. Erkannt wird ein schneller Anstieg der Luftfeuchte, während die Temperatur nicht fällt.</string>
+    <string name="bathing_explanation">Erkannt am schnellen Anstieg der Luftfeuchte. Das Raummodell klammert diese Zeiten aus: Das warme Wasser heizt den Raum, nicht die Fußbodenheizung.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% rF</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Reihenfolge</string>
+    <string name="room_order_title">Reihenfolge der Räume</string>
+    <string name="room_order_reset">Standard</string>
+    <string name="move_up">Nach oben</string>
+    <string name="move_down">Nach unten</string>
+    <string name="help_bathing_title">Duschen und Baden</string>
+    <string name="help_bathing_text">In Räumen, die als Bad oder mit Dusche bzw. Badewanne beschrieben sind, erkennt die App Duschen und Baden an einem schnellen Anstieg der Luftfeuchte (mindestens 5 Prozentpunkte innerhalb von Minuten), während die Temperatur nicht fällt. Die Zeiten werden in den Diagrammen markiert und in der Raumansicht aufgelistet. Das Raummodell klammert sie aus, weil das warme Wasser den Raum heizt, nicht die Fußbodenheizung. Thermostate, deren Name den Namen eines Raums enthält (z. B. ein Handtuchheizkörper), stehen standardmäßig direkt hinter diesem Raum; über „Reihenfolge“ in der Übersicht kannst du die Räume selbst anordnen.</string>
+    <string name="help_oss_title">Open Source</string>
+    <string name="help_oss_text">PureHeat ist Open Source unter der Apache-Lizenz 2.0. Quellcode, Release Notes und wie man mitmachen kann, stehen auf GitHub; Fehlermeldungen und Ideen sind dort willkommen.</string>
+    <string name="about_license">Open Source · Apache-Lizenz 2.0 · © 2026 Christian Plagens</string>
 </resources>

@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import android.content.Context
@@ -163,6 +168,8 @@ fun RoomPropertiesScreen(
                     }
                     SingleChoice(R.string.prop_usage, Usage.entries, p.usage, { usageLabel(it) }) { vm.setProperties(p.copy(usage = it)) }
                     YesNo(R.string.prop_night_vent, p.ventilatesAtNight) { vm.setProperties(p.copy(ventilatesAtNight = it)) }
+                    YesNo(R.string.prop_shower, p.shower) { vm.setProperties(p.copy(shower = it)) }
+                    YesNo(R.string.prop_bathtub, p.bathtub) { vm.setProperties(p.copy(bathtub = it)) }
                 }
             }
         }
@@ -207,6 +214,8 @@ fun propertiesSummary(ctx: Context, p: RoomProperties): String = buildList {
     p.heatSources.forEach { add(ctx.heatSourceLabel(it)) }
     p.usage?.let { add(ctx.usageLabel(it)) }
     if (p.ventilatesAtNight == true) add(ctx.getString(R.string.prop_night_vent))
+    if (p.shower == true) add(ctx.getString(R.string.prop_shower))
+    if (p.bathtub == true) add(ctx.getString(R.string.prop_bathtub))
 }.joinToString(" · ")
 
 private fun formatNumber(v: Double) = if (v % 1.0 == 0.0) v.toInt().toString() else java.text.NumberFormat.getInstance().format(v)

@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import android.app.Application
@@ -128,6 +133,22 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
         }
     }
 
+    /** Renames [ref] in the cloud (after the user confirmed in the dialog). */
+    fun rename(ref: ProfileRef, name: String, onDone: () -> Unit) {
+        val clean = name.trim().take(MAX_NAME_LENGTH)
+        if (clean.isEmpty() || clean == ref.name) return
+        _ui.update { it.copy(saving = true, error = null, message = null) }
+        viewModelScope.launch {
+            try {
+                repository.renameProfile(roomId, ref.index, ref.profileId, clean)
+                _ui.update { it.copy(saving = false, message = UiText.Res(R.string.profile_renamed, clean)) }
+                onDone()
+            } catch (e: Exception) {
+                _ui.update { it.copy(saving = false, error = e.toUiText()) }
+            }
+        }
+    }
+
     /** Restores the version from before the last save. */
     fun undo(onDone: () -> Unit) {
         val ref = _ui.value.selected ?: return
@@ -147,4 +168,9 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
 
     private fun edit(change: (HeatingProfile) -> HeatingProfile) =
         _ui.update { s -> s.edited?.let { s.copy(edited = change(it), message = null) } ?: s }
+
+    companion object {
+        /** The official app allows short names; keep them readable as chips. */
+        const val MAX_NAME_LENGTH = 30
+    }
 }

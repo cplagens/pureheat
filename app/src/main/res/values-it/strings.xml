@@ -282,6 +282,8 @@
         <item>stufa a legna</item>
         <item>camera da letto</item>
         <item>finestra a ribalta di notte</item>
+        <item>doccia</item>
+        <item>vasca da bagno</item>
     </string-array>
     <string name="props_source_ai">Riconosciuto con l’IA sul dispositivo (Gemini Nano) – il testo non lascia il telefono. Controlla.</string>
     <string name="props_source_keywords">Riconosciuto tramite parole chiave (solo tedesco e inglese) – questo dispositivo non ha un’IA integrata. Controlla e completa qui sotto.</string>
@@ -343,4 +345,29 @@
     <string name="section_valves">Apertura valvole</string>
     <string name="section_probe">Prova</string>
     <string name="section_phases">Fasi</string>
+
+    <string name="profile_rename">Rinomina</string>
+    <string name="profile_rename_q">Rinomina profilo</string>
+    <string name="profile_name">Nome</string>
+    <string name="profile_rename_note">Il nuovo nome viene salvato nel cloud Homematic IP e compare anche nell’app ufficiale.</string>
+    <string name="profile_renamed">Rinominato in «%s».</string>
+    <string name="err_profile_name_not_stored">Il cloud non ha salvato il nuovo nome (la rinomina non è documentata ufficialmente). Resta il nome precedente.</string>
+    <string name="prop_shower">Doccia</string>
+    <string name="prop_bathtub">Vasca da bagno</string>
+    <string name="marker_bathing">Doccia/bagno %s</string>
+    <string name="bathing_title">Doccia/bagno (rilevato)</string>
+    <string name="bathing_none">Nulla rilevato in questo periodo. Viene rilevato un rapido aumento dell’umidità mentre la temperatura non scende.</string>
+    <string name="bathing_explanation">Rilevato dal rapido aumento dell’umidità. Il modello della stanza esclude questi periodi: è l’acqua calda a scaldare la stanza, non il pavimento.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% UR</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Ordine</string>
+    <string name="room_order_title">Ordine delle stanze</string>
+    <string name="room_order_reset">Predefinito</string>
+    <string name="move_up">Sposta su</string>
+    <string name="move_down">Sposta giù</string>
+    <string name="help_bathing_title">Doccia e bagno</string>
+    <string name="help_bathing_text">Nelle stanze descritte come bagno o con doccia o vasca, l’app riconosce doccia e bagno da un rapido aumento dell’umidità (almeno 5 punti in pochi minuti) mentre la temperatura non scende. Questi momenti sono segnati nei grafici ed elencati nella vista della stanza. Il modello li esclude, perché è l’acqua calda a scaldare la stanza, non il pavimento. Per impostazione predefinita i termostati il cui nome contiene quello di una stanza (ad es. uno scaldasalviette) compaiono subito dopo quella stanza; con «Ordine» nella panoramica puoi disporre le stanze come preferisci.</string>
+    <string name="help_oss_title">Open source</string>
+    <string name="help_oss_text">PureHeat è open source con licenza Apache 2.0. Codice sorgente, note di rilascio e come contribuire sono su GitHub; segnalazioni di bug e idee sono benvenute.</string>
+    <string name="about_license">Open source · Licenza Apache 2.0 · © 2026 Christian Plagens</string>
 </resources>

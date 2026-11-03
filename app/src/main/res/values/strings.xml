@@ -203,6 +203,8 @@
         <item>wood stove</item>
         <item>bedroom</item>
         <item>window tilted at night</item>
+        <item>shower</item>
+        <item>bathtub</item>
     </string-array>
     <string name="props_source_ai">Recognised with on-device AI (Gemini Nano) – the text doesn\'t leave the phone. Please check.</string>
     <string name="props_source_keywords">Recognised by keywords (English and German only) – this device has no on-device AI. Please check and complete below.</string>
@@ -364,4 +366,30 @@
     <string name="section_valves">Valve opening</string>
     <string name="section_probe">Probe run</string>
     <string name="section_phases">Phases</string>
+
+    <!-- Rename profile, shower/bath, room order, open source -->
+    <string name="profile_rename">Rename</string>
+    <string name="profile_rename_q">Rename profile</string>
+    <string name="profile_name">Name</string>
+    <string name="profile_rename_note">The new name is saved in the Homematic IP cloud and also shows up in the official app.</string>
+    <string name="profile_renamed">Renamed to “%s”.</string>
+    <string name="err_profile_name_not_stored">The cloud did not store the new name (renaming is not officially documented). The old name stays.</string>
+    <string name="prop_shower">Shower</string>
+    <string name="prop_bathtub">Bathtub</string>
+    <string name="marker_bathing">Shower/bath %s</string>
+    <string name="bathing_title">Showering/bathing (detected)</string>
+    <string name="bathing_none">Nothing detected in this period. Detected is a quick rise in humidity while the temperature doesn\'t fall.</string>
+    <string name="bathing_explanation">Detected from a quick rise in humidity. The room model leaves these times out: the hot water heats the room, not the floor heating.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% RH</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Order</string>
+    <string name="room_order_title">Order of the rooms</string>
+    <string name="room_order_reset">Default</string>
+    <string name="move_up">Move up</string>
+    <string name="move_down">Move down</string>
+    <string name="help_bathing_title">Showering and bathing</string>
+    <string name="help_bathing_text">For rooms described as bathroom or with a shower or bathtub, the app recognises showering and bathing from a quick rise in humidity (at least 5 percentage points within minutes) while the temperature doesn\'t fall. The times are marked in the charts and listed in the room view. The room model leaves them out, because the hot water heats the room, not the floor heating. By default, thermostats whose name contains a room\'s name (e.g. a towel radiator) appear right after that room; “Order” on the overview lets you arrange the rooms yourself.</string>
+    <string name="help_oss_title">Open source</string>
+    <string name="help_oss_text">PureHeat is open source under the Apache License 2.0. The source code, release notes and how to contribute are on GitHub; bug reports and ideas are welcome there.</string>
+    <string name="about_license">Open source · Apache License 2.0 · © 2026 Christian Plagens</string>
 </resources>

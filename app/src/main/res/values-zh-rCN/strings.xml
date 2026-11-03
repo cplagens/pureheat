@@ -276,6 +276,8 @@
         <item>柴火炉</item>
         <item>卧室</item>
         <item>夜间开窗通风</item>
+        <item>淋浴</item>
+        <item>浴缸</item>
     </string-array>
     <string name="props_source_ai">已用设备端 AI（Gemini Nano）识别 – 文本不会离开手机。请检查。</string>
     <string name="props_source_keywords">已按关键词识别（仅限德语和英语） – 此设备没有设备端 AI。请在下方检查并补充。</string>
@@ -337,4 +339,29 @@
     <string name="section_valves">阀门开度</string>
     <string name="section_probe">试运行</string>
     <string name="section_phases">阶段</string>
+
+    <string name="profile_rename">重命名</string>
+    <string name="profile_rename_q">重命名计划</string>
+    <string name="profile_name">名称</string>
+    <string name="profile_rename_note">新名称保存在 Homematic IP 云中，也会显示在官方应用里。</string>
+    <string name="profile_renamed">已重命名为“%s”。</string>
+    <string name="err_profile_name_not_stored">云端未保存新名称（重命名没有官方文档）。保留原名称。</string>
+    <string name="prop_shower">淋浴</string>
+    <string name="prop_bathtub">浴缸</string>
+    <string name="marker_bathing">淋浴/泡澡 %s</string>
+    <string name="bathing_title">淋浴/泡澡（检测）</string>
+    <string name="bathing_none">此时间段内未检测到。检测依据是温度不下降时湿度快速上升。</string>
+    <string name="bathing_explanation">根据湿度快速上升检测。房间模型会排除这些时段：加热房间的是热水，而不是地暖。</string>
+    <string name="bathing_event">%1$s–%2$s · 湿度 %3$d → %4$d %%</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">顺序</string>
+    <string name="room_order_title">房间顺序</string>
+    <string name="room_order_reset">默认</string>
+    <string name="move_up">上移</string>
+    <string name="move_down">下移</string>
+    <string name="help_bathing_title">淋浴和泡澡</string>
+    <string name="help_bathing_text">在描述为浴室或带有淋浴、浴缸的房间中，应用会根据湿度快速上升（几分钟内至少 5 个百分点）且温度不下降来识别淋浴和泡澡。这些时间会在图表中标出，并在房间视图中列出。模型会排除它们，因为加热房间的是热水，而不是地暖。默认情况下，名称中包含某房间名称的温控器（例如毛巾架）会紧跟在该房间之后显示；在概览中点按“顺序”可自行排列房间。</string>
+    <string name="help_oss_title">开源</string>
+    <string name="help_oss_text">PureHeat 是基于 Apache License 2.0 的开源项目。源代码、发布说明和参与方式都在 GitHub 上；欢迎在那里提交问题和想法。</string>
+    <string name="about_license">开源 · Apache License 2.0 · © 2026 Christian Plagens</string>
 </resources>

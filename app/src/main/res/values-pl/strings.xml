@@ -285,6 +285,8 @@
         <item>piec na drewno</item>
         <item>sypialnia</item>
         <item>w nocy uchylone okno</item>
+        <item>prysznic</item>
+        <item>wanna</item>
     </string-array>
     <string name="props_source_ai">Rozpoznano za pomocą AI na urządzeniu (Gemini Nano) – tekst nie opuszcza telefonu. Sprawdź.</string>
     <string name="props_source_keywords">Rozpoznano po słowach kluczowych (tylko niemiecki i angielski) – to urządzenie nie ma AI na urządzeniu. Sprawdź i uzupełnij poniżej.</string>
@@ -346,4 +348,29 @@
     <string name="section_valves">Otwarcie zaworów</string>
     <string name="section_probe">Próba</string>
     <string name="section_phases">Fazy</string>
+
+    <string name="profile_rename">Zmień nazwę</string>
+    <string name="profile_rename_q">Zmień nazwę profilu</string>
+    <string name="profile_name">Nazwa</string>
+    <string name="profile_rename_note">Nowa nazwa zostanie zapisana w chmurze Homematic IP i pojawi się także w oficjalnej aplikacji.</string>
+    <string name="profile_renamed">Zmieniono nazwę na „%s”.</string>
+    <string name="err_profile_name_not_stored">Chmura nie zapisała nowej nazwy (zmiana nazwy nie jest oficjalnie udokumentowana). Pozostaje stara nazwa.</string>
+    <string name="prop_shower">Prysznic</string>
+    <string name="prop_bathtub">Wanna</string>
+    <string name="marker_bathing">Prysznic/kąpiel %s</string>
+    <string name="bathing_title">Prysznic/kąpiel (wykryte)</string>
+    <string name="bathing_none">Nic nie wykryto w tym okresie. Wykrywany jest szybki wzrost wilgotności, gdy temperatura nie spada.</string>
+    <string name="bathing_explanation">Wykryte po szybkim wzroście wilgotności. Model pomieszczenia pomija te okresy: to ciepła woda ogrzewa pomieszczenie, nie podłogówka.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% RH</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Kolejność</string>
+    <string name="room_order_title">Kolejność pomieszczeń</string>
+    <string name="room_order_reset">Domyślna</string>
+    <string name="move_up">W górę</string>
+    <string name="move_down">W dół</string>
+    <string name="help_bathing_title">Prysznic i kąpiel</string>
+    <string name="help_bathing_text">W pomieszczeniach opisanych jako łazienka albo z prysznicem lub wanną aplikacja rozpoznaje prysznic i kąpiel po szybkim wzroście wilgotności (co najmniej 5 punktów procentowych w ciągu kilku minut), gdy temperatura nie spada. Te chwile są zaznaczane na wykresach i wypisywane w widoku pomieszczenia. Model je pomija, bo to ciepła woda ogrzewa pomieszczenie, nie podłogówka. Domyślnie termostaty, których nazwa zawiera nazwę pomieszczenia (np. grzejnik łazienkowy), są wyświetlane zaraz po tym pomieszczeniu; przyciskiem „Kolejność” w przeglądzie możesz sam ułożyć pomieszczenia.</string>
+    <string name="help_oss_title">Open source</string>
+    <string name="help_oss_text">PureHeat jest oprogramowaniem open source na licencji Apache 2.0. Kod źródłowy, informacje o wydaniach i sposób współpracy są na GitHub; zgłoszenia błędów i pomysły są tam mile widziane.</string>
+    <string name="about_license">Open source · Licencja Apache 2.0 · © 2026 Christian Plagens</string>
 </resources>

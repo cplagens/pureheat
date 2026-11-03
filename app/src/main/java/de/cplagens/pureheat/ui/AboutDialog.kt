@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import androidx.compose.foundation.Image
@@ -69,6 +74,7 @@ fun AboutDialog(onDismiss: () -> Unit) {
                 TextButton(onClick = { uri.openUri(SupportLinks.SOURCE_CODE) }, contentPadding = PaddingValues(0.dp)) {
                     Text(stringResource(R.string.source_code))
                 }
+                Text(stringResource(R.string.about_license), style = MaterialTheme.typography.bodySmall)
             }
         },
     )

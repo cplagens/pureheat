@@ -30,6 +30,7 @@ and tests; open findings are kept in `docs/REVIEW.md`. Use it when the user asks
   Details of what was built/decided go into the matching section of `NEXT_STEPS.md`, measurements
   into `FINDINGS.md` (with date). The next session must be able to continue from STATUS.md alone.
 - Ask before pushing. Commit messages: short English summary.
+- User-visible changes: add a line under "Unveröffentlicht" in `ReleaseNotes.md`.
 
 ## Build & check (token-saving)
 - Gradle is slow in the IDE shell: run in the background and write to a log, then grep it:
@@ -66,6 +67,9 @@ Package `app/src/main/java/de/cplagens/pureheat/`:
 - AI: physics model first; AI only on-device or in simulation mode (predictions side by side,
   `prediction.strategy`), never writing to the heating on its own.
 - Do not use "Homematic" in the app name or icon (eQ-3 trademark).
+- Open source (Apache 2.0, author Christian Plagens): every new Kotlin file starts with the
+  licence header from `CONTRIBUTING.md`; `LICENSE.md`, `NOTICE`, `CONTRIBUTING.md`, `ReleaseNotes.md`
+  are linked from `README.md`.
 - All UI text lives in string resources: `values/strings.xml` (English, default) + 11 translations
   (de, fr, es, it, pt, nl, pl, tr, ru, ja, zh-rCN; German is the user's language, informal "du").
   No literal UI strings in Kotlin; ViewModels/data layer return `UiText`. New keys go into **all 12

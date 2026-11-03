@@ -170,6 +170,25 @@ Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zei
      Modell sie nutzen kann.
   4. Bei vielen Räumen gemeinsame Größen (Gebäude, Verglasung) einmal für alle eingeben.
 
+## Profile umbenennen, Duschen/Baden, Raum-Reihenfolge, Open Source (2026-11-03)
+
+- **Umbenennen:** „Umbenennen“ im Heizprofil-Bildschirm (Dialog = Bestätigung). Kein dokumentierter
+  Endpunkt; `HeatingRepository.renameProfile` schickt `updateProfile` mit unveränderten Tagen und
+  `name` im Profilobjekt, sichert vorher und prüft danach per `getCurrentState`. Wenn die Cloud den
+  Namen ignoriert: Fehlermeldung, nichts kaputt. Fallback-Idee: nur lokaler Anzeigename.
+- **Duschen/Baden:** `RoomProperties.shower/bathtub` (Stichwörter, Nano, Ja/Nein-Felder);
+  `data/history/BathingDetection.kt` (Feuchte ≥ 5 %rH bei ≥ 10 %rH/h, Temperatur fällt nicht,
+  Ende bei Rückkehr auf ≤ Ausgangswert + 3 oder nach 3 h). Anzeige (Marker „Duschen/Baden“,
+  Liste, Ansicht-Bereich) nur für Räume mit Bad/Dusche/Wanne (`hasBathing`); aus Modell und Phasen
+  werden alle Ereignisse ausgeklammert. Ideen: Duschzeiten als Komfortzeit-Vorschlag fürs Bad,
+  Badewanne vs. Dusche an Dauer/Temperaturanstieg unterscheiden.
+- **Reihenfolge:** `data/RoomOrder.kt` – Standard alphabetisch, Gruppen, deren Name einen anderen
+  Raumnamen als Wort enthält, direkt dahinter; eigene Reihenfolge per Dialog (↑/↓) in
+  `ViewSettings.roomOrder`, neue Räume ans Ende.
+- **Open Source:** Lizenzkopf (SPDX Apache-2.0, Christian Plagens) in allen Kotlin-Dateien,
+  `LICENSE` → `LICENSE.md`, `NOTICE`, `CONTRIBUTING.md`, `ReleaseNotes.md`, README verlinkt;
+  Hilfe-Abschnitt „Open Source“ mit Repo-Link, Lizenzzeile im Info-Dialog.
+
 ## Fenster-offen-Erkennung (2026-11-02)
 
 Nutzer-Info: In den Zimmern 1–3 sind nachts die Fenster offen. Es gibt keine Fensterkontakte.

@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.data.room
 
 import java.util.Locale
@@ -36,6 +41,8 @@ object KeywordExtractor {
             heatSources = heatSources(t),
             usage = usage(t),
             ventilatesAtNight = ventilatesAtNight(t),
+            bathtub = if (has(t, "badewanne", "wanne$E", "bathtub", "bath tub", "tub$E")) true else null,
+            shower = if (has(t, "dusche", "duschkabine", "duschen", "shower")) true else null,
         ).sanitized()
     }
 

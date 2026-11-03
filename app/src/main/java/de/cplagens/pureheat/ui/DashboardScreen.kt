@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import androidx.compose.foundation.clickable
@@ -11,6 +16,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
+import androidx.compose.material3.AlertDialog
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
+import de.cplagens.pureheat.data.RoomOrder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.LinearProgressIndicator
@@ -47,9 +57,16 @@ fun DashboardScreen(
     onOpenHistory: (roomId: String) -> Unit,
     onOpenHelp: () -> Unit,
     modifier: Modifier = Modifier,
+    roomOrder: List<String> = emptyList(),
+    onRoomOrderChange: (List<String>) -> Unit = {},
 ) {
     var showAbout by remember { mutableStateOf(false) }
+    var showOrder by remember { mutableStateOf(false) }
     if (showAbout) AboutDialog(onDismiss = { showAbout = false })
+    val rooms = RoomOrder.arrange(state.state?.rooms.orEmpty(), { it.id }, { it.label }, roomOrder)
+    if (showOrder) {
+        RoomOrderDialog(rooms, onChange = onRoomOrderChange, onReset = { onRoomOrderChange(emptyList()) }, onDismiss = { showOrder = false })
+    }
 
     LazyColumn(
         modifier = modifier,
@@ -81,13 +98,14 @@ fun DashboardScreen(
                 TextButton(onClick = onOpenHelp, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.help)) }
                 Spacer(Modifier.width(16.dp))
                 TextButton(onClick = { showAbout = true }, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.info)) }
+                Spacer(Modifier.width(16.dp))
+                TextButton(onClick = { showOrder = true }, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.room_order)) }
             }
             if (state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
             state.error?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
             BatteryHint(Modifier.padding(top = 8.dp))
         }
 
-        val rooms = state.state?.rooms.orEmpty()
         val unassigned = state.state?.unassignedCircuits.orEmpty()
         // The device name only helps to tell actuators apart; with a single one "Channel 4" is enough.
         val showDevice = (rooms.flatMap { it.circuits } + unassigned).map { it.deviceId }.distinct().size > 1
@@ -113,6 +131,39 @@ fun DashboardScreen(
             TextButton(onClick = onLogout) { Text(stringResource(R.string.logout)) }
         }
     }
+}
+
+/** Move rooms up/down; every move is saved right away. */
+@Composable
+private fun RoomOrderDialog(rooms: List<Room>, onChange: (List<String>) -> Unit, onReset: () -> Unit, onDismiss: () -> Unit) {
+    AlertDialog(
+        onDismissRequest = onDismiss,
+        title = { Text(stringResource(R.string.room_order_title)) },
+        text = {
+            LazyColumn {
+                itemsIndexed(rooms, key = { _, r -> r.id }) { i, room ->
+                    fun move(to: Int) = onChange(rooms.map { it.id }.toMutableList().apply { add(to, removeAt(i)) })
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        Text(room.label.trim(), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
+                        val up = stringResource(R.string.move_up)
+                        val down = stringResource(R.string.move_down)
+                        TextButton(
+                            onClick = { move(i - 1) },
+                            enabled = i > 0,
+                            modifier = Modifier.semantics { contentDescription = up },
+                        ) { Text("↑") }
+                        TextButton(
+                            onClick = { move(i + 1) },
+                            enabled = i < rooms.lastIndex,
+                            modifier = Modifier.semantics { contentDescription = down },
+                        ) { Text("↓") }
+                    }
+                }
+            }
+        },
+        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } },
+        dismissButton = { TextButton(onClick = onReset) { Text(stringResource(R.string.room_order_reset)) } },
+    )
 }
 
 @Composable
@@ -170,6 +221,7 @@ private fun RoomCard(
                 now,
                 Modifier.fillMaxWidth().clickable(onClick = onOpenHistory),
                 windows = history?.windows.orEmpty(),
+                bathing = history?.bathing.orEmpty(),
             )
             WindowTexts.dashboardLine(ctx, history?.windows.orEmpty())?.let {
                 Text(it, style = MaterialTheme.typography.bodySmall, color = muted)

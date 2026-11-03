@@ -276,6 +276,8 @@
         <item>薪ストーブ</item>
         <item>寝室</item>
         <item>夜は窓を少し開けている</item>
+        <item>シャワー</item>
+        <item>浴槽</item>
     </string-array>
     <string name="props_source_ai">端末上の AI（Gemini Nano）で認識しました – テキストはスマートフォンの外に出ません。確認してください。</string>
     <string name="props_source_keywords">キーワードで認識しました（ドイツ語と英語のみ） – この端末には端末上の AI がありません。下で確認して補ってください。</string>
@@ -337,4 +339,29 @@
     <string name="section_valves">バルブ開度</string>
     <string name="section_probe">試行</string>
     <string name="section_phases">フェーズ</string>
+
+    <string name="profile_rename">名前を変更</string>
+    <string name="profile_rename_q">プロファイル名を変更</string>
+    <string name="profile_name">名前</string>
+    <string name="profile_rename_note">新しい名前は Homematic IP クラウドに保存され、公式アプリにも表示されます。</string>
+    <string name="profile_renamed">「%s」に名前を変更しました。</string>
+    <string name="err_profile_name_not_stored">クラウドが新しい名前を保存しませんでした（名前の変更は公式に文書化されていません）。元の名前のままです。</string>
+    <string name="prop_shower">シャワー</string>
+    <string name="prop_bathtub">浴槽</string>
+    <string name="marker_bathing">シャワー／入浴 %s</string>
+    <string name="bathing_title">シャワー／入浴（検出）</string>
+    <string name="bathing_none">この期間には検出されませんでした。温度が下がらないまま湿度が急に上がったときに検出します。</string>
+    <string name="bathing_explanation">湿度の急上昇から検出。部屋モデルはこの時間を除外します（部屋を暖めているのは床暖房ではなくお湯です）。</string>
+    <string name="bathing_event">%1$s–%2$s · 湿度 %3$d → %4$d %%</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">並び順</string>
+    <string name="room_order_title">部屋の並び順</string>
+    <string name="room_order_reset">既定</string>
+    <string name="move_up">上へ</string>
+    <string name="move_down">下へ</string>
+    <string name="help_bathing_title">シャワーと入浴</string>
+    <string name="help_bathing_text">浴室として、またはシャワーや浴槽があると説明された部屋では、温度が下がらないまま湿度が急に上がる（数分で 5 ポイント以上）ことから、シャワーや入浴を認識します。その時間はグラフに表示され、部屋の画面に一覧表示されます。部屋を暖めているのは床暖房ではなくお湯なので、モデルはこの時間を除外します。名前に部屋名を含むサーモスタット（例: タオルウォーマー）は、既定でその部屋のすぐ後に表示されます。概要画面の「並び順」で部屋を自由に並べ替えられます。</string>
+    <string name="help_oss_title">オープンソース</string>
+    <string name="help_oss_text">PureHeat は Apache License 2.0 のオープンソースです。ソースコード、リリースノート、貢献方法は GitHub にあります。不具合の報告やアイデアを歓迎します。</string>
+    <string name="about_license">オープンソース · Apache License 2.0 · © 2026 Christian Plagens</string>
 </resources>

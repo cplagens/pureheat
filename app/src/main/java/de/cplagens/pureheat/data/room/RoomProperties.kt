@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.data.room
 
 import de.cplagens.pureheat.data.model.RoomModel
@@ -41,8 +46,13 @@ data class RoomProperties(
     val usage: Usage? = null,
     /** Window open or tilted at night. */
     val ventilatesAtNight: Boolean? = null,
+    val bathtub: Boolean? = null,
+    val shower: Boolean? = null,
 ) {
     val isEmpty: Boolean get() = this == RoomProperties()
+
+    /** Showering/bathing is shown for this room (detected from humidity, see BathingDetector). */
+    val hasBathing: Boolean get() = bathtub == true || shower == true || usage == Usage.BATH
 
     /** Fields set here win; the rest comes from [other] (AI result first, keywords as fallback). */
     fun mergedWith(other: RoomProperties) = RoomProperties(
@@ -59,6 +69,8 @@ data class RoomProperties(
         heatSources = heatSources.ifEmpty { other.heatSources },
         usage = usage ?: other.usage,
         ventilatesAtNight = ventilatesAtNight ?: other.ventilatesAtNight,
+        bathtub = bathtub ?: other.bathtub,
+        shower = shower ?: other.shower,
     )
 
     /** Drops implausible values (typos, misheard speech, model hallucinations). */
@@ -105,6 +117,8 @@ data class RoomProperties(
                 heatSources = enumList(HeatSource.entries.toTypedArray(), "heatSources"),
                 usage = enum(Usage.entries.toTypedArray(), o["usage"]),
                 ventilatesAtNight = bool("ventilatesAtNight"),
+                bathtub = bool("bathtub"),
+                shower = bool("shower"),
             ).sanitized()
         }
     }

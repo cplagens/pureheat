@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.data.room
 
 import android.util.Log
@@ -112,7 +117,9 @@ class RoomDescriber {
             "shutters": true if there are roller shutters or blinds,
             "heatSources": list of "TOWEL_RADIATOR", "STOVE" (fireplace, wood stove), "ELECTRONICS" (computers, TV), "COOKING",
             "usage": "LIVING", "BEDROOM", "CHILD", "KITCHEN", "BATH", "OFFICE" or "HALL",
-            "ventilatesAtNight": true if a window is open or tilted at night.
+            "ventilatesAtNight": true if a window is open or tilted at night,
+            "bathtub": true if there is a bathtub,
+            "shower": true if there is a shower.
             Description:
         """.trimIndent() + "\n"
     }

@@ -285,6 +285,8 @@
         <item>дровяная печь</item>
         <item>спальня</item>
         <item>ночью окно на проветривании</item>
+        <item>душ</item>
+        <item>ванна</item>
     </string-array>
     <string name="props_source_ai">Распознано с помощью ИИ на устройстве (Gemini Nano) – текст не покидает телефон. Проверьте.</string>
     <string name="props_source_keywords">Распознано по ключевым словам (только немецкий и английский) – на этом устройстве нет ИИ на устройстве. Проверьте и дополните ниже.</string>
@@ -346,4 +348,29 @@
     <string name="section_valves">Открытие клапанов</string>
     <string name="section_probe">Пробный прогон</string>
     <string name="section_phases">Фазы</string>
+
+    <string name="profile_rename">Переименовать</string>
+    <string name="profile_rename_q">Переименовать профиль</string>
+    <string name="profile_name">Название</string>
+    <string name="profile_rename_note">Новое название сохраняется в облаке Homematic IP и появляется и в официальном приложении.</string>
+    <string name="profile_renamed">Переименовано в «%s».</string>
+    <string name="err_profile_name_not_stored">Облако не сохранило новое название (переименование официально не документировано). Остаётся старое название.</string>
+    <string name="prop_shower">Душ</string>
+    <string name="prop_bathtub">Ванна</string>
+    <string name="marker_bathing">Душ/ванна %s</string>
+    <string name="bathing_title">Душ/ванна (обнаружено)</string>
+    <string name="bathing_none">За этот период ничего не обнаружено. Обнаруживается быстрый рост влажности, пока температура не падает.</string>
+    <string name="bathing_explanation">Обнаружено по быстрому росту влажности. Модель комнаты исключает эти периоды: комнату греет горячая вода, а не тёплый пол.</string>
+    <string name="bathing_event">%1$s–%2$s · %3$d → %4$d %% отн. вл.</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Порядок</string>
+    <string name="room_order_title">Порядок комнат</string>
+    <string name="room_order_reset">По умолчанию</string>
+    <string name="move_up">Вверх</string>
+    <string name="move_down">Вниз</string>
+    <string name="help_bathing_title">Душ и ванна</string>
+    <string name="help_bathing_text">В комнатах, описанных как ванная или с душем или ванной, приложение распознаёт душ и ванну по быстрому росту влажности (не менее 5 процентных пунктов за несколько минут), пока температура не падает. Эти моменты отмечаются на графиках и перечисляются в виде комнаты. Модель их исключает, потому что комнату греет горячая вода, а не тёплый пол. По умолчанию термостаты, в названии которых есть название комнаты (например, полотенцесушитель), показываются сразу после этой комнаты; кнопкой «Порядок» в обзоре можно упорядочить комнаты самостоятельно.</string>
+    <string name="help_oss_title">Открытый исходный код</string>
+    <string name="help_oss_text">PureHeat — проект с открытым исходным кодом под лицензией Apache 2.0. Исходный код, заметки к выпускам и правила участия — на GitHub; сообщения об ошибках и идеи там приветствуются.</string>
+    <string name="about_license">Открытый код · Лицензия Apache 2.0 · © 2026 Christian Plagens</string>
 </resources>

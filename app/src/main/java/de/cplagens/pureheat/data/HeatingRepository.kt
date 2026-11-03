@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.data
 
 import android.content.Context
@@ -30,6 +35,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
 import kotlinx.serialization.json.jsonObject
 import java.io.File
 
@@ -232,6 +238,24 @@ class HeatingRepository(
             throw HmipClient.HmipException(UiText.Res(R.string.err_profile_mismatch))
         }
         return check
+    }
+
+    /**
+     * Renames a weekly profile. There is no documented rename endpoint; the name travels in the
+     * profile object of `updateProfile` (days unchanged). getProfile doesn't return the name, so the
+     * check reads it back from the current state. Throws if the cloud didn't store it.
+     */
+    suspend fun renameProfile(groupId: String, index: String, profileId: String, name: String) {
+        val creds = requireCreds()
+        val current = loadProfile(groupId, index, profileId)
+        writeBackup(current)
+        api(creds) { rest ->
+            client.updateProfile(
+                creds.sgtin, creds.authToken, rest, groupId, index, JsonObject(current.raw + ("name" to JsonPrimitive(name))),
+            )
+        }
+        val stored = fetch(creds).rooms.firstOrNull { it.id == groupId }?.profiles?.firstOrNull { it.index == index }?.name
+        if (stored != name) throw HmipClient.HmipException(UiText.Res(R.string.err_profile_name_not_stored))
     }
 
     suspend fun activateProfile(groupId: String, index: String) {

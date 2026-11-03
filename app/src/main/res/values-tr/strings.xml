@@ -279,6 +279,8 @@
         <item>odun sobası</item>
         <item>yatak odası</item>
         <item>geceleri pencere aralık</item>
+        <item>duş</item>
+        <item>küvet</item>
     </string-array>
     <string name="props_source_ai">Cihaz üzerindeki yapay zekâ ile tanındı (Gemini Nano) – metin telefondan çıkmaz. Lütfen kontrol edin.</string>
     <string name="props_source_keywords">Anahtar kelimelerle tanındı (yalnızca Almanca ve İngilizce) – bu cihazda cihaz üzerinde yapay zekâ yok. Lütfen aşağıda kontrol edip tamamlayın.</string>
@@ -340,4 +342,29 @@
     <string name="section_valves">Vana açıklığı</string>
     <string name="section_probe">Deneme</string>
     <string name="section_phases">Evreler</string>
+
+    <string name="profile_rename">Yeniden adlandır</string>
+    <string name="profile_rename_q">Profili yeniden adlandır</string>
+    <string name="profile_name">Ad</string>
+    <string name="profile_rename_note">Yeni ad Homematic IP bulutunda kaydedilir ve resmî uygulamada da görünür.</string>
+    <string name="profile_renamed">Ad “%s” olarak değiştirildi.</string>
+    <string name="err_profile_name_not_stored">Bulut yeni adı kaydetmedi (yeniden adlandırma resmî olarak belgelenmemiştir). Eski ad korunuyor.</string>
+    <string name="prop_shower">Duş</string>
+    <string name="prop_bathtub">Küvet</string>
+    <string name="marker_bathing">Duş/banyo %s</string>
+    <string name="bathing_title">Duş/banyo (algılandı)</string>
+    <string name="bathing_none">Bu dönemde bir şey algılanmadı. Sıcaklık düşmezken nemin hızla artması algılanır.</string>
+    <string name="bathing_explanation">Nemin hızla artmasından algılandı. Oda modeli bu zamanları dışarıda bırakır: odayı ısıtan yerden ısıtma değil, sıcak sudur.</string>
+    <string name="bathing_event">%1$s–%2$s · %%%3$d → %%%4$d BN</string>
+    <string name="bathing_temp">" · %+.1f K"</string>
+    <string name="room_order">Sıralama</string>
+    <string name="room_order_title">Odaların sırası</string>
+    <string name="room_order_reset">Varsayılan</string>
+    <string name="move_up">Yukarı taşı</string>
+    <string name="move_down">Aşağı taşı</string>
+    <string name="help_bathing_title">Duş ve banyo</string>
+    <string name="help_bathing_text">Banyo olarak ya da duş veya küvetli olarak tanımlanan odalarda uygulama, sıcaklık düşmezken nemin hızla artmasından (birkaç dakikada en az 5 puan) duş ve banyoyu tanır. Bu zamanlar grafiklerde işaretlenir ve oda görünümünde listelenir. Model bunları dışarıda bırakır, çünkü odayı yerden ısıtma değil sıcak su ısıtır. Varsayılan olarak adı bir odanın adını içeren termostatlar (örn. havlupan) o odanın hemen arkasında görünür; genel bakıştaki “Sıralama” ile odaları kendiniz düzenleyebilirsiniz.</string>
+    <string name="help_oss_title">Açık kaynak</string>
+    <string name="help_oss_text">PureHeat, Apache Lisansı 2.0 altında açık kaynaktır. Kaynak kodu, sürüm notları ve nasıl katkıda bulunulacağı GitHub\'dadır; hata bildirimleri ve fikirler orada memnuniyetle karşılanır.</string>
+    <string name="about_license">Açık kaynak · Apache Lisansı 2.0 · © 2026 Christian Plagens</string>
 </resources>

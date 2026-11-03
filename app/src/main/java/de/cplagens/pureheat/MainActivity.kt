@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat
 
 import android.os.Bundle
@@ -50,6 +55,7 @@ class MainActivity : AppCompatActivity() {
         setContent {
             MaterialTheme(colorScheme = if (isSystemInDarkTheme()) darkColorScheme() else lightColorScheme()) {
                 val ui by viewModel.ui.collectAsStateWithLifecycle()
+                val roomOrder by (application as PureHeatApp).viewSettings.roomOrder.collectAsStateWithLifecycle()
                 Scaffold(Modifier.fillMaxSize()) { padding ->
                     var profileRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var historyRoomId by rememberSaveable { mutableStateOf<String?>(null) }
@@ -110,6 +116,8 @@ class MainActivity : AppCompatActivity() {
                                     onOpenHistory = { historyRoomId = it },
                                     onOpenHelp = { showHelp = true },
                                     modifier = screen,
+                                    roomOrder = roomOrder,
+                                    onRoomOrderChange = (application as PureHeatApp).viewSettings::setRoomOrder,
                                 )
                             }
                         }

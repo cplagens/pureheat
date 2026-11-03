@@ -1,4 +1,11 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.data.model
+
+import de.cplagens.pureheat.data.history.BathingDetector
 
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
@@ -41,9 +48,10 @@ data class RoomInsight(
             val outside = forecastOutside ?: weather.lastOrNull { it.outsideTemperature != null }?.outsideTemperature
             return samples.groupBy { it.roomId }.mapValues { (_, s) ->
                 val windows = WindowDetector.detect(s)
+                // An open window is not the room's normal heat loss, hot water not its heating: leave those times out.
+                val clean = BathingDetector.withoutBathingTimes(WindowDetector.withoutWindowTimes(s, windows), BathingDetector.detect(s))
                 RoomInsight(
-                    // An open window is not the room's normal heat loss: leave those times out.
-                    model = RoomModelFitter.fit(HistoryAnalysis.phases(WindowDetector.withoutWindowTimes(s, windows), weather)),
+                    model = RoomModelFitter.fit(HistoryAnalysis.phases(clean, weather)),
                     levels = SetPointLevels.from(s.filter { it.timestamp >= now - LEVEL_WINDOW_MS }),
                     outside = outside,
                     outsideIsForecast = forecastOutside != null,

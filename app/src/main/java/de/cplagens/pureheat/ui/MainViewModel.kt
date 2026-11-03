@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import android.app.Application
@@ -6,6 +11,8 @@ import androidx.lifecycle.viewModelScope
 import de.cplagens.pureheat.PureHeatApp
 import de.cplagens.pureheat.data.Credentials
 import de.cplagens.pureheat.data.HistoryWorker
+import de.cplagens.pureheat.data.history.BathingDetector
+import de.cplagens.pureheat.data.history.BathingEvent
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.StalledHeating
@@ -27,6 +34,8 @@ data class RoomHistory(
     val samples: List<RoomSample>,
     val stalled: StalledHeating?,
     val windows: List<WindowEvent> = emptyList(),
+    /** Only for rooms described as bathroom or with shower/bathtub. */
+    val bathing: List<BathingEvent> = emptyList(),
 )
 
 sealed interface UiState {
@@ -68,7 +77,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
             var insightsAt = 0L
             repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS).collect { samples ->
                 val history = samples.groupBy { it.roomId }
-                    .mapValues { (_, s) -> RoomHistory(s, HistoryAnalysis.stalledHeating(s), WindowDetector.detect(s)) }
+                    .mapValues { (id, s) ->
+                        val bathing = if (repository.descriptions.get(id)?.properties?.hasBathing == true) BathingDetector.detect(s) else emptyList()
+                        RoomHistory(s, HistoryAnalysis.stalledHeating(s), WindowDetector.detect(s), bathing)
+                    }
                 _ui.update { (it as? UiState.Dashboard)?.copy(history = history) ?: it }
                 // The model uses up to 60 days of data and changes slowly: refit at most every 30 min.
                 val now = System.currentTimeMillis()

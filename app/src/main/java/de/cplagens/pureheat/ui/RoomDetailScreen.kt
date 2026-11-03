@@ -1,3 +1,8 @@
+/*
+ * PureHeat – Copyright 2026 Christian Plagens
+ * Licensed under the Apache License, Version 2.0 (see LICENSE.md).
+ * SPDX-License-Identifier: Apache-2.0
+ */
 package de.cplagens.pureheat.ui
 
 import android.content.Context
@@ -153,7 +158,7 @@ fun RoomDetailScreen(
                     }
                     // Time labels only where they stay readable (up to 3 days).
                     if (state.end - state.start <= HistoryRange.DAYS_3.millis) {
-                        MarkerStrip(chartMarkers(ctx, state.samples, state.windows, state.start, state.end), state.start, state.end)
+                        MarkerStrip(chartMarkers(ctx, state.samples, state.windows, state.start, state.end, state.bathing), state.start, state.end)
                     }
                     TimeSeriesChart(
                         series = listOf(
@@ -240,6 +245,28 @@ fun RoomDetailScreen(
                     Text(WindowTexts.describe(ctx, it), style = MaterialTheme.typography.bodySmall)
                 }
             }
+            if (shown(DetailSection.BATHING) && description?.properties?.hasBathing == true) {
+                item {
+                    Text(stringResource(R.string.bathing_title), style = MaterialTheme.typography.titleMedium)
+                    Text(
+                        stringResource(if (state.bathing.isEmpty()) R.string.bathing_none else R.string.bathing_explanation),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = muted,
+                    )
+                }
+                items(state.bathing.asReversed().take(20), key = { "bathing-${it.start}" }) { b ->
+                    Text(
+                        stringResource(
+                            R.string.bathing_event,
+                            dayTime(ctx, b.start, "EEE Hm"),
+                            DateFormat.getTimeFormat(ctx).format(Date(b.end)),
+                            b.humidityBefore,
+                            b.humidityPeak,
+                        ) + (b.temperatureRise?.let { stringResource(R.string.bathing_temp, it) } ?: ""),
+                        style = MaterialTheme.typography.bodySmall,
+                    )
+                }
+            }
         }
 
         if (shown(DetailSection.PHASES)) {
@@ -291,6 +318,7 @@ private fun sectionLabel(s: DetailSection) = when (s) {
     DetailSection.MODEL -> R.string.model_title
     DetailSection.PROBE -> R.string.section_probe
     DetailSection.WINDOWS -> R.string.legend_window_detected
+    DetailSection.BATHING -> R.string.bathing_title
     DetailSection.PHASES -> R.string.section_phases
 }
 
