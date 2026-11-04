@@ -7,7 +7,7 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
 ## Wo wir stehen
 - Läuft auf dem Telefon des Nutzers (Galaxy S25 Ultra, adb `R5CY81ZW5EZ`, nur zeitweise per USB –
   vorher `adb devices`; UI nur bedienen, wenn `mCurrentFocus` Launcher/PureHeat ist).
-  **Die Versionen vom 03.11. nachts und 04.11. sind noch nicht installiert.**
+  Stand vom 04.11. (Commit `334b6e7`) ist installiert, aber noch nicht durchgeklickt.
 - Fertig: Dashboard (Reihenfolge), Verlauf (2 Jahre), Detailansicht, Heizprofile (bearbeiten,
   umbenennen), Raummodell, Fenster- und Duschen/Baden-Erkennung, Prognose, Probelauf, Hilfe,
   12 Sprachen, Raumeigenschaften (Gemini Nano), **Export/Import** (Info → Daten), Ziel-API 36,
@@ -15,7 +15,7 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
 - Play-Store-Anleitung: `PLAY_STORE_GUIDE.md` (lokal, in `.gitignore`).
 
 ## Nächste Aufgaben
-1. **Am Gerät prüfen** (installieren!): Export teilen/als Datei speichern, Import der eigenen Datei,
+1. **Am Gerät prüfen**: Export teilen/als Datei speichern, Import der eigenen Datei,
    Profil umbenennen (undokumentierter Weg – Ergebnis in FINDINGS), Reihenfolge-Dialog,
    Duschen/Baden im Bad, alles mit targetSdk 36.
 2. Vorbereitung Play Store (siehe Checkliste in `PLAY_STORE_GUIDE.md`): Release-Signatur aus
