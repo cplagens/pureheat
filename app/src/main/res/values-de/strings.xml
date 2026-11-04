@@ -383,4 +383,20 @@
     <string name="help_oss_title">Open Source</string>
     <string name="help_oss_text">PureHeat ist Open Source unter der Apache-Lizenz 2.0. Quellcode, Release Notes und wie man mitmachen kann, stehen auf GitHub; Fehlermeldungen und Ideen sind dort willkommen.</string>
     <string name="about_license">Open Source · Apache-Lizenz 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Daten</string>
+    <string name="data_text">Alle Messwerte (CSV) und Einstellungen als eine ZIP-Datei exportieren – z. B. nach Google Drive, per Mail oder als Sicherung für ein neues Telefon. Zugangsdaten sind nicht enthalten.</string>
+    <string name="data_share">Exportieren und teilen</string>
+    <string name="data_save">Als Datei speichern</string>
+    <string name="data_import">Importieren</string>
+    <string name="data_import_q">Daten importieren?</string>
+    <string name="data_import_text">Messwerte aus der Datei werden zum Verlauf hinzugefügt; Raumbeschreibungen, Ansicht und Sprache werden durch die aus der Datei ersetzt.</string>
+    <string name="data_busy">Einen Moment … (bei langem Verlauf etwas länger)</string>
+    <string name="data_exported">Export gespeichert.</string>
+    <string name="data_imported">Importiert: %d Messwerte und die Einstellungen.</string>
+    <string name="data_import_failed">Das ist kein PureHeat-Export.</string>
+    <string name="data_failed">Das hat nicht geklappt. Bitte noch einmal versuchen.</string>
+    <string name="data_share_chooser">PureHeat-Export teilen</string>
+    <string name="help_data_title">Export und Import</string>
+    <string name="help_data_text">Unter „Info“ → „Daten“ exportierst du alle Messwerte (als CSV-Tabellen, lesbar in Tabellenkalkulationen oder für Auswertungen) zusammen mit deinen Einstellungen als eine ZIP-Datei: „Exportieren und teilen“ öffnet das Teilen-Menü von Android (z. B. Google Drive, Mail), „Als Datei speichern“ lässt dich einen Ordner wählen, auch auf Google Drive. „Importieren“ liest eine solche Datei ein, z. B. auf einem neuen Telefon: Messwerte werden ergänzt, Einstellungen ersetzt. Der Export enthält Raumnamen, aber keine Zugangsdaten – nach einem Umzug verbindest du den Access Point neu.</string>
 </resources>

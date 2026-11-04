@@ -373,4 +373,20 @@
     <string name="help_oss_title">Открытый исходный код</string>
     <string name="help_oss_text">PureHeat — проект с открытым исходным кодом под лицензией Apache 2.0. Исходный код, заметки к выпускам и правила участия — на GitHub; сообщения об ошибках и идеи там приветствуются.</string>
     <string name="about_license">Открытый код · Лицензия Apache 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Данные</string>
+    <string name="data_text">Экспортируйте все измерения (CSV) и настройки в один ZIP-файл – например, на Google Диск, по почте или как резервную копию для нового телефона. Данные доступа не включаются.</string>
+    <string name="data_share">Экспортировать и поделиться</string>
+    <string name="data_save">Сохранить как файл</string>
+    <string name="data_import">Импортировать</string>
+    <string name="data_import_q">Импортировать данные?</string>
+    <string name="data_import_text">Измерения из файла добавляются к истории; описания комнат, вид и язык заменяются данными из файла.</string>
+    <string name="data_busy">Минутку … (при длинной истории дольше)</string>
+    <string name="data_exported">Экспорт сохранён.</string>
+    <string name="data_imported">Импортировано: измерений – %d, а также настройки.</string>
+    <string name="data_import_failed">Это не экспорт PureHeat.</string>
+    <string name="data_failed">Не получилось. Попробуйте ещё раз.</string>
+    <string name="data_share_chooser">Поделиться экспортом PureHeat</string>
+    <string name="help_data_title">Экспорт и импорт</string>
+    <string name="help_data_text">В «Инфо» → «Данные» вы экспортируете все измерения (в виде CSV-таблиц для табличных редакторов или анализа) вместе с настройками в один ZIP-файл: «Экспортировать и поделиться» открывает меню «Поделиться» Android (например, Google Диск, почта), «Сохранить как файл» позволяет выбрать папку, в том числе на Google Диске. «Импортировать» считывает такой файл, например, на новом телефоне: измерения добавляются, настройки заменяются. Экспорт содержит названия комнат, но не данные доступа – после смены телефона снова подключите точку доступа.</string>
 </resources>

@@ -370,4 +370,20 @@
     <string name="help_oss_title">Código aberto</string>
     <string name="help_oss_text">O PureHeat é código aberto sob a licença Apache 2.0. O código-fonte, as notas de versão e como contribuir estão no GitHub; relatórios de erros e ideias são bem-vindos.</string>
     <string name="about_license">Código aberto · Licença Apache 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Dados</string>
+    <string name="data_text">Exportar todas as medições (CSV) e definições num ficheiro ZIP – p. ex. para o Google Drive, por e-mail ou como cópia para um telemóvel novo. Os dados de acesso não estão incluídos.</string>
+    <string name="data_share">Exportar e partilhar</string>
+    <string name="data_save">Guardar como ficheiro</string>
+    <string name="data_import">Importar</string>
+    <string name="data_import_q">Importar dados?</string>
+    <string name="data_import_text">As medições do ficheiro são adicionadas ao histórico; descrições das divisões, vista e idioma são substituídos pelos do ficheiro.</string>
+    <string name="data_busy">Um momento … (mais tempo com um histórico longo)</string>
+    <string name="data_exported">Exportação guardada.</string>
+    <string name="data_imported">Importado: %d medições e as definições.</string>
+    <string name="data_import_failed">Isto não é uma exportação do PureHeat.</string>
+    <string name="data_failed">Não funcionou. Tente novamente.</string>
+    <string name="data_share_chooser">Partilhar exportação do PureHeat</string>
+    <string name="help_data_title">Exportar e importar</string>
+    <string name="help_data_text">Em «Info» → «Dados» exporta todas as medições (como tabelas CSV, legíveis numa folha de cálculo ou para análises) juntamente com as definições num ficheiro ZIP: «Exportar e partilhar» abre o menu de partilha do Android (p. ex. Google Drive, e-mail), «Guardar como ficheiro» permite escolher uma pasta, também no Google Drive. «Importar» lê um ficheiro destes, p. ex. num telemóvel novo: as medições são adicionadas e as definições substituídas. A exportação contém os nomes das divisões, mas não os dados de acesso – depois de mudar de telemóvel, ligue novamente o ponto de acesso.</string>
 </resources>

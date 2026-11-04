@@ -1,32 +1,31 @@
 # PureHeat – Status (Einstieg für jede neue Session)
 
-Stand: 2026-11-03 nachts. Diese Datei kurz halten und am Ende jeder Aufgabe **ersetzen** (nicht
-anhängen). Details je Schritt: `NEXT_STEPS.md` (Abschnitt per Grep suchen), Messungen: `FINDINGS.md`,
-offene Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene Aufgabe unten.
+Stand: 2026-11-04. Diese Datei kurz halten und am Ende jeder Aufgabe **ersetzen** (nicht anhängen).
+Details je Schritt: `NEXT_STEPS.md` (Abschnitt per Grep suchen), Messungen: `FINDINGS.md`, offene
+Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene Aufgabe unten.
 
 ## Wo wir stehen
 - Läuft auf dem Telefon des Nutzers (Galaxy S25 Ultra, adb `R5CY81ZW5EZ`, nur zeitweise per USB –
   vorher `adb devices`; UI nur bedienen, wenn `mCurrentFocus` Launcher/PureHeat ist).
-- Fertig: Dashboard (Raum-Reihenfolge: Thermostate hinter ihrem Raum, selbst anordnen),
-  Verlauf (2 Jahre, Modell 60 Tage), Detailansicht (Bereiche ausblendbar), Heizprofile bearbeiten
-  und **umbenennen**, Raummodell, Fenster-offen- und **Duschen/Baden-Erkennung**, Prognose,
-  Probelauf, Hilfe, 12 Sprachen, Raumeigenschaften (Gemini Nano läuft, inkl. Dusche/Badewanne).
-- Open Source: Lizenzkopf in allen Kotlin-Dateien, `LICENSE.md`, `NOTICE`, `CONTRIBUTING.md`,
-  `ReleaseNotes.md`, README verlinkt alles; Repo-Link in Hilfe und Info.
-- Skill `/pureheat-review`, „mach weiter“-Regel in CLAUDE.md.
+  **Die Versionen vom 03.11. nachts und 04.11. sind noch nicht installiert.**
+- Fertig: Dashboard (Reihenfolge), Verlauf (2 Jahre), Detailansicht, Heizprofile (bearbeiten,
+  umbenennen), Raummodell, Fenster- und Duschen/Baden-Erkennung, Prognose, Probelauf, Hilfe,
+  12 Sprachen, Raumeigenschaften (Gemini Nano), **Export/Import** (Info → Daten), Ziel-API 36,
+  Open-Source-Dateien.
+- Play-Store-Anleitung: `PLAY_STORE_GUIDE.md` (lokal, in `.gitignore`).
 
 ## Nächste Aufgaben
-1. **Am Gerät prüfen** (neue Version ist installiert, falls Telefon verbunden war – sonst
-   installieren): Profil umbenennen (erster echter Test des undokumentierten Wegs! Meldet die App
-   „nicht übernommen“, Ergebnis in FINDINGS eintragen und ggf. auf lokale Namen umstellen),
-   Reihenfolge-Dialog, Duschen/Baden-Markierung im Bad (Bad muss als Bad/Dusche beschrieben sein).
-2. Nutzer-Hinweis: Bad-Beschreibung neu erkennen + speichern (gespeichert noch „Erdgeschoss“).
+1. **Am Gerät prüfen** (installieren!): Export teilen/als Datei speichern, Import der eigenen Datei,
+   Profil umbenennen (undokumentierter Weg – Ergebnis in FINDINGS), Reihenfolge-Dialog,
+   Duschen/Baden im Bad, alles mit targetSdk 36.
+2. Vorbereitung Play Store (siehe Checkliste in `PLAY_STORE_GUIDE.md`): Release-Signatur aus
+   `keystore.properties`, Spenden-Links im Play-Build ausblenden (Entscheidung des Nutzers),
+   Demo-Modus für Prüfer/Tester, `docs/privacy.md` + GitHub Pages, `.github/FUNDING.yml`
+   (erst wenn GitHub Sponsors freigeschaltet ist), Logo 512 px + Feature-Grafik.
 3. Erstes Review mit `/pureheat-review full`, Befunde in `docs/REVIEW.md`.
-4. Probelauf-Ergebnisse nach einigen Tagen ansehen (Trefferquote je Raum).
-5. Schritt 6: Komfortzeiten + Optimal-Profil als Vorschlag (NEXT_STEPS „Schritt 6“); Nutzung und
-   Duschzeiten als Hinweis für Komfortzeiten im Bad.
-6. Sonnengewinn: Open-Meteo `shortwave_radiation` + Fensterrichtung.
-7. Für KI-Training (später, nur Simulationsmodus): Export der Verlaufsdaten (CSV) überlegen.
+4. Nutzer-Hinweis: Bad-Beschreibung neu erkennen + speichern (gespeichert noch „Erdgeschoss“).
+5. Probelauf-Ergebnisse ansehen; Schritt 6 (Komfortzeiten + Optimal-Profil als Vorschlag).
+6. Sonnengewinn (Open-Meteo `shortwave_radiation` + Fensterrichtung).
 
 ## Kleinigkeiten
 - Detail-Temperaturdiagramm: y-Beschriftung „28 °C“ liegt über der Ist-Linie.

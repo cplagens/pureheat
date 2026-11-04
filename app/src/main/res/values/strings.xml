@@ -392,4 +392,21 @@
     <string name="help_oss_title">Open source</string>
     <string name="help_oss_text">PureHeat is open source under the Apache License 2.0. The source code, release notes and how to contribute are on GitHub; bug reports and ideas are welcome there.</string>
     <string name="about_license">Open source · Apache License 2.0 · © 2026 Christian Plagens</string>
+
+    <!-- Export / import -->
+    <string name="data_title">Data</string>
+    <string name="data_text">Export all measurements (CSV) and settings as one ZIP file – e.g. to Google Drive, by mail or as a backup for a new phone. Access data is not included.</string>
+    <string name="data_share">Export and share</string>
+    <string name="data_save">Save as file</string>
+    <string name="data_import">Import</string>
+    <string name="data_import_q">Import data?</string>
+    <string name="data_import_text">Measurements from the file are added to the history; room descriptions, view and language are replaced by those from the file.</string>
+    <string name="data_busy">Working … (can take a moment with a long history)</string>
+    <string name="data_exported">Export saved.</string>
+    <string name="data_imported">Imported: %d measurements and the settings.</string>
+    <string name="data_import_failed">This is not a PureHeat export.</string>
+    <string name="data_failed">That didn\'t work. Please try again.</string>
+    <string name="data_share_chooser">Share PureHeat export</string>
+    <string name="help_data_title">Export and import</string>
+    <string name="help_data_text">Under “Info” → “Data” you can export all measurements (as CSV tables, readable in spreadsheets or for analyses) together with your settings as one ZIP file: “Export and share” opens the Android share sheet (e.g. Google Drive, mail), “Save as file” lets you pick a folder, including Google Drive. “Import” reads such a file, e.g. on a new phone: measurements are added, settings replaced. The export contains room names but no access data – after a move to a new phone you connect the access point again.</string>
 </resources>

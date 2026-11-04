@@ -10,12 +10,15 @@ import de.cplagens.pureheat.data.CredentialStore
 import de.cplagens.pureheat.data.HeatingRepository
 import de.cplagens.pureheat.data.HistoryWorker
 import de.cplagens.pureheat.data.ViewSettings
+import de.cplagens.pureheat.data.export.DataTransfer
 import de.cplagens.pureheat.data.history.HistoryDatabase
 
 class PureHeatApp : Application() {
     val credentialStore by lazy { CredentialStore(this) }
-    val repository by lazy { HeatingRepository(this, credentialStore, HistoryDatabase.create(this).dao()) }
+    private val database by lazy { HistoryDatabase.create(this) }
+    val repository by lazy { HeatingRepository(this, credentialStore, database.dao()) }
     val viewSettings by lazy { ViewSettings(this) }
+    val dataTransfer by lazy { DataTransfer(database.dao(), repository.descriptions, viewSettings) }
 
     override fun onCreate() {
         super.onCreate()

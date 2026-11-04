@@ -370,4 +370,20 @@
     <string name="help_oss_title">Open source</string>
     <string name="help_oss_text">PureHeat est open source sous licence Apache 2.0. Le code source, les notes de version et la manière de contribuer sont sur GitHub ; les rapports de bugs et les idées y sont les bienvenus.</string>
     <string name="about_license">Open source · Licence Apache 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Données</string>
+    <string name="data_text">Exporter toutes les mesures (CSV) et les réglages dans un fichier ZIP – p. ex. vers Google Drive, par e-mail ou comme sauvegarde pour un nouveau téléphone. Les identifiants ne sont pas inclus.</string>
+    <string name="data_share">Exporter et partager</string>
+    <string name="data_save">Enregistrer comme fichier</string>
+    <string name="data_import">Importer</string>
+    <string name="data_import_q">Importer les données ?</string>
+    <string name="data_import_text">Les mesures du fichier sont ajoutées à l’historique ; descriptions des pièces, affichage et langue sont remplacés par ceux du fichier.</string>
+    <string name="data_busy">Un instant … (plus long avec un historique important)</string>
+    <string name="data_exported">Export enregistré.</string>
+    <string name="data_imported">Importé : %d mesures et les réglages.</string>
+    <string name="data_import_failed">Ce n’est pas un export PureHeat.</string>
+    <string name="data_failed">Cela n’a pas fonctionné. Veuillez réessayer.</string>
+    <string name="data_share_chooser">Partager l’export PureHeat</string>
+    <string name="help_data_title">Export et import</string>
+    <string name="help_data_text">Sous « Info » → « Données », vous exportez toutes les mesures (en tableaux CSV, lisibles dans un tableur ou pour des analyses) avec vos réglages dans un fichier ZIP : « Exporter et partager » ouvre le menu de partage d’Android (p. ex. Google Drive, e-mail), « Enregistrer comme fichier » vous laisse choisir un dossier, y compris sur Google Drive. « Importer » lit un tel fichier, p. ex. sur un nouveau téléphone : les mesures sont ajoutées, les réglages remplacés. L’export contient les noms des pièces mais aucun identifiant – après un changement de téléphone, reconnectez le point d’accès.</string>
 </resources>

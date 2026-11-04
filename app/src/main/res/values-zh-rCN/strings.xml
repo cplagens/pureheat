@@ -364,4 +364,20 @@
     <string name="help_oss_title">开源</string>
     <string name="help_oss_text">PureHeat 是基于 Apache License 2.0 的开源项目。源代码、发布说明和参与方式都在 GitHub 上；欢迎在那里提交问题和想法。</string>
     <string name="about_license">开源 · Apache License 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">数据</string>
+    <string name="data_text">将所有测量值（CSV）和设置导出为一个 ZIP 文件 – 例如保存到 Google 云端硬盘、通过邮件发送，或作为新手机的备份。不包含访问数据。</string>
+    <string name="data_share">导出并分享</string>
+    <string name="data_save">保存为文件</string>
+    <string name="data_import">导入</string>
+    <string name="data_import_q">导入数据？</string>
+    <string name="data_import_text">文件中的测量值将添加到历史中；房间描述、视图和语言将被文件中的内容替换。</string>
+    <string name="data_busy">请稍候 …（历史较长时会更久）</string>
+    <string name="data_exported">导出已保存。</string>
+    <string name="data_imported">已导入：%d 条测量值及设置。</string>
+    <string name="data_import_failed">这不是 PureHeat 导出文件。</string>
+    <string name="data_failed">操作失败，请重试。</string>
+    <string name="data_share_chooser">分享 PureHeat 导出</string>
+    <string name="help_data_title">导出和导入</string>
+    <string name="help_data_text">在“信息”→“数据”中，可将所有测量值（CSV 表格，可在电子表格中查看或用于分析）连同设置导出为一个 ZIP 文件：“导出并分享”会打开 Android 分享菜单（例如 Google 云端硬盘、邮件），“保存为文件”可选择文件夹，包括 Google 云端硬盘。“导入”可读取这样的文件，例如在新手机上：测量值会被添加，设置会被替换。导出文件包含房间名称，但不包含访问数据 – 换手机后请重新连接接入点。</string>
 </resources>

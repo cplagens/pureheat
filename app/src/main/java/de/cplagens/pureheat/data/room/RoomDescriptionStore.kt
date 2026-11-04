@@ -33,6 +33,14 @@ class RoomDescriptionStore(context: Context) {
         _all.value = emptyMap()
     }
 
+    /** Import: replaces all descriptions. */
+    fun replaceAll(descriptions: Map<String, RoomDescription>) {
+        val editor = prefs.edit().clear()
+        descriptions.forEach { (id, d) -> editor.putString(id, json.encodeToString(RoomDescription.serializer(), d)) }
+        editor.apply()
+        _all.value = descriptions
+    }
+
     private fun load(): Map<String, RoomDescription> = prefs.all.mapNotNull { (key, value) ->
         (value as? String)?.let { s -> runCatching { key to json.decodeFromString(RoomDescription.serializer(), s) }.getOrNull() }
     }.toMap()

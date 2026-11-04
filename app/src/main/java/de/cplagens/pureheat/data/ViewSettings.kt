@@ -39,6 +39,16 @@ class ViewSettings(context: Context) {
         _roomOrder.value = ids
     }
 
+    /** Import: replaces hidden sections and room order. */
+    fun replaceAll(hidden: Set<DetailSection>, roomOrder: List<String>) {
+        prefs.edit()
+            .putStringSet(KEY_HIDDEN, hidden.map { it.name }.toSet())
+            .putString(KEY_ROOM_ORDER, roomOrder.joinToString(","))
+            .apply()
+        _hidden.value = hidden
+        _roomOrder.value = roomOrder
+    }
+
     private fun load(): Set<DetailSection> =
         prefs.getStringSet(KEY_HIDDEN, emptySet()).orEmpty()
             .mapNotNull { name -> DetailSection.entries.firstOrNull { it.name == name } }

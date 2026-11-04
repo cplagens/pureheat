@@ -8,12 +8,13 @@ plugins {
 
 android {
     namespace = "de.cplagens.pureheat"
-    compileSdk = 35
+    // Google Play requires targetSdk 36 (Android 16) for new apps and updates since 2026-08-31.
+    compileSdk = 36
 
     defaultConfig {
         applicationId = "de.cplagens.pureheat"
         minSdk = 26
-        targetSdk = 35
+        targetSdk = 36
         versionCode = 1
         versionName = "0.1.0"
     }

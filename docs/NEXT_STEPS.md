@@ -170,6 +170,24 @@ Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zei
      Modell sie nutzen kann.
   4. Bei vielen Räumen gemeinsame Größen (Gebäude, Verglasung) einmal für alle eingeben.
 
+## Export/Import, Ziel-API 36, Play-Store-Anleitung (2026-11-04)
+
+- **Export:** Info → Daten → „Exportieren und teilen“ (ZIP in `cache/exports`, `FileProvider`,
+  Teilen-Menü) oder „Als Datei speichern“ (SAF `CreateDocument`, auch Google Drive). Inhalt:
+  `settings.json` (Raumbeschreibungen, ausgeblendete Bereiche, Raum-Reihenfolge, Sprache – **keine
+  Zugangsdaten**), `room_names.csv`, `rooms.csv`, `circuits.csv`, `weather.csv`, `predictions.csv`,
+  `README.txt`. CSV: Komma, Dezimalpunkt, epoch ms + UTC-ISO (`data/export/Csv.kt`, getestet).
+  Geschrieben in Wochenscheiben (2 Jahre passen nicht auf einmal in den Speicher).
+- **Import:** ZIP oder nur `settings.json`; Messwerte werden ergänzt (REPLACE je Schlüssel),
+  Einstellungen ersetzt, Sprache zuletzt gesetzt. Bestätigungsdialog davor.
+- Idee für später: automatische wöchentliche Sicherung in einen gewählten Ordner (SAF-Baum-URI).
+- `compileSdk`/`targetSdk` 36 (Play-Pflicht seit 31.08.2026); Edge-to-Edge und Back-Handling
+  waren schon passend. Auf dem Gerät noch einmal komplett prüfen.
+- **Play-Store-Anleitung:** `PLAY_STORE_GUIDE.md` im Projektordner (in `.gitignore`, nicht im Repo):
+  Konto, Signatur, Store-Texte, Fragebögen mit Antworten, Datenschutzerklärung, 12-Tester-Test,
+  Produktionsantrag, GitHub Sponsors. Offene Entscheidungen daraus: Demo-Modus für Prüfer,
+  Spenden-Links im Play-Build ausblenden, Release-Signatur.
+
 ## Profile umbenennen, Duschen/Baden, Raum-Reihenfolge, Open Source (2026-11-03)
 
 - **Umbenennen:** „Umbenennen“ im Heizprofil-Bildschirm (Dialog = Bestätigung). Kein dokumentierter

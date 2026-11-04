@@ -175,6 +175,23 @@ interface HistoryDao {
     @Query("DELETE FROM circuit_sample WHERE timestamp < :before")
     suspend fun deleteCircuitSamplesBefore(before: Long)
 
+    // --- Export/import (in time slices, so two years don't have to fit into memory at once) ---
+
+    @Query("SELECT MIN(timestamp) FROM room_sample")
+    suspend fun firstTimestamp(): Long?
+
+    @Query("SELECT * FROM room_sample WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
+    suspend fun roomSamplesBetween(from: Long, to: Long): List<RoomSample>
+
+    @Query("SELECT * FROM circuit_sample WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
+    suspend fun circuitSamplesBetween(from: Long, to: Long): List<CircuitSample>
+
+    @Query("SELECT * FROM weather_sample WHERE timestamp >= :from AND timestamp < :to ORDER BY timestamp")
+    suspend fun weatherSamplesBetween(from: Long, to: Long): List<WeatherSample>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertWeatherAll(samples: List<WeatherSample>)
+
     @Query("DELETE FROM room_sample")
     suspend fun clearRooms()
 

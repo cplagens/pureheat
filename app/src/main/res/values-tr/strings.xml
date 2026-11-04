@@ -367,4 +367,20 @@
     <string name="help_oss_title">Açık kaynak</string>
     <string name="help_oss_text">PureHeat, Apache Lisansı 2.0 altında açık kaynaktır. Kaynak kodu, sürüm notları ve nasıl katkıda bulunulacağı GitHub\'dadır; hata bildirimleri ve fikirler orada memnuniyetle karşılanır.</string>
     <string name="about_license">Açık kaynak · Apache Lisansı 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Veriler</string>
+    <string name="data_text">Tüm ölçümleri (CSV) ve ayarları tek bir ZIP dosyası olarak dışa aktarın – örn. Google Drive\'a, e-postayla veya yeni bir telefon için yedek olarak. Erişim bilgileri dahil değildir.</string>
+    <string name="data_share">Dışa aktar ve paylaş</string>
+    <string name="data_save">Dosya olarak kaydet</string>
+    <string name="data_import">İçe aktar</string>
+    <string name="data_import_q">Veriler içe aktarılsın mı?</string>
+    <string name="data_import_text">Dosyadaki ölçümler geçmişe eklenir; oda açıklamaları, görünüm ve dil dosyadakilerle değiştirilir.</string>
+    <string name="data_busy">Bir dakika … (uzun geçmişte biraz sürebilir)</string>
+    <string name="data_exported">Dışa aktarma kaydedildi.</string>
+    <string name="data_imported">İçe aktarıldı: %d ölçüm ve ayarlar.</string>
+    <string name="data_import_failed">Bu bir PureHeat dışa aktarımı değil.</string>
+    <string name="data_failed">Olmadı. Lütfen tekrar deneyin.</string>
+    <string name="data_share_chooser">PureHeat dışa aktarımını paylaş</string>
+    <string name="help_data_title">Dışa ve içe aktarma</string>
+    <string name="help_data_text">“Bilgi” → “Veriler” altında tüm ölçümleri (elektronik tablolarda veya analizlerde okunabilen CSV tabloları olarak) ayarlarınızla birlikte tek bir ZIP dosyası olarak dışa aktarırsınız: “Dışa aktar ve paylaş” Android paylaşım menüsünü açar (örn. Google Drive, e-posta), “Dosya olarak kaydet” Google Drive dahil bir klasör seçmenizi sağlar. “İçe aktar” böyle bir dosyayı okur, örn. yeni bir telefonda: ölçümler eklenir, ayarlar değiştirilir. Dışa aktarım oda adlarını içerir ama erişim bilgilerini içermez – telefon değişikliğinden sonra erişim noktasını yeniden bağlayın.</string>
 </resources>

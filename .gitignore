@@ -33,3 +33,8 @@ google-services.json
 
 # Android Profiling
 *.hprof
+
+# Personal release notes for the Play Store (account details, answers) – not public
+PLAY_STORE_GUIDE.md
+# Release signing data
+keystore.properties

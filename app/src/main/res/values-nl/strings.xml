@@ -367,4 +367,20 @@
     <string name="help_oss_title">Open source</string>
     <string name="help_oss_text">PureHeat is open source onder de Apache-licentie 2.0. Broncode, release notes en hoe je kunt bijdragen staan op GitHub; bugmeldingen en ideeën zijn daar welkom.</string>
     <string name="about_license">Open source · Apache-licentie 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Gegevens</string>
+    <string name="data_text">Exporteer alle meetwaarden (CSV) en instellingen als één ZIP-bestand – bijv. naar Google Drive, per mail of als back-up voor een nieuwe telefoon. Toegangsgegevens zitten er niet in.</string>
+    <string name="data_share">Exporteren en delen</string>
+    <string name="data_save">Opslaan als bestand</string>
+    <string name="data_import">Importeren</string>
+    <string name="data_import_q">Gegevens importeren?</string>
+    <string name="data_import_text">Meetwaarden uit het bestand worden aan de geschiedenis toegevoegd; kamerbeschrijvingen, weergave en taal worden vervangen door die uit het bestand.</string>
+    <string name="data_busy">Even geduld … (langer bij een lange geschiedenis)</string>
+    <string name="data_exported">Export opgeslagen.</string>
+    <string name="data_imported">Geïmporteerd: %d meetwaarden en de instellingen.</string>
+    <string name="data_import_failed">Dit is geen PureHeat-export.</string>
+    <string name="data_failed">Dat is niet gelukt. Probeer het opnieuw.</string>
+    <string name="data_share_chooser">PureHeat-export delen</string>
+    <string name="help_data_title">Exporteren en importeren</string>
+    <string name="help_data_text">Onder ‘Info’ → ‘Gegevens’ exporteer je alle meetwaarden (als CSV-tabellen, leesbaar in een spreadsheet of voor analyses) samen met je instellingen als één ZIP-bestand: ‘Exporteren en delen’ opent het deelmenu van Android (bijv. Google Drive, mail), met ‘Opslaan als bestand’ kies je een map, ook op Google Drive. ‘Importeren’ leest zo’n bestand in, bijv. op een nieuwe telefoon: meetwaarden worden toegevoegd, instellingen vervangen. De export bevat kamernamen maar geen toegangsgegevens – na een overstap verbind je het accesspoint opnieuw.</string>
 </resources>

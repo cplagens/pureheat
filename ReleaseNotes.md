@@ -4,6 +4,9 @@ Neueste Version oben. Versionen folgen `versionName` in `app/build.gradle.kts`.
 
 ## Unveröffentlicht
 
+- **Export und Import:** alle Messwerte (CSV) und Einstellungen als ZIP – teilen (z. B. Google
+  Drive, Mail) oder als Datei speichern; Import z. B. auf einem neuen Telefon (Info → Daten).
+- Ziel-API Android 16 (API 36), wie von Google Play seit 31.08.2026 verlangt.
 - **Heizprofile umbenennen** (Name wird in der Cloud gespeichert und danach geprüft).
 - **Dusche und Badewanne** als Raumeigenschaften; in Bädern erkennt die App **Duschen/Baden** am
   schnellen Anstieg der Luftfeuchte, markiert es in den Diagrammen und lässt diese Zeiten beim

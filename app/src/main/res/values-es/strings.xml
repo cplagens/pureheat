@@ -370,4 +370,20 @@
     <string name="help_oss_title">Código abierto</string>
     <string name="help_oss_text">PureHeat es código abierto bajo la licencia Apache 2.0. El código fuente, las notas de versión y cómo colaborar están en GitHub; allí son bienvenidos los informes de errores y las ideas.</string>
     <string name="about_license">Código abierto · Licencia Apache 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Datos</string>
+    <string name="data_text">Exportar todas las mediciones (CSV) y los ajustes en un archivo ZIP – p. ej. a Google Drive, por correo o como copia para un teléfono nuevo. No incluye los datos de acceso.</string>
+    <string name="data_share">Exportar y compartir</string>
+    <string name="data_save">Guardar como archivo</string>
+    <string name="data_import">Importar</string>
+    <string name="data_import_q">¿Importar datos?</string>
+    <string name="data_import_text">Las mediciones del archivo se añaden al historial; las descripciones de las habitaciones, la vista y el idioma se sustituyen por los del archivo.</string>
+    <string name="data_busy">Un momento … (más con un historial largo)</string>
+    <string name="data_exported">Exportación guardada.</string>
+    <string name="data_imported">Importado: %d mediciones y los ajustes.</string>
+    <string name="data_import_failed">No es una exportación de PureHeat.</string>
+    <string name="data_failed">No ha funcionado. Inténtelo de nuevo.</string>
+    <string name="data_share_chooser">Compartir exportación de PureHeat</string>
+    <string name="help_data_title">Exportar e importar</string>
+    <string name="help_data_text">En «Info» → «Datos» puede exportar todas las mediciones (como tablas CSV, legibles en hojas de cálculo o para análisis) junto con sus ajustes en un archivo ZIP: «Exportar y compartir» abre el menú de compartir de Android (p. ej. Google Drive, correo), «Guardar como archivo» le deja elegir una carpeta, también en Google Drive. «Importar» lee un archivo así, p. ej. en un teléfono nuevo: las mediciones se añaden y los ajustes se sustituyen. La exportación contiene los nombres de las habitaciones, pero no los datos de acceso: tras cambiar de teléfono, vuelva a conectar el punto de acceso.</string>
 </resources>

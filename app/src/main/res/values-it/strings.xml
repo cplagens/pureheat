@@ -370,4 +370,20 @@
     <string name="help_oss_title">Open source</string>
     <string name="help_oss_text">PureHeat è open source con licenza Apache 2.0. Codice sorgente, note di rilascio e come contribuire sono su GitHub; segnalazioni di bug e idee sono benvenute.</string>
     <string name="about_license">Open source · Licenza Apache 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Dati</string>
+    <string name="data_text">Esporta tutte le misure (CSV) e le impostazioni in un file ZIP – ad es. su Google Drive, via e-mail o come backup per un nuovo telefono. I dati di accesso non sono inclusi.</string>
+    <string name="data_share">Esporta e condividi</string>
+    <string name="data_save">Salva come file</string>
+    <string name="data_import">Importa</string>
+    <string name="data_import_q">Importare i dati?</string>
+    <string name="data_import_text">Le misure del file vengono aggiunte alla cronologia; descrizioni delle stanze, vista e lingua vengono sostituite da quelle del file.</string>
+    <string name="data_busy">Un momento … (più a lungo con una cronologia lunga)</string>
+    <string name="data_exported">Esportazione salvata.</string>
+    <string name="data_imported">Importato: %d misure e le impostazioni.</string>
+    <string name="data_import_failed">Questo non è un’esportazione di PureHeat.</string>
+    <string name="data_failed">Non ha funzionato. Riprova.</string>
+    <string name="data_share_chooser">Condividi esportazione PureHeat</string>
+    <string name="help_data_title">Esportazione e importazione</string>
+    <string name="help_data_text">In «Info» → «Dati» esporti tutte le misure (come tabelle CSV, leggibili in un foglio di calcolo o per analisi) insieme alle impostazioni in un file ZIP: «Esporta e condividi» apre il menu di condivisione di Android (ad es. Google Drive, e-mail), «Salva come file» ti fa scegliere una cartella, anche su Google Drive. «Importa» legge un file di questo tipo, ad es. su un nuovo telefono: le misure vengono aggiunte, le impostazioni sostituite. L’esportazione contiene i nomi delle stanze ma nessun dato di accesso: dopo il cambio di telefono ricollega l’access point.</string>
 </resources>

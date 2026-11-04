@@ -40,7 +40,7 @@ import de.cplagens.pureheat.SupportLinks
 /** Version, short description, app language and the optional, voluntary support links (as in PureRemote). */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun AboutDialog(onDismiss: () -> Unit) {
+fun AboutDialog(onDismiss: () -> Unit, roomLabels: Map<String, String> = emptyMap()) {
     val uri = LocalUriHandler.current
     val ctx = LocalContext.current
     val version = remember {
@@ -62,6 +62,8 @@ fun AboutDialog(onDismiss: () -> Unit) {
                 HorizontalDivider()
                 Text(stringResource(R.string.language), style = MaterialTheme.typography.titleSmall)
                 LanguagePicker()
+                HorizontalDivider()
+                DataSection(roomLabels)
                 if (options.isNotEmpty()) {
                     HorizontalDivider()
                     Text(stringResource(R.string.support_text))

@@ -373,4 +373,20 @@
     <string name="help_oss_title">Open source</string>
     <string name="help_oss_text">PureHeat jest oprogramowaniem open source na licencji Apache 2.0. Kod źródłowy, informacje o wydaniach i sposób współpracy są na GitHub; zgłoszenia błędów i pomysły są tam mile widziane.</string>
     <string name="about_license">Open source · Licencja Apache 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">Dane</string>
+    <string name="data_text">Eksportuj wszystkie pomiary (CSV) i ustawienia jako jeden plik ZIP – np. na Dysk Google, e-mailem lub jako kopię dla nowego telefonu. Dane dostępowe nie są dołączane.</string>
+    <string name="data_share">Eksportuj i udostępnij</string>
+    <string name="data_save">Zapisz jako plik</string>
+    <string name="data_import">Importuj</string>
+    <string name="data_import_q">Zaimportować dane?</string>
+    <string name="data_import_text">Pomiary z pliku zostaną dodane do historii; opisy pomieszczeń, widok i język zostaną zastąpione tymi z pliku.</string>
+    <string name="data_busy">Chwileczkę … (dłużej przy długiej historii)</string>
+    <string name="data_exported">Eksport zapisany.</string>
+    <string name="data_imported">Zaimportowano: %d pomiarów i ustawienia.</string>
+    <string name="data_import_failed">To nie jest eksport PureHeat.</string>
+    <string name="data_failed">Nie udało się. Spróbuj ponownie.</string>
+    <string name="data_share_chooser">Udostępnij eksport PureHeat</string>
+    <string name="help_data_title">Eksport i import</string>
+    <string name="help_data_text">W „Info” → „Dane” eksportujesz wszystkie pomiary (jako tabele CSV, czytelne w arkuszu kalkulacyjnym lub do analiz) razem z ustawieniami jako jeden plik ZIP: „Eksportuj i udostępnij” otwiera menu udostępniania Androida (np. Dysk Google, e-mail), „Zapisz jako plik” pozwala wybrać folder, również na Dysku Google. „Importuj” wczytuje taki plik, np. na nowym telefonie: pomiary są dodawane, ustawienia zastępowane. Eksport zawiera nazwy pomieszczeń, ale nie dane dostępowe – po zmianie telefonu połącz ponownie access point.</string>
 </resources>

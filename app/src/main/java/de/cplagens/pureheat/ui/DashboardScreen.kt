@@ -62,7 +62,9 @@ fun DashboardScreen(
 ) {
     var showAbout by remember { mutableStateOf(false) }
     var showOrder by remember { mutableStateOf(false) }
-    if (showAbout) AboutDialog(onDismiss = { showAbout = false })
+    if (showAbout) {
+        AboutDialog(onDismiss = { showAbout = false }, roomLabels = state.state?.rooms.orEmpty().associate { it.id to it.label })
+    }
     val rooms = RoomOrder.arrange(state.state?.rooms.orEmpty(), { it.id }, { it.label }, roomOrder)
     if (showOrder) {
         RoomOrderDialog(rooms, onChange = onRoomOrderChange, onReset = { onRoomOrderChange(emptyList()) }, onDismiss = { showOrder = false })

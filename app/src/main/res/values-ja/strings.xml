@@ -364,4 +364,20 @@
     <string name="help_oss_title">オープンソース</string>
     <string name="help_oss_text">PureHeat は Apache License 2.0 のオープンソースです。ソースコード、リリースノート、貢献方法は GitHub にあります。不具合の報告やアイデアを歓迎します。</string>
     <string name="about_license">オープンソース · Apache License 2.0 · © 2026 Christian Plagens</string>
+
+    <string name="data_title">データ</string>
+    <string name="data_text">すべての測定値（CSV）と設定を 1 つの ZIP ファイルとしてエクスポートします（例: Google ドライブ、メール、新しいスマートフォン用のバックアップ）。アクセス情報は含まれません。</string>
+    <string name="data_share">エクスポートして共有</string>
+    <string name="data_save">ファイルとして保存</string>
+    <string name="data_import">インポート</string>
+    <string name="data_import_q">データをインポートしますか？</string>
+    <string name="data_import_text">ファイルの測定値は履歴に追加され、部屋の説明・表示・言語はファイルの内容に置き換えられます。</string>
+    <string name="data_busy">お待ちください …（履歴が長いと時間がかかります）</string>
+    <string name="data_exported">エクスポートを保存しました。</string>
+    <string name="data_imported">インポートしました: 測定値 %d 件と設定。</string>
+    <string name="data_import_failed">PureHeat のエクスポートファイルではありません。</string>
+    <string name="data_failed">うまくいきませんでした。もう一度お試しください。</string>
+    <string name="data_share_chooser">PureHeat のエクスポートを共有</string>
+    <string name="help_data_title">エクスポートとインポート</string>
+    <string name="help_data_text">「情報」→「データ」で、すべての測定値（表計算ソフトや分析で読める CSV 表）を設定と一緒に 1 つの ZIP ファイルとしてエクスポートできます。「エクスポートして共有」は Android の共有メニュー（Google ドライブ、メールなど）を開き、「ファイルとして保存」では Google ドライブを含むフォルダを選べます。「インポート」はそのようなファイルを読み込みます（例: 新しいスマートフォン）。測定値は追加され、設定は置き換えられます。エクスポートには部屋名が含まれますが、アクセス情報は含まれません。機種変更後はアクセスポイントを再度接続してください。</string>
 </resources>
