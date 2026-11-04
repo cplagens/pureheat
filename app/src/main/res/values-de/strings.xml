@@ -399,4 +399,15 @@
     <string name="data_share_chooser">PureHeat-Export teilen</string>
     <string name="help_data_title">Export und Import</string>
     <string name="help_data_text">Unter „Info“ → „Daten“ exportierst du alle Messwerte (als CSV-Tabellen, lesbar in Tabellenkalkulationen oder für Auswertungen) zusammen mit deinen Einstellungen als eine ZIP-Datei: „Exportieren und teilen“ öffnet das Teilen-Menü von Android (z. B. Google Drive, Mail), „Als Datei speichern“ lässt dich einen Ordner wählen, auch auf Google Drive. „Importieren“ liest eine solche Datei ein, z. B. auf einem neuen Telefon: Messwerte werden ergänzt, Einstellungen ersetzt. Der Export enthält Raumnamen, aber keine Zugangsdaten – nach einem Umzug verbindest du den Access Point neu.</string>
+
+    <string name="profile_describe_open">✨ Aus Beschreibung erstellen</string>
+    <string name="profile_describe_title">Woche beschreiben</string>
+    <string name="profile_describe_hint">Schreib oder diktiere, wann es wie warm sein soll, z. B. „Werktags 6–8 und 17–22 Uhr 21 °C, am Wochenende 8–23 Uhr 21 °C, sonst 17 °C“. Die App füllt die Woche unten als Vorschlag – gespeichert wird erst, wenn du prüfst und „Speichern“ tippst.</string>
+    <string name="profile_describe_go">Vorschlag erstellen</string>
+    <string name="profile_describe_nothing">Keine Zeiten oder Temperaturen erkannt. Versuch es z. B. mit „Montag bis Freitag 6 bis 8 Uhr 21 °C“.</string>
+    <string name="profile_describe_by_ai">Vorschlag mit KI auf dem Gerät erstellt – prüfe die Tage unten und speichere.</string>
+    <string name="profile_describe_by_keywords">Vorschlag per Stichwörtern erstellt (nur Deutsch und Englisch) – prüfe die Tage unten und speichere.</string>
+    <string name="profile_describe_unchanged">Die Beschreibung entspricht dem aktuellen Profil – nichts zu ändern.</string>
+    <string name="help_describe_title">Heizprofil aus einer Beschreibung</string>
+    <string name="help_describe_text">Im Heizprofil kannst du mit „Aus Beschreibung erstellen“ die Woche in eigenen Worten schreiben oder diktieren, z. B. „Werktags 6–8 und 17–22 Uhr 21 °C, am Wochenende 8–23 Uhr, sonst 17 °C“. Die KI auf dem Gerät (ohne sie: Stichworterkennung für Deutsch und Englisch) macht daraus Heizphasen; Tage, die du nicht erwähnst, bleiben unverändert. Der Vorschlag erscheint in der Wochenansicht – prüfen, bei Bedarf anpassen und wie gewohnt speichern, mit Liste der Änderungen und Sicherung.</string>
 </resources>

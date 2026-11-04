@@ -409,4 +409,16 @@
     <string name="data_share_chooser">Share PureHeat export</string>
     <string name="help_data_title">Export and import</string>
     <string name="help_data_text">Under “Info” → “Data” you can export all measurements (as CSV tables, readable in spreadsheets or for analyses) together with your settings as one ZIP file: “Export and share” opens the Android share sheet (e.g. Google Drive, mail), “Save as file” lets you pick a folder, including Google Drive. “Import” reads such a file, e.g. on a new phone: measurements are added, settings replaced. The export contains room names but no access data – after a move to a new phone you connect the access point again.</string>
+
+    <!-- Heating profile from a text description -->
+    <string name="profile_describe_open">✨ Create from description</string>
+    <string name="profile_describe_title">Describe the week</string>
+    <string name="profile_describe_hint">Write or dictate when it should be how warm, e.g. “Weekdays 6–8 and 17–22 at 21 °C, weekend 8–23 at 21 °C, otherwise 17 °C”. The app fills the week below as a suggestion – nothing is saved until you check it and tap “Save”.</string>
+    <string name="profile_describe_go">Create suggestion</string>
+    <string name="profile_describe_nothing">No times or temperatures recognised. Try e.g. “Monday to Friday 6 to 8 at 21 °C”.</string>
+    <string name="profile_describe_by_ai">Suggestion created with on-device AI – check the days below and save.</string>
+    <string name="profile_describe_by_keywords">Suggestion created by keywords (English and German only) – check the days below and save.</string>
+    <string name="profile_describe_unchanged">The description matches the current profile – nothing to change.</string>
+    <string name="help_describe_title">Heating profile from a description</string>
+    <string name="help_describe_text">In the heating profile screen, “Create from description” lets you write or dictate the week in your own words, e.g. “Weekdays 6–8 and 17–22 at 21 °C, weekend 8–23, otherwise 17 °C”. The on-device AI (without it: keyword recognition for English and German) turns it into heating phases; days you don\'t mention stay as they are. The suggestion appears in the week view – check it, adjust it if needed and save as usual, with the list of changes and the backup.</string>
 </resources>

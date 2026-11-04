@@ -234,7 +234,8 @@ fun RoomDetailScreen(
             if (shown(DetailSection.PROPERTIES)) item { PropertiesCard(description?.properties, onOpenProperties) }
             if (shown(DetailSection.MODEL)) item { ModelCard(insight) }
             if (shown(DetailSection.PROBE)) item { ProbeCard(probe) }
-            if (shown(DetailSection.WINDOWS)) {
+            // A room described as windowless has nothing to detect.
+            if (shown(DetailSection.WINDOWS) && description?.properties?.hasWindows != false) {
                 item {
                     Text(stringResource(R.string.windows_title), style = MaterialTheme.typography.titleMedium)
                     if (state.windows.isEmpty()) {

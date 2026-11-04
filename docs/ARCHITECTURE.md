@@ -61,6 +61,9 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `model/RoomInsight.kt` | Modell + Spar/Komfort + Außentemperatur je Raum, mit fertigen Vorhersagen |
 | `room/RoomProperties.kt` | Raumeigenschaften (Fläche, Fenster + Richtung, Verglasung, Außenwände, Lage, Bodenbelag, …), nachsichtiges JSON-Lesen, `RoomPriors` (Startwerte k/P/Totzeit aus den Eigenschaften) |
 | `room/KeywordExtractor.kt` | Reiner Stichwort-Fallback (Deutsch/Englisch): Freitext → `RoomProperties` |
+| `ai/OnDeviceAi.kt` | Gemini Nano über ML Kit: Verfügbarkeit, System-Download, JSON-Antwort (geteilt) |
+| `profile/ProfileFromText.kt` / `ProfileDescriber.kt` | Text → Heizprofil-Vorschlag (Nano oder Stichwörter), Validierung auf Raster/Grenzen |
+| `export/Csv.kt` / `DataTransfer.kt` | Export (ZIP mit CSV + settings.json) und Import |
 | `room/RoomDescriber.kt` | Gemini Nano auf dem Gerät (ML Kit Prompt API) + Stichwörter; stößt ggf. den System-Download an |
 | `room/RoomDescriptionStore.kt` | Text + Eigenschaften je Raum in SharedPreferences `room_descriptions` |
 | **ui/** | |

@@ -86,6 +86,19 @@ class RoomPropertiesTest {
     }
 
     @Test
+    fun configurationLimitsDetection() {
+        // Windows: only an explicit "0" switches the detection off; unknown keeps it on.
+        assertTrue(RoomProperties().hasWindows)
+        assertTrue(!RoomProperties(windowCount = 0).hasWindows)
+        assertTrue(KeywordExtractor.extract("keine Fenster, Fliesen").let { !it.hasWindows })
+        // Bathing: bathroom by default yes, but not if shower and bathtub were both answered "no".
+        assertTrue(RoomProperties(usage = Usage.BATH).hasBathing)
+        assertTrue(!RoomProperties(usage = Usage.BATH, shower = false, bathtub = false).hasBathing)
+        assertTrue(RoomProperties(usage = Usage.BEDROOM, shower = true).hasBathing)
+        assertTrue(!RoomProperties(usage = Usage.KITCHEN).hasBathing)
+    }
+
+    @Test
     fun showerAndBathtub() {
         val de = KeywordExtractor.extract("Bad mit Dusche und Badewanne, 8 qm")
         assertEquals(true, de.shower)

@@ -170,6 +170,23 @@ Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zei
      Modell sie nutzen kann.
   4. Bei vielen Räumen gemeinsame Größen (Gebäude, Verglasung) einmal für alle eingeben.
 
+## Raumkonfiguration begrenzt Erkennung, Heizprofil aus Text (2026-11-04)
+
+- `RoomProperties.hasWindows` (nur ausdrücklich „0 Fenster“ = nein): keine Fenster-offen-Erkennung
+  in Übersicht, Detailansicht, Raummodell (`RoomInsight.forAllRooms(properties)`) und Probelauf-
+  Auswertung. `hasBathing`: Dusche/Wanne ja → ja; beide ausdrücklich nein → nein; sonst Bad-Nutzung.
+  Die Übersicht rechnet bei geänderter Beschreibung sofort neu (Flow kombiniert).
+  Das Ausklammern von Feuchte-Sprüngen aus dem Modell bleibt für alle Räume (Kochen usw.).
+- **Heizprofil aus Text:** Karte „Aus Beschreibung erstellen“ im Heizprofil (tippen/diktieren).
+  `data/profile/ProfileDescriber` → Gemini Nano (JSON `rules[days, base, periods]`), sonst
+  `ProfileFromText.fromKeywords` (Deutsch/Englisch: Werktags/Wochenende/täglich, Tagesbereiche
+  „Mo-Fr“, kurze Tagesnamen nur groß + vor Uhrzeit, Zeitbereiche inkl. am/pm, „sonst/nachts“ =
+  Grundtemperatur der Tage im Satz). `ProfileFromText.apply` rastet auf 15 min/0,5 °C, Raumgrenzen,
+  schneidet Überlappungen, max. 6 Phasen; nicht genannte Tage bleiben. Ergebnis landet nur im
+  Editor – Speichern über den normalen bestätigten Weg. Getestet in `ProfileFromTextTest`.
+- Gemeinsamer Nano-Zugang: `data/ai/OnDeviceAi` (Status, Download, JSON-Antwort), genutzt von
+  `RoomDescriber` und `ProfileDescriber`.
+
 ## Export/Import, Ziel-API 36, Play-Store-Anleitung (2026-11-04)
 
 - **Export:** Info → Daten → „Exportieren und teilen“ (ZIP in `cache/exports`, `FileProvider`,

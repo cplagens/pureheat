@@ -11,11 +11,14 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
 - Fertig: Dashboard (Reihenfolge), Verlauf (2 Jahre), Detailansicht, Heizprofile (bearbeiten,
   umbenennen), Raummodell, Fenster- und Duschen/Baden-Erkennung, Prognose, Probelauf, Hilfe,
   12 Sprachen, Raumeigenschaften (Gemini Nano), **Export/Import** (Info → Daten), Ziel-API 36,
-  Open-Source-Dateien.
+  Open-Source-Dateien, **Heizprofil aus Text/Diktat** (Nano oder Stichwörter, nur Vorschlag),
+  Raumbeschreibung begrenzt Erkennung (kein Fenster → keine Fenster-offen-Erkennung; Bad ohne
+  Dusche/Wanne → kein Duschen/Baden).
 - Play-Store-Anleitung: `PLAY_STORE_GUIDE.md` (lokal, in `.gitignore`).
 
 ## Nächste Aufgaben
-1. **Am Gerät prüfen**: Export teilen/als Datei speichern, Import der eigenen Datei,
+1. **Am Gerät prüfen**: Heizprofil aus Beschreibung (Nano-Antwort im Debug-Log `Nano:` ansehen,
+   ggf. Prompt nachschärfen), Bad ohne Fenster-Markierung, Export teilen/als Datei speichern, Import der eigenen Datei,
    Profil umbenennen (undokumentierter Weg – Ergebnis in FINDINGS), Reihenfolge-Dialog,
    Duschen/Baden im Bad, alles mit targetSdk 36.
 2. Vorbereitung Play Store (siehe Checkliste in `PLAY_STORE_GUIDE.md`): Release-Signatur aus

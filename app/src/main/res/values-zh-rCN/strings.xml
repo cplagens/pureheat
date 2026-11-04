@@ -380,4 +380,15 @@
     <string name="data_share_chooser">分享 PureHeat 导出</string>
     <string name="help_data_title">导出和导入</string>
     <string name="help_data_text">在“信息”→“数据”中，可将所有测量值（CSV 表格，可在电子表格中查看或用于分析）连同设置导出为一个 ZIP 文件：“导出并分享”会打开 Android 分享菜单（例如 Google 云端硬盘、邮件），“保存为文件”可选择文件夹，包括 Google 云端硬盘。“导入”可读取这样的文件，例如在新手机上：测量值会被添加，设置会被替换。导出文件包含房间名称，但不包含访问数据 – 换手机后请重新连接接入点。</string>
+
+    <string name="profile_describe_open">✨ 根据描述创建</string>
+    <string name="profile_describe_title">描述一周</string>
+    <string name="profile_describe_hint">输入或语音说明何时需要多少温度，例如“工作日 6–8 点和 17–22 点 21 °C，周末 8–23 点 21 °C，其他时间 17 °C”。应用会在下方的周视图中填入建议 – 在您检查并点按“保存”之前不会保存任何内容。</string>
+    <string name="profile_describe_go">生成建议</string>
+    <string name="profile_describe_nothing">未识别到时间或温度。请尝试例如“周一至周五 6 点到 8 点 21 °C”。</string>
+    <string name="profile_describe_by_ai">已用设备端 AI 生成建议 – 请检查下方各天并保存。</string>
+    <string name="profile_describe_by_keywords">已按关键词生成建议（仅限德语和英语） – 请检查下方各天并保存。</string>
+    <string name="profile_describe_unchanged">描述与当前计划一致 – 无需更改。</string>
+    <string name="help_describe_title">根据描述生成供暖计划</string>
+    <string name="help_describe_text">在供暖计划中，“根据描述创建”可让您用自己的话输入或语音说明一周，例如“工作日 6–8 点和 17–22 点 21 °C，周末 8–23 点，其他时间 17 °C”。设备端 AI（没有时：德语和英语关键词识别）会将其转换为供暖阶段；未提及的日子保持不变。建议会显示在周视图中 – 请检查、按需调整，并像平常一样保存（带更改列表和备份）。</string>
 </resources>

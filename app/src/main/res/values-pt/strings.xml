@@ -386,4 +386,15 @@
     <string name="data_share_chooser">Partilhar exportação do PureHeat</string>
     <string name="help_data_title">Exportar e importar</string>
     <string name="help_data_text">Em «Info» → «Dados» exporta todas as medições (como tabelas CSV, legíveis numa folha de cálculo ou para análises) juntamente com as definições num ficheiro ZIP: «Exportar e partilhar» abre o menu de partilha do Android (p. ex. Google Drive, e-mail), «Guardar como ficheiro» permite escolher uma pasta, também no Google Drive. «Importar» lê um ficheiro destes, p. ex. num telemóvel novo: as medições são adicionadas e as definições substituídas. A exportação contém os nomes das divisões, mas não os dados de acesso – depois de mudar de telemóvel, ligue novamente o ponto de acesso.</string>
+
+    <string name="profile_describe_open">✨ Criar a partir de uma descrição</string>
+    <string name="profile_describe_title">Descrever a semana</string>
+    <string name="profile_describe_hint">Escreva ou dite quando deve estar a que temperatura, p. ex. «Dias úteis 6–8 e 17–22 a 21 °C, fim de semana 8–23 a 21 °C, caso contrário 17 °C». A app preenche a semana abaixo como sugestão – nada é guardado até verificar e tocar em «Guardar».</string>
+    <string name="profile_describe_go">Criar sugestão</string>
+    <string name="profile_describe_nothing">Nenhuma hora ou temperatura reconhecida. Experimente p. ex. «Segunda a sexta das 6 às 8 a 21 °C».</string>
+    <string name="profile_describe_by_ai">Sugestão criada com IA no dispositivo – verifique os dias abaixo e guarde.</string>
+    <string name="profile_describe_by_keywords">Sugestão criada por palavras-chave (só alemão e inglês) – verifique os dias abaixo e guarde.</string>
+    <string name="profile_describe_unchanged">A descrição corresponde ao perfil atual – nada a alterar.</string>
+    <string name="help_describe_title">Perfil a partir de uma descrição</string>
+    <string name="help_describe_text">No perfil de aquecimento, «Criar a partir de uma descrição» permite escrever ou ditar a semana por palavras suas, p. ex. «Dias úteis 6–8 e 17–22 a 21 °C, fim de semana 8–23, caso contrário 17 °C». A IA no dispositivo (sem ela: reconhecimento por palavras-chave em alemão e inglês) transforma isso em fases de aquecimento; os dias não mencionados ficam como estão. A sugestão aparece na vista semanal – verifique, ajuste se necessário e guarde como habitualmente, com a lista de alterações e a cópia de segurança.</string>
 </resources>

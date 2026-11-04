@@ -4,6 +4,11 @@ Neueste Version oben. Versionen folgen `versionName` in `app/build.gradle.kts`.
 
 ## Unveröffentlicht
 
+- **Heizprofil aus einer Beschreibung:** „Aus Beschreibung erstellen“ – Woche in eigenen Worten
+  schreiben oder diktieren, die KI auf dem Gerät macht daraus einen Vorschlag zum Prüfen und Speichern.
+- Die Raumbeschreibung zählt jetzt: Räume ohne Fenster bekommen keine Fenster-offen-Erkennung,
+  Bäder ohne Dusche und Badewanne keine Duschen/Baden-Erkennung.
+
 - **Export und Import:** alle Messwerte (CSV) und Einstellungen als ZIP – teilen (z. B. Google
   Drive, Mail) oder als Datei speichern; Import z. B. auf einem neuen Telefon (Info → Daten).
 - Ziel-API Android 16 (API 36), wie von Google Play seit 31.08.2026 verlangt.

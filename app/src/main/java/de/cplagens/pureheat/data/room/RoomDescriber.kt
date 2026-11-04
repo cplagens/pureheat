@@ -5,19 +5,7 @@
  */
 package de.cplagens.pureheat.data.room
 
-import android.util.Log
-import com.google.mlkit.genai.common.DownloadStatus
-import com.google.mlkit.genai.common.FeatureStatus
-import com.google.mlkit.genai.prompt.Generation
-import com.google.mlkit.genai.prompt.GenerativeModel
-import com.google.mlkit.genai.prompt.TextPart
-import com.google.mlkit.genai.prompt.generateContentRequest
-import de.cplagens.pureheat.BuildConfig
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.withTimeoutOrNull
+import de.cplagens.pureheat.data.ai.OnDeviceAi
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.jsonObject
 
@@ -38,65 +26,26 @@ data class Extraction(val properties: RoomProperties, val source: ExtractionSour
  * device where available (ML Kit Prompt API, nothing leaves the phone) and the [KeywordExtractor]
  * otherwise and for anything the model missed. Must run while the app is in the foreground.
  */
-class RoomDescriber {
-    private val model: GenerativeModel by lazy { Generation.getClient() }
-    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Default)
-    @Volatile private var downloading = false
+class RoomDescriber(private val ai: OnDeviceAi = OnDeviceAi()) {
 
     suspend fun extract(text: String): Extraction {
         val keywords = KeywordExtractor.extract(text)
-        val status = runCatching { model.checkStatus() }.getOrElse { FeatureStatus.UNAVAILABLE }
-        return when (status) {
-            FeatureStatus.AVAILABLE -> {
-                val ai = runCatching { withTimeoutOrNull(AI_TIMEOUT_MS) { askModel(text) } }
-                    .onFailure { if (BuildConfig.DEBUG) Log.d(TAG, "Nano failed: $it") }
-                    .getOrNull()
+        return when (ai.availability()) {
+            OnDeviceAi.Availability.AVAILABLE -> {
+                val model = ai.askJson(PROMPT + text.take(MAX_INPUT_CHARS), maxOutputTokens = 300)
+                    ?.let { runCatching { RoomProperties.fromJson(lenient.parseToJsonElement(it).jsonObject) }.getOrNull() }
                 // Keyword hits are exact, tested German/English patterns and win (e.g. Nano reads
                 // "1. Stock" as ground floor); the model fills in everything else and other languages.
-                if (ai != null) Extraction(keywords.mergedWith(ai), ExtractionSource.AI) else Extraction(keywords, ExtractionSource.KEYWORDS)
+                if (model != null) Extraction(keywords.mergedWith(model), ExtractionSource.AI) else Extraction(keywords, ExtractionSource.KEYWORDS)
             }
-            FeatureStatus.DOWNLOADABLE, FeatureStatus.DOWNLOADING -> {
-                if (status == FeatureStatus.DOWNLOADABLE) startDownload()
-                Extraction(keywords, ExtractionSource.KEYWORDS_AI_DOWNLOADING)
-            }
-            else -> Extraction(keywords, ExtractionSource.KEYWORDS)
+            OnDeviceAi.Availability.DOWNLOADING -> Extraction(keywords, ExtractionSource.KEYWORDS_AI_DOWNLOADING)
+            OnDeviceAi.Availability.UNAVAILABLE -> Extraction(keywords, ExtractionSource.KEYWORDS)
         }
     }
 
-    private suspend fun askModel(text: String): RoomProperties? {
-        val response = model.generateContent(
-            generateContentRequest(TextPart(PROMPT + text.take(MAX_INPUT_CHARS))) {
-                temperature = 0f
-                topK = 1
-                maxOutputTokens = 300
-            },
-        )
-        val raw = response.candidates.firstOrNull()?.text ?: return null
-        if (BuildConfig.DEBUG) Log.d(TAG, "Nano: $raw")
-        val json = raw.substringAfter('{', "").substringBeforeLast('}', "").takeIf { it.isNotBlank() } ?: return null
-        return runCatching { RoomProperties.fromJson(lenient.parseToJsonElement("{$json}").jsonObject) }.getOrNull()
-    }
-
-    /** The system (AICore) downloads the shared model once; the next analysis can use it. */
-    private fun startDownload() {
-        if (downloading) return
-        downloading = true
-        scope.launch {
-            runCatching {
-                model.download().collect { s ->
-                    if (s is DownloadStatus.DownloadCompleted || s is DownloadStatus.DownloadFailed) downloading = false
-                }
-            }.onFailure { downloading = false }
-        }
-    }
-
-    fun close() {
-        runCatching { model.close() }
-    }
+    fun close() = ai.close()
 
     private companion object {
-        const val TAG = "PureHeat"
-        const val AI_TIMEOUT_MS = 30_000L
         const val MAX_INPUT_CHARS = 2_000
         val lenient = Json { isLenient = true }
 

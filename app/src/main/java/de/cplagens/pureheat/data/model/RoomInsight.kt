@@ -6,6 +6,7 @@
 package de.cplagens.pureheat.data.model
 
 import de.cplagens.pureheat.data.history.BathingDetector
+import de.cplagens.pureheat.data.room.RoomProperties
 
 import de.cplagens.pureheat.data.history.HistoryAnalysis
 import de.cplagens.pureheat.data.history.RoomSample
@@ -44,10 +45,12 @@ data class RoomInsight(
             weather: List<WeatherSample>,
             now: Long,
             forecastOutside: Double? = null,
+            /** What the user told about each room; rooms without windows get no window detection. */
+            properties: Map<String, RoomProperties> = emptyMap(),
         ): Map<String, RoomInsight> {
             val outside = forecastOutside ?: weather.lastOrNull { it.outsideTemperature != null }?.outsideTemperature
-            return samples.groupBy { it.roomId }.mapValues { (_, s) ->
-                val windows = WindowDetector.detect(s)
+            return samples.groupBy { it.roomId }.mapValues { (id, s) ->
+                val windows = if (properties[id]?.hasWindows == false) emptyList() else WindowDetector.detect(s)
                 // An open window is not the room's normal heat loss, hot water not its heating: leave those times out.
                 val clean = BathingDetector.withoutBathingTimes(WindowDetector.withoutWindowTimes(s, windows), BathingDetector.detect(s))
                 RoomInsight(

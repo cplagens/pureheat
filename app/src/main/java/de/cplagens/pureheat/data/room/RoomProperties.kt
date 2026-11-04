@@ -51,8 +51,21 @@ data class RoomProperties(
 ) {
     val isEmpty: Boolean get() = this == RoomProperties()
 
-    /** Showering/bathing is shown for this room (detected from humidity, see BathingDetector). */
-    val hasBathing: Boolean get() = bathtub == true || shower == true || usage == Usage.BATH
+    /**
+     * The room may have a window that can be opened. Only an explicit "0 windows" says no – then a
+     * temperature drop is never taken for an open window (unknown = may have windows).
+     */
+    val hasWindows: Boolean get() = windowCount != 0
+
+    /**
+     * Showering/bathing can happen here (detected from humidity, see BathingDetector): a shower or
+     * bathtub, or a bathroom unless both were explicitly answered with "no" (e.g. a guest WC).
+     */
+    val hasBathing: Boolean get() = when {
+        bathtub == true || shower == true -> true
+        bathtub == false && shower == false -> false
+        else -> usage == Usage.BATH
+    }
 
     /** Fields set here win; the rest comes from [other] (AI result first, keywords as fallback). */
     fun mergedWith(other: RoomProperties) = RoomProperties(

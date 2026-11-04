@@ -383,4 +383,15 @@
     <string name="data_share_chooser">PureHeat dışa aktarımını paylaş</string>
     <string name="help_data_title">Dışa ve içe aktarma</string>
     <string name="help_data_text">“Bilgi” → “Veriler” altında tüm ölçümleri (elektronik tablolarda veya analizlerde okunabilen CSV tabloları olarak) ayarlarınızla birlikte tek bir ZIP dosyası olarak dışa aktarırsınız: “Dışa aktar ve paylaş” Android paylaşım menüsünü açar (örn. Google Drive, e-posta), “Dosya olarak kaydet” Google Drive dahil bir klasör seçmenizi sağlar. “İçe aktar” böyle bir dosyayı okur, örn. yeni bir telefonda: ölçümler eklenir, ayarlar değiştirilir. Dışa aktarım oda adlarını içerir ama erişim bilgilerini içermez – telefon değişikliğinden sonra erişim noktasını yeniden bağlayın.</string>
+
+    <string name="profile_describe_open">✨ Açıklamadan oluştur</string>
+    <string name="profile_describe_title">Haftayı tanımla</string>
+    <string name="profile_describe_hint">Ne zaman ne kadar sıcak olması gerektiğini yazın veya dikte edin, örn. “Hafta içi 6–8 ve 17–22 arası 21 °C, hafta sonu 8–23 arası 21 °C, diğer zamanlarda 17 °C”. Uygulama aşağıdaki haftayı öneri olarak doldurur – siz kontrol edip “Kaydet“e dokunana kadar hiçbir şey kaydedilmez.</string>
+    <string name="profile_describe_go">Öneri oluştur</string>
+    <string name="profile_describe_nothing">Saat veya sıcaklık tanınamadı. Örn. “Pazartesiden cumaya 6 ile 8 arası 21 °C” deneyin.</string>
+    <string name="profile_describe_by_ai">Öneri cihaz üzerindeki yapay zekâ ile oluşturuldu – aşağıdaki günleri kontrol edip kaydedin.</string>
+    <string name="profile_describe_by_keywords">Öneri anahtar kelimelerle oluşturuldu (yalnızca Almanca ve İngilizce) – aşağıdaki günleri kontrol edip kaydedin.</string>
+    <string name="profile_describe_unchanged">Açıklama mevcut profille aynı – değiştirilecek bir şey yok.</string>
+    <string name="help_describe_title">Açıklamadan ısıtma profili</string>
+    <string name="help_describe_text">Isıtma profilinde “Açıklamadan oluştur” ile haftayı kendi sözlerinizle yazabilir veya dikte edebilirsiniz, örn. “Hafta içi 6–8 ve 17–22 arası 21 °C, hafta sonu 8–23, diğer zamanlarda 17 °C”. Cihaz üzerindeki yapay zekâ (o olmadan: Almanca ve İngilizce için anahtar kelime tanıma) bunu ısıtma evrelerine çevirir; bahsetmediğiniz günler olduğu gibi kalır. Öneri haftalık görünümde görünür – kontrol edin, gerekirse düzeltin ve değişiklik listesi ve yedekle her zamanki gibi kaydedin.</string>
 </resources>

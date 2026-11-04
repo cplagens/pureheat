@@ -386,4 +386,15 @@
     <string name="data_share_chooser">Condividi esportazione PureHeat</string>
     <string name="help_data_title">Esportazione e importazione</string>
     <string name="help_data_text">In «Info» → «Dati» esporti tutte le misure (come tabelle CSV, leggibili in un foglio di calcolo o per analisi) insieme alle impostazioni in un file ZIP: «Esporta e condividi» apre il menu di condivisione di Android (ad es. Google Drive, e-mail), «Salva come file» ti fa scegliere una cartella, anche su Google Drive. «Importa» legge un file di questo tipo, ad es. su un nuovo telefono: le misure vengono aggiunte, le impostazioni sostituite. L’esportazione contiene i nomi delle stanze ma nessun dato di accesso: dopo il cambio di telefono ricollega l’access point.</string>
+
+    <string name="profile_describe_open">✨ Crea da una descrizione</string>
+    <string name="profile_describe_title">Descrivi la settimana</string>
+    <string name="profile_describe_hint">Scrivi o detta quando deve esserci quale temperatura, ad es. «Feriali 6–8 e 17–22 a 21 °C, weekend 8–23 a 21 °C, altrimenti 17 °C». L’app compila la settimana qui sotto come proposta: nulla viene salvato finché non controlli e tocchi «Salva».</string>
+    <string name="profile_describe_go">Crea proposta</string>
+    <string name="profile_describe_nothing">Nessun orario o temperatura riconosciuti. Prova ad es. «Da lunedì a venerdì dalle 6 alle 8 a 21 °C».</string>
+    <string name="profile_describe_by_ai">Proposta creata con l’IA sul dispositivo – controlla i giorni qui sotto e salva.</string>
+    <string name="profile_describe_by_keywords">Proposta creata tramite parole chiave (solo tedesco e inglese) – controlla i giorni qui sotto e salva.</string>
+    <string name="profile_describe_unchanged">La descrizione corrisponde al profilo attuale – niente da cambiare.</string>
+    <string name="help_describe_title">Profilo da una descrizione</string>
+    <string name="help_describe_text">Nel profilo di riscaldamento, «Crea da una descrizione» ti permette di scrivere o dettare la settimana con parole tue, ad es. «Feriali 6–8 e 17–22 a 21 °C, weekend 8–23, altrimenti 17 °C». L’IA sul dispositivo (senza: riconoscimento per parole chiave in tedesco e inglese) la trasforma in fasi di riscaldamento; i giorni non menzionati restano invariati. La proposta compare nella vista settimanale: controllala, modificala se serve e salvala come al solito, con l’elenco delle modifiche e il backup.</string>
 </resources>

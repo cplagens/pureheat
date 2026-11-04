@@ -49,6 +49,7 @@ fun HelpScreen(onBack: () -> Unit, modifier: Modifier = Modifier) {
         R.string.help_props_title to R.string.help_props_text,
         R.string.help_bathing_title to R.string.help_bathing_text,
         R.string.help_profiles_title to R.string.help_profiles_text,
+        R.string.help_describe_title to R.string.help_describe_text,
         R.string.help_data_title to R.string.help_data_text,
         R.string.help_battery_title to R.string.help_battery_text,
         R.string.help_language_title to R.string.help_language_text,

@@ -75,17 +75,26 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         }
         viewModelScope.launch {
             var insightsAt = 0L
-            repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS).collect { samples ->
+            var descriptionsSeen = repository.descriptions.all.value
+            kotlinx.coroutines.flow.combine(
+                repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS),
+                repository.descriptions.all,
+            ) { samples, descriptions -> samples to descriptions }.collect { (samples, descriptions) ->
                 val history = samples.groupBy { it.roomId }
                     .mapValues { (id, s) ->
-                        val bathing = if (repository.descriptions.get(id)?.properties?.hasBathing == true) BathingDetector.detect(s) else emptyList()
-                        RoomHistory(s, HistoryAnalysis.stalledHeating(s), WindowDetector.detect(s), bathing)
+                        // The room description decides what can happen there: no windows → no open window.
+                        val props = descriptions[id]?.properties
+                        val windows = if (props?.hasWindows == false) emptyList() else WindowDetector.detect(s)
+                        val bathing = if (props?.hasBathing == true) BathingDetector.detect(s) else emptyList()
+                        RoomHistory(s, HistoryAnalysis.stalledHeating(s), windows, bathing)
                     }
                 _ui.update { (it as? UiState.Dashboard)?.copy(history = history) ?: it }
                 // The model uses up to 60 days of data and changes slowly: refit at most every 30 min.
                 val now = System.currentTimeMillis()
-                if (now - insightsAt >= INSIGHTS_INTERVAL_MS) {
+                // … or right away when a room description changed (it affects window detection and priors).
+                if (now - insightsAt >= INSIGHTS_INTERVAL_MS || descriptions !== descriptionsSeen) {
                     insightsAt = now
+                    descriptionsSeen = descriptions
                     val insights = runCatching { repository.roomInsights(now) }.getOrDefault(emptyMap())
                     _ui.update { (it as? UiState.Dashboard)?.copy(insights = insights) ?: it }
                 }

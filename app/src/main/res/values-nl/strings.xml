@@ -383,4 +383,15 @@
     <string name="data_share_chooser">PureHeat-export delen</string>
     <string name="help_data_title">Exporteren en importeren</string>
     <string name="help_data_text">Onder ‘Info’ → ‘Gegevens’ exporteer je alle meetwaarden (als CSV-tabellen, leesbaar in een spreadsheet of voor analyses) samen met je instellingen als één ZIP-bestand: ‘Exporteren en delen’ opent het deelmenu van Android (bijv. Google Drive, mail), met ‘Opslaan als bestand’ kies je een map, ook op Google Drive. ‘Importeren’ leest zo’n bestand in, bijv. op een nieuwe telefoon: meetwaarden worden toegevoegd, instellingen vervangen. De export bevat kamernamen maar geen toegangsgegevens – na een overstap verbind je het accesspoint opnieuw.</string>
+
+    <string name="profile_describe_open">✨ Maken uit beschrijving</string>
+    <string name="profile_describe_title">Week beschrijven</string>
+    <string name="profile_describe_hint">Schrijf of dicteer wanneer het hoe warm moet zijn, bijv. ‘Werkdagen 6–8 en 17–22 uur 21 °C, weekend 8–23 uur 21 °C, anders 17 °C’. De app vult de week hieronder als voorstel – er wordt pas opgeslagen als je het controleert en op ‘Opslaan’ tikt.</string>
+    <string name="profile_describe_go">Voorstel maken</string>
+    <string name="profile_describe_nothing">Geen tijden of temperaturen herkend. Probeer bijv. ‘Maandag tot vrijdag 6 tot 8 uur 21 °C’.</string>
+    <string name="profile_describe_by_ai">Voorstel gemaakt met AI op het apparaat – controleer de dagen hieronder en sla op.</string>
+    <string name="profile_describe_by_keywords">Voorstel gemaakt via trefwoorden (alleen Duits en Engels) – controleer de dagen hieronder en sla op.</string>
+    <string name="profile_describe_unchanged">De beschrijving komt overeen met het huidige profiel – niets te wijzigen.</string>
+    <string name="help_describe_title">Verwarmingsprofiel uit een beschrijving</string>
+    <string name="help_describe_text">In het verwarmingsprofiel kun je met ‘Maken uit beschrijving’ de week in je eigen woorden schrijven of dicteren, bijv. ‘Werkdagen 6–8 en 17–22 uur 21 °C, weekend 8–23 uur, anders 17 °C’. De AI op het apparaat (zonder: trefwoordherkenning voor Duits en Engels) maakt daar verwarmingsfasen van; dagen die je niet noemt, blijven zoals ze zijn. Het voorstel verschijnt in de weekweergave – controleren, zo nodig aanpassen en zoals gewoonlijk opslaan, met lijst van wijzigingen en back-up.</string>
 </resources>

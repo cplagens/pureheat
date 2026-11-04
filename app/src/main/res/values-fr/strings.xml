@@ -386,4 +386,15 @@
     <string name="data_share_chooser">Partager l’export PureHeat</string>
     <string name="help_data_title">Export et import</string>
     <string name="help_data_text">Sous « Info » → « Données », vous exportez toutes les mesures (en tableaux CSV, lisibles dans un tableur ou pour des analyses) avec vos réglages dans un fichier ZIP : « Exporter et partager » ouvre le menu de partage d’Android (p. ex. Google Drive, e-mail), « Enregistrer comme fichier » vous laisse choisir un dossier, y compris sur Google Drive. « Importer » lit un tel fichier, p. ex. sur un nouveau téléphone : les mesures sont ajoutées, les réglages remplacés. L’export contient les noms des pièces mais aucun identifiant – après un changement de téléphone, reconnectez le point d’accès.</string>
+
+    <string name="profile_describe_open">✨ Créer à partir d’une description</string>
+    <string name="profile_describe_title">Décrire la semaine</string>
+    <string name="profile_describe_hint">Écrivez ou dictez quand il doit faire quelle température, p. ex. « En semaine 6–8 h et 17–22 h à 21 °C, le week-end 8–23 h à 21 °C, sinon 17 °C ». L’app remplit la semaine ci-dessous comme proposition – rien n’est enregistré avant que vous vérifiiez et touchiez « Enregistrer ».</string>
+    <string name="profile_describe_go">Créer une proposition</string>
+    <string name="profile_describe_nothing">Aucune heure ni température reconnue. Essayez p. ex. « Lundi à vendredi de 6 à 8 h à 21 °C ».</string>
+    <string name="profile_describe_by_ai">Proposition créée avec l’IA sur l’appareil – vérifiez les jours ci-dessous et enregistrez.</string>
+    <string name="profile_describe_by_keywords">Proposition créée par mots-clés (allemand et anglais uniquement) – vérifiez les jours ci-dessous et enregistrez.</string>
+    <string name="profile_describe_unchanged">La description correspond au programme actuel – rien à modifier.</string>
+    <string name="help_describe_title">Programme à partir d’une description</string>
+    <string name="help_describe_text">Dans le programme de chauffage, « Créer à partir d’une description » vous permet d’écrire ou de dicter la semaine avec vos mots, p. ex. « En semaine 6–8 h et 17–22 h à 21 °C, le week-end 8–23 h, sinon 17 °C ». L’IA sur l’appareil (sans elle : reconnaissance par mots-clés pour l’allemand et l’anglais) en fait des phases de chauffe ; les jours non mentionnés restent inchangés. La proposition apparaît dans la vue de la semaine – vérifiez, ajustez si besoin et enregistrez comme d’habitude, avec la liste des modifications et la sauvegarde.</string>
 </resources>

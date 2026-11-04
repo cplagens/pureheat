@@ -129,7 +129,7 @@ class HeatingRepository(
             val result = ProbeRun.evaluate(
                 HeatUpPrediction(p.eventTime, p.targetTemperature, p.startTemperature, p.predictedReach),
                 roomSamples,
-                WindowDetector.detect(roomSamples),
+                if (descriptions.get(p.roomId)?.properties?.hasWindows == false) emptyList() else WindowDetector.detect(roomSamples),
                 now,
             ) ?: return@mapNotNull null
             p.copy(evaluatedAt = now, actualReach = result.actualReach, outcome = result.outcome)
@@ -187,7 +187,8 @@ class HeatingRepository(
         // Predictions are about the coming hours: use the forecast for them when available.
         val forecast = dao.forecastBetween(now, now + PREDICTION_HORIZON_MS).map { it.temperature }
         val forecastOutside = forecast.takeIf { it.isNotEmpty() }?.average()
-        return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside) }
+        val properties = descriptions.all.value.mapValues { it.value.properties }
+        return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside, properties) }
     }
 
     /** Room samples of the last two recordings (newest first) for [PollingPolicy]. */

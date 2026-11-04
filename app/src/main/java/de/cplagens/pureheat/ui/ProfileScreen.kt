@@ -150,6 +150,12 @@ fun ProfileScreen(
 
         if (profile != null) {
             item {
+                DescribeProfileCard(
+                    busy = busy || state.suggesting,
+                    onSuggest = { text -> vm.suggestFromText(text, room.minTemperature, room.maxTemperature) },
+                )
+            }
+            item {
                 val range = temperatureRange(profile.days.values)
                 Card(Modifier.fillMaxWidth()) {
                     Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {

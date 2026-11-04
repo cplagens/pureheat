@@ -75,7 +75,8 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
             repository.descriptions.all,
         ) { rooms, circuits, weather, descriptions ->
             val samples = rooms.filter { it.roomId == roomId }
-            val windows = WindowDetector.detect(samples)
+            val props = descriptions[roomId]?.properties
+            val windows = if (props?.hasWindows == false) emptyList() else WindowDetector.detect(samples)
             val allBathing = BathingDetector.detect(samples)
             RoomDetailState(
                 range = r,
@@ -90,7 +91,7 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
                     weather,
                 ),
                 windows = windows,
-                bathing = if (descriptions[roomId]?.properties?.hasBathing == true) allBathing else emptyList(),
+                bathing = if (props?.hasBathing == true) allBathing else emptyList(),
             )
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), RoomDetailState())

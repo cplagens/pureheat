@@ -389,4 +389,15 @@
     <string name="data_share_chooser">Udostępnij eksport PureHeat</string>
     <string name="help_data_title">Eksport i import</string>
     <string name="help_data_text">W „Info” → „Dane” eksportujesz wszystkie pomiary (jako tabele CSV, czytelne w arkuszu kalkulacyjnym lub do analiz) razem z ustawieniami jako jeden plik ZIP: „Eksportuj i udostępnij” otwiera menu udostępniania Androida (np. Dysk Google, e-mail), „Zapisz jako plik” pozwala wybrać folder, również na Dysku Google. „Importuj” wczytuje taki plik, np. na nowym telefonie: pomiary są dodawane, ustawienia zastępowane. Eksport zawiera nazwy pomieszczeń, ale nie dane dostępowe – po zmianie telefonu połącz ponownie access point.</string>
+
+    <string name="profile_describe_open">✨ Utwórz z opisu</string>
+    <string name="profile_describe_title">Opisz tydzień</string>
+    <string name="profile_describe_hint">Napisz lub podyktuj, kiedy ma być jak ciepło, np. „W dni robocze 6–8 i 17–22 21 °C, w weekend 8–23 21 °C, poza tym 17 °C”. Aplikacja wypełni tydzień poniżej jako propozycję – nic nie zostanie zapisane, dopóki tego nie sprawdzisz i nie dotkniesz „Zapisz”.</string>
+    <string name="profile_describe_go">Utwórz propozycję</string>
+    <string name="profile_describe_nothing">Nie rozpoznano godzin ani temperatur. Spróbuj np. „Od poniedziałku do piątku od 6 do 8 21 °C”.</string>
+    <string name="profile_describe_by_ai">Propozycja utworzona przez AI na urządzeniu – sprawdź dni poniżej i zapisz.</string>
+    <string name="profile_describe_by_keywords">Propozycja utworzona po słowach kluczowych (tylko niemiecki i angielski) – sprawdź dni poniżej i zapisz.</string>
+    <string name="profile_describe_unchanged">Opis odpowiada obecnemu profilowi – nie ma nic do zmiany.</string>
+    <string name="help_describe_title">Profil grzewczy z opisu</string>
+    <string name="help_describe_text">W profilu grzewczym przycisk „Utwórz z opisu” pozwala napisać lub podyktować tydzień własnymi słowami, np. „W dni robocze 6–8 i 17–22 21 °C, w weekend 8–23, poza tym 17 °C”. AI na urządzeniu (bez niej: rozpoznawanie słów kluczowych po niemiecku i angielsku) zamienia to na fazy grzania; dni, których nie wymienisz, pozostają bez zmian. Propozycja pojawia się w widoku tygodnia – sprawdź ją, w razie potrzeby popraw i zapisz jak zwykle, z listą zmian i kopią zapasową.</string>
 </resources>

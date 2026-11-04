@@ -10,6 +10,9 @@ import androidx.lifecycle.AndroidViewModel
 import androidx.lifecycle.viewModelScope
 import de.cplagens.pureheat.PureHeatApp
 import de.cplagens.pureheat.data.history.HistoryAnalysis
+import de.cplagens.pureheat.data.profile.ProfileDescriber
+import de.cplagens.pureheat.data.profile.ProfileFromText
+import de.cplagens.pureheat.data.room.ExtractionSource
 import de.cplagens.pureheat.hmip.HeatingProfile
 import de.cplagens.pureheat.hmip.ProfileDay
 import de.cplagens.pureheat.hmip.ProfileEditing
@@ -35,6 +38,8 @@ data class ProfileUiState(
     /** Typical heat-up rate of this room in K/h, derived from the recorded history. */
     val heatUpRate: Double? = null,
     val hasBackup: Boolean = false,
+    /** A text description is being turned into a suggestion. */
+    val suggesting: Boolean = false,
 ) {
     val dirty: Boolean get() = original != null && edited != null && original.days != edited.days
     val changes: List<UiText>
@@ -131,6 +136,43 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
                 _ui.update { it.copy(saving = false, error = e.toUiText()) }
             }
         }
+    }
+
+    private val describer = ProfileDescriber()
+
+    /**
+     * Text description → suggestion in the editor (only the edited copy changes; saving is the
+     * normal confirmed path with the list of changes).
+     */
+    fun suggestFromText(text: String, minT: Double, maxT: Double) {
+        if (_ui.value.edited == null || _ui.value.suggesting) return
+        _ui.update { it.copy(suggesting = true, error = null, message = null) }
+        viewModelScope.launch {
+            val suggestion = describer.describe(text)
+            _ui.update { s ->
+                val edited = s.edited
+                when {
+                    edited == null -> s.copy(suggesting = false)
+                    suggestion.rules.isEmpty() -> s.copy(suggesting = false, error = UiText.Res(R.string.profile_describe_nothing))
+                    else -> {
+                        val days = ProfileFromText.apply(edited.days, suggestion.rules, minT, maxT)
+                        val source = when (suggestion.source) {
+                            ExtractionSource.AI -> R.string.profile_describe_by_ai
+                            else -> R.string.profile_describe_by_keywords
+                        }
+                        s.copy(
+                            suggesting = false,
+                            edited = edited.copy(days = days),
+                            message = if (days == edited.days) UiText.Res(R.string.profile_describe_unchanged) else UiText.Res(source),
+                        )
+                    }
+                }
+            }
+        }
+    }
+
+    override fun onCleared() {
+        describer.close()
     }
 
     /** Renames [ref] in the cloud (after the user confirmed in the dialog). */

@@ -380,4 +380,15 @@
     <string name="data_share_chooser">PureHeat のエクスポートを共有</string>
     <string name="help_data_title">エクスポートとインポート</string>
     <string name="help_data_text">「情報」→「データ」で、すべての測定値（表計算ソフトや分析で読める CSV 表）を設定と一緒に 1 つの ZIP ファイルとしてエクスポートできます。「エクスポートして共有」は Android の共有メニュー（Google ドライブ、メールなど）を開き、「ファイルとして保存」では Google ドライブを含むフォルダを選べます。「インポート」はそのようなファイルを読み込みます（例: 新しいスマートフォン）。測定値は追加され、設定は置き換えられます。エクスポートには部屋名が含まれますが、アクセス情報は含まれません。機種変更後はアクセスポイントを再度接続してください。</string>
+
+    <string name="profile_describe_open">✨ 説明から作成</string>
+    <string name="profile_describe_title">1 週間を説明</string>
+    <string name="profile_describe_hint">いつ何度にしたいかを入力または音声入力してください。例:「平日 6–8 時と 17–22 時は 21 °C、週末 8–23 時は 21 °C、それ以外は 17 °C」。アプリが下の週間表示に提案を入力します。確認して「保存」を押すまで何も保存されません。</string>
+    <string name="profile_describe_go">提案を作成</string>
+    <string name="profile_describe_nothing">時刻も温度も認識できませんでした。例:「月曜から金曜 6 時から 8 時 21 °C」をお試しください。</string>
+    <string name="profile_describe_by_ai">端末上の AI で提案を作成しました – 下の曜日を確認して保存してください。</string>
+    <string name="profile_describe_by_keywords">キーワードで提案を作成しました（ドイツ語と英語のみ） – 下の曜日を確認して保存してください。</string>
+    <string name="profile_describe_unchanged">説明は現在のプロファイルと同じです – 変更点はありません。</string>
+    <string name="help_describe_title">説明から暖房プロファイル</string>
+    <string name="help_describe_text">暖房プロファイル画面の「説明から作成」で、1 週間を自分の言葉で入力または音声入力できます。例:「平日 6–8 時と 17–22 時は 21 °C、週末 8–23 時、それ以外は 17 °C」。端末上の AI（ない場合はドイツ語と英語のキーワード認識）が暖房フェーズに変換します。触れていない曜日はそのままです。提案は週間表示に表示されるので、確認して必要なら調整し、変更一覧とバックアップ付きでいつもどおり保存してください。</string>
 </resources>
