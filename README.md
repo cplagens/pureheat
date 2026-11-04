@@ -38,6 +38,7 @@ und (mit auf ~1 km gerundetem Standort) an Open-Meteo für die Wetterprognose.
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Fehler melden, bauen, testen, Regeln für Beiträge |
 | [LICENSE.md](LICENSE.md) | Apache-Lizenz 2.0 |
 | [NOTICE](NOTICE) | Urheberrecht und Hinweise |
+| [docs/privacy.md](docs/privacy.md) | Datenschutzerklärung |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Aufbau, Datenfluss, Datenbank, API-Besonderheiten |
 | [docs/FINDINGS.md](docs/FINDINGS.md) | Erkenntnisse am echten System |
 | [docs/NEXT_STEPS.md](docs/NEXT_STEPS.md) | Roadmap |

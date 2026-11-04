@@ -170,6 +170,17 @@ Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zei
      Modell sie nutzen kann.
   4. Bei vielen Räumen gemeinsame Größen (Gebäude, Verglasung) einmal für alle eingeben.
 
+## Play-Store-Vorbereitung: Release-Signatur, Datenschutzerklärung (2026-11-04)
+- `app/build.gradle.kts` liest `keystore.properties` (Projektwurzel, in `.gitignore`: `storeFile`,
+  `storePassword`, `keyAlias`, `keyPassword`). Fehlt die Datei, bleibt der Release-Build unsigniert
+  wie bisher (`app-release-unsigned.apk`). Mit Test-Properties (Debug-Keystore) geprüft: signiertes
+  `app-release.apk` entsteht; Test-Datei danach gelöscht. Upload-Keystore muss der Nutzer selbst
+  erzeugen (`keytool` hängt in der IDE-Shell, im eigenen Terminal ausführen).
+- `docs/privacy.md` (de + en) nach dem Entwurf aus `PLAY_STORE_GUIDE.md` 2.6, Aussagen gegen den Code
+  geprüft (Abmelden löscht Zugangsdaten, Verlauf, Beschreibungen, Probelauf, Sicherungen). Kontakt:
+  GitHub-Issues statt E-Mail (keine Adresse im öffentlichen Repo). Verlinkt in `README.md`.
+  Veröffentlichen: GitHub Pages (Branch `main`, Ordner `/docs`) – macht der Nutzer.
+
 ## Raumkonfiguration begrenzt Erkennung, Heizprofil aus Text (2026-11-04)
 
 - `RoomProperties.hasWindows` (nur ausdrücklich „0 Fenster“ = nein): keine Fenster-offen-Erkennung
