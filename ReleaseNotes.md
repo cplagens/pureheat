@@ -8,6 +8,7 @@ Neueste Version oben. Versionen folgen `versionName` in `app/build.gradle.kts`.
   schreiben oder diktieren, die KI auf dem Gerät macht daraus einen Vorschlag zum Prüfen und Speichern.
 - Die Raumbeschreibung zählt jetzt: Räume ohne Fenster bekommen keine Fenster-offen-Erkennung,
   Bäder ohne Dusche und Badewanne keine Duschen/Baden-Erkennung.
+- Spenden-Links aus der App entfernt (Google-Play-Richtlinien); sie stehen jetzt nur in der README.
 
 - **Export und Import:** alle Messwerte (CSV) und Einstellungen als ZIP – teilen (z. B. Google
   Drive, Mail) oder als Datei speichern; Import z. B. auf einem neuen Telefon (Info → Daten).

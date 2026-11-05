@@ -25,8 +25,9 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
 2. Vorbereitung Play Store (Checkliste in `PLAY_STORE_GUIDE.md`): **Demo-Modus** für Prüfer/Tester
    (nächste Agent-Aufgabe), Logo 512 px + Feature-Grafik. Beim Nutzer: Upload-Keystore +
    `keystore.properties` anlegen, GitHub Pages für `/docs` einschalten, Kontakt in `privacy.md`
-   bestätigen, Spenden-Links im Play-Build ja/nein entscheiden, `.github/FUNDING.yml` erst wenn
-   GitHub Sponsors freigeschaltet ist.
+   bestätigen, `.github/FUNDING.yml`: `github:` erst wenn GitHub Sponsors freigeschaltet ist.
+   Entschieden 2026-11-05: **keine Spenden-Links in der App** (Play-Richtlinien, `SupportLinks.kt`
+   leer → Bereich ausgeblendet); PayPal nur in README (en, `README.de.md` de).
 3. Erstes Review mit `/pureheat-review full`, Befunde in `docs/REVIEW.md`.
 4. Nutzer-Hinweis: Bad-Beschreibung neu erkennen + speichern (gespeichert noch „Erdgeschoss“).
 5. Probelauf-Ergebnisse ansehen; Schritt 6 (Komfortzeiten + Optimal-Profil als Vorschlag).

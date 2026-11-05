@@ -74,12 +74,36 @@ beantwortet diese Fragen aus den Daten, die dein System ohnehin liefert.
 
 ## Datenschutz und Sicherheit
 
-- **Keine Werbung, kein Tracking, kein eigener Server.**
-- Das Auth-Token bleibt lokal auf dem Gerät.
-- Daten gehen nur an die Homematic IP Cloud und – mit auf ~1 km gerundetem Standort – an
-  [Open-Meteo](https://open-meteo.com) für die Wetterprognose.
+### Was aufgezeichnet wird
+
+PureHeat speichert nur, was für Verlauf und Raummodell nötig ist – in einer Datenbank **auf deinem
+Gerät**:
+
+| Daten | Wofür |
+|---|---|
+| Ist- und Solltemperatur, Luftfeuchte und Ventilöffnung je Raum | Verlauf, Raummodell, Fenster- und Duscherkennung |
+| Ventilöffnung je Heizkreis | Welcher Kreis heizt, Ventil-Warnungen |
+| Außentemperatur und stündliche Prognose | Wärmeverlust im Modell, Aufheiz-Vorhersagen |
+| Vorhersagen des Probelaufs und ihre Ergebnisse | Prüfen, wie gut das Modell ist |
+| Deine Raumbeschreibungen und Ansichtseinstellungen | Erkennungsregeln, Darstellung |
+
+Der Verlauf wird 2 Jahre aufbewahrt (ca. 120 KB pro Tag, nach 2 Jahren rund 90 MB) und danach
+automatisch gelöscht. Export und Import passieren nur, wenn du sie auslöst.
+
+### Warum deine Daten sicher sind
+
+- **Keine Werbung, kein Tracking, keine Analyse, kein eigener Server** – es gibt kein
+  PureHeat-Backend, das irgendetwas sammeln könnte.
+- **Nur eine Berechtigung: Internet.** Kein Zugriff auf GPS, Kontakte, Kamera oder Dateien.
+- Auth-Token und alle Messwerte liegen im privaten Speicher der App; die Android-Sicherung ist
+  abgeschaltet, nichts landet in einem Cloud-Backup.
+- Daten gehen nur an die Homematic IP Cloud (die dein System ohnehin nutzt) und an
+  [Open-Meteo](https://open-meteo.com) für die Wetterprognose – mit auf ~1 km gerundetem
+  Standort des Hauses und ohne Kennung.
+- KI läuft **auf dem Gerät** (Gemini Nano); Raumbeschreibungen verlassen das Telefon nicht.
 - **Schreibzugriffe nur für Heizprofile** und nur nach deiner Bestätigung. PureHeat stellt nie von
   sich aus Temperaturen ein; die KI macht nur Vorschläge.
+- Open Source: Du kannst all das im Code nachprüfen.
 - Details: [Datenschutzerklärung](docs/privacy.md)
 
 ## Voraussetzungen
@@ -96,6 +120,20 @@ beantwortet diese Fragen aus den Daten, die dein System ohnehin liefert.
 
 Fertig – ab jetzt zeichnet PureHeat im Hintergrund auf und das Raummodell lernt mit jedem Tag dazu.
 
+### Akku-Einstellung für einen lückenlosen Verlauf
+
+Android bremst Hintergrundjobs von Apps, die selten geöffnet werden – am echten System entstanden
+dadurch Lücken von bis zu 9 Stunden. Für durchgehende Messwerte **App-Info → Akku → „Nicht
+eingeschränkt“** einstellen (solange die App eingeschränkt ist, zeigt sie dazu eine Hinweiskarte mit
+direktem Link zu dieser Einstellung).
+
+Der Akkuverbrauch bleibt trotzdem minimal:
+
+- PureHeat ruft den Zustand nur **alle 15 Minuten** ab, solange sich etwas ändert, sonst alle
+  30 Minuten und nachts alle 60 Minuten – jeweils eine kurze Anfrage mit ca. 100 KB.
+- Keine Dauerverbindung, kein Vordergrunddienst, kein GPS. Die Jobs laufen über Androids
+  WorkManager, der sie mit anderen Apps bündelt, und pausieren bei niedrigem Akkustand.
+
 > **Hinweis:** Inoffizielles Projekt, nicht mit eQ-3 verbunden. Die Cloud-API ist nicht offiziell
 > dokumentiert und kann sich ändern.
 
@@ -107,7 +145,7 @@ die Entwicklung freiwillig unterstützen:
 - 💙 [PayPal](https://paypal.me/ChristianPlagens)
 
 Ein ⭐ für das Repository, Fehlermeldungen und Verbesserungsvorschläge helfen ebenfalls – siehe
-[CONTRIBUTING.md](CONTRIBUTING.md). Die Links stehen auch in der App unter „Info“.
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Dokumentation
 

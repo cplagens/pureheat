@@ -72,12 +72,36 @@ morning? PureHeat answers these questions from the data your system already prov
 
 ## Privacy and safety
 
-- **No ads, no tracking, no own server.**
-- The auth token stays on the device.
-- Data goes only to the Homematic IP Cloud and – with the location rounded to ~1 km – to
-  [Open-Meteo](https://open-meteo.com) for the weather forecast.
+### What is recorded
+
+PureHeat stores only what it needs for the history and the room model, in a database **on your
+device**:
+
+| Data | Purpose |
+|---|---|
+| Current and target temperature, humidity and valve opening per room | History, room model, window and shower detection |
+| Valve opening per heating circuit | Which circuit is heating, valve warnings |
+| Outdoor temperature and hourly forecast | Heat loss in the model, heat-up predictions |
+| Predictions of the probe run and their results | Checking how good the model is |
+| Your room descriptions and view settings | Detection rules, layout |
+
+The history is kept for 2 years (about 120 KB per day, roughly 90 MB after 2 years) and is deleted
+automatically after that. Export and import only happen when you trigger them.
+
+### Why your data is safe
+
+- **No ads, no tracking, no analytics, no own server** – there is no PureHeat backend that could
+  collect anything.
+- **Only one permission: internet.** No access to GPS, contacts, camera or files.
+- The auth token and all measurements stay in the app's private storage; Android backup is
+  switched off, so nothing ends up in a cloud backup.
+- Data goes only to the Homematic IP Cloud (which your system uses anyway) and to
+  [Open-Meteo](https://open-meteo.com) for the weather forecast – with the home location rounded to
+  ~1 km and without any identifier.
+- AI runs **on the device** (Gemini Nano); room descriptions never leave the phone.
 - **Writes only for heating profiles**, and only after your confirmation. PureHeat never sets
   temperatures on its own; the AI only makes suggestions.
+- Open source: you can check all of this in the code.
 - Details: [Privacy policy](docs/privacy.md)
 
 ## Requirements
@@ -94,6 +118,19 @@ morning? PureHeat answers these questions from the data your system already prov
 
 Done – from now on PureHeat records in the background and the room model learns more every day.
 
+### Battery setting for a complete history
+
+Android slows down background jobs of apps that are rarely opened – on the real system this left
+gaps of up to 9 hours. For continuous measurements set **App info → Battery → “Unrestricted”**
+(as long as the app is restricted, it shows a hint card with a direct link to this setting).
+
+The battery drain stays minimal anyway:
+
+- PureHeat only fetches the state every **15 minutes** while something is changing, otherwise every
+  30 minutes and every 60 minutes at night – one short request each time, about 100 KB.
+- No permanent connection, no foreground service, no GPS. The jobs run via Android's WorkManager,
+  which bundles them with other apps' work, and they pause when the battery is low.
+
 > **Note:** Unofficial project, not affiliated with eQ-3. The cloud API is not officially documented
 > and may change.
 
@@ -105,7 +142,7 @@ support its development voluntarily:
 - 💙 [PayPal](https://paypal.me/ChristianPlagens)
 
 A ⭐ for the repository, bug reports and suggestions help too – see
-[CONTRIBUTING.md](CONTRIBUTING.md). The links are also in the app under "Info".
+[CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## Documentation
 
