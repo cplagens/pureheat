@@ -394,4 +394,18 @@
     <string name="profile_describe_unchanged">Açıklama mevcut profille aynı – değiştirilecek bir şey yok.</string>
     <string name="help_describe_title">Açıklamadan ısıtma profili</string>
     <string name="help_describe_text">Isıtma profilinde “Açıklamadan oluştur” ile haftayı kendi sözlerinizle yazabilir veya dikte edebilirsiniz, örn. “Hafta içi 6–8 ve 17–22 arası 21 °C, hafta sonu 8–23, diğer zamanlarda 17 °C”. Cihaz üzerindeki yapay zekâ (o olmadan: Almanca ve İngilizce için anahtar kelime tanıma) bunu ısıtma evrelerine çevirir; bahsetmediğiniz günler olduğu gibi kalır. Öneri haftalık görünümde görünür – kontrol edin, gerekirse düzeltin ve değişiklik listesi ve yedekle her zamanki gibi kaydedin.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Demoyu dene</string>
+    <string name="demo_hint">Elinizde erişim noktası yok mu? Demo, uydurma verilerle örnek bir daire gösterir – hiçbir şey gönderilmez. Çıkmak için “Çıkış yap”a dokunun.</string>
+    <string name="demo_banner">Demo modu – uydurma örnek veriler</string>
+    <string name="demo_profile_away">Evde değil</string>
+    <string name="demo_room_living">Oturma odası</string>
+    <string name="demo_room_kitchen">Mutfak</string>
+    <string name="demo_room_bedroom">Yatak odası</string>
+    <string name="demo_room_child">Çocuk odası</string>
+    <string name="demo_room_office">Çalışma odası</string>
+    <string name="demo_room_bath">Banyo</string>
+    <string name="demo_desc_living">Oturma odası, 28 m², güneye ve batıya bakan üç pencere, çift cam, parke, iki dış duvar.</string>
+    <string name="demo_desc_bedroom">Yatak odası, 14 m², doğuya bakan bir pencere, laminat, geceleri pencere aralık.</string>
+    <string name="demo_desc_bath">Duşlu banyo, 7 m², bir pencere, fayans, havlu radyatörü.</string>
 </resources>

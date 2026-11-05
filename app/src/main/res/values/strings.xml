@@ -421,4 +421,18 @@
     <string name="profile_describe_unchanged">The description matches the current profile – nothing to change.</string>
     <string name="help_describe_title">Heating profile from a description</string>
     <string name="help_describe_text">In the heating profile screen, “Create from description” lets you write or dictate the week in your own words, e.g. “Weekdays 6–8 and 17–22 at 21 °C, weekend 8–23, otherwise 17 °C”. The on-device AI (without it: keyword recognition for English and German) turns it into heating phases; days you don\'t mention stay as they are. The suggestion appears in the week view – check it, adjust it if needed and save as usual, with the list of changes and the backup.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Try demo mode</string>
+    <string name="demo_hint">No access point at hand? The demo shows a sample flat with invented data – nothing is sent anywhere. Tap “Log out” to leave it.</string>
+    <string name="demo_banner">Demo mode – invented sample data</string>
+    <string name="demo_profile_away">Away</string>
+    <string name="demo_room_living">Living room</string>
+    <string name="demo_room_kitchen">Kitchen</string>
+    <string name="demo_room_bedroom">Bedroom</string>
+    <string name="demo_room_child">Children’s room</string>
+    <string name="demo_room_office">Office</string>
+    <string name="demo_room_bath">Bathroom</string>
+    <string name="demo_desc_living">Living room, 28 m², three windows facing south and west, double glazing, parquet, two exterior walls.</string>
+    <string name="demo_desc_bedroom">Bedroom, 14 m², one window facing east, laminate, window tilted at night.</string>
+    <string name="demo_desc_bath">Bathroom with shower, 7 m², one window, tiles, towel radiator.</string>
 </resources>

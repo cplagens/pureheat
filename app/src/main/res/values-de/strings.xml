@@ -410,4 +410,18 @@
     <string name="profile_describe_unchanged">Die Beschreibung entspricht dem aktuellen Profil – nichts zu ändern.</string>
     <string name="help_describe_title">Heizprofil aus einer Beschreibung</string>
     <string name="help_describe_text">Im Heizprofil kannst du mit „Aus Beschreibung erstellen“ die Woche in eigenen Worten schreiben oder diktieren, z. B. „Werktags 6–8 und 17–22 Uhr 21 °C, am Wochenende 8–23 Uhr, sonst 17 °C“. Die KI auf dem Gerät (ohne sie: Stichworterkennung für Deutsch und Englisch) macht daraus Heizphasen; Tage, die du nicht erwähnst, bleiben unverändert. Der Vorschlag erscheint in der Wochenansicht – prüfen, bei Bedarf anpassen und wie gewohnt speichern, mit Liste der Änderungen und Sicherung.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Demo ausprobieren</string>
+    <string name="demo_hint">Kein Access Point zur Hand? Die Demo zeigt eine Beispielwohnung mit erfundenen Daten – es wird nichts gesendet. Zum Beenden „Abmelden“ tippen.</string>
+    <string name="demo_banner">Demo-Modus – erfundene Beispieldaten</string>
+    <string name="demo_profile_away">Abwesend</string>
+    <string name="demo_room_living">Wohnzimmer</string>
+    <string name="demo_room_kitchen">Küche</string>
+    <string name="demo_room_bedroom">Schlafzimmer</string>
+    <string name="demo_room_child">Kinderzimmer</string>
+    <string name="demo_room_office">Arbeitszimmer</string>
+    <string name="demo_room_bath">Bad</string>
+    <string name="demo_desc_living">Wohnzimmer, 28 m², drei Fenster nach Süden und Westen, Zweifachverglasung, Parkett, zwei Außenwände.</string>
+    <string name="demo_desc_bedroom">Schlafzimmer, 14 m², ein Fenster nach Osten, Laminat, nachts Fenster gekippt.</string>
+    <string name="demo_desc_bath">Bad mit Dusche, 7 m², ein Fenster, Fliesen, Handtuchheizkörper.</string>
 </resources>

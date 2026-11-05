@@ -397,4 +397,18 @@
     <string name="profile_describe_unchanged">La descrizione corrisponde al profilo attuale – niente da cambiare.</string>
     <string name="help_describe_title">Profilo da una descrizione</string>
     <string name="help_describe_text">Nel profilo di riscaldamento, «Crea da una descrizione» ti permette di scrivere o dettare la settimana con parole tue, ad es. «Feriali 6–8 e 17–22 a 21 °C, weekend 8–23, altrimenti 17 °C». L’IA sul dispositivo (senza: riconoscimento per parole chiave in tedesco e inglese) la trasforma in fasi di riscaldamento; i giorni non menzionati restano invariati. La proposta compare nella vista settimanale: controllala, modificala se serve e salvala come al solito, con l’elenco delle modifiche e il backup.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Prova la demo</string>
+    <string name="demo_hint">Nessun access point a portata di mano? La demo mostra un appartamento di esempio con dati inventati: non viene inviato nulla. Per uscire tocca «Esci».</string>
+    <string name="demo_banner">Modalità demo – dati di esempio inventati</string>
+    <string name="demo_profile_away">Assente</string>
+    <string name="demo_room_living">Soggiorno</string>
+    <string name="demo_room_kitchen">Cucina</string>
+    <string name="demo_room_bedroom">Camera da letto</string>
+    <string name="demo_room_child">Cameretta</string>
+    <string name="demo_room_office">Studio</string>
+    <string name="demo_room_bath">Bagno</string>
+    <string name="demo_desc_living">Soggiorno, 28 m², tre finestre a sud e a ovest, doppi vetri, parquet, due pareti esterne.</string>
+    <string name="demo_desc_bedroom">Camera da letto, 14 m², una finestra a est, laminato, finestra a ribalta di notte.</string>
+    <string name="demo_desc_bath">Bagno con doccia, 7 m², una finestra, piastrelle, scaldasalviette.</string>
 </resources>

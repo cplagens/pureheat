@@ -397,4 +397,18 @@
     <string name="profile_describe_unchanged">La descripción coincide con el perfil actual – no hay nada que cambiar.</string>
     <string name="help_describe_title">Perfil a partir de una descripción</string>
     <string name="help_describe_text">En el perfil de calefacción, «Crear a partir de una descripción» le permite escribir o dictar la semana con sus palabras, p. ej. «De lunes a viernes 6–8 y 17–22 a 21 °C, fin de semana 8–23, si no 17 °C». La IA en el dispositivo (sin ella: reconocimiento por palabras clave en alemán e inglés) lo convierte en fases de calefacción; los días que no mencione no cambian. La propuesta aparece en la vista semanal: revísela, ajústela si hace falta y guárdela como siempre, con la lista de cambios y la copia de seguridad.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Probar la demo</string>
+    <string name="demo_hint">¿No tienes un punto de acceso a mano? La demo muestra un piso de ejemplo con datos inventados; no se envía nada. Para salir, toca «Cerrar sesión».</string>
+    <string name="demo_banner">Modo demo – datos de ejemplo inventados</string>
+    <string name="demo_profile_away">Ausente</string>
+    <string name="demo_room_living">Salón</string>
+    <string name="demo_room_kitchen">Cocina</string>
+    <string name="demo_room_bedroom">Dormitorio</string>
+    <string name="demo_room_child">Habitación infantil</string>
+    <string name="demo_room_office">Despacho</string>
+    <string name="demo_room_bath">Baño</string>
+    <string name="demo_desc_living">Salón, 28 m², tres ventanas al sur y al oeste, doble acristalamiento, parqué, dos paredes exteriores.</string>
+    <string name="demo_desc_bedroom">Dormitorio, 14 m², una ventana al este, laminado, ventana entreabierta por la noche.</string>
+    <string name="demo_desc_bath">Baño con ducha, 7 m², una ventana, azulejos, radiador toallero.</string>
 </resources>

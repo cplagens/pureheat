@@ -400,4 +400,18 @@
     <string name="profile_describe_unchanged">Описание совпадает с текущим профилем – менять нечего.</string>
     <string name="help_describe_title">Профиль отопления по описанию</string>
     <string name="help_describe_text">В профиле отопления кнопка «Создать по описанию» позволяет написать или продиктовать неделю своими словами, например: «По будням 6–8 и 17–22 – 21 °C, в выходные 8–23, в остальное время 17 °C». ИИ на устройстве (без него – распознавание ключевых слов на немецком и английском) превращает это в фазы нагрева; неупомянутые дни остаются как есть. Предложение появляется в виде недели – проверьте, при необходимости исправьте и сохраните как обычно, со списком изменений и резервной копией.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Попробовать демо</string>
+    <string name="demo_hint">Нет под рукой точки доступа? Демо показывает пример квартиры с вымышленными данными – ничего никуда не отправляется. Чтобы завершить, нажмите «Выйти».</string>
+    <string name="demo_banner">Демо-режим – вымышленные данные</string>
+    <string name="demo_profile_away">Нет дома</string>
+    <string name="demo_room_living">Гостиная</string>
+    <string name="demo_room_kitchen">Кухня</string>
+    <string name="demo_room_bedroom">Спальня</string>
+    <string name="demo_room_child">Детская</string>
+    <string name="demo_room_office">Кабинет</string>
+    <string name="demo_room_bath">Ванная</string>
+    <string name="demo_desc_living">Гостиная, 28 м², три окна на юг и запад, двойное остекление, паркет, две наружные стены.</string>
+    <string name="demo_desc_bedroom">Спальня, 14 м², одно окно на восток, ламинат, ночью окно на проветривании.</string>
+    <string name="demo_desc_bath">Ванная с душем, 7 м², одно окно, плитка, полотенцесушитель.</string>
 </resources>

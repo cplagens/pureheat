@@ -6,7 +6,7 @@ heating, how far each valve is open, a learned per-room thermal model and a prob
 
 ## "mach weiter" / "weiter" / "continue"
 When the user only says this (or similar, without a new task): read `docs/STATUS.md`, take the first
-open item under "Nächste Aufgaben" and work on it right away – no need to ask which one. Skip items
+open item under "Next tasks" and work on it right away – no need to ask which one. Skip items
 that need the user (e.g. tapping on the phone while they use it, a decision, pushing) and say so
 briefly; if an item is blocked, continue with the next one. At the end update STATUS.md as described
 below and report in a few lines what was done and what is next.
@@ -29,8 +29,13 @@ and tests; open findings are kept in `docs/REVIEW.md`. Use it when the user asks
 - Update `docs/STATUS.md`: **replace** the state, don't append history (keep it under ~60 lines).
   Details of what was built/decided go into the matching section of `NEXT_STEPS.md`, measurements
   into `FINDINGS.md` (with date). The next session must be able to continue from STATUS.md alone.
+- **Docs are bilingual:** English `X.md` and German `X.de.md` (README, ReleaseNotes, CONTRIBUTING,
+  docs/STATUS, NEXT_STEPS, ARCHITECTURE, FINDINGS). Make every doc change in both files (same
+  structure); English files link to English docs, German files to `.de.md`. `docs/privacy.md` holds
+  both languages in one file (stable URL for the Play Store); LICENSE.md/NOTICE are English only.
 - Ask before pushing. Commit messages: short English summary.
-- User-visible changes: add a line under "Unveröffentlicht" in `ReleaseNotes.md`.
+- User-visible changes: add a line under "Unreleased" in `ReleaseNotes.md` and "Unveröffentlicht"
+  in `ReleaseNotes.de.md`.
 
 ## Build & check (token-saving)
 - Gradle is slow in the IDE shell: run in the background and write to a log, then grep it:
@@ -52,7 +57,8 @@ Package `app/src/main/java/de/cplagens/pureheat/`:
   `HistoryWorker` + `PollingPolicy` (15/30/60 min), `ForecastClient` (Open-Meteo, rounded location),
   `ViewSettings` (visible detail sections); `history/` Room DB (**2 years**, model uses 60 days),
   analysis, window detection; `model/` thermal model (k, P, dead time) + simulator; `probe/` probe run;
-  `room/` room properties from free text (on-device Gemini Nano via ML Kit, keyword fallback)
+  `room/` room properties from free text (on-device Gemini Nano via ML Kit, keyword fallback);
+  `demo/` offline demo flat (`DemoCloud` replaces the cloud for SGTIN `DEMO`)
 - `ui/` — screens + ViewModels (dashboard, room detail, room properties, profiles, help, setup), charts,
   `UiText`; `Lang.kt` per-app language
 - Pure-Kotlin logic (analysis, model, probe, keywords) has JVM unit tests in `app/src/test/`.

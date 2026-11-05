@@ -1,7 +1,9 @@
 # PureHeat – Erkenntnisse
 
-Was wir am echten System gelernt haben (Stand 2026-11-02). Ergänzt [ARCHITECTURE.md](ARCHITECTURE.md)
-(Aufbau) und [NEXT_STEPS.md](NEXT_STEPS.md) (Plan). Neue Erkenntnisse bitte hier mit Datum eintragen.
+[English](FINDINGS.md) · **Deutsch**
+
+Was wir am echten System gelernt haben (Stand 2026-11-02). Ergänzt [ARCHITECTURE.de.md](ARCHITECTURE.de.md)
+(Aufbau) und [NEXT_STEPS.de.md](NEXT_STEPS.de.md) (Plan). Neue Erkenntnisse bitte hier mit Datum eintragen.
 Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
 
 ## Homematic IP Cloud-API

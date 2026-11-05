@@ -1,6 +1,8 @@
 # PureHeat – Nächste Schritte
 
-Roadmap und ausführliches Protokoll je Schritt. **Einstieg ist [STATUS.md](STATUS.md)** – dieses
+[English](NEXT_STEPS.md) · **Deutsch**
+
+Roadmap und ausführliches Protokoll je Schritt. **Einstieg ist [STATUS.de.md](STATUS.de.md)** – dieses
 Dokument nur abschnittsweise lesen (Überschrift per Grep suchen).
 
 ## Ziel
@@ -198,6 +200,25 @@ Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zei
 - Gemeinsamer Nano-Zugang: `data/ai/OnDeviceAi` (Status, Download, JSON-Antwort), genutzt von
   `RoomDescriber` und `ProfileDescriber`.
 
+## Demo-Modus und README-Screenshots (2026-11-05)
+
+- Einrichtung: „Demo ausprobieren“ → `MainViewModel.startDemo` → `HeatingRepository.seedDemo` (3 Wochen
+  Verlauf alle 15 min, ausgewertete Probelauf-Ergebnisse der letzten Woche, Prognose, drei
+  Raumbeschreibungen), danach Zugangsdaten `DemoHome.SGTIN` / `"demo"`. Das Repository schickt alle
+  Cloud-Aufrufe für diese SGTIN an `DemoCloud` (kein Lookup, kein Netz, kein Open-Meteo – stattdessen
+  erfundene Prognose). Profile bearbeiten, umbenennen, aktivieren wirkt im Speicher (weg nach
+  Prozessende). Abmelden löscht alles wie bei echten Daten. Hinweis „Demo-Modus – erfundene
+  Beispieldaten“ in der Übersicht, kein Akku-Hinweis.
+- Simulation (`DemoHome.simulate`): gleiche Physik 1. Ordnung und Thermostat wie `RoomSimulator`, dazu
+  Schlafzimmerfenster 22:45–23:00 offen, dann bis 06:15 gekippt in zwei von drei Nächten, Duschen um
+  06:40/08:15 und jeden zweiten Abend (+18 %rF, +1,2 K/h, klingt über 150 min ab). Kein Sensorrauschen:
+  mit der 0,1-K-Rundung führte es zu falschen Fenster-offen-Erkennungen. `DemoHomeTest`: Modell für
+  alle Räume sicher, k innerhalb ±60 %, Fenster nur im Schlafzimmer, Duschen nur im Bad.
+- Screenshots in `docs/screenshots/` (Emulator, Englisch, Zeitzone per
+  `adb shell service call alarm 3 s16 Australia/Brisbane` auf Morgen gestellt; kein Root nötig). Nach
+  UI-Änderungen genauso neu aufnehmen.
+- Offen: Demo für die Play-Prüfer ist jetzt da (in den Hinweisen für die Prüfung erwähnen).
+
 ## Export/Import, Ziel-API 36, Play-Store-Anleitung (2026-11-04)
 
 - **Export:** Info → Daten → „Exportieren und teilen“ (ZIP in `cache/exports`, `FileProvider`,
@@ -214,7 +235,8 @@ Eigenschaften machen, die das Heizen beeinflussen; Stichwörter als Anregung zei
 - **Play-Store-Anleitung:** `PLAY_STORE_GUIDE.md` im Projektordner (in `.gitignore`, nicht im Repo):
   Konto, Signatur, Store-Texte, Fragebögen mit Antworten, Datenschutzerklärung, 12-Tester-Test,
   Produktionsantrag, GitHub Sponsors. Offene Entscheidungen daraus: Demo-Modus für Prüfer,
-  Spenden-Links im Play-Build ausblenden, Release-Signatur.
+  Spenden-Links im Play-Build ausblenden (entschieden 2026-11-05: ganz aus der App entfernt),
+  Release-Signatur.
 
 ## Profile umbenennen, Duschen/Baden, Raum-Reihenfolge, Open Source (2026-11-03)
 

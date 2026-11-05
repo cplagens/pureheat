@@ -14,6 +14,8 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.HorizontalDivider
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Text
@@ -34,6 +36,7 @@ import de.cplagens.pureheat.R
 fun SetupScreen(
     state: UiState.Setup,
     onRegister: (sgtin: String, pin: String) -> Unit,
+    onStartDemo: () -> Unit,
     onOpenHelp: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
@@ -74,6 +77,11 @@ fun SetupScreen(
             CircularProgressIndicator()
         }
         state.error?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
+        HorizontalDivider()
+        Text(stringResource(R.string.demo_hint), style = MaterialTheme.typography.bodyMedium)
+        OutlinedButton(onClick = onStartDemo, enabled = !state.busy, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.demo_start))
+        }
         TextButton(onClick = onOpenHelp) { Text(stringResource(R.string.help)) }
     }
 }

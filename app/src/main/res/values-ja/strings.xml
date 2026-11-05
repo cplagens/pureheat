@@ -391,4 +391,18 @@
     <string name="profile_describe_unchanged">説明は現在のプロファイルと同じです – 変更点はありません。</string>
     <string name="help_describe_title">説明から暖房プロファイル</string>
     <string name="help_describe_text">暖房プロファイル画面の「説明から作成」で、1 週間を自分の言葉で入力または音声入力できます。例:「平日 6–8 時と 17–22 時は 21 °C、週末 8–23 時、それ以外は 17 °C」。端末上の AI（ない場合はドイツ語と英語のキーワード認識）が暖房フェーズに変換します。触れていない曜日はそのままです。提案は週間表示に表示されるので、確認して必要なら調整し、変更一覧とバックアップ付きでいつもどおり保存してください。</string>
+    <!-- Demo mode -->
+    <string name="demo_start">デモを試す</string>
+    <string name="demo_hint">アクセスポイントが手元にありませんか？デモでは架空のデータを使ったサンプルの住まいを表示します。データは一切送信されません。終了するには「ログアウト」をタップしてください。</string>
+    <string name="demo_banner">デモモード – 架空のサンプルデータ</string>
+    <string name="demo_profile_away">不在</string>
+    <string name="demo_room_living">リビング</string>
+    <string name="demo_room_kitchen">キッチン</string>
+    <string name="demo_room_bedroom">寝室</string>
+    <string name="demo_room_child">子ども部屋</string>
+    <string name="demo_room_office">書斎</string>
+    <string name="demo_room_bath">浴室</string>
+    <string name="demo_desc_living">リビング、28 m²、南向きと西向きの窓が3つ、複層ガラス、フローリング、外壁2面。</string>
+    <string name="demo_desc_bedroom">寝室、14 m²、東向きの窓が1つ、ラミネート床、夜は窓を少し開けている。</string>
+    <string name="demo_desc_bath">シャワー付き浴室、7 m²、窓1つ、タイル、タオルウォーマー。</string>
 </resources>

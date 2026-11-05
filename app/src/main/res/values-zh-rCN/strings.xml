@@ -391,4 +391,18 @@
     <string name="profile_describe_unchanged">描述与当前计划一致 – 无需更改。</string>
     <string name="help_describe_title">根据描述生成供暖计划</string>
     <string name="help_describe_text">在供暖计划中，“根据描述创建”可让您用自己的话输入或语音说明一周，例如“工作日 6–8 点和 17–22 点 21 °C，周末 8–23 点，其他时间 17 °C”。设备端 AI（没有时：德语和英语关键词识别）会将其转换为供暖阶段；未提及的日子保持不变。建议会显示在周视图中 – 请检查、按需调整，并像平常一样保存（带更改列表和备份）。</string>
+    <!-- Demo mode -->
+    <string name="demo_start">试用演示模式</string>
+    <string name="demo_hint">手边没有接入点？演示会显示一个使用虚构数据的示例住宅，不会发送任何数据。点按“退出登录”即可离开。</string>
+    <string name="demo_banner">演示模式 – 虚构的示例数据</string>
+    <string name="demo_profile_away">外出</string>
+    <string name="demo_room_living">客厅</string>
+    <string name="demo_room_kitchen">厨房</string>
+    <string name="demo_room_bedroom">卧室</string>
+    <string name="demo_room_child">儿童房</string>
+    <string name="demo_room_office">书房</string>
+    <string name="demo_room_bath">浴室</string>
+    <string name="demo_desc_living">客厅，28 m²，三扇朝南和朝西的窗户，双层玻璃，木地板，两面外墙。</string>
+    <string name="demo_desc_bedroom">卧室，14 m²，一扇朝东的窗户，复合地板，夜间开窗通风。</string>
+    <string name="demo_desc_bath">带淋浴的浴室，7 m²，一扇窗，瓷砖，毛巾加热架。</string>
 </resources>

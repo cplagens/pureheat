@@ -23,6 +23,9 @@ import de.cplagens.pureheat.data.probe.HeatUpPrediction
 import de.cplagens.pureheat.data.probe.ProbeRun
 import de.cplagens.pureheat.data.probe.Strategy
 import de.cplagens.pureheat.data.room.RoomDescriptionStore
+import de.cplagens.pureheat.data.demo.DemoCloud
+import de.cplagens.pureheat.data.demo.DemoHome
+import de.cplagens.pureheat.hmip.HeatingCloud
 import java.time.ZoneId
 import de.cplagens.pureheat.hmip.HeatingProfile
 import de.cplagens.pureheat.hmip.HeatingProfileCodec
@@ -53,6 +56,11 @@ class HeatingRepository(
     /** What the user wrote about each room; adjusts the model's starting values. */
     val descriptions: RoomDescriptionStore = RoomDescriptionStore(context),
 ) {
+    /** Offline sample flat; used instead of [client] when logged in with [DemoHome.SGTIN]. */
+    private val demo by lazy { DemoCloud(context) }
+
+    private fun cloud(creds: Credentials): HeatingCloud = if (DemoHome.isDemo(creds.sgtin)) demo else client
+
     /**
      * REST server from the lookup, kept across processes: every app start and every background
      * job used to do a lookup, and the lookup service answered 418 when asked too often.
@@ -67,7 +75,7 @@ class HeatingRepository(
 
     /** Throws on network/API errors; callers turn them into UI messages. */
     suspend fun fetch(creds: Credentials): HeatingState = api(creds) { rest ->
-        val raw = client.getCurrentState(creds.sgtin, creds.authToken, rest)
+        val raw = cloud(creds).getCurrentState(creds.sgtin, creds.authToken, rest)
         // Raw state for checking field names on real hardware: adb logcat -s PureHeat
         if (BuildConfig.DEBUG) Log.d(TAG, raw.toString())
         // Logcat truncates long lines; the full dump is readable with
@@ -76,8 +84,24 @@ class HeatingRepository(
         val state = HeatingStateParser.parse(raw)
         val now = System.currentTimeMillis()
         record(state, now)
-        refreshForecastIfDue(state, now)
+        refreshForecastIfDue(state, now, demo = DemoHome.isDemo(creds.sgtin))
         state
+    }
+
+    /**
+     * Starts the demo mode: three weeks of invented history, a few room descriptions and probe-run
+     * results. Only called from the setup screen, i.e. without a real login and with an empty
+     * history; logging out clears it like real data.
+     */
+    suspend fun seedDemo() {
+        val now = System.currentTimeMillis()
+        val history = withContext(Dispatchers.Default) { demo.history(now) }
+        dao.insertRooms(history.rooms)
+        dao.insertCircuits(history.circuits)
+        dao.insertWeatherAll(history.weather)
+        dao.insertPredictions(history.predictions)
+        dao.insertForecast(demo.forecast(now))
+        descriptions.replaceAll(demo.descriptions(now))
     }
 
     /**
@@ -85,14 +109,16 @@ class HeatingRepository(
      * one small request (~5 KB) to Open-Meteo with the rounded location. Failures are ignored –
      * the app then works with the measured outside temperature.
      */
-    private suspend fun refreshForecastIfDue(state: HeatingState, now: Long) {
-        val location = state.location ?: return
+    private suspend fun refreshForecastIfDue(state: HeatingState, now: Long, demo: Boolean) {
+        val location = state.location
+        if (location == null && !demo) return
         val last = dao.lastForecastFetch()
         if (last != null && now - last < FORECAST_INTERVAL_MS) return
         runCatching {
-            val hours = forecastClient.hourlyTemperature(location)
-            if (hours.isEmpty()) return
-            dao.insertForecast(hours.map { (t, v) -> ForecastSample(t, v, now) })
+            val samples = if (location == null) this.demo.forecast(now)
+            else forecastClient.hourlyTemperature(location).map { (t, v) -> ForecastSample(t, v, now) }
+            if (samples.isEmpty()) return
+            dao.insertForecast(samples)
             dao.pruneForecast(before = now - FORECAST_KEEP_PAST_MS, olderFetchThan = now)
         }.onFailure { if (BuildConfig.DEBUG) Log.d(TAG, "Forecast failed: $it") }
     }
@@ -215,7 +241,7 @@ class HeatingRepository(
     suspend fun loadProfile(groupId: String, index: String, profileId: String): HeatingProfile {
         val creds = requireCreds()
         return api(creds) { rest ->
-            val raw = client.getProfile(creds.sgtin, creds.authToken, rest, groupId, index, profileId)
+            val raw = cloud(creds).getProfile(creds.sgtin, creds.authToken, rest, groupId, index, profileId)
             debugDump("last_profile.json", raw)
             HeatingProfileCodec.parse(raw, groupId, index)
         }
@@ -230,7 +256,7 @@ class HeatingRepository(
         val current = loadProfile(edited.groupId, edited.index, profileId)
         writeBackup(current)
         api(creds) { rest ->
-            client.updateProfile(
+            cloud(creds).updateProfile(
                 creds.sgtin, creds.authToken, rest, edited.groupId, edited.index, HeatingProfileCodec.encode(edited),
             )
         }
@@ -251,7 +277,7 @@ class HeatingRepository(
         val current = loadProfile(groupId, index, profileId)
         writeBackup(current)
         api(creds) { rest ->
-            client.updateProfile(
+            cloud(creds).updateProfile(
                 creds.sgtin, creds.authToken, rest, groupId, index, JsonObject(current.raw + ("name" to JsonPrimitive(name))),
             )
         }
@@ -261,7 +287,7 @@ class HeatingRepository(
 
     suspend fun activateProfile(groupId: String, index: String) {
         val creds = requireCreds()
-        api(creds) { rest -> client.setActiveProfile(creds.sgtin, creds.authToken, rest, groupId, index) }
+        api(creds) { rest -> cloud(creds).setActiveProfile(creds.sgtin, creds.authToken, rest, groupId, index) }
     }
 
     fun hasBackup(groupId: String, index: String): Boolean = backupFile(groupId, index).exists()
@@ -277,6 +303,7 @@ class HeatingRepository(
     // --- internals --------------------------------------------------------------------------
 
     private suspend fun <T> api(creds: Credentials, block: suspend (rest: String) -> T): T {
+        if (DemoHome.isDemo(creds.sgtin)) return block("demo")
         try {
             val rest = restUrl ?: client.lookup(creds.sgtin).rest.also { restUrl = it }
             return block(rest)

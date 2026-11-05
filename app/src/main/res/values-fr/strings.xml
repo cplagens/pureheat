@@ -397,4 +397,18 @@
     <string name="profile_describe_unchanged">La description correspond au programme actuel – rien à modifier.</string>
     <string name="help_describe_title">Programme à partir d’une description</string>
     <string name="help_describe_text">Dans le programme de chauffage, « Créer à partir d’une description » vous permet d’écrire ou de dicter la semaine avec vos mots, p. ex. « En semaine 6–8 h et 17–22 h à 21 °C, le week-end 8–23 h, sinon 17 °C ». L’IA sur l’appareil (sans elle : reconnaissance par mots-clés pour l’allemand et l’anglais) en fait des phases de chauffe ; les jours non mentionnés restent inchangés. La proposition apparaît dans la vue de la semaine – vérifiez, ajustez si besoin et enregistrez comme d’habitude, avec la liste des modifications et la sauvegarde.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Essayer la démo</string>
+    <string name="demo_hint">Pas de point d’accès sous la main ? La démo montre un appartement d’exemple avec des données inventées – rien n’est envoyé. Pour la quitter : « Se déconnecter ».</string>
+    <string name="demo_banner">Mode démo – données d’exemple inventées</string>
+    <string name="demo_profile_away">Absent</string>
+    <string name="demo_room_living">Salon</string>
+    <string name="demo_room_kitchen">Cuisine</string>
+    <string name="demo_room_bedroom">Chambre parentale</string>
+    <string name="demo_room_child">Chambre d’enfant</string>
+    <string name="demo_room_office">Bureau</string>
+    <string name="demo_room_bath">Salle de bain</string>
+    <string name="demo_desc_living">Salon, 28 m², trois fenêtres au sud et à l’ouest, double vitrage, parquet, deux murs extérieurs.</string>
+    <string name="demo_desc_bedroom">Chambre, 14 m², une fenêtre à l’est, stratifié, fenêtre entrouverte la nuit.</string>
+    <string name="demo_desc_bath">Salle de bain avec douche, 7 m², une fenêtre, carrelage, sèche-serviettes.</string>
 </resources>

@@ -1,8 +1,10 @@
 # PureHeat – Architektur
 
+[English](ARCHITECTURE.md) · **Deutsch**
+
 Stand: 2026-11-01. Beschreibt, wie die App aufgebaut ist, welche Daten sie woher bekommt und
 welche Annahmen über die (inoffizielle) Homematic IP Cloud-API gelten.
-Was als Nächstes geplant ist, steht in [NEXT_STEPS.md](NEXT_STEPS.md).
+Was als Nächstes geplant ist, steht in [NEXT_STEPS.de.md](NEXT_STEPS.de.md).
 
 ## Überblick
 
@@ -38,7 +40,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 |---|---|
 | `PureHeatApp.kt` | `Application`: hält `CredentialStore` und `HeatingRepository` (einfache manuelle DI), plant den `HistoryWorker` |
 | `MainActivity.kt` | Ein-Activity-App; Navigation per Zustand (`profileRoomId`, `historyRoomId`, `propertiesRoomId`) + `BackHandler`; startet das 5-min-Polling nur im Zustand `STARTED` |
-| `SupportLinks.kt` | Freiwillige Unterstützen-Links (wie in PureRemote) |
+| `SupportLinks.kt` | Freiwillige Unterstützen-Links (wie in PureRemote); wegen der Play-Richtlinien absichtlich leer |
 | **hmip/** | |
 | `HmipClient.kt` | Cloud-API: Lookup, Client-Registrierung (blauer Knopf), `getCurrentState`, `getProfile`, `updateProfile` (auch Umbenennen: `name` im Profil), `setActiveProfile` |
 | `ErrorMessages.kt` | Exceptions → deutsche Fehlermeldungen (`toUserMessage()`), HTTP-Fehlerhinweise |
@@ -64,6 +66,9 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `ai/OnDeviceAi.kt` | Gemini Nano über ML Kit: Verfügbarkeit, System-Download, JSON-Antwort (geteilt) |
 | `profile/ProfileFromText.kt` / `ProfileDescriber.kt` | Text → Heizprofil-Vorschlag (Nano oder Stichwörter), Validierung auf Raster/Grenzen |
 | `export/Csv.kt` / `DataTransfer.kt` | Export (ZIP mit CSV + settings.json) und Import |
+| `demo/DemoHome.kt` | Rein: erfundene Wohnung (6 Räume, Profile, Wetter), deterministische Simulation inkl. gelüftetem Schlafzimmer und Duschen |
+| `demo/DemoCloud.kt` | Offline-`HeatingCloud` für den Demo-Modus (Roh-JSON wie die echte Cloud, Profiländerungen im Speicher) + Startdaten (3 Wochen, Probelauf-Ergebnisse, Beschreibungen) |
+| `hmip/HeatingCloud.kt` | Schnittstelle der Cloud-Aufrufe nach dem Login; `HmipClient` oder `DemoCloud` (Auswahl im Repository über `DemoHome.SGTIN`) |
 | `room/RoomDescriber.kt` | Gemini Nano auf dem Gerät (ML Kit Prompt API) + Stichwörter; stößt ggf. den System-Download an |
 | `room/RoomDescriptionStore.kt` | Text + Eigenschaften je Raum in SharedPreferences `room_descriptions` |
 | **ui/** | |
@@ -75,11 +80,12 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `ModelTexts.kt` | Deutsche Texte für Modellvorhersagen (Dauer, „nicht erreichbar“, „lernt noch“) |
 | `TimeSeriesChart.kt` | Wiederverwendbares Zeitreihen-Diagramm mit gemeinsamem Zeit-Cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | Wochenprofile ansehen/bearbeiten/speichern/aktivieren/rückgängig |
-| `AboutDialog.kt` | Version, Beschreibung, Unterstützen-Links, Logo-Preview |
+| `AboutDialog.kt` | Version, Beschreibung, Sprache, Daten, Logo-Preview |
 | `SetupScreen.kt` | SGTIN/PIN-Eingabe, Hinweis auf blauen Knopf |
 
 Ressourcen: adaptives Icon in `res/mipmap-anydpi-v26/`, Vordergrund/Hintergrund/Logo in
-`res/drawable/` (gleiche Gestaltung wie PureRemote: Farbverlauf Türkis → Navy, weißes Symbol).
+`res/drawable/` (gleiche Gestaltung wie PureRemote: Farbverlauf Türkis → Navy, weißes Symbol). Für die README gibt es
+das Logo zusätzlich als `docs/assets/logo.svg`.
 
 ## Datenfluss
 

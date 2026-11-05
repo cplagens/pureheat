@@ -28,6 +28,12 @@
 
 ---
 
+| <img src="docs/screenshots/dashboard.png" width="200" alt="Overview with valve opening per circuit, detected shower and open window"> | <img src="docs/screenshots/room-detail.png" width="200" alt="Room detail with temperature, outdoor temperature, valve and humidity"> | <img src="docs/screenshots/room-model.png" width="200" alt="Learned room model and probe run with hit rate"> | <img src="docs/screenshots/heating-profile.png" width="200" alt="Weekly heating profile"> |
+|:-:|:-:|:-:|:-:|
+| Which circuit is heating | Detected open window | Learned room model and probe run | Heating profiles |
+
+<sub>Screenshots from the built-in demo mode with invented data.</sub>
+
 ## Why PureHeat?
 
 The official app shows target and current temperature – but not **what is happening at the heating
@@ -102,7 +108,7 @@ automatically after that. Export and import only happen when you trigger them.
 - **Writes only for heating profiles**, and only after your confirmation. PureHeat never sets
   temperatures on its own; the AI only makes suggestions.
 - Open source: you can check all of this in the code.
-- Details: [Privacy policy](docs/privacy.md)
+- Details: [Privacy policy](docs/privacy.md#english)
 
 ## Requirements
 
@@ -117,6 +123,10 @@ automatically after that. Export and import only happen when you trigger them.
 3. When the app asks for it, press the blue button on the Access Point.
 
 Done – from now on PureHeat records in the background and the room model learns more every day.
+
+**No access point at hand?** Tap **“Try demo mode”** on the setup screen: a sample flat with three
+weeks of invented history, a learned room model, an aired bedroom and showers in the bathroom. It
+works offline, sends nothing anywhere and is left via “Log out”.
 
 ### Battery setting for a complete history
 
@@ -152,13 +162,14 @@ A ⭐ for the repository, bug reports and suggestions help too – see
 | [CONTRIBUTING.md](CONTRIBUTING.md) | Reporting bugs, building, testing, contribution rules |
 | [LICENSE.md](LICENSE.md) | Apache License 2.0 |
 | [NOTICE](NOTICE) | Copyright and notices |
-| [docs/privacy.md](docs/privacy.md) | Privacy policy |
+| [docs/privacy.md](docs/privacy.md#english) | Privacy policy |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Structure, data flow, database, API quirks |
 | [docs/FINDINGS.md](docs/FINDINGS.md) | Findings on the real system |
 | [docs/NEXT_STEPS.md](docs/NEXT_STEPS.md) | Roadmap |
 | [docs/STATUS.md](docs/STATUS.md) | Current development status |
 
-Some of the developer documents in `docs/` are written in German.
+German versions: [README.de.md](README.de.md) and the matching `*.de.md` files; the privacy policy
+contains both languages.
 
 ## License
 

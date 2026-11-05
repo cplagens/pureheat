@@ -1,9 +1,13 @@
 # Release Notes
 
+[English](ReleaseNotes.md) · **Deutsch**
+
 Neueste Version oben. Versionen folgen `versionName` in `app/build.gradle.kts`.
 
 ## Unveröffentlicht
 
+- **Demo-Modus:** „Demo ausprobieren“ auf dem Einrichtungsbildschirm zeigt eine Beispielwohnung mit
+  erfundenen Daten – ohne Access Point, offline; beenden mit „Abmelden“.
 - **Heizprofil aus einer Beschreibung:** „Aus Beschreibung erstellen“ – Woche in eigenen Worten
   schreiben oder diktieren, die KI auf dem Gerät macht daraus einen Vorschlag zum Prüfen und Speichern.
 - Die Raumbeschreibung zählt jetzt: Räume ohne Fenster bekommen keine Fenster-offen-Erkennung,

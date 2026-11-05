@@ -103,9 +103,13 @@ fun DashboardScreen(
                 Spacer(Modifier.width(16.dp))
                 TextButton(onClick = { showOrder = true }, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.room_order)) }
             }
+            if (state.demo) {
+                Text(stringResource(R.string.demo_banner), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.tertiary)
+            }
             if (state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
             state.error?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
-            BatteryHint(Modifier.padding(top = 8.dp))
+            // The demo records nothing in the background.
+            if (!state.demo) BatteryHint(Modifier.padding(top = 8.dp))
         }
 
         val unassigned = state.state?.unassignedCircuits.orEmpty()

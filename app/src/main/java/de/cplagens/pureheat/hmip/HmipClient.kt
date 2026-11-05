@@ -40,7 +40,7 @@ class HmipClient(
         .connectTimeout(15, TimeUnit.SECONDS)
         .readTimeout(30, TimeUnit.SECONDS)
         .build(),
-) {
+) : HeatingCloud {
     private val json = Json { ignoreUnknownKeys = true }
     private val jsonType = "application/json".toMediaType()
 
@@ -182,7 +182,7 @@ class HmipClient(
     }
 
     /** Fetches the full current state of the home as raw JSON. */
-    suspend fun getCurrentState(sgtin: String, authToken: String, restUrl: String? = null): JsonObject {
+    override suspend fun getCurrentState(sgtin: String, authToken: String, restUrl: String?): JsonObject {
         val rest = restUrl ?: lookup(sgtin).rest
         val (code, text) = post(
             "$rest/hmip/home/getCurrentState",
@@ -201,7 +201,7 @@ class HmipClient(
     // are triggered solely from the profile screen after the user confirmed the changes.
 
     /** Reads one weekly profile of a room (HEATING group). */
-    suspend fun getProfile(
+    override suspend fun getProfile(
         sgtin: String,
         authToken: String,
         rest: String,
@@ -225,7 +225,7 @@ class HmipClient(
      * Writes a complete profile (as returned by [getProfile], with edited `profileDays`).
      * Without the top-level `profileIndex` the cloud answers 400 INVALID_REQUEST (verified 2026-11).
      */
-    suspend fun updateProfile(
+    override suspend fun updateProfile(
         sgtin: String,
         authToken: String,
         rest: String,
@@ -245,7 +245,7 @@ class HmipClient(
     }
 
     /** Switches the room to another of its weekly profiles. */
-    suspend fun setActiveProfile(sgtin: String, authToken: String, rest: String, groupId: String, profileIndex: String) {
+    override suspend fun setActiveProfile(sgtin: String, authToken: String, rest: String, groupId: String, profileIndex: String) {
         authed(
             sgtin, authToken, "$rest/hmip/group/heating/setActiveProfile",
             buildJsonObject {

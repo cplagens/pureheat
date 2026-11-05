@@ -394,4 +394,18 @@
     <string name="profile_describe_unchanged">De beschrijving komt overeen met het huidige profiel – niets te wijzigen.</string>
     <string name="help_describe_title">Verwarmingsprofiel uit een beschrijving</string>
     <string name="help_describe_text">In het verwarmingsprofiel kun je met ‘Maken uit beschrijving’ de week in je eigen woorden schrijven of dicteren, bijv. ‘Werkdagen 6–8 en 17–22 uur 21 °C, weekend 8–23 uur, anders 17 °C’. De AI op het apparaat (zonder: trefwoordherkenning voor Duits en Engels) maakt daar verwarmingsfasen van; dagen die je niet noemt, blijven zoals ze zijn. Het voorstel verschijnt in de weekweergave – controleren, zo nodig aanpassen en zoals gewoonlijk opslaan, met lijst van wijzigingen en back-up.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Demo proberen</string>
+    <string name="demo_hint">Geen access point bij de hand? De demo toont een voorbeeldwoning met verzonnen gegevens – er wordt niets verstuurd. Tik op „Afmelden” om de demo te verlaten.</string>
+    <string name="demo_banner">Demomodus – verzonnen voorbeeldgegevens</string>
+    <string name="demo_profile_away">Afwezig</string>
+    <string name="demo_room_living">Woonkamer</string>
+    <string name="demo_room_kitchen">Keuken</string>
+    <string name="demo_room_bedroom">Slaapkamer</string>
+    <string name="demo_room_child">Kinderkamer</string>
+    <string name="demo_room_office">Werkkamer</string>
+    <string name="demo_room_bath">Badkamer</string>
+    <string name="demo_desc_living">Woonkamer, 28 m², drie ramen op het zuiden en westen, dubbel glas, parket, twee buitenmuren.</string>
+    <string name="demo_desc_bedroom">Slaapkamer, 14 m², één raam op het oosten, laminaat, raam \'s nachts op een kier.</string>
+    <string name="demo_desc_bath">Badkamer met douche, 7 m², één raam, tegels, handdoekradiator.</string>
 </resources>

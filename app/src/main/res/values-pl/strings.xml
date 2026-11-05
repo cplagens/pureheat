@@ -400,4 +400,18 @@
     <string name="profile_describe_unchanged">Opis odpowiada obecnemu profilowi – nie ma nic do zmiany.</string>
     <string name="help_describe_title">Profil grzewczy z opisu</string>
     <string name="help_describe_text">W profilu grzewczym przycisk „Utwórz z opisu” pozwala napisać lub podyktować tydzień własnymi słowami, np. „W dni robocze 6–8 i 17–22 21 °C, w weekend 8–23, poza tym 17 °C”. AI na urządzeniu (bez niej: rozpoznawanie słów kluczowych po niemiecku i angielsku) zamienia to na fazy grzania; dni, których nie wymienisz, pozostają bez zmian. Propozycja pojawia się w widoku tygodnia – sprawdź ją, w razie potrzeby popraw i zapisz jak zwykle, z listą zmian i kopią zapasową.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Wypróbuj demo</string>
+    <string name="demo_hint">Nie masz pod ręką punktu dostępowego? Demo pokazuje przykładowe mieszkanie z wymyślonymi danymi – nic nie jest wysyłane. Aby wyjść, dotknij „Wyloguj”.</string>
+    <string name="demo_banner">Tryb demo – wymyślone dane przykładowe</string>
+    <string name="demo_profile_away">Nieobecność</string>
+    <string name="demo_room_living">Salon</string>
+    <string name="demo_room_kitchen">Kuchnia</string>
+    <string name="demo_room_bedroom">Sypialnia</string>
+    <string name="demo_room_child">Pokój dziecięcy</string>
+    <string name="demo_room_office">Gabinet</string>
+    <string name="demo_room_bath">Łazienka</string>
+    <string name="demo_desc_living">Salon, 28 m², trzy okna na południe i zachód, podwójne szyby, parkiet, dwie ściany zewnętrzne.</string>
+    <string name="demo_desc_bedroom">Sypialnia, 14 m², jedno okno na wschód, panele, w nocy okno uchylone.</string>
+    <string name="demo_desc_bath">Łazienka z prysznicem, 7 m², jedno okno, płytki, grzejnik łazienkowy.</string>
 </resources>

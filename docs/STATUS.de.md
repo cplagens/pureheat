@@ -1,6 +1,8 @@
 # PureHeat – Status (Einstieg für jede neue Session)
 
-Stand: 2026-11-04. Diese Datei kurz halten und am Ende jeder Aufgabe **ersetzen** (nicht anhängen).
+[English](STATUS.md) · **Deutsch**
+
+Stand: 2026-11-05. Diese Datei kurz halten und am Ende jeder Aufgabe **ersetzen** (nicht anhängen).
 Details je Schritt: `NEXT_STEPS.md` (Abschnitt per Grep suchen), Messungen: `FINDINGS.md`, offene
 Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene Aufgabe unten.
 
@@ -13,17 +15,20 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
   12 Sprachen, Raumeigenschaften (Gemini Nano), **Export/Import** (Info → Daten), Ziel-API 36,
   Open-Source-Dateien, **Heizprofil aus Text/Diktat** (Nano oder Stichwörter, nur Vorschlag),
   Raumbeschreibung begrenzt Erkennung (kein Fenster → keine Fenster-offen-Erkennung; Bad ohne
-  Dusche/Wanne → kein Duschen/Baden).
+  Dusche/Wanne → kein Duschen/Baden), **Demo-Modus** (Einrichtung, offline Beispielwohnung;
+  README-Screenshots daraus in `docs/screenshots/`).
 - Play-Store-Anleitung: `PLAY_STORE_GUIDE.md` (lokal, in `.gitignore`). Release-Signatur aus
   `keystore.properties` eingebaut (ohne Datei unsigniert), `docs/privacy.md` (de + en) angelegt.
+- Doku zweisprachig: Englisch `*.md`, Deutsch `*.de.md` (README, ReleaseNotes, CONTRIBUTING,
+  ARCHITECTURE, FINDINGS, NEXT_STEPS, STATUS); beide Fassungen gleich halten.
 
 ## Nächste Aufgaben
 1. **Am Gerät prüfen**: Heizprofil aus Beschreibung (Nano-Antwort im Debug-Log `Nano:` ansehen,
    ggf. Prompt nachschärfen), Bad ohne Fenster-Markierung, Export teilen/als Datei speichern, Import der eigenen Datei,
    Profil umbenennen (undokumentierter Weg – Ergebnis in FINDINGS), Reihenfolge-Dialog,
    Duschen/Baden im Bad, alles mit targetSdk 36.
-2. Vorbereitung Play Store (Checkliste in `PLAY_STORE_GUIDE.md`): **Demo-Modus** für Prüfer/Tester
-   (nächste Agent-Aufgabe), Logo 512 px + Feature-Grafik. Beim Nutzer: Upload-Keystore +
+2. Vorbereitung Play Store (Checkliste in `PLAY_STORE_GUIDE.md`): Demo-Modus fertig (in den
+   Prüfhinweisen erwähnen, am Telefon ausprobieren), Logo 512 px + Feature-Grafik (nächste Agent-Aufgabe). Beim Nutzer: Upload-Keystore +
    `keystore.properties` anlegen, GitHub Pages für `/docs` einschalten, Kontakt in `privacy.md`
    bestätigen, `.github/FUNDING.yml`: `github:` erst wenn GitHub Sponsors freigeschaltet ist.
    Entschieden 2026-11-05: **keine Spenden-Links in der App** (Play-Richtlinien, `SupportLinks.kt`

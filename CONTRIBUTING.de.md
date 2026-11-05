@@ -1,5 +1,7 @@
 # Mitmachen bei PureHeat
 
+[English](CONTRIBUTING.md) · **Deutsch**
+
 Danke für dein Interesse! Fehlermeldungen, Ideen, Übersetzungskorrekturen und Pull Requests sind
 willkommen – gern auch auf Englisch.
 
@@ -23,9 +25,9 @@ Voraussetzungen: Android Studio (aktuell), JDK 17, ein Android-Gerät oder Emula
 ```
 
 Zum Ausprobieren brauchst du einen Homematic IP Access Point (HmIP-HAP) mit Fußbodenheizungsaktor.
-Aufbau, Datenfluss und API-Besonderheiten stehen in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md),
-Messungen am echten System in [docs/FINDINGS.md](docs/FINDINGS.md), die Planung in
-[docs/NEXT_STEPS.md](docs/NEXT_STEPS.md).
+Aufbau, Datenfluss und API-Besonderheiten stehen in [docs/ARCHITECTURE.de.md](docs/ARCHITECTURE.de.md),
+Messungen am echten System in [docs/FINDINGS.de.md](docs/FINDINGS.de.md), die Planung in
+[docs/NEXT_STEPS.de.md](docs/NEXT_STEPS.de.md).
 
 ## Regeln für Beiträge
 
@@ -58,7 +60,7 @@ Messungen am echten System in [docs/FINDINGS.md](docs/FINDINGS.md), die Planung 
 
 1. Fork anlegen, Branch erstellen, Änderung klein und fokussiert halten.
 2. Beschreiben, was sich ändert und warum; bei UI-Änderungen gern ein Screenshot.
-3. Größere Neuerungen in [ReleaseNotes.md](ReleaseNotes.md) unter „Unveröffentlicht“ eintragen.
+3. Größere Neuerungen in [ReleaseNotes.de.md](ReleaseNotes.de.md) unter „Unveröffentlicht“ eintragen.
 
 ## Lizenz
 

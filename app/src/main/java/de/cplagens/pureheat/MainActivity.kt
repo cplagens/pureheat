@@ -69,7 +69,7 @@ class MainActivity : AppCompatActivity() {
                         return@Scaffold
                     }
                     when (val s = ui) {
-                        is UiState.Setup -> SetupScreen(s, viewModel::register, onOpenHelp = { showHelp = true }, modifier = screen)
+                        is UiState.Setup -> SetupScreen(s, viewModel::register, viewModel::startDemo, onOpenHelp = { showHelp = true }, modifier = screen)
                         is UiState.Dashboard -> {
                             val rooms = s.state?.rooms.orEmpty()
                             val profileRoom = rooms.firstOrNull { it.id == profileRoomId }

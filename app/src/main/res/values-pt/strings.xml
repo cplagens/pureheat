@@ -397,4 +397,18 @@
     <string name="profile_describe_unchanged">A descrição corresponde ao perfil atual – nada a alterar.</string>
     <string name="help_describe_title">Perfil a partir de uma descrição</string>
     <string name="help_describe_text">No perfil de aquecimento, «Criar a partir de uma descrição» permite escrever ou ditar a semana por palavras suas, p. ex. «Dias úteis 6–8 e 17–22 a 21 °C, fim de semana 8–23, caso contrário 17 °C». A IA no dispositivo (sem ela: reconhecimento por palavras-chave em alemão e inglês) transforma isso em fases de aquecimento; os dias não mencionados ficam como estão. A sugestão aparece na vista semanal – verifique, ajuste se necessário e guarde como habitualmente, com a lista de alterações e a cópia de segurança.</string>
+    <!-- Demo mode -->
+    <string name="demo_start">Experimentar a demo</string>
+    <string name="demo_hint">Não tem um ponto de acesso à mão? A demo mostra um apartamento de exemplo com dados inventados – nada é enviado. Para sair, toque em «Terminar sessão».</string>
+    <string name="demo_banner">Modo demo – dados de exemplo inventados</string>
+    <string name="demo_profile_away">Ausente</string>
+    <string name="demo_room_living">Sala de estar</string>
+    <string name="demo_room_kitchen">Cozinha</string>
+    <string name="demo_room_bedroom">Quarto principal</string>
+    <string name="demo_room_child">Quarto das crianças</string>
+    <string name="demo_room_office">Escritório</string>
+    <string name="demo_room_bath">Casa de banho</string>
+    <string name="demo_desc_living">Sala de estar, 28 m², três janelas a sul e a oeste, vidro duplo, parquet, duas paredes exteriores.</string>
+    <string name="demo_desc_bedroom">Quarto, 14 m², uma janela a leste, laminado, janela entreaberta à noite.</string>
+    <string name="demo_desc_bath">Casa de banho com duche, 7 m², uma janela, azulejos, toalheiro aquecido.</string>
 </resources>

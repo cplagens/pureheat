@@ -11,6 +11,7 @@ import androidx.lifecycle.viewModelScope
 import de.cplagens.pureheat.PureHeatApp
 import de.cplagens.pureheat.data.Credentials
 import de.cplagens.pureheat.data.HistoryWorker
+import de.cplagens.pureheat.data.demo.DemoHome
 import de.cplagens.pureheat.data.history.BathingDetector
 import de.cplagens.pureheat.data.history.BathingEvent
 import de.cplagens.pureheat.data.history.HistoryAnalysis
@@ -50,6 +51,8 @@ sealed interface UiState {
         val insights: Map<String, RoomInsight> = emptyMap(),
         /** Forecast min/max outside temperature for the next 24 h, if available. */
         val forecastRange: ClosedFloatingPointRange<Double>? = null,
+        /** Invented sample flat instead of a real access point. */
+        val demo: Boolean = false,
     ) : UiState
 }
 
@@ -60,7 +63,7 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
     private val client = HmipClient()
 
     private val _ui = MutableStateFlow<UiState>(
-        if (store.load() != null) UiState.Dashboard() else UiState.Setup()
+        store.load()?.let { UiState.Dashboard(demo = DemoHome.isDemo(it.sgtin)) } ?: UiState.Setup()
     )
     val ui: StateFlow<UiState> = _ui.asStateFlow()
 
@@ -115,6 +118,21 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                 store.save(Credentials(sgtin, token))
                 HistoryWorker.schedule(getApplication())
                 _ui.value = UiState.Dashboard()
+                load()
+            } catch (e: Exception) {
+                _ui.value = UiState.Setup(error = e.toUiText())
+            }
+        }
+    }
+
+    /** Sample flat without an access point (for reviewers, testers and a first look). */
+    fun startDemo() {
+        _ui.value = UiState.Setup(busy = true)
+        viewModelScope.launch {
+            try {
+                repository.seedDemo()
+                store.save(Credentials(DemoHome.SGTIN, "demo"))
+                _ui.value = UiState.Dashboard(demo = true)
                 load()
             } catch (e: Exception) {
                 _ui.value = UiState.Setup(error = e.toUiText())

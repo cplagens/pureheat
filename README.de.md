@@ -28,6 +28,12 @@
 
 ---
 
+| <img src="docs/screenshots/dashboard.png" width="200" alt="Übersicht mit Ventilöffnung je Heizkreis, erkanntem Duschen und offenem Fenster"> | <img src="docs/screenshots/room-detail.png" width="200" alt="Detailansicht mit Temperatur, Außentemperatur, Ventil und Luftfeuchte"> | <img src="docs/screenshots/room-model.png" width="200" alt="Gelerntes Raummodell und Probelauf mit Trefferquote"> | <img src="docs/screenshots/heating-profile.png" width="200" alt="Wochen-Heizprofil"> |
+|:-:|:-:|:-:|:-:|
+| Welcher Kreis heizt | Erkanntes offenes Fenster | Raummodell und Probelauf | Heizprofile |
+
+<sub>Screenshots aus dem eingebauten Demo-Modus mit erfundenen Daten (englische Oberfläche; die App gibt es auch auf Deutsch).</sub>
+
 ## Warum PureHeat?
 
 Die offizielle App zeigt Soll- und Ist-Temperatur – aber nicht, **was im Heizkreisverteiler passiert**.
@@ -104,7 +110,7 @@ automatisch gelöscht. Export und Import passieren nur, wenn du sie auslöst.
 - **Schreibzugriffe nur für Heizprofile** und nur nach deiner Bestätigung. PureHeat stellt nie von
   sich aus Temperaturen ein; die KI macht nur Vorschläge.
 - Open Source: Du kannst all das im Code nachprüfen.
-- Details: [Datenschutzerklärung](docs/privacy.md)
+- Details: [Datenschutzerklärung](docs/privacy.md#deutsch)
 
 ## Voraussetzungen
 
@@ -119,6 +125,10 @@ automatisch gelöscht. Export und Import passieren nur, wenn du sie auslöst.
 3. Wenn die App dazu auffordert, den blauen Knopf am Access Point drücken.
 
 Fertig – ab jetzt zeichnet PureHeat im Hintergrund auf und das Raummodell lernt mit jedem Tag dazu.
+
+**Kein Access Point zur Hand?** Auf dem Einrichtungsbildschirm **„Demo ausprobieren“** tippen: eine
+Beispielwohnung mit drei Wochen erfundenem Verlauf, gelerntem Raummodell, gelüftetem Schlafzimmer und
+Duschen im Bad. Funktioniert offline, sendet nichts und wird über „Abmelden“ beendet.
 
 ### Akku-Einstellung für einen lückenlosen Verlauf
 
@@ -145,21 +155,21 @@ die Entwicklung freiwillig unterstützen:
 - 💙 [PayPal](https://paypal.me/ChristianPlagens)
 
 Ein ⭐ für das Repository, Fehlermeldungen und Verbesserungsvorschläge helfen ebenfalls – siehe
-[CONTRIBUTING.md](CONTRIBUTING.md).
+[CONTRIBUTING.de.md](CONTRIBUTING.de.md).
 
 ## Dokumentation
 
 | Datei | Inhalt |
 |---|---|
-| [ReleaseNotes.md](ReleaseNotes.md) | Was sich in welcher Version geändert hat |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Fehler melden, bauen, testen, Regeln für Beiträge |
-| [LICENSE.md](LICENSE.md) | Apache-Lizenz 2.0 |
-| [NOTICE](NOTICE) | Urheberrecht und Hinweise |
-| [docs/privacy.md](docs/privacy.md) | Datenschutzerklärung |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Aufbau, Datenfluss, Datenbank, API-Besonderheiten |
-| [docs/FINDINGS.md](docs/FINDINGS.md) | Erkenntnisse am echten System |
-| [docs/NEXT_STEPS.md](docs/NEXT_STEPS.md) | Roadmap |
-| [docs/STATUS.md](docs/STATUS.md) | Aktueller Entwicklungsstand |
+| [ReleaseNotes.de.md](ReleaseNotes.de.md) | Was sich in welcher Version geändert hat |
+| [CONTRIBUTING.de.md](CONTRIBUTING.de.md) | Fehler melden, bauen, testen, Regeln für Beiträge |
+| [LICENSE.md](LICENSE.md) | Apache-Lizenz 2.0 (nur auf Englisch verbindlich) |
+| [NOTICE](NOTICE) | Urheberrecht und Hinweise (Englisch) |
+| [docs/privacy.md](docs/privacy.md#deutsch) | Datenschutzerklärung |
+| [docs/ARCHITECTURE.de.md](docs/ARCHITECTURE.de.md) | Aufbau, Datenfluss, Datenbank, API-Besonderheiten |
+| [docs/FINDINGS.de.md](docs/FINDINGS.de.md) | Erkenntnisse am echten System |
+| [docs/NEXT_STEPS.de.md](docs/NEXT_STEPS.de.md) | Roadmap |
+| [docs/STATUS.de.md](docs/STATUS.de.md) | Aktueller Entwicklungsstand |
 
 ## Lizenz
 
