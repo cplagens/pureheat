@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="160" height="160" viewBox="0 0 108 108" role="img" aria-label="PureHeat logo">
+  <!-- Same artwork as app/src/main/res/drawable/ic_logo.xml -->
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="108" y2="108" gradientUnits="userSpaceOnUse">
+      <stop offset="0" stop-color="#14B8A6"/>
+      <stop offset="1" stop-color="#0B3B5B"/>
+    </linearGradient>
+  </defs>
+  <path fill="url(#bg)" d="M30,0H78A30,30 0 0 1 108,30V78A30,30 0 0 1 78,108H30A30,30 0 0 1 0,78V30A30,30 0 0 1 30,0Z"/>
+  <path fill="#FFFFFF" d="M34,72H74A4,4 0 0 1 78,76V76A4,4 0 0 1 74,80H34A4,4 0 0 1 30,76V76A4,4 0 0 1 34,72Z"/>
+  <path fill="none" stroke="#FFFFFF" stroke-width="6" stroke-linecap="round"
+        d="M40,64C34,58 34,53 40,47C46,41 46,36 40,30M54,64C48,58 48,53 54,47C60,41 60,36 54,30M68,64C62,58 62,53 68,47C74,41 74,36 68,30"/>
+</svg>

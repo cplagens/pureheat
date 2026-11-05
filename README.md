@@ -1,56 +1,130 @@
-# PureHeat
+<p align="center">
+  <img src="docs/assets/logo.svg" width="128" height="128" alt="PureHeat logo">
+</p>
 
-Android-App für Homematic IP Fußbodenheizungen, die zeigt, was die offizielle App nicht zeigt – und
-lernt, wie sich jeder Raum verhält.
+<h1 align="center">PureHeat</h1>
 
-- **Welcher Heizkreis gerade offen ist** und wie weit jeder Stellantrieb geöffnet ist; Warnung, wenn
-  ein Ventil lange offen ist, der Raum aber nicht wärmer wird
-- Ist-/Solltemperatur, Luftfeuchte, Außentemperatur und Wetterprognose
-- **Verlauf** (im Hintergrund aufgezeichnet, 2 Jahre gespeichert) mit Detailansicht bis 60 Tage
-- **Raummodell** je Raum (Wärmeverlust, Heizleistung, Totzeit des Estrichs) mit Aufheiz- und
-  Abkühlzeiten und einem **Probelauf**, der die Vorhersagen täglich an der Wirklichkeit misst
-- Erkennung von **offenen Fenstern** und **Duschen/Baden** aus Temperatur und Luftfeuchte
-- **Raumeigenschaften** per Text oder Diktat, erkannt mit KI auf dem Gerät (Gemini Nano)
-- **Heizprofile** komfortabel bearbeiten, umbenennen, aktivieren und rückgängig machen – mit
-  Änderungsliste, Sicherung und Prüfung nach dem Speichern
-- 12 Sprachen, Hilfe in der App
+<p align="center">
+  <b>English</b> · <a href="README.de.md">Deutsch</a>
+</p>
 
-Die App nutzt die Homematic IP Cloud über den Access Point (HmIP-HAP). Schreibzugriffe gibt es nur
-für Heizprofile und nur nach Bestätigung.
+<p align="center">
+  <b>See what your floor heating is really doing.</b><br>
+  Android app for Homematic IP floor heating – shows what the official app doesn't,
+  and learns how each room behaves.
+</p>
 
-> Inoffizielles Projekt, nicht mit eQ-3 verbunden. Die Cloud-API ist nicht offiziell dokumentiert und
-> kann sich ändern.
+<p align="center">
+  <a href="LICENSE.md"><img src="https://img.shields.io/badge/License-Apache%202.0-blue.svg" alt="License: Apache 2.0"></a>
+  <img src="https://img.shields.io/badge/Android-8.0%2B-3DDC84?logo=android&logoColor=white" alt="Android 8.0+">
+  <img src="https://img.shields.io/badge/Kotlin-Jetpack%20Compose-7F52FF?logo=kotlin&logoColor=white" alt="Kotlin and Jetpack Compose">
+  <img src="https://img.shields.io/badge/Languages-12-14B8A6" alt="12 languages">
+  <img src="https://img.shields.io/badge/Ads%20%26%20tracking-none-0B3B5B" alt="No ads, no tracking">
+</p>
 
-## Einrichtung
+<p align="center">
+  <a href="https://paypal.me/ChristianPlagens"><img src="https://img.shields.io/badge/PayPal-donate-00457C?logo=paypal&logoColor=white" alt="Donate via PayPal"></a>
+</p>
 
-1. App bauen und installieren: `./gradlew installDebug`
-2. In der App die SGTIN des Access Points eingeben (steht auf dem Aufkleber unter dem Gerät).
-3. Wenn die App dazu auffordert, den blauen Knopf am Access Point drücken.
+---
 
-Das Auth-Token wird nur lokal auf dem Gerät gespeichert. Daten gehen nur an die Homematic IP Cloud
-und (mit auf ~1 km gerundetem Standort) an Open-Meteo für die Wetterprognose.
+## Why PureHeat?
 
-## Dokumentation
+The official app shows target and current temperature – but not **what is happening at the heating
+manifold**. With floor heating in a slow-reacting screed, that is exactly what matters: Which circuit
+is heating right now? How far is the valve open? How long does the bathroom take to warm up in the
+morning? PureHeat answers these questions from the data your system already provides.
 
-| Datei | Inhalt |
+## Features
+
+### 🔥 Heating circuits at a glance
+- See instantly **which heating circuit is open** and how far each valve actuator is open.
+- Warning when a valve has been open for a long time but the room is not getting warmer – e.g. a
+  stuck valve pin.
+- Current and target temperature, humidity, outdoor temperature and weather forecast.
+
+### 📈 History
+- Recorded in the background (every 15–60 minutes, battery-friendly) and kept for **2 years**.
+- Detail view per room for up to 60 days with temperature, valve opening and events.
+- Export and import of measurements and settings.
+
+### 🧠 Learning room model
+- A physical model for every room: **heat loss**, **heating power** and **dead time** of the screed.
+- From that, heat-up and cool-down times: "How long does it take from 19 to 22 °C?"
+- A **probe run** checks the predictions against reality every day – so you see how good the model
+  really is.
+
+### 🪟 Event detection
+- **Open windows** and **showering/bathing** are detected from temperature and humidity.
+- Describe **room properties** by text or dictation ("bathroom with shower, no window") – evaluated
+  by AI **on the device** (Gemini Nano), no cloud. The description sharpens the detection.
+
+### 🗓️ Convenient heating profile editing
+- Edit, rename, activate and undo profiles.
+- Get a heating profile suggestion from a description in your own words.
+- Before every save a **list of changes** and a confirmation, a **backup** beforehand, and a
+  **read-back check** afterwards that the cloud applied everything correctly.
+
+### 🌍 And also
+- 12 languages (English, German, French, Spanish, Italian, Portuguese, Dutch, Polish, Turkish,
+  Russian, Japanese, Chinese).
+- Detailed help right in the app.
+
+## Privacy and safety
+
+- **No ads, no tracking, no own server.**
+- The auth token stays on the device.
+- Data goes only to the Homematic IP Cloud and – with the location rounded to ~1 km – to
+  [Open-Meteo](https://open-meteo.com) for the weather forecast.
+- **Writes only for heating profiles**, and only after your confirmation. PureHeat never sets
+  temperatures on its own; the AI only makes suggestions.
+- Details: [Privacy policy](docs/privacy.md)
+
+## Requirements
+
+- Homematic IP with Access Point **HmIP-HAP** and cloud connection
+- Floor heating actuator (e.g. HmIP-FAL) with wall thermostats
+- Android 8.0 or newer; for the AI features a device with Gemini Nano (otherwise keyword detection)
+
+## Setup
+
+1. Build and install the app: `./gradlew installDebug`
+2. Enter the SGTIN of the Access Point in the app (printed on the sticker under the device).
+3. When the app asks for it, press the blue button on the Access Point.
+
+Done – from now on PureHeat records in the background and the room model learns more every day.
+
+> **Note:** Unofficial project, not affiliated with eQ-3. The cloud API is not officially documented
+> and may change.
+
+## Support
+
+PureHeat is and will stay free, without ads and without tracking. If you like the app, you can
+support its development voluntarily:
+
+- 💙 [PayPal](https://paypal.me/ChristianPlagens)
+
+A ⭐ for the repository, bug reports and suggestions help too – see
+[CONTRIBUTING.md](CONTRIBUTING.md). The links are also in the app under "Info".
+
+## Documentation
+
+| File | Content |
 |---|---|
-| [ReleaseNotes.md](ReleaseNotes.md) | Was sich in welcher Version geändert hat |
-| [CONTRIBUTING.md](CONTRIBUTING.md) | Fehler melden, bauen, testen, Regeln für Beiträge |
-| [LICENSE.md](LICENSE.md) | Apache-Lizenz 2.0 |
-| [NOTICE](NOTICE) | Urheberrecht und Hinweise |
-| [docs/privacy.md](docs/privacy.md) | Datenschutzerklärung |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Aufbau, Datenfluss, Datenbank, API-Besonderheiten |
-| [docs/FINDINGS.md](docs/FINDINGS.md) | Erkenntnisse am echten System |
+| [ReleaseNotes.md](ReleaseNotes.md) | What changed in which version |
+| [CONTRIBUTING.md](CONTRIBUTING.md) | Reporting bugs, building, testing, contribution rules |
+| [LICENSE.md](LICENSE.md) | Apache License 2.0 |
+| [NOTICE](NOTICE) | Copyright and notices |
+| [docs/privacy.md](docs/privacy.md) | Privacy policy |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Structure, data flow, database, API quirks |
+| [docs/FINDINGS.md](docs/FINDINGS.md) | Findings on the real system |
 | [docs/NEXT_STEPS.md](docs/NEXT_STEPS.md) | Roadmap |
-| [docs/STATUS.md](docs/STATUS.md) | Aktueller Entwicklungsstand |
+| [docs/STATUS.md](docs/STATUS.md) | Current development status |
 
-## Unterstützen
+Some of the developer documents in `docs/` are written in German.
 
-PureHeat ist und bleibt kostenlos, ohne Werbung und ohne Tracking. Wer möchte, kann die Entwicklung
-freiwillig unterstützen (Links in der App unter „Info“). Die Links werden in
-`app/src/main/java/de/cplagens/pureheat/SupportLinks.kt` eingetragen; leere Einträge werden in der App
-ausgeblendet.
+## License
 
-## Lizenz
+Copyright 2026 Christian Plagens. Released under the [Apache License 2.0](LICENSE.md).
 
-Copyright 2026 Christian Plagens. Veröffentlicht unter der [Apache-Lizenz 2.0](LICENSE.md).
+"Homematic IP" is a trademark of eQ-3 AG. PureHeat is an independent project.
