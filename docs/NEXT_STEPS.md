@@ -290,6 +290,13 @@ User info: in rooms 1–3 the windows are open at night. There are no window con
 2. Detail view in dark mode and with 7/14/60 days once there is enough data.
 3. Never run on the real system: "Activate profile" (`setActiveProfile`), "Undo last save",
    "Apply to other rooms".
+4. **Rename profile** (cloud write via the undocumented way, only with the user's OK): e.g. rename
+   "Profile 4" in the bathroom and back; check that the name shows up in the state and in the
+   official app, result into FINDINGS.
+5. **Export/import** (the user taps through, a target has to be chosen): Info → Data → "Export and
+   share" and "Save as file", then import the own file (overwrites settings, adds measurements).
+6. Checked 2026-11-05 (done): app runs with targetSdk 36, heating profile from description with
+   Nano, order dialog, shower/bath label on the dashboard (after the fix in `ChartMarkers.kt`).
 
 ## Step 2 – battery measurement and optimisation (implemented 2026-11-01, measurement open)
 

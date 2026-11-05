@@ -8,6 +8,8 @@ Neueste Version oben. Versionen folgen `versionName` in `app/build.gradle.kts`.
 
 - **Demo-Modus:** „Demo ausprobieren“ auf dem Einrichtungsbildschirm zeigt eine Beispielwohnung mit
   erfundenen Daten – ohne Access Point, offline; beenden mit „Abmelden“.
+- Übersicht: Erkanntes Duschen oder ein offenes Fenster wird über dem Diagramm immer beschriftet,
+  auch bei vielen Sollwert-Wechseln.
 - **Heizprofil aus einer Beschreibung:** „Aus Beschreibung erstellen“ – Woche in eigenen Worten
   schreiben oder diktieren, die KI auf dem Gerät macht daraus einen Vorschlag zum Prüfen und Speichern.
 - Die Raumbeschreibung zählt jetzt: Räume ohne Fenster bekommen keine Fenster-offen-Erkennung,

@@ -291,6 +291,15 @@ Nutzer-Info: In den Zimmern 1–3 sind nachts die Fenster offen. Es gibt keine F
 2. Detailansicht im Dunkelmodus und mit 7/14/60 Tagen, sobald genug Daten da sind.
 3. Noch nie am echten System ausgeführt: „Profil aktivieren“ (`setActiveProfile`),
    „Letzte Speicherung rückgängig“, „auf andere Räume übernehmen“.
+4. **Profil umbenennen** (Schreibzugriff auf die Cloud über den undokumentierten Weg, nur mit OK des
+   Nutzers): z. B. „Profil 4“ im Bad umbenennen und zurück; prüfen, ob der Name im Zustand und in der
+   offiziellen App ankommt, Ergebnis in FINDINGS.
+5. **Export/Import** (klickt der Nutzer durch, Ziel muss gewählt werden): Info → Daten → „Exportieren
+   und teilen“ und „Als Datei speichern“, danach die eigene Datei importieren (ersetzt Einstellungen,
+   ergänzt Messwerte).
+6. Geprüft 2026-11-05 (erledigt): App läuft mit targetSdk 36, Heizprofil aus Beschreibung mit Nano,
+   Reihenfolge-Dialog, Duschen/Baden-Beschriftung in der Übersicht (nach der Korrektur in
+   `ChartMarkers.kt`).
 
 ## Schritt 2 – Akkumessung und -optimierung (umgesetzt 2026-11-01, Messung offen)
 

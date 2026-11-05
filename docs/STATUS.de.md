@@ -23,10 +23,10 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
   ARCHITECTURE, FINDINGS, NEXT_STEPS, STATUS); beide Fassungen gleich halten.
 
 ## Nächste Aufgaben
-1. **Am Gerät prüfen**: Heizprofil aus Beschreibung (Nano-Antwort im Debug-Log `Nano:` ansehen,
-   ggf. Prompt nachschärfen), Bad ohne Fenster-Markierung, Export teilen/als Datei speichern, Import der eigenen Datei,
-   Profil umbenennen (undokumentierter Weg – Ergebnis in FINDINGS), Reihenfolge-Dialog,
-   Duschen/Baden im Bad, alles mit targetSdk 36.
+1. **Am Gerät prüfen** (2026-11-05 erledigt: Heizprofil aus Beschreibung mit Nano ✓, Reihenfolge-
+   Dialog ✓, Duschen/Baden in der Übersicht ✓ nach einer Korrektur, App läuft mit targetSdk 36 ✓):
+   noch offen Export teilen/als Datei speichern, Import der eigenen Datei (klickt der Nutzer durch),
+   Profil umbenennen (Schreibzugriff auf die Cloud – nur mit OK des Nutzers; Ergebnis in FINDINGS).
 2. Vorbereitung Play Store (Checkliste in `PLAY_STORE_GUIDE.md`): Demo-Modus fertig (in den
    Prüfhinweisen erwähnen, am Telefon ausprobieren), Logo 512 px + Feature-Grafik (nächste Agent-Aufgabe). Beim Nutzer: Upload-Keystore +
    `keystore.properties` anlegen, GitHub Pages für `/docs` einschalten, Kontakt in `privacy.md`
@@ -40,7 +40,9 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
 
 ## Kleinigkeiten
 - Detail-Temperaturdiagramm: y-Beschriftung „28 °C“ liegt über der Ist-Linie.
-- Übersicht: Ereignis-Beschriftungen über dem Diagramm stehen teils dicht/überlappend.
+- Übersicht: Bei vielen Sollwert-Wechseln fallen einzelne Sollwert-Beschriftungen weg (erkannte
+  Ereignisse bekommen jetzt immer zuerst Platz).
+- Reihenfolge-Dialog: Die ↑/↓-Pfeile sind klein.
 
 ## Offene Prüfungen am Gerät (älter)
 - Nie am echten System ausgeführt: „Profil aktivieren“, „Letzte Speicherung rückgängig“,

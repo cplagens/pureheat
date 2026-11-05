@@ -108,3 +108,13 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   Räumen, die von anderen Wärmequellen warm sind). Noch keine Aussage zur Genauigkeit möglich.
 - Ereigniszeiten werden auf 15 min gerundet angezeigt, weil die Messpunkte bis zu 1 h auseinander
   liegen. „Fenster zu“ wird nur angezeigt, wenn das Schließen am Wiederanstieg erkannt wurde.
+- **Duschen im echten Bad (2026-11-05):** 45 → 54 %rF zwischen 19:26 und 19:44 bei +0,3 K, nach
+  ~2,5 h zurück auf 48–49 %; erkannt (Detailansicht: 19:35–22:18, +0,8 K). In der Übersicht wurde
+  die Beschriftung von fünf früheren Sollwert-Beschriftungen verdrängt – behoben: erkannte
+  Ereignisse werden zuerst platziert.
+- **Gemini Nano, Heizprofil aus Text (2026-11-05):** „Werktags 5:30 bis 7:30 Uhr 23 Grad und abends
+  19 bis 22 Uhr 23 Grad, am Wochenende 8 bis 11 Uhr 23 Grad, sonst 21 Grad“ → Zeiten richtig, aber
+  `base` 23 in den Werktags-/Wochenend-Regeln und „sonst 21“ als eigene Regel für alle Tage mit leeren
+  `periods`. `ProfileFromText.apply` fängt das ab (letzte Grundtemperatur je Tag gewinnt, Perioden
+  werden zusammengeführt, eine leere Regel lässt sie stehen) → Ergebnis genau wie beschrieben.
+  Antwort in ~2 s.

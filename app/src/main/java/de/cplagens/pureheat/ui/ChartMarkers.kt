@@ -23,8 +23,11 @@ import de.cplagens.pureheat.R
 import kotlin.math.abs
 import kotlin.math.roundToLong
 
-/** An event worth a time label above a chart. */
-data class ChartMarker(val time: Long, val label: String)
+/**
+ * An event worth a time label above a chart. Detected events (window, showering/bathing) are
+ * [important]: they get a place before setpoint changes, which can also be read off the chart.
+ */
+data class ChartMarker(val time: Long, val label: String, val important: Boolean = false)
 
 private const val QUARTER_MS = 15 * 60_000L
 
@@ -42,13 +45,13 @@ fun chartMarkers(
 ): List<ChartMarker> {
     val out = mutableListOf<ChartMarker>()
     bathing.filter { it.start in start..end }.forEach { b ->
-        out += ChartMarker(b.start, ctx.getString(R.string.marker_bathing, clock(ctx, b.start)))
+        out += ChartMarker(b.start, ctx.getString(R.string.marker_bathing, clock(ctx, b.start)), important = true)
     }
     windows.forEach { w ->
-        if (w.start in start..end) out += ChartMarker(w.start, ctx.getString(R.string.marker_window_open, clock(ctx, w.start)))
+        if (w.start in start..end) out += ChartMarker(w.start, ctx.getString(R.string.marker_window_open, clock(ctx, w.start)), important = true)
         // Only claim "closed" when we saw it; otherwise we just know it was open at least until then.
         w.end?.takeIf { it in start..end && w.closeDetected }?.let {
-            out += ChartMarker(it, ctx.getString(R.string.marker_window_closed, clock(ctx, it)))
+            out += ChartMarker(it, ctx.getString(R.string.marker_window_closed, clock(ctx, it)), important = true)
         }
     }
     var previous: Double? = null
@@ -73,7 +76,8 @@ private fun Double.deg() = if (this % 1.0 == 0.0) "${toInt()}°" else String.for
 
 /**
  * Time labels on two lanes above a chart with the same [start]/[end]. A label goes to the
- * second lane if it would overlap the first, and is skipped if both are taken.
+ * second lane if it would overlap the first, and is skipped if both are taken. Important markers
+ * are placed first, so a detected shower isn't crowded out by earlier setpoint changes.
  */
 @Composable
 fun MarkerStrip(markers: List<ChartMarker>, start: Long, end: Long, modifier: Modifier = Modifier) {
@@ -84,16 +88,17 @@ fun MarkerStrip(markers: List<ChartMarker>, start: Long, end: Long, modifier: Mo
     Canvas(modifier.fillMaxWidth().height(30.dp)) {
         val span = (end - start).coerceAtLeast(1)
         val laneHeight = size.height / 2
-        val laneEnds = floatArrayOf(Float.NEGATIVE_INFINITY, Float.NEGATIVE_INFINITY)
-        markers.forEach { m ->
+        val gap = 4.dp.toPx()
+        val lanes = List(2) { mutableListOf<ClosedFloatingPointRange<Float>>() }
+        markers.sortedWith(compareBy({ !it.important }, { it.time })).forEach { m ->
             val x = (m.time - start).toFloat() / span * size.width
             val layout = measurer.measure(m.label, style)
             val w = layout.size.width.toFloat()
             // Keep the label inside the strip; anchor at the tick where possible.
             val left = (x - w / 2).coerceIn(0f, (size.width - w).coerceAtLeast(0f))
-            val lane = laneEnds.indexOfFirst { left > it + 4.dp.toPx() }
+            val lane = lanes.indexOfFirst { taken -> taken.none { left < it.endInclusive + gap && left + w + gap > it.start } }
             if (lane < 0) return@forEach
-            laneEnds[lane] = left + w
+            lanes[lane] += left..(left + w)
             val top = lane * laneHeight
             drawText(layout, topLeft = Offset(left, top))
             drawLine(tick, Offset(x, top + layout.size.height), Offset(x, size.height), strokeWidth = 1.dp.toPx())

@@ -23,10 +23,10 @@ findings: `REVIEW.md` (if present). "continue" = first open task below.
   ARCHITECTURE, FINDINGS, NEXT_STEPS, STATUS); keep both in sync.
 
 ## Next tasks
-1. **Check on the device**: heating profile from description (look at the Nano answer in the debug
-   log `Nano:`, sharpen the prompt if needed), bathroom without window marker, export share/save as
-   file, import of the own file, rename profile (undocumented way – result into FINDINGS), order
-   dialog, shower/bath in the bathroom, everything with targetSdk 36.
+1. **Check on the device** (2026-11-05 done: profile from description with Nano ✓, order dialog ✓,
+   shower/bath on the dashboard ✓ after a fix, app runs with targetSdk 36 ✓): still open export
+   share/save as file, import of the own file (the user taps through), rename profile (cloud write –
+   only with the user's OK; result into FINDINGS).
 2. Play Store preparation (checklist in `PLAY_STORE_GUIDE.md`): demo mode done (mention it in the
    review notes, try it on the phone), logo 512 px + feature graphic (next agent task). For the user: create upload keystore +
    `keystore.properties`, enable GitHub Pages for `/docs`, confirm contact in `privacy.md`,
@@ -40,7 +40,9 @@ findings: `REVIEW.md` (if present). "continue" = first open task below.
 
 ## Small things
 - Detail temperature chart: y label "28 °C" lies over the current-temperature line.
-- Overview: event labels above the chart are partly crowded/overlapping.
+- Overview: with many setpoint changes some setpoint labels are left out (detected events now
+  always get a place first).
+- Order dialog: the ↑/↓ arrows are small.
 
 ## Open device checks (older)
 - Never run on the real system: "Activate profile", "Undo last save", "Apply to other rooms".

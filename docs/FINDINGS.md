@@ -110,3 +110,11 @@ Do not add IDs, locations or personal names – the repo is public.
   other heat sources). No statement about accuracy possible yet.
 - Event times are shown rounded to 15 min because the data points are up to 1 h apart. "Window
   closed" is only shown if the closing was detected from the temperature rising again.
+- **Shower in the real bathroom (2026-11-05):** 45 → 54 %RH between 19:26 and 19:44 at +0.3 K,
+  back to 48–49 % after ~2.5 h; detected (detail view: 19:35–22:18, +0.8 K). On the dashboard
+  the label was crowded out by five earlier setpoint labels – fixed: detected events are placed first.
+- **Gemini Nano, heating profile from text (2026-11-05):** "Werktags 5:30 bis 7:30 Uhr 23 Grad und
+  abends 19 bis 22 Uhr 23 Grad, am Wochenende 8 bis 11 Uhr 23 Grad, sonst 21 Grad" → correct periods,
+  but `base` 23 in the weekday/weekend rules and "sonst 21" as an extra rule for all days with empty
+  `periods`. `ProfileFromText.apply` handles this (last base per day wins, periods are merged, an
+  empty rule keeps them) → result exactly as described. Answer in ~2 s.
