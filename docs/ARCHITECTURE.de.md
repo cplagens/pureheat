@@ -4,7 +4,7 @@
 
 Stand: 2026-11-01. Beschreibt, wie die App aufgebaut ist, welche Daten sie woher bekommt und
 welche Annahmen über die (inoffizielle) Homematic IP Cloud-API gelten.
-Was als Nächstes geplant ist, steht in [NEXT_STEPS.de.md](NEXT_STEPS.de.md).
+Was als Nächstes geplant ist, steht in [NEXT_STEPS.md](NEXT_STEPS.md) (Englisch).
 
 ## Überblick
 

@@ -1,7 +1,5 @@
 # PureHeat – Status (entry point for every new session)
 
-**English** · [Deutsch](STATUS.de.md)
-
 As of: 2026-11-06. Keep this file short and **replace** it at the end of every task (don't append).
 Details per step: `NEXT_STEPS.md` (grep for the section), measurements: `FINDINGS.md`, open review
 findings: `REVIEW.md` (if present). "continue" = first open task below.
@@ -19,12 +17,15 @@ findings: `REVIEW.md` (if present). "continue" = first open task below.
   from it in `docs/screenshots/`).
 - Play Store guide: `PLAY_STORE_GUIDE.md` (local, in `.gitignore`). Release signing from
   `keystore.properties` built in (unsigned without the file), `docs/privacy.md` (de + en) created.
-- Docs are bilingual: English `*.md`, German `*.de.md` (README, ReleaseNotes, CONTRIBUTING,
-  ARCHITECTURE, FINDINGS, NEXT_STEPS, STATUS); keep both in sync.
+- Docs: English only since 2026-11-06; the German `*.de.md` are only updated for a release or on
+  request (they lag behind now: ReleaseNotes, FINDINGS, CONTRIBUTING). Tooling: `scripts/check.sh`,
+  `scripts/pull-db.sh`, `scripts/sql/` (see CLAUDE.md).
 
 ## Next tasks
-0. **Open-window detection reworked (2026-11-06)**, NEXT_STEPS "Open-window detection": watch on
-   the device over the next days (room 2 evening of 11-06: opening ~21:15 should be the only event).
+0. **Open-window detection reworked (2026-11-06**, rate since last value change + absolute
+   humidity; NEXT_STEPS "Open-window detection"): watch on the device over the next days (room 2
+   evening of 11-06: opening ~21:15 should be the only event). Then: outside humidity from
+   Open-Meteo (planned there, needs a DB migration).
 1. **Check on the device** (2026-11-05 done: profile from description with Nano ✓, order dialog ✓,
    shower/bath on the dashboard ✓ after a fix, app runs with targetSdk 36 ✓): still open export
    share/save as file, import of the own file (the user taps through), rename profile (cloud write –

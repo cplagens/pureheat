@@ -96,8 +96,27 @@ class WindowDetectorTest {
 
     @Test
     fun risingHumidityIsNoWindow() {
+        val samples = listOf(s(0, 22.0, rh = 50), s(1, 21.4, rh = 55))
+        assertTrue(WindowDetector.detect(samples).isEmpty())
+    }
+
+    @Test
+    fun coolingWithoutDrierAirIsNoWindow() {
+        // −0.6 K, %rH rises only because the air cooled: the absolute humidity stays the same.
         val samples = listOf(s(0, 22.0, rh = 50), s(1, 21.4, rh = 52))
         assertTrue(WindowDetector.detect(samples).isEmpty())
+    }
+
+    @Test
+    fun drierAirCountsEvenIfRelativeHumidityRises() {
+        // −1.2 K with 50 → 51 %rH is still ~0.5 g/m³ less water: outside air came in.
+        val samples = listOf(s(0, 22.0, rh = 50), s(1, 20.8, rh = 51))
+        assertEquals(0L, WindowDetector.detect(samples).single().start)
+    }
+
+    @Test
+    fun absoluteHumidity() {
+        assertEquals(8.65, WindowDetector.absoluteHumidity(20.0, 50), 0.05)
     }
 
     @Test

@@ -3,7 +3,7 @@
 [English](FINDINGS.md) · **Deutsch**
 
 Was wir am echten System gelernt haben (Stand 2026-11-02). Ergänzt [ARCHITECTURE.de.md](ARCHITECTURE.de.md)
-(Aufbau) und [NEXT_STEPS.de.md](NEXT_STEPS.de.md) (Plan). Neue Erkenntnisse bitte hier mit Datum eintragen.
+(Aufbau) und [NEXT_STEPS.md](NEXT_STEPS.md) (Plan, Englisch). Neue Erkenntnisse bitte hier mit Datum eintragen.
 Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
 
 ## Homematic IP Cloud-API
@@ -125,3 +125,8 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   Von 80 erkannten Öffnungen seit 1.11. fiel nur bei 26 die Luftfeuchte (38 gleich, 10 steigend).
   Mit Rate ab der letzten Wertänderung und „keine steigende Luftfeuchte“: noch 46; das echte Öffnen
   bleibt erkannt.
+- **Absolute Feuchte bei Temperaturstürzen (2026-11-06):** Bei Stürzen ≥ 0,3 K mit geschlossenem
+  Ventil fiel die absolute Feuchte im Mittel nur um 0,44 g/m³; viele Stürze hatten gar keinen Abfall
+  (keine Außenluft → kein Fenster). Mit „Abfall ≥ 0,3 g/m³“ liegen die Öffnungen überwiegend
+  abends/nachts in den Räumen mit Nachtlüftung (einzelne morgens); Zimmer 2 am 6.11.: 21:31 ✓,
+  20:11 (−0,2 g/m³, also steigend) verworfen. 1 %rH ≈ 0,2 g/m³ bei 22–24 °C.

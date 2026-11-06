@@ -5,6 +5,8 @@
  */
 package de.cplagens.pureheat.data.history
 
+import kotlin.math.exp
+
 /**
  * A stretch in which a window was most likely open, detected from the temperature curve
  * (there are no window contacts). [end] is null while the window still seems to be open.
@@ -29,8 +31,10 @@ data class WindowEvent(
 /**
  * Heuristic window detection for floor-heated rooms, where the temperature otherwise changes
  * only slowly:
- * - **opened:** valve closed, humidity not rising, and the room falls by ≥ 0.3 K at ≥ 0.6 K/h
- *   (or by ≥ 0.2 K together with a humidity drop of ≥ 4 %rH, or by ≥ 0.5 K between two samples);
+ * - **opened:** valve closed and the room falls by ≥ 0.3 K at ≥ 0.6 K/h (or by ≥ 0.5 K between two
+ *   samples). With humidity, the *absolute* humidity must also fall by ≥ 0.3 g/m³ – outside air in
+ *   the heating season is drier – and a fall of ≥ 0.6 g/m³ already counts at ≥ 0.2 K. Relative
+ *   humidity alone misleads: it rises when the air cools, even with a window open;
  * - **closed:** the temperature rises again by ≥ 0.2 K above the lowest point with the valve still
  *   closed (the air warms up from walls and floor), or heating starts, or a long gap / > 16 h.
  *
@@ -42,7 +46,9 @@ data class WindowEvent(
 object WindowDetector {
     const val MIN_DROP = 0.3
     const val MIN_DROP_RATE = 0.6
-    const val HUMIDITY_DROP = 4
+    /** g/m³; humidity comes in whole %rH, so 1 % ≈ 0.2 g/m³ is the noise. */
+    const val MIN_ABS_HUMIDITY_DROP = 0.3
+    const val ABS_HUMIDITY_DROP = 0.6
     const val HUMIDITY_MIN_TEMP_DROP = 0.2
     /** A drop this large between two samples counts even right after a long stretch of the same value. */
     const val STRONG_DROP = 0.5
@@ -53,6 +59,12 @@ object WindowDetector {
 
     /** Temperature differences rounded to 0.01 K, so 21.4 − 21.2 (0.1999… in Double) counts as 0.2. */
     private fun diff(a: Double, b: Double) = Math.round((a - b) * 100) / 100.0
+
+    /** Water vapour in g/m³ from °C and %rH (Magnus formula). */
+    fun absoluteHumidity(temperature: Double, relativeHumidity: Int): Double {
+        val saturation = 6.112 * exp(17.67 * temperature / (temperature + 243.5)) // hPa
+        return saturation * relativeHumidity * 2.1674 / (273.15 + temperature)
+    }
 
     /** [samples] of one room, sorted by time. */
     fun detect(samples: List<RoomSample>): List<WindowEvent> {
@@ -101,11 +113,14 @@ object WindowDetector {
             if ((a.valvePosition ?: 1.0) > CLOSED || (b.valvePosition ?: 1.0) > CLOSED) continue
             val drop = diff(ta, tb)
             val humidityDrop = if (a.humidity != null && b.humidity != null) a.humidity - b.humidity else null
-            // Outside air is drier: rising humidity speaks against an open window (e.g. a sensor step).
-            if (humidityDrop != null && humidityDrop < 0) continue
+            val absDrop = if (a.humidity != null && b.humidity != null) {
+                absoluteHumidity(ta, a.humidity) - absoluteHumidity(tb, b.humidity)
+            } else null
+            // No drier outside air came in: cooling without a window (or a sensor step).
+            if (absDrop != null && absDrop < MIN_ABS_HUMIDITY_DROP) continue
             val rateSinceChange = drop / ((b.timestamp - runStart) / 3_600_000.0)
             val byTemperature = drop >= MIN_DROP && rateSinceChange >= MIN_DROP_RATE
-            val byHumidity = humidityDrop != null && humidityDrop >= HUMIDITY_DROP && drop >= HUMIDITY_MIN_TEMP_DROP
+            val byHumidity = absDrop != null && absDrop >= ABS_HUMIDITY_DROP && drop >= HUMIDITY_MIN_TEMP_DROP
             val byStrongDrop = drop >= STRONG_DROP && drop / (step / 3_600_000.0) >= MIN_DROP_RATE
             if (byTemperature || byHumidity || byStrongDrop) {
                 open = WindowEvent(

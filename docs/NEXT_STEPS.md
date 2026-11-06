@@ -1,7 +1,5 @@
 # PureHeat – Next steps
 
-**English** · [Deutsch](NEXT_STEPS.de.md)
-
 Roadmap and detailed log per step. **The entry point is [STATUS.md](STATUS.md)** – only read this
 document section by section (grep for the heading).
 
@@ -285,10 +283,23 @@ User info: in rooms 1–3 the windows are open at night. There are no window con
      03:00, window probably still open → energy lost).
 - **Fewer false alarms (2026-11-06):** with denser sampling and sensors that only report steps of
   ~0.3–0.4 K, a slow cooling after hours of the same value looked like a sudden drop (FINDINGS).
-  Now: the rate is taken since the value *first appeared* (not since the previous sample); rising
-  humidity blocks an opening; a drop ≥ 0.5 K between two samples (`STRONG_DROP`) still counts
-  without humidity; closing = rise ≥ 0.2 K above the lowest point (also over several small steps);
-  differences rounded to 0.01 K. Tests incl. the real evening of room 2.
+  Now: the rate is taken since the value *first appeared* (not since the previous sample); a drop
+  ≥ 0.5 K between two samples (`STRONG_DROP`) still counts; closing = rise ≥ 0.2 K above the lowest
+  point (also over several small steps); differences rounded to 0.01 K. Tests incl. the real
+  evening of room 2.
+- **Absolute humidity (2026-11-06):** all rooms have a humidity sensor. %rH rises when the air
+  cools, so it hides an open window; the detector now uses g/m³ (Magnus formula,
+  `WindowDetector.absoluteHumidity`). With humidity an opening needs a fall of ≥ 0.3 g/m³
+  (`MIN_ABS_HUMIDITY_DROP`, ~1.5 × the 1 %rH rounding noise); ≥ 0.6 g/m³ (`ABS_HUMIDITY_DROP`)
+  already counts at ≥ 0.2 K. Rooms without humidity keep the temperature-only rules.
+  Demo (`DemoHome.simulate`): the humidity now falls one step after opening, together with the
+  temperature (before, the two fell on different samples and `DemoHomeTest` found only 2 windows).
+- **Next: outside humidity from Open-Meteo** (`hourly=relative_humidity_2m`, or `dew_point_2m`):
+  store it with the forecast/weather (new column + DB migration), compute the outside absolute
+  humidity and use it in `WindowDetector`: only require a humidity fall if the outside air is
+  clearly drier than inside (e.g. ≥ 1.5 g/m³); on mild, wet days fall back to the temperature rules.
+  Later also: expected fall when airing (inside vs. outside) as a plausibility check, and a hint
+  "airing helps against humidity now / not now" for the bathroom.
 
 ## Open: check on the device
 

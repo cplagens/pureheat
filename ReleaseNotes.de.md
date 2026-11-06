@@ -10,8 +10,9 @@ Neueste Version oben. Versionen folgen `versionName` in `app/build.gradle.kts`.
   erfundenen Daten – ohne Access Point, offline; beenden mit „Abmelden“.
 - Übersicht: Erkanntes Duschen oder ein offenes Fenster wird über dem Diagramm immer beschriftet,
   auch bei vielen Sollwert-Wechseln.
-- Fenster-offen-Erkennung: deutlich weniger Fehlalarme nach Stunden mit gleicher Temperatur oder
-  bei steigender Luftfeuchte; das Schließen wird auch erkannt, wenn der Raum langsam warm wird.
+- Fenster-offen-Erkennung: deutlich weniger Fehlalarme – sie prüft jetzt, ob trockenere Außenluft
+  hereinkam (absolute Luftfeuchte), und kommt mit stundenlang gleicher Temperatur zurecht; das
+  Schließen wird auch erkannt, wenn der Raum langsam warm wird.
 - **Heizprofil aus einer Beschreibung:** „Aus Beschreibung erstellen“ – Woche in eigenen Worten
   schreiben oder diktieren, die KI auf dem Gerät macht daraus einen Vorschlag zum Prüfen und Speichern.
 - Die Raumbeschreibung zählt jetzt: Räume ohne Fenster bekommen keine Fenster-offen-Erkennung,

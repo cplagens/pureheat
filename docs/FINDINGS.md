@@ -124,3 +124,8 @@ Do not add IDs, locations or personal names – the repo is public.
   false "open" that also swallowed the real opening ~1 h later (23.5 → 23.2 °C, 47 → 43 %).
   Of 80 openings detected since 11-01, humidity fell in only 26 (38 unchanged, 10 rising). With the
   rate since the last value change and "no rising humidity": 46 left; the real opening is kept.
+- **Absolute humidity on temperature drops (2026-11-06):** on drops ≥ 0.3 K with the valve closed
+  the absolute humidity fell by only 0.44 g/m³ on average; many drops had none at all (no outside
+  air → no window). Requiring a fall of ≥ 0.3 g/m³ leaves the openings mostly in the evening/night
+  in the rooms with night ventilation (single ones in the morning); room 2 on 11-06: 21:31 ✓,
+  20:11 (−0.2 g/m³, i.e. rising) rejected. 1 %rH ≈ 0.2 g/m³ at 22–24 °C.

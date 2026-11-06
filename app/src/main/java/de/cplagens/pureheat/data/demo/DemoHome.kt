@@ -118,6 +118,8 @@ object DemoHome {
         var openSince: Long? = null
         var closedSince: Long? = null
         var warm = false
+        // Window state of the previous step: like the temperature, the humidity reacts only after opening.
+        var aired = false
         while (t <= end) {
             // One time-zone conversion per step: three weeks for six rooms are ~36 000 steps.
             val local = Instant.ofEpochMilli(t).atZone(zone)
@@ -139,8 +141,9 @@ object DemoHome {
             val shower = if (room.showers) showerAmount(local) else 0.0
             val valve = if (!open) 0.0 else ((sp - temp) / 0.6).coerceIn(0.35, 1.0)
             val humidity = room.humidity + 3 * sin(2 * PI * (t / 86_400_000.0)) +
-                (if (window != null) -7.0 else 0.0) + 18 * shower
+                (if (aired) -7.0 else 0.0) + 18 * shower
             out += Point(t, temp, sp, valve, humidity.toInt().coerceIn(20, 95))
+            aired = window != null
 
             val heating = openSince?.let { warm || (t - it) / 3_600_000.0 >= room.deadTimeHours } ?: false
             val k = room.k + when (window) {

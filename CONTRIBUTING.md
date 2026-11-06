@@ -53,8 +53,9 @@ measurements on the real system in [docs/FINDINGS.md](docs/FINDINGS.md), the pla
    */
   ```
 - Do not use "Homematic" in the app name or icon (trademark of eQ-3).
-- **Documentation** exists in English (`*.md`) and German (`*.de.md`); please update both, or the
-  English one and mention it in the PR.
+- **Documentation** is maintained in English (`*.md`); the German versions (`*.de.md`) are brought
+  in line for each release, so updating the English one is enough.
+- Checks before a PR: `scripts/check.sh` (build, unit tests, lint).
 
 ## Pull requests
 
