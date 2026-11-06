@@ -170,6 +170,36 @@ Move model/forecast/profile calculation into a JVM module `:core`, run it as a s
 (possibly with WebSocket for real-time events there). The phone then only displays. Only tackle
 this once control on the phone works reliably.
 
+**Local operation without the cloud** (assessment 2026-11-06):
+- The HmIP-HAP has no local interface; its cloud protocol is closed and TLS-encrypted – a
+  self-hosted replacement for the cloud is not realistic. The way is a different **central unit**:
+  - **OpenCCU (RaspberryMatic) on the Pi** + radio module (RPI-RF-MOD or HmIP-RFUSB): local
+    XML-RPC/JSON-RPC, well documented (e.g. Home Assistant "Homematic(IP) Local"); the official
+    Homematic IP app no longer works. Fits this step (same Pi).
+  - **HmIP Home Control Unit (HCU1)**: official local Connect API (WebSocket); before deciding,
+    check which data it provides (valve per channel, humidity, week profiles) and whether a
+    migration from the HAP is offered.
+- Steps (CCU): set up the central unit (fixed IP, backups); reset all devices (floor heating
+  actuator, wall thermostats) and teach them in again, recreate rooms, heating groups, direct links,
+  week profiles – the heating is partly unregulated meanwhile (outside the heating season or room by
+  room); in the app a `CcuClient` behind `HeatingCloud` (like `DemoCloud`): mapping of actual/target
+  temperature, valve `LEVEL` per channel, humidity, `WEEK_PROFILE` read/write; setup choice cloud vs.
+  local (address, user, password); LAN with self-signed certificate → pinning, local-network
+  permission on newer Android; from outside only via VPN. Gains: a few KB per fetch instead of
+  ~100 KB, real-time events (listener on the Pi), no unofficial API. Write rule unchanged.
+- Hardware for OpenCCU (rough prices/power from 2026-11-06, check before buying): ≥ 1 GB RAM
+  (no Pi Zero 2 W), SSD better than SD card. Radio: RPI-RF-MOD (Pi GPIO; on a PC via HB-RF-USB-2)
+  or HmIP-RFUSB stick (enough for HmIP only; on a short USB extension, away from USB 3).
+  | Option | ~cost | idle | note |
+  |---|---|---|---|
+  | used thin client (Futro S740, Wyse 5070, t630) + HmIP-RFUSB | 60–85 € | 4–7 W | cheapest robust, x86, SSD; PureHeat service fits too |
+  | Raspberry Pi 4 (2 GB) + RPI-RF-MOD | 100–120 € new | 3–4 W | best documented |
+  | Intel N100 mini PC + HmIP-RFUSB | 130–200 € | 6–10 W | Proxmox: OpenCCU VM + PureHeat + Home Assistant |
+  | eQ-3 CCU3 | 150–180 € | ~3 W | Pi 3 + radio in a case |
+  Running cost at 0.35 €/kWh: 3 W ≈ 9 €, 6 W ≈ 18 €, 10 W ≈ 31 € per year.
+- An Android tablet as the always-on device instead of the Pi was considered and dropped
+  (2026-11-06); it can't be the radio central unit anyway (OpenCCU needs Linux kernel drivers).
+
 ## Way of working / notes for agents
 
 - After every change: `scripts/check.sh` (build, unit tests, lint); install with
