@@ -324,6 +324,27 @@ App runs with targetSdk 36, heating profile from description with Nano, order di
 shower/bath label on the dashboard (after the fix in `ChartMarkers.kt`), Gemini Nano available on
 the phone.
 
+## Checked on the device (2026-11-06)
+
+- Detail view: outdoor line ✓, 7 and 60 days ✓ (chart issues → NEXT_STEPS "Charts"), dark mode
+  readable ✓ (system night mode switched on and back via `adb shell cmd uimode night yes|no`).
+- Language: Info → English rebuilds the activity (~1 s black), English UI with 12 h clock and
+  decimal point, help in English ✓; back to "System language" ✓. Channel labels from the cloud
+  ("Kanal 4") stay as the user named them.
+- Open-window detection after the rework: room 2 evening of 11-06 shows one event from 21:13
+  (23.5 → 22.0 °C, absolute humidity 9.9 → 7.4 g/m³ by 22:32); the 20:11 sensor step is gone.
+
+## Chart fixes (2026-11-06)
+
+- `TimeAxis`: in the app language and 12/24 h setting (was fixed to German): time of day up to
+  26 h, weekday + hour up to 10 days ("Fr, 22 Uhr"), dates beyond ("7. Okt.").
+- `timeTicks` (java.time, local time, DST-safe, `TimeTicksTest`): 6 h up to 2 days, midnights up
+  to 10 days, Mondays beyond (60 days: 8 lines instead of 60).
+- `TimeSeriesChart`: the plot leaves room above the max and below the min for the y labels
+  ("28 °C" no longer on the line); valve areas fill down to the plot baseline.
+- `MarkerStrip`: a second-lane label may not cover the tick of a first-lane label and vice versa;
+  the label that doesn't fit is left out. Checked on the phone (overview, detail 24 h / 7 / 60 days).
+
 ## Docs and tooling (2026-11-06)
 
 - STATUS and NEXT_STEPS English only; all docs English only, German `*.de.md` only for a release

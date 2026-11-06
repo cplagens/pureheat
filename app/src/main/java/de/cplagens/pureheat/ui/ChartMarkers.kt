@@ -90,15 +90,22 @@ fun MarkerStrip(markers: List<ChartMarker>, start: Long, end: Long, modifier: Mo
         val laneHeight = size.height / 2
         val gap = 4.dp.toPx()
         val lanes = List(2) { mutableListOf<ClosedFloatingPointRange<Float>>() }
+        // Ticks of first-lane labels run down through the second lane: no second-lane label may cover them.
+        val upperTicks = mutableListOf<Float>()
         markers.sortedWith(compareBy({ !it.important }, { it.time })).forEach { m ->
             val x = (m.time - start).toFloat() / span * size.width
             val layout = measurer.measure(m.label, style)
             val w = layout.size.width.toFloat()
             // Keep the label inside the strip; anchor at the tick where possible.
             val left = (x - w / 2).coerceIn(0f, (size.width - w).coerceAtLeast(0f))
-            val lane = lanes.indexOfFirst { taken -> taken.none { left < it.endInclusive + gap && left + w + gap > it.start } }
-            if (lane < 0) return@forEach
+            val lane = lanes.indices.firstOrNull { l ->
+                lanes[l].none { left < it.endInclusive + gap && left + w + gap > it.start } && when (l) {
+                    0 -> lanes[1].none { x > it.start - gap / 2 && x < it.endInclusive + gap / 2 }
+                    else -> upperTicks.none { it > left - gap / 2 && it < left + w + gap / 2 }
+                }
+            } ?: return@forEach
             lanes[lane] += left..(left + w)
+            if (lane == 0) upperTicks += x
             val top = lane * laneHeight
             drawText(layout, topLeft = Offset(left, top))
             drawLine(tick, Offset(x, top + layout.size.height), Offset(x, size.height), strokeWidth = 1.dp.toPx())

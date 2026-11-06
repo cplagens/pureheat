@@ -129,3 +129,6 @@ Do not add IDs, locations or personal names – the repo is public.
   air → no window). Requiring a fall of ≥ 0.3 g/m³ leaves the openings mostly in the evening/night
   in the rooms with night ventilation (single ones in the morning); room 2 on 11-06: 21:31 ✓,
   20:11 (−0.2 g/m³, i.e. rising) rejected. 1 %rH ≈ 0.2 g/m³ at 22–24 °C.
+- **Room 2 with the window open (2026-11-06, 21:13–22:32, outside ~2 °C):** 23.5 → 22.0 °C
+  (~1.1 K/h), 47 → 38 %rH, absolute humidity 9.9 → 7.4 g/m³ – the fall of absolute humidity is
+  a much clearer signal than %rH.

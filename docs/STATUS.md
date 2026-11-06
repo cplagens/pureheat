@@ -23,14 +23,11 @@ measurements: `FINDINGS.md`, open review findings: `REVIEW.md` (if present). "co
   `HISTORY.md` (2026-11-06); NEXT_STEPS now only lists open items.
 
 ## Next tasks
-0. **Open-window detection reworked (2026-11-06**, rate since last value change + absolute
-   humidity; NEXT_STEPS "Open-window detection"): watch on the device over the next days (room 2
-   evening of 11-06: opening ~21:15 should be the only event). Then: outside humidity from
-   Open-Meteo (planned there, needs a DB migration).
-1. **Check on the device** (2026-11-05 done: profile from description with Nano ✓, order dialog ✓,
-   shower/bath on the dashboard ✓ after a fix, app runs with targetSdk 36 ✓): still open export
-   share/save as file, import of the own file (the user taps through), rename profile (cloud write –
-   only with the user's OK; result into FINDINGS).
+0. Outside humidity from Open-Meteo for the window detection (NEXT_STEPS "Open-window detection"
+   item 1, needs a DB migration). Chart fixes of 2026-11-06 are done (HISTORY).
+1. **Check on the device** (2026-11-06 done: outdoor line, 7/60 days, dark mode, language switch,
+   window detection after the rework – HISTORY): still open export share/save as file, import of the
+   own file (the user taps through), rename profile (cloud write – only with the user's OK).
 2. Play Store preparation (checklist in `PLAY_STORE_GUIDE.md`): demo mode done (mention it in the
    review notes, try it on the phone), logo 512 px + feature graphic (next agent task). For the user: create upload keystore +
    `keystore.properties`, enable GitHub Pages for `/docs`, confirm contact in `privacy.md`,
@@ -43,7 +40,6 @@ measurements: `FINDINGS.md`, open review findings: `REVIEW.md` (if present). "co
 6. Solar gain (Open-Meteo `shortwave_radiation` + window direction).
 
 ## Small things
-- Detail temperature chart: y label "28 °C" lies over the current-temperature line.
 - Overview: with many setpoint changes some setpoint labels are left out (detected events now
   always get a place first).
 - Order dialog: the ↑/↓ arrows are small.

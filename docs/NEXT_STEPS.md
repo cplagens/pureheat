@@ -40,17 +40,13 @@ automatic control per room. In addition the app should show how much heating tim
 
 ## Open: check on the device
 
-1. Outdoor line in the detail view; detail view in dark mode and with 7/14/60 days.
-2. Language switch in the Info dialog (the activity is rebuilt), English UI, help screen.
-3. Never run on the real system: "Activate profile" (`setActiveProfile`), "Undo last save",
+1. Never run on the real system: "Activate profile" (`setActiveProfile`), "Undo last save",
    "Apply to other rooms".
-4. **Rename profile** (cloud write via the undocumented way, only with the user's OK): e.g. rename
+2. **Rename profile** (cloud write via the undocumented way, only with the user's OK): e.g. rename
    "Profile 4" in the bathroom and back; check that the name shows up in the state and in the
    official app, result into FINDINGS. Fallback if the cloud ignores it: local display name only.
-5. **Export/import** (the user taps through, a target has to be chosen): Info → Data → "Export and
+3. **Export/import** (the user taps through, a target has to be chosen): Info → Data → "Export and
    share" and "Save as file", then import the own file (overwrites settings, adds measurements).
-6. Open-window detection after the 2026-11-06 rework: watch a few days (room 2 evening of 11-06:
-   the opening ~21:15 should be the only event).
 
 ## Open-window detection (HISTORY "Open-window detection")
 

@@ -24,14 +24,19 @@ import androidx.compose.ui.graphics.PathEffect
 import androidx.compose.ui.graphics.StrokeCap
 import androidx.compose.ui.graphics.StrokeJoin
 import androidx.compose.ui.graphics.drawscope.Stroke
+import android.text.format.DateFormat
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.rememberTextMeasurer
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.data.history.HistoryAnalysis
-import java.text.SimpleDateFormat
+import java.time.DayOfWeek
+import java.time.Instant
+import java.time.ZoneId
+import java.time.temporal.ChronoUnit
+import java.time.temporal.TemporalAdjusters
 import java.util.Date
-import java.util.Locale
 
 /** One line (or area) in a [TimeSeriesChart]. Points must be sorted by time. */
 data class ChartSeries(
@@ -89,7 +94,10 @@ fun TimeSeriesChart(
             },
     ) {
         fun x(t: Long) = ((t - start).toFloat() / span) * size.width
-        fun y(v: Double) = (size.height * (1 - (v - yMin) / (yMax - yMin))).toFloat()
+        // Room above yMax and below yMin for the y labels, so they don't sit on the lines.
+        val inset = if (yLabel(yMax) != null) measurer.measure("0", labelStyle).size.height + 2.dp.toPx() else 0f
+        fun y(v: Double) = (inset + (size.height - 2 * inset) * (1 - (v - yMin) / (yMax - yMin))).toFloat()
+        val baseline = y(yMin)
 
         bands.forEach { (from, to) ->
             val left = x(maxOf(from, start))
@@ -120,8 +128,8 @@ fun TimeSeriesChart(
                     }
                 }
                 if (s.area) {
-                    path.lineTo(x(run.last().first), size.height)
-                    path.lineTo(x(run.first().first), size.height)
+                    path.lineTo(x(run.last().first), baseline)
+                    path.lineTo(x(run.first().first), baseline)
                     path.close()
                     drawPath(path, s.color)
                 } else if (run.size == 1) {
@@ -150,29 +158,47 @@ fun TimeSeriesChart(
 /** Time labels under a chart, matching the grid lines of [TimeSeriesChart]. */
 @Composable
 fun TimeAxis(start: Long, end: Long, modifier: Modifier = Modifier) {
-    val ticks = listOf(start) + timeTicks(start, end) + end
-    val pattern = if (end - start <= 26 * 3_600_000L) "HH:mm" else "EE HH'h'"
-    val fmt = SimpleDateFormat(pattern, Locale.GERMANY)
+    val ctx = LocalContext.current
+    val span = end - start
+    // In the user's language and 12/24 h setting: time of day, weekday + hour, or the date over weeks.
+    val format: (Long) -> String = when {
+        span <= 26 * HOUR -> { t -> DateFormat.getTimeFormat(ctx).format(Date(t)) }
+        span <= LONG_RANGE -> { t -> DateFormat.format(DateFormat.getBestDateTimePattern(currentLocale(ctx), "EEEj"), t).toString() }
+        else -> { t -> DateFormat.format(DateFormat.getBestDateTimePattern(currentLocale(ctx), "dMMM"), t).toString() }
+    }
     Row(modifier.fillMaxWidth()) {
         // Only start, middle and end to keep labels from colliding on a phone.
-        listOf(ticks.first(), (start + end) / 2, ticks.last()).forEachIndexed { i, t ->
+        listOf(start, (start + end) / 2, end).forEachIndexed { i, t ->
             if (i > 0) Spacer(Modifier.weight(1f))
-            Text(fmt.format(Date(t)), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+            Text(format(t), style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
     }
 }
 
-/** Grid times: every 6 h for up to 2 days, otherwise midnight of each day. */
-private fun timeTicks(start: Long, end: Long): List<Long> {
-    val hour = 3_600_000L
-    val step = if (end - start <= 2 * 24 * hour) 6 * hour else 24 * hour
-    // Align to local time (midnight, 06:00, …); a DST switch inside the range shifts by an hour, which is fine.
-    val offset = java.util.TimeZone.getDefault().getOffset(start)
-    var t = ((start + offset) / step + 1) * step - offset
+private const val HOUR = 3_600_000L
+
+/** Above this span the axis shows dates and the grid weeks instead of days. */
+private const val LONG_RANGE = 10 * 24 * HOUR
+
+/** Grid times in local time: every 6 h up to 2 days, midnights up to 10 days, then Mondays. */
+internal fun timeTicks(start: Long, end: Long, zone: ZoneId = ZoneId.systemDefault()): List<Long> {
+    val from = Instant.ofEpochMilli(start).atZone(zone)
+    val span = end - start
+    var t = when {
+        span <= 2 * 24 * HOUR -> from.truncatedTo(ChronoUnit.HOURS).withHour(from.hour / 6 * 6)
+        span <= LONG_RANGE -> from.truncatedTo(ChronoUnit.DAYS)
+        else -> from.truncatedTo(ChronoUnit.DAYS).with(TemporalAdjusters.previousOrSame(DayOfWeek.MONDAY))
+    }
     val out = mutableListOf<Long>()
-    while (t < end) {
-        out += t
-        t += step
+    while (true) {
+        t = when {
+            span <= 2 * 24 * HOUR -> t.plusHours(6)
+            span <= LONG_RANGE -> t.plusDays(1)
+            else -> t.plusWeeks(1)
+        }
+        val ms = t.toInstant().toEpochMilli()
+        if (ms >= end) break
+        if (ms > start) out += ms
     }
     return out
 }
