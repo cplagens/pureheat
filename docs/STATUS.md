@@ -2,14 +2,14 @@
 
 **English** · [Deutsch](STATUS.de.md)
 
-As of: 2026-11-05. Keep this file short and **replace** it at the end of every task (don't append).
+As of: 2026-11-06. Keep this file short and **replace** it at the end of every task (don't append).
 Details per step: `NEXT_STEPS.md` (grep for the section), measurements: `FINDINGS.md`, open review
 findings: `REVIEW.md` (if present). "continue" = first open task below.
 
 ## Where we are
 - Runs on the user's phone (Galaxy S25 Ultra, adb `R5CY81ZW5EZ`, only connected via USB at times –
   run `adb devices` first; only operate the UI when `mCurrentFocus` is the launcher/PureHeat).
-  The state of 2026-11-04 (commit `334b6e7`) is installed but not yet clicked through.
+  Debug build of 2026-11-06 (window detection with fewer false alarms, not committed yet) installed.
 - Done: dashboard (order), history (2 years), detail view, heating profiles (edit, rename), room
   model, window and shower/bath detection, forecast, probe run, help, 12 languages, room
   properties (Gemini Nano), **export/import** (Info → Data), target API 36, open-source files,
@@ -23,6 +23,8 @@ findings: `REVIEW.md` (if present). "continue" = first open task below.
   ARCHITECTURE, FINDINGS, NEXT_STEPS, STATUS); keep both in sync.
 
 ## Next tasks
+0. **Open-window detection reworked (2026-11-06)**, NEXT_STEPS "Open-window detection": watch on
+   the device over the next days (room 2 evening of 11-06: opening ~21:15 should be the only event).
 1. **Check on the device** (2026-11-05 done: profile from description with Nano ✓, order dialog ✓,
    shower/bath on the dashboard ✓ after a fix, app runs with targetSdk 36 ✓): still open export
    share/save as file, import of the own file (the user taps through), rename profile (cloud write –

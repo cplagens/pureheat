@@ -283,6 +283,12 @@ User info: in rooms 1–3 the windows are open at night. There are no window con
      (valve open, temperature keeps falling → window still open).
   5. Hint to the user when the heating profile heats with an open window (room 2: heating start
      03:00, window probably still open → energy lost).
+- **Fewer false alarms (2026-11-06):** with denser sampling and sensors that only report steps of
+  ~0.3–0.4 K, a slow cooling after hours of the same value looked like a sudden drop (FINDINGS).
+  Now: the rate is taken since the value *first appeared* (not since the previous sample); rising
+  humidity blocks an opening; a drop ≥ 0.5 K between two samples (`STRONG_DROP`) still counts
+  without humidity; closing = rise ≥ 0.2 K above the lowest point (also over several small steps);
+  differences rounded to 0.01 K. Tests incl. the real evening of room 2.
 
 ## Open: check on the device
 

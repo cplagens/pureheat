@@ -64,6 +64,51 @@ class WindowDetectorTest {
         assertTrue(!e.closeDetected)
     }
 
+    private fun m(minute: Int, t: Double, rh: Int? = null) = RoomSample("r", minute * 60_000L, t, 15.0, 0.0, rh)
+
+    @Test
+    fun sensorStepAfterLongFlatStretchIsNoWindow() {
+        // Real evening (2026-11-06): the sensor reported 23.9 for ~4 h, then 23.5 at once with rising
+        // humidity (slow cooling, no window). The window was really opened around minute 320.
+        val samples = listOf(
+            m(11, 23.9, 45), m(35, 23.9, 45), m(41, 23.9, 45), m(58, 23.9, 45), m(88, 23.9, 45),
+            m(120, 23.9, 45), m(154, 23.9, 45), m(185, 23.9, 45), m(201, 23.9, 45), m(216, 23.9, 45),
+            m(232, 23.9, 45), m(251, 23.5, 47), m(267, 23.5, 47), m(282, 23.5, 47), m(313, 23.5, 47),
+            m(331, 23.2, 43), m(337, 23.2, 43),
+        )
+        val e = WindowDetector.detect(samples).single()
+        assertEquals(313 * 60_000L, e.start)
+        assertEquals(4, e.humidityDrop)
+        assertNull(e.end)
+    }
+
+    @Test
+    fun stepAfterFlatStretchWithoutHumidityIsNoWindow() {
+        val samples = listOf(m(0, 22.0), m(60, 22.0), m(120, 22.0), m(135, 21.6))
+        assertTrue(WindowDetector.detect(samples).isEmpty())
+    }
+
+    @Test
+    fun strongDropAfterFlatStretchIsStillAWindow() {
+        val samples = listOf(m(0, 22.0), m(60, 22.0), m(120, 22.0), m(135, 21.4))
+        assertEquals(120 * 60_000L, WindowDetector.detect(samples).single().start)
+    }
+
+    @Test
+    fun risingHumidityIsNoWindow() {
+        val samples = listOf(s(0, 22.0, rh = 50), s(1, 21.4, rh = 52))
+        assertTrue(WindowDetector.detect(samples).isEmpty())
+    }
+
+    @Test
+    fun closingSeenOverSeveralSmallRises() {
+        // Dense sampling: the air warms up by 0.1 K per sample after closing.
+        val temps = listOf(22.0, 22.0, 21.4, 21.2, 21.3, 21.4, 21.5)
+        val e = WindowDetector.detect(temps.mapIndexed { i, t -> s(i, t) }).single()
+        assertEquals(5 * quarter, e.end)
+        assertTrue(e.closeDetected)
+    }
+
     @Test
     fun windowTimesAreExcludedFromPhases() {
         val temps = listOf(23.2, 23.2, 22.7, 22.3, 22.0, 21.8, 21.9, 22.1)

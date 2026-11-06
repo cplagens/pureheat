@@ -10,6 +10,8 @@ Newest version on top. Versions follow `versionName` in `app/build.gradle.kts`.
   an access point, offline; leave it with “Log out”.
 - Overview: a detected shower or open window is always labelled above the chart, even when there
   were many setpoint changes.
+- Open-window detection: far fewer false alarms after hours of an unchanged temperature or with
+  rising humidity; closing is also recognised when the room warms up slowly.
 - **Heating profile from a description:** "Create from description" – write or dictate your week
   in your own words; the on-device AI turns it into a suggestion to review and save.
 - The room description now counts: rooms without windows get no open-window detection, bathrooms

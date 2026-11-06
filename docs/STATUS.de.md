@@ -2,14 +2,14 @@
 
 [English](STATUS.md) · **Deutsch**
 
-Stand: 2026-11-05. Diese Datei kurz halten und am Ende jeder Aufgabe **ersetzen** (nicht anhängen).
+Stand: 2026-11-06. Diese Datei kurz halten und am Ende jeder Aufgabe **ersetzen** (nicht anhängen).
 Details je Schritt: `NEXT_STEPS.md` (Abschnitt per Grep suchen), Messungen: `FINDINGS.md`, offene
 Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene Aufgabe unten.
 
 ## Wo wir stehen
 - Läuft auf dem Telefon des Nutzers (Galaxy S25 Ultra, adb `R5CY81ZW5EZ`, nur zeitweise per USB –
   vorher `adb devices`; UI nur bedienen, wenn `mCurrentFocus` Launcher/PureHeat ist).
-  Stand vom 04.11. (Commit `334b6e7`) ist installiert, aber noch nicht durchgeklickt.
+  Debug-Build vom 06.11. (Fenster-Erkennung mit weniger Fehlalarmen, noch nicht committet) installiert.
 - Fertig: Dashboard (Reihenfolge), Verlauf (2 Jahre), Detailansicht, Heizprofile (bearbeiten,
   umbenennen), Raummodell, Fenster- und Duschen/Baden-Erkennung, Prognose, Probelauf, Hilfe,
   12 Sprachen, Raumeigenschaften (Gemini Nano), **Export/Import** (Info → Daten), Ziel-API 36,
@@ -23,6 +23,8 @@ Review-Befunde: `REVIEW.md` (falls vorhanden). „mach weiter“ = erste offene 
   ARCHITECTURE, FINDINGS, NEXT_STEPS, STATUS); beide Fassungen gleich halten.
 
 ## Nächste Aufgaben
+0. **Fenster-offen-Erkennung überarbeitet (2026-11-06)**, NEXT_STEPS „Fenster-offen-Erkennung“: in
+   den nächsten Tagen am Gerät beobachten (Zimmer 2 Abend 6.11.: Öffnen ~21:15 soll das einzige Ereignis sein).
 1. **Am Gerät prüfen** (2026-11-05 erledigt: Heizprofil aus Beschreibung mit Nano ✓, Reihenfolge-
    Dialog ✓, Duschen/Baden in der Übersicht ✓ nach einer Korrektur, App läuft mit targetSdk 36 ✓):
    noch offen Export teilen/als Datei speichern, Import der eigenen Datei (klickt der Nutzer durch),

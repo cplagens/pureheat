@@ -118,3 +118,10 @@ Keine IDs, Standorte oder Personennamen eintragen – das Repo ist öffentlich.
   `periods`. `ProfileFromText.apply` fängt das ab (letzte Grundtemperatur je Tag gewinnt, Perioden
   werden zusammengeführt, eine leere Regel lässt sie stehen) → Ergebnis genau wie beschrieben.
   Antwort in ~2 s.
+- **Fehlalarme Fenster offen (2026-11-06):** Temperaturstufen zwischen Messpunkten (alle Räume seit
+  1.11.): 0,1 K ×177, 0,2 K ×128, **0,3 K ×213**, 0,4 K ×36 – manche Sensoren melden nur grobe Stufen.
+  Zimmer 2: ~4 h unverändert 23,9 °C, dann 23,5 °C in 19 min bei Luftfeuchte 45 → 47 % (kein Fenster)
+  → falsches „offen“, das auch das echte Öffnen ~1 h später verschluckte (23,5 → 23,2 °C, 47 → 43 %).
+  Von 80 erkannten Öffnungen seit 1.11. fiel nur bei 26 die Luftfeuchte (38 gleich, 10 steigend).
+  Mit Rate ab der letzten Wertänderung und „keine steigende Luftfeuchte“: noch 46; das echte Öffnen
+  bleibt erkannt.

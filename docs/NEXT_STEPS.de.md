@@ -284,6 +284,13 @@ Nutzer-Info: In den Zimmern 1–3 sind nachts die Fenster offen. Es gibt keine F
      (Ventil offen, Temperatur fällt weiter → Fenster noch offen).
   5. Hinweis an den Nutzer, wenn das Heizprofil bei offenem Fenster heizt (Zimmer 2: Heizbeginn
      03:00, Fenster vermutlich noch offen → Energie verloren).
+- **Weniger Fehlalarme (2026-11-06):** Mit dichteren Messpunkten und Sensoren, die nur Stufen von
+  ~0,3–0,4 K melden, sah langsames Abkühlen nach Stunden mit gleichem Wert wie ein Sturz aus
+  (FINDINGS). Jetzt: Rate ab dem *ersten Auftreten* des Werts (nicht ab dem vorigen Messpunkt);
+  steigende Luftfeuchte verhindert ein Öffnen; ein Abfall ≥ 0,5 K zwischen zwei Messpunkten
+  (`STRONG_DROP`) zählt weiterhin auch ohne Luftfeuchte; Schließen = Anstieg ≥ 0,2 K über den
+  Tiefstwert (auch über mehrere kleine Schritte); Differenzen auf 0,01 K gerundet. Tests inkl. des
+  echten Abends in Zimmer 2.
 
 ## Offen: am Gerät prüfen
 

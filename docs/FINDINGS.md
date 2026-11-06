@@ -118,3 +118,9 @@ Do not add IDs, locations or personal names – the repo is public.
   but `base` 23 in the weekday/weekend rules and "sonst 21" as an extra rule for all days with empty
   `periods`. `ProfileFromText.apply` handles this (last base per day wins, periods are merged, an
   empty rule keeps them) → result exactly as described. Answer in ~2 s.
+- **Open-window false alarms (2026-11-06):** temperature steps between samples (all rooms since
+  11-01): 0.1 K ×177, 0.2 K ×128, **0.3 K ×213**, 0.4 K ×36 – some sensors only report coarse steps.
+  Room 2: 23.9 °C unchanged for ~4 h, then 23.5 °C in 19 min with humidity 45 → 47 % (no window) →
+  false "open" that also swallowed the real opening ~1 h later (23.5 → 23.2 °C, 47 → 43 %).
+  Of 80 openings detected since 11-01, humidity fell in only 26 (38 unchanged, 10 rising). With the
+  rate since the last value change and "no rising humidity": 46 left; the real opening is kept.
