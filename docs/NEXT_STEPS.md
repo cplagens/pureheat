@@ -126,7 +126,20 @@ automatic control per room. In addition the app should show how much heating tim
 - Showering/bathing: shower times as a comfort time suggestion for the bathroom; tell bathtub from
   shower by duration/temperature rise.
 - Export: automatic weekly backup into a chosen folder (SAF tree URI).
-- Play Store: mention the demo mode in the review notes.
+
+## Play Store (HISTORY "Play Store preparation …", "Export/import, target API 36 …")
+
+1. Mention the demo mode in the review notes.
+2. **Donations via Google Play Billing** – *needs the user's decision first.* Effects: the listing
+   shows "Contains in-app purchases"; a payments profile makes the developer's **physical address
+   public** in the listing; Google keeps 15 %; tax details in the payments profile; IARC
+   questionnaire: digital purchases ("In-app purchases" note, same age rating); Data safety: check
+   "purchase history"; one sentence on Google Play payments in `docs/privacy.md`. External links
+   (PayPal, GitHub Sponsors) stay out of the app (decided 2026-11-05).
+   Implementation: Play Billing Library, section "Support" with 2–3 consumable products, `consumeAsync`
+   within 3 days (otherwise auto-refund), no server verification needed (nothing is unlocked), all
+   texts in the 12 languages, store text "all features free, optional voluntary support". For a
+   later F-Droid build: product flavour without Billing.
 
 ## Step 6 – comfort times and optimal profile
 
