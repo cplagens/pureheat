@@ -44,7 +44,10 @@ class DemoHomeTest {
     @Test
     fun `bedroom windows are detected on aired nights`() {
         val bedroom = DemoHome.rooms.first { it.airsAtNight }
-        val events = WindowDetector.detect(samples(bedroom))
+        val outside = WindowDetector.outsideHumidity(
+            weather.map { it.copy(outsideAbsHumidity = WindowDetector.absoluteHumidity(it.outsideTemperature!!, DemoHome.OUTSIDE_HUMIDITY)) },
+        )
+        val events = WindowDetector.detect(samples(bedroom), outside)
         // Two of three nights over three weeks.
         assertTrue("found ${events.size}", events.size >= 10)
     }

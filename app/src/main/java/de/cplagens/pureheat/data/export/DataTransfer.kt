@@ -184,7 +184,7 @@ class DataTransfer(
         room_names.csv    room id -> name at export time
         rooms.csv         per room: actual/target temperature (°C), valve 0..1, humidity (%RH)
         circuits.csv      per floor heating channel: valve 0..1
-        weather.csv       outside temperature (°C)
+        weather.csv       outside temperature (°C), outside water vapour (g/m³)
         predictions.csv   probe run: predicted vs. actual time a target was reached
 
         Timestamps: epoch milliseconds and UTC (ISO 8601). Decimal point '.', empty = no value.

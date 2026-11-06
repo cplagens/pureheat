@@ -115,6 +115,32 @@ class WindowDetectorTest {
     }
 
     @Test
+    fun humidOutsideAirFallsBackToTemperatureRules() {
+        // Same samples as coolingWithoutDrierAirIsNoWindow, but outside 9 g/m³ vs. ~9.7 inside:
+        // airing can't lower the humidity, so the fast temperature drop alone counts.
+        val samples = listOf(s(0, 22.0, rh = 50), s(1, 21.4, rh = 52))
+        assertEquals(0L, WindowDetector.detect(samples) { 9.0 }.single().start)
+    }
+
+    @Test
+    fun dryOutsideAirKeepsTheHumidityRule() {
+        val samples = listOf(s(0, 22.0, rh = 50), s(1, 21.4, rh = 52))
+        assertTrue(WindowDetector.detect(samples) { 4.0 }.isEmpty())
+    }
+
+    @Test
+    fun outsideHumidityLookupUsesTheNearestSampleWithinTwoHours() {
+        val hour = 3_600_000L
+        val weather = listOf(WeatherSample(0, 2.0, 4.0), WeatherSample(3 * hour, 3.0, 5.0), WeatherSample(4 * hour, 3.0, null))
+        val at = WindowDetector.outsideHumidity(weather)
+        assertEquals(4.0, at(hour)!!, 0.0)
+        assertEquals(5.0, at(2 * hour)!!, 0.0)
+        assertEquals(5.0, at(5 * hour)!!, 0.0)
+        assertNull(at(6 * hour))
+        assertNull(WindowDetector.outsideHumidity(emptyList())(0))
+    }
+
+    @Test
     fun absoluteHumidity() {
         assertEquals(8.65, WindowDetector.absoluteHumidity(20.0, 50), 0.05)
     }

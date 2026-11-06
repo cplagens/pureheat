@@ -86,6 +86,9 @@ object DemoHome {
         return day.periods.firstOrNull { minute >= it.start && minute < it.end }?.temperature ?: day.baseTemperature
     }
 
+    /** Outside relative humidity of the demo (%): with ~5 °C clearly drier air than in the rooms. */
+    const val OUTSIDE_HUMIDITY = 75
+
     /** Mild late-autumn weather: daily swing (warmest at 15:00) and a slow change over days. */
     fun outsideAt(t: Long, zone: ZoneId): Double = outsideAt(t, Instant.ofEpochMilli(t).atZone(zone))
 

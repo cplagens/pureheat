@@ -49,8 +49,9 @@ data class RoomInsight(
             properties: Map<String, RoomProperties> = emptyMap(),
         ): Map<String, RoomInsight> {
             val outside = forecastOutside ?: weather.lastOrNull { it.outsideTemperature != null }?.outsideTemperature
+            val outsideHumidity = WindowDetector.outsideHumidity(weather)
             return samples.groupBy { it.roomId }.mapValues { (id, s) ->
-                val windows = if (properties[id]?.hasWindows == false) emptyList() else WindowDetector.detect(s)
+                val windows = if (properties[id]?.hasWindows == false) emptyList() else WindowDetector.detect(s, outsideHumidity)
                 // An open window is not the room's normal heat loss, hot water not its heating: leave those times out.
                 val clean = BathingDetector.withoutBathingTimes(WindowDetector.withoutWindowTimes(s, windows), BathingDetector.detect(s))
                 RoomInsight(

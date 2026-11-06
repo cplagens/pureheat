@@ -67,6 +67,10 @@ data class HeatingState(
     val unassignedCircuits: List<HeatingCircuit>,
     /** Current outside temperature from the cloud's weather service (`home.weather.temperature`). */
     val outsideTemperature: Double? = null,
+    /** Outside relative humidity in % (`home.weather.humidity`). */
+    val outsideHumidity: Int? = null,
+    /** Outside water vapour in g/m³ (`home.weather.vaporAmount`, checked against T and %rH). */
+    val outsideVapour: Double? = null,
     /** Location of the home, already rounded to ~1 km ([GeoPoint.rounded]); used for the forecast. */
     val location: GeoPoint? = null,
 )
@@ -163,6 +167,8 @@ object HeatingStateParser {
             rooms = rooms,
             unassignedCircuits = circuits.map { it.first }.filter { it !in assigned },
             outsideTemperature = state["home"].asObject()["weather"].asObject().dbl("temperature"),
+            outsideHumidity = state["home"].asObject()["weather"].asObject().int("humidity"),
+            outsideVapour = state["home"].asObject()["weather"].asObject().dbl("vaporAmount"),
             location = state["home"].asObject()["location"].asObject().let { loc ->
                 // The cloud sends the coordinates as strings.
                 val lat = loc.dbl("latitude") ?: loc.str("latitude")?.toDoubleOrNull()

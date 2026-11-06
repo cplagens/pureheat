@@ -5,6 +5,7 @@
  */
 package de.cplagens.pureheat.data.history
 
+import kotlin.math.abs
 import kotlin.math.exp
 
 /**
@@ -34,7 +35,9 @@ data class WindowEvent(
  * - **opened:** valve closed and the room falls by ≥ 0.3 K at ≥ 0.6 K/h (or by ≥ 0.5 K between two
  *   samples). With humidity, the *absolute* humidity must also fall by ≥ 0.3 g/m³ – outside air in
  *   the heating season is drier – and a fall of ≥ 0.6 g/m³ already counts at ≥ 0.2 K. Relative
- *   humidity alone misleads: it rises when the air cools, even with a window open;
+ *   humidity alone misleads: it rises when the air cools, even with a window open. The humidity
+ *   only counts while the outside air is known to be clearly drier ([DRY_OUTSIDE]; or unknown) –
+ *   on mild, wet days airing barely changes it, then only the temperature rules apply;
  * - **closed:** the temperature rises again by ≥ 0.2 K above the lowest point with the valve still
  *   closed (the air warms up from walls and floor), or heating starts, or a long gap / > 16 h.
  *
@@ -50,6 +53,10 @@ object WindowDetector {
     const val MIN_ABS_HUMIDITY_DROP = 0.3
     const val ABS_HUMIDITY_DROP = 0.6
     const val HUMIDITY_MIN_TEMP_DROP = 0.2
+    /** g/m³ the outside air must be drier than the room for the humidity to tell anything. */
+    const val DRY_OUTSIDE = 1.5
+    /** Outside values further away than this from a room sample are not used. */
+    private const val OUTSIDE_MAX_AGE_MS = 2 * 3_600_000L
     /** A drop this large between two samples counts even right after a long stretch of the same value. */
     const val STRONG_DROP = 0.5
     const val RECOVERY_RISE = 0.2
@@ -66,8 +73,26 @@ object WindowDetector {
         return saturation * relativeHumidity * 2.1674 / (273.15 + temperature)
     }
 
-    /** [samples] of one room, sorted by time. */
-    fun detect(samples: List<RoomSample>): List<WindowEvent> {
+    /**
+     * Lookup of the outside water vapour (g/m³) at a time: the nearest of [weather] (any order)
+     * within 2 h, otherwise null.
+     */
+    fun outsideHumidity(weather: List<WeatherSample>): (Long) -> Double? {
+        val known = weather.filter { it.outsideAbsHumidity != null }.sortedBy { it.timestamp }
+        val times = LongArray(known.size) { known[it].timestamp }
+        return lookup@{ t ->
+            if (known.isEmpty()) return@lookup null
+            val i = times.binarySearch(t).let { if (it >= 0) it else -it - 1 }
+            val nearest = listOfNotNull(known.getOrNull(i - 1), known.getOrNull(i)).minBy { abs(it.timestamp - t) }
+            nearest.outsideAbsHumidity?.takeIf { abs(nearest.timestamp - t) <= OUTSIDE_MAX_AGE_MS }
+        }
+    }
+
+    /**
+     * [samples] of one room, sorted by time. [outsideHumidity] gives the outside water vapour in
+     * g/m³ at a time (see [outsideHumidity]); null = unknown.
+     */
+    fun detect(samples: List<RoomSample>, outsideHumidity: (Long) -> Double? = { null }): List<WindowEvent> {
         val events = mutableListOf<WindowEvent>()
         var open: WindowEvent? = null
         // Since when the temperature of `a` has been reported unchanged.
@@ -113,14 +138,17 @@ object WindowDetector {
             if ((a.valvePosition ?: 1.0) > CLOSED || (b.valvePosition ?: 1.0) > CLOSED) continue
             val drop = diff(ta, tb)
             val humidityDrop = if (a.humidity != null && b.humidity != null) a.humidity - b.humidity else null
-            val absDrop = if (a.humidity != null && b.humidity != null) {
-                absoluteHumidity(ta, a.humidity) - absoluteHumidity(tb, b.humidity)
-            } else null
+            val inside = a.humidity?.let { absoluteHumidity(ta, it) }
+            val absDrop = if (inside != null && b.humidity != null) inside - absoluteHumidity(tb, b.humidity) else null
+            // The humidity only tells something if the outside air is clearly drier than the room.
+            val outside = outsideHumidity(a.timestamp)
+            val tells = inside != null && (outside == null || inside - outside >= DRY_OUTSIDE)
+            val usableAbsDrop = absDrop?.takeIf { tells }
             // No drier outside air came in: cooling without a window (or a sensor step).
-            if (absDrop != null && absDrop < MIN_ABS_HUMIDITY_DROP) continue
+            if (usableAbsDrop != null && usableAbsDrop < MIN_ABS_HUMIDITY_DROP) continue
             val rateSinceChange = drop / ((b.timestamp - runStart) / 3_600_000.0)
             val byTemperature = drop >= MIN_DROP && rateSinceChange >= MIN_DROP_RATE
-            val byHumidity = absDrop != null && absDrop >= ABS_HUMIDITY_DROP && drop >= HUMIDITY_MIN_TEMP_DROP
+            val byHumidity = usableAbsDrop != null && usableAbsDrop >= ABS_HUMIDITY_DROP && drop >= HUMIDITY_MIN_TEMP_DROP
             val byStrongDrop = drop >= STRONG_DROP && drop / (step / 3_600_000.0) >= MIN_DROP_RATE
             if (byTemperature || byHumidity || byStrongDrop) {
                 open = WindowEvent(

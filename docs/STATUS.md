@@ -23,8 +23,9 @@ measurements: `FINDINGS.md`, open review findings: `REVIEW.md` (if present). "co
   `HISTORY.md` (2026-11-06); NEXT_STEPS now only lists open items.
 
 ## Next tasks
-0. Outside humidity from Open-Meteo for the window detection (NEXT_STEPS "Open-window detection"
-   item 1, needs a DB migration). Chart fixes of 2026-11-06 are done (HISTORY).
+0. Outside humidity is recorded since 2026-11-06 (cloud `vaporAmount`, DB v6) and used by the
+   window detection (HISTORY "Open-window detection"). Next there: NEXT_STEPS "Open-window
+   detection" items 2–5 (model-based criterion, slow drops, end at heating start, hint).
 1. **Check on the device** (2026-11-06 done: outdoor line, 7/60 days, dark mode, language switch,
    window detection after the rework – HISTORY): still open export share/save as file, import of the
    own file (the user taps through), rename profile (cloud write – only with the user's OK).

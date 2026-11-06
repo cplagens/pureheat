@@ -50,12 +50,9 @@ automatic control per room. In addition the app should show how much heating tim
 
 ## Open-window detection (HISTORY "Open-window detection")
 
-1. **Outside humidity from Open-Meteo** (`hourly=relative_humidity_2m`, or `dew_point_2m`): store
-   it with the forecast/weather (new column + DB migration), compute the outside absolute humidity
-   and use it in `WindowDetector`: only require a humidity fall if the outside air is clearly
-   drier than inside (e.g. ≥ 1.5 g/m³); on mild, wet days fall back to the temperature rules.
-   Later also: expected fall when airing (inside vs. outside) as a plausibility check, and a hint
-   "airing helps against humidity now / not now" for the bathroom.
+1. Using the outside humidity further (it is recorded since 2026-11-06): expected fall when airing
+   (inside vs. outside) as a plausibility check; a hint "airing helps against humidity now / not
+   now" for the bathroom.
 2. Second criterion once k with closed windows is known: cooling much faster than the model
    expects (e.g. > 3×) → window open, even without a drop.
 3. Slow drops spread over several small steps (e.g. 0.2 + 0.2 K) are still missed; airing while

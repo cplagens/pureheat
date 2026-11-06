@@ -160,6 +160,16 @@ User info: in rooms 1–3 the windows are open at night. There are no window con
   Demo (`DemoHome.simulate`): the humidity now falls one step after opening, together with the
   temperature (before, the two fell on different samples and `DemoHomeTest` found only 2 windows).
   Analysis queries: `scripts/sql/window-hits.sql` (same rules).
+- **Outside humidity (2026-11-06):** the cloud already sends `home.weather.vaporAmount` = outside
+  water vapour in g/m³ (checked: 2.07 °C, 73 % → 4.08 g/m³, as the Magnus formula gives) – so no
+  Open-Meteo request is needed and the value is recorded with every snapshot, aligned with the
+  rooms. `weather_sample.outsideAbsHumidity` (DB v6, `MIGRATION_5_6`; fallback from temperature +
+  `humidity` if `vaporAmount` is missing); CSV export/import with a 4th column (old exports still
+  import). `WindowDetector.detect(samples, outsideHumidity)`: the humidity rules only apply while
+  the room is ≥ 1.5 g/m³ (`DRY_OUTSIDE`) moister than outside or the outside value is unknown;
+  otherwise (mild, wet days) only the temperature rules. `WindowDetector.outsideHumidity(weather)`
+  = nearest value within 2 h. Used in dashboard, detail view, room model and probe run; demo with
+  75 % outside humidity.
 
 ## Step 4 – weather forecast (2026-11-02)
 

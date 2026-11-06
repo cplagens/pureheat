@@ -79,15 +79,18 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         viewModelScope.launch {
             var insightsAt = 0L
             var descriptionsSeen = repository.descriptions.all.value
+            val since = System.currentTimeMillis() - HISTORY_WINDOW_MS
             kotlinx.coroutines.flow.combine(
-                repository.roomHistorySince(System.currentTimeMillis() - HISTORY_WINDOW_MS),
+                repository.roomHistorySince(since),
+                repository.weatherHistorySince(since),
                 repository.descriptions.all,
-            ) { samples, descriptions -> samples to descriptions }.collect { (samples, descriptions) ->
+            ) { samples, weather, descriptions -> Triple(samples, weather, descriptions) }.collect { (samples, weather, descriptions) ->
+                val outsideHumidity = WindowDetector.outsideHumidity(weather)
                 val history = samples.groupBy { it.roomId }
                     .mapValues { (id, s) ->
                         // The room description decides what can happen there: no windows → no open window.
                         val props = descriptions[id]?.properties
-                        val windows = if (props?.hasWindows == false) emptyList() else WindowDetector.detect(s)
+                        val windows = if (props?.hasWindows == false) emptyList() else WindowDetector.detect(s, outsideHumidity)
                         val bathing = if (props?.hasBathing == true) BathingDetector.detect(s) else emptyList()
                         RoomHistory(s, HistoryAnalysis.stalledHeating(s), windows, bathing)
                     }

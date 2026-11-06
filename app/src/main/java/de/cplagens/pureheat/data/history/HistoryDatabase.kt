@@ -45,11 +45,13 @@ data class CircuitSample(
     val valvePosition: Double?,
 )
 
-/** Outside temperature at the time of a snapshot; one row per recording, shared by all rooms. */
+/** Outside weather at the time of a snapshot; one row per recording, shared by all rooms. */
 @Entity(tableName = "weather_sample")
 data class WeatherSample(
     @PrimaryKey val timestamp: Long,
     val outsideTemperature: Double?,
+    /** Water vapour outside in g/m³ (cloud `vaporAmount`, since DB v6). */
+    val outsideAbsHumidity: Double? = null,
 )
 
 /** Hourly outside temperature forecast (Open-Meteo); replaced on every fetch (since DB v4). */
@@ -201,7 +203,7 @@ interface HistoryDao {
 
 @Database(
     entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class, PredictionEntity::class],
-    version = 5,
+    version = 6,
     exportSchema = false,
 )
 abstract class HistoryDatabase : RoomDatabase() {
@@ -249,9 +251,16 @@ abstract class HistoryDatabase : RoomDatabase() {
             }
         }
 
+        /** v6: absolute outside humidity (for the open-window detection). */
+        private val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `weather_sample` ADD COLUMN `outsideAbsHumidity` REAL")
+            }
+        }
+
         fun create(context: Context): HistoryDatabase =
             Room.databaseBuilder(context, HistoryDatabase::class.java, "history.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                 .build()
     }
 }

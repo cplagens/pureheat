@@ -19,14 +19,14 @@ import java.time.Instant
 object Csv {
     const val ROOMS = "timestamp,time_utc,room_id,actual_temperature,set_point_temperature,valve_position,humidity"
     const val CIRCUITS = "timestamp,time_utc,device_id,channel_index,valve_position"
-    const val WEATHER = "timestamp,time_utc,outside_temperature"
+    const val WEATHER = "timestamp,time_utc,outside_temperature,outside_vapour_g_m3"
     const val PREDICTIONS =
         "room_id,strategy,event_time,created_at,target_temperature,start_temperature,predicted_reach,model_source,evaluated_at,actual_reach,outcome"
     const val ROOM_NAMES = "room_id,label"
 
     fun room(s: RoomSample) = line(s.timestamp, iso(s.timestamp), s.roomId, s.actualTemperature, s.setPointTemperature, s.valvePosition, s.humidity)
     fun circuit(s: CircuitSample) = line(s.timestamp, iso(s.timestamp), s.deviceId, s.channelIndex, s.valvePosition)
-    fun weather(s: WeatherSample) = line(s.timestamp, iso(s.timestamp), s.outsideTemperature)
+    fun weather(s: WeatherSample) = line(s.timestamp, iso(s.timestamp), s.outsideTemperature, s.outsideAbsHumidity)
     fun prediction(p: PredictionEntity) = line(
         p.roomId, p.strategy, p.eventTime, p.createdAt, p.targetTemperature, p.startTemperature, p.predictedReach,
         p.modelSource, p.evaluatedAt, p.actualReach, p.outcome,
@@ -54,7 +54,12 @@ object Csv {
     }
 
     fun parseWeather(l: String): WeatherSample? = fields(l).takeIf { it.size >= 3 }?.let { f ->
-        WeatherSample(timestamp = f[0].toLongOrNull() ?: return null, outsideTemperature = f[2].toDoubleOrNull())
+        // The vapour column came with DB v6; older exports have only three columns.
+        WeatherSample(
+            timestamp = f[0].toLongOrNull() ?: return null,
+            outsideTemperature = f[2].toDoubleOrNull(),
+            outsideAbsHumidity = f.getOrNull(3)?.toDoubleOrNull(),
+        )
     }
 
     fun parsePrediction(l: String): PredictionEntity? = fields(l).takeIf { it.size >= 11 }?.let { f ->

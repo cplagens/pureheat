@@ -12,6 +12,7 @@ import de.cplagens.pureheat.data.history.ForecastSample
 import de.cplagens.pureheat.data.history.PredictionEntity
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WeatherSample
+import de.cplagens.pureheat.data.history.WindowDetector
 import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.probe.Strategy
@@ -65,7 +66,10 @@ class DemoCloud(private val context: Context) : HeatingCloud {
         }
         return buildJsonObject {
             putJsonObject("home") {
-                putJsonObject("weather") { put("temperature", round1(DemoHome.outsideAt(now, zone))) }
+                putJsonObject("weather") {
+            put("temperature", round1(DemoHome.outsideAt(now, zone)))
+            put("humidity", DemoHome.OUTSIDE_HUMIDITY)
+        }
                 // No location: the demo never asks Open-Meteo, its forecast is invented as well.
             }
             putJsonObject("devices") {
@@ -184,7 +188,10 @@ class DemoCloud(private val context: Context) : HeatingCloud {
             }
             predictions += probeResults(room.id, i, points, now)
         }
-        val weather = (start..end step RECORD_INTERVAL_MS).map { WeatherSample(it, round1(DemoHome.outsideAt(it, zone))) }
+        val weather = (start..end step RECORD_INTERVAL_MS).map {
+            val outside = round1(DemoHome.outsideAt(it, zone))
+            WeatherSample(it, outside, WindowDetector.absoluteHumidity(outside, DemoHome.OUTSIDE_HUMIDITY))
+        }
         return History(rooms, circuits, weather, predictions)
     }
 

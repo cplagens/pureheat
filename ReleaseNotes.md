@@ -13,6 +13,9 @@ Newest version on top. Versions follow `versionName` in `app/build.gradle.kts`.
 - Open-window detection: far fewer false alarms – it now checks whether drier outside air came in
   (absolute humidity) and copes with hours of an unchanged temperature; closing is also recognised
   when the room warms up slowly.
+- Open-window detection takes the outside humidity into account: on mild, humid days, when airing
+  hardly changes the humidity, it relies on the temperature alone. Exports contain the outside
+  water vapour as a new column.
 - Charts: dates and a weekly grid for 14 and 60 days, time axis in the app language and 12/24 h
   setting, axis labels no longer cover the lines, event labels no longer crossed by tick marks.
 - **Heating profile from a description:** "Create from description" – write or dictate your week

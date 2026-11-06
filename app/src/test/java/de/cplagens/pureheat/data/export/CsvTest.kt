@@ -24,6 +24,10 @@ class CsvTest {
         assertEquals(circuit, Csv.parseCircuit(Csv.circuit(circuit)))
         val weather = WeatherSample(1_762_200_000_000, -3.5)
         assertEquals(weather, Csv.parseWeather(Csv.weather(weather)))
+        val withVapour = WeatherSample(1_762_200_000_000, 2.1, 4.08)
+        assertEquals(withVapour, Csv.parseWeather(Csv.weather(withVapour)))
+        // Exports from before DB v6 have no vapour column.
+        assertEquals(weather, Csv.parseWeather("1762200000000,2025-11-03T20:00:00Z,-3.5"))
         val p = PredictionEntity("room-1", "physics", 1L, 2L, 23.0, 20.5, null, "prior", 3L, 4L, "hit")
         assertEquals(p, Csv.parsePrediction(Csv.prediction(p)))
     }

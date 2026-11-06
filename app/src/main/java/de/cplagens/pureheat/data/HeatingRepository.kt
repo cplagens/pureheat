@@ -148,6 +148,7 @@ class HeatingRepository(
     private suspend fun runProbe(state: HeatingState, now: Long) {
         val zone = ZoneId.systemDefault()
         val samples = dao.roomSamplesSinceOnce(now - PROBE_EVAL_LOOKBACK_MS).groupBy { it.roomId }
+        val outsideHumidity = WindowDetector.outsideHumidity(dao.weatherSamplesSinceOnce(now - PROBE_EVAL_LOOKBACK_MS))
 
         // 1) Evaluate predictions whose time has come.
         val evaluated = dao.openPredictions(now).mapNotNull { p ->
@@ -155,7 +156,7 @@ class HeatingRepository(
             val result = ProbeRun.evaluate(
                 HeatUpPrediction(p.eventTime, p.targetTemperature, p.startTemperature, p.predictedReach),
                 roomSamples,
-                if (descriptions.get(p.roomId)?.properties?.hasWindows == false) emptyList() else WindowDetector.detect(roomSamples),
+                if (descriptions.get(p.roomId)?.properties?.hasWindows == false) emptyList() else WindowDetector.detect(roomSamples, outsideHumidity),
                 now,
             ) ?: return@mapNotNull null
             p.copy(evaluatedAt = now, actualReach = result.actualReach, outcome = result.outcome)
@@ -341,7 +342,11 @@ class HeatingRepository(
             circuits.distinctBy { it.deviceId to it.channelIndex }
                 .map { CircuitSample(it.deviceId, it.channelIndex, now, it.valvePosition) },
         )
-        dao.insertWeather(WeatherSample(now, state.outsideTemperature))
+        val outsideTemp = state.outsideTemperature
+        val outsideRh = state.outsideHumidity
+        val vapour = state.outsideVapour
+            ?: if (outsideTemp != null && outsideRh != null) WindowDetector.absoluteHumidity(outsideTemp, outsideRh) else null
+        dao.insertWeather(WeatherSample(now, outsideTemp, vapour))
         dao.deleteRoomSamplesBefore(now - RETENTION_MS)
         dao.deleteCircuitSamplesBefore(now - RETENTION_MS)
         dao.deleteWeatherSamplesBefore(now - RETENTION_MS)

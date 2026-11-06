@@ -76,7 +76,7 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
         ) { rooms, circuits, weather, descriptions ->
             val samples = rooms.filter { it.roomId == roomId }
             val props = descriptions[roomId]?.properties
-            val windows = if (props?.hasWindows == false) emptyList() else WindowDetector.detect(samples)
+            val windows = if (props?.hasWindows == false) emptyList() else WindowDetector.detect(samples, WindowDetector.outsideHumidity(weather))
             val allBathing = BathingDetector.detect(samples)
             RoomDetailState(
                 range = r,
