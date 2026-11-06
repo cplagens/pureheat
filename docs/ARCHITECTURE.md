@@ -164,8 +164,8 @@ Principle: every field optional, ignore unknown fields or keep them when writing
 - Debug builds log compression and size per request (`adb logcat -s PureHeat`) to measure data
   use.
 - Measured: the cloud does **not** compress (ignores `Accept-Encoding: gzip`);
-  `getCurrentState` ≈ 100 KB per fetch. Fetching less often is the main lever (see NEXT_STEPS,
-  step 2).
+  `getCurrentState` ≈ 100 KB per fetch. Fetching less often is the main lever (see HISTORY
+  "Step 2", open items in NEXT_STEPS "Battery and data use").
 
 ## Languages and texts
 

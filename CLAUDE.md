@@ -15,8 +15,9 @@ if blocked, take the next one. At the end update STATUS.md and report in a few l
 
 ## Token use
 - Start: read **`docs/STATUS.md`** only (the hand-off between sessions). Other docs only the section
-  you need (Grep the heading, read that range): `NEXT_STEPS.md` (roadmap + log per step),
-  `ARCHITECTURE.md`, `FINDINGS.md` (measurements on the real system).
+  you need (Grep the heading, read that range): `NEXT_STEPS.md` (open items only),
+  `ARCHITECTURE.md`, `FINDINGS.md` (measurements on the real system), `HISTORY.md` (what was
+  built/decided per step – only when you need the background).
 - Code: Grep / file outline, read line ranges, don't re-read what is in context. Never open
   translation files (`values-*/strings.xml`).
 - Use the scripts instead of writing commands anew; keep tool output small (aggregates, `head`).
@@ -32,8 +33,12 @@ if blocked, take the next one. At the end update STATUS.md and report in a few l
   single fields only, never print or commit them. `adb logcat -s PureHeat` (debug builds).
 
 ## Docs and hand-off
-- Update `docs/STATUS.md` at the end of a task: **replace** the state (< ~60 lines). Details go
-  into the matching section of `NEXT_STEPS.md`, measurements into `FINDINGS.md` (with date).
+- Update `docs/STATUS.md` at the end of a task: **replace** the state (< ~60 lines). Measurements
+  go into `FINDINGS.md` (with date).
+- **`NEXT_STEPS.md` holds open items only.** When you finish an item or step, always (without
+  being asked) write what was built/decided as a dated section at the end of `docs/HISTORY.md`
+  (or extend that topic's existing section) and delete the item from NEXT_STEPS; a topic section
+  without open items disappears. Reference HISTORY sections by name (`HISTORY "Step 3"`).
 - **Docs are written in English only** (`X.md`). The German `X.de.md` (README, ReleaseNotes,
   CONTRIBUTING, ARCHITECTURE, FINDINGS) are only brought in line **for a release or when the user
   asks**. `docs/privacy.md` holds both languages (Play Store URL) – keep both there.

@@ -1,8 +1,8 @@
 # PureHeat – Status (entry point for every new session)
 
 As of: 2026-11-06. Keep this file short and **replace** it at the end of every task (don't append).
-Details per step: `NEXT_STEPS.md` (grep for the section), measurements: `FINDINGS.md`, open review
-findings: `REVIEW.md` (if present). "continue" = first open task below.
+Open items per topic: `NEXT_STEPS.md` (grep for the section), what was built: `HISTORY.md`,
+measurements: `FINDINGS.md`, open review findings: `REVIEW.md` (if present). "continue" = first open task below.
 
 ## Where we are
 - Runs on the user's phone (Galaxy S25 Ultra, adb `R5CY81ZW5EZ`, only connected via USB at times –
@@ -19,7 +19,8 @@ findings: `REVIEW.md` (if present). "continue" = first open task below.
   `keystore.properties` built in (unsigned without the file), `docs/privacy.md` (de + en) created.
 - Docs: English only since 2026-11-06; the German `*.de.md` are only updated for a release or on
   request (they lag behind now: ReleaseNotes, FINDINGS, CONTRIBUTING). Tooling: `scripts/check.sh`,
-  `scripts/pull-db.sh`, `scripts/sql/` (see CLAUDE.md).
+  `scripts/pull-db.sh`, `scripts/sql/` (see CLAUDE.md). Done steps were moved from NEXT_STEPS to
+  `HISTORY.md` (2026-11-06); NEXT_STEPS now only lists open items.
 
 ## Next tasks
 0. **Open-window detection reworked (2026-11-06**, rate since last value change + absolute
@@ -49,4 +50,4 @@ findings: `REVIEW.md` (if present). "continue" = first open task below.
 
 ## Open device checks (older)
 - Never run on the real system: "Activate profile", "Undo last save", "Apply to other rooms".
-  Measure battery/data use (NEXT_STEPS "Step 2").
+  Measure battery/data use (NEXT_STEPS "Battery and data use").
