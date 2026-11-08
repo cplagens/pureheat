@@ -43,7 +43,7 @@ data class WindowEvent(
  *
  * Some sensors only report changes of ~0.3–0.4 K, so after hours of the same value a slow cooling
  * shows up as one sudden step. The rate is therefore taken since the value *first appeared*, not
- * since the previous sample – this also makes it independent of how often we poll (FINDINGS).
+ * since the previous sample – this also makes it independent of how often we poll.
  * Pure Kotlin so it can move to a JVM module later.
  */
 object WindowDetector {

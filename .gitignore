@@ -38,3 +38,15 @@ google-services.json
 PLAY_STORE_GUIDE.md
 # Release signing data
 keystore.properties
+
+# Internal working documents (development log, plans, measurements, release setup, agent
+# instructions) – kept locally, not part of the app
+CLAUDE.md
+.claude/
+docs/STATUS.md
+docs/NEXT_STEPS.md
+docs/HISTORY.md
+docs/FINDINGS.md
+docs/FINDINGS.de.md
+docs/RELEASE.md
+docs/REVIEW.md

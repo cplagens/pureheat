@@ -4,7 +4,6 @@
 
 Stand: 2026-11-01. Beschreibt, wie die App aufgebaut ist, welche Daten sie woher bekommt und
 welche Annahmen über die (inoffizielle) Homematic IP Cloud-API gelten.
-Was als Nächstes geplant ist, steht in [NEXT_STEPS.md](NEXT_STEPS.md) (Englisch).
 
 ## Überblick
 
@@ -165,7 +164,7 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
   um den Datenverbrauch zu messen.
 - Gemessen: Die Cloud komprimiert **nicht** (ignoriert `Accept-Encoding: gzip`);
   `getCurrentState` ≈ 100 KB pro Abruf. Seltener abrufen ist der wichtigste Hebel
-  (siehe NEXT_STEPS, Schritt 2).
+  (adaptives Abrufen, siehe „Akku und Daten“).
 
 ## Sprachen und Texte
 
@@ -191,7 +190,7 @@ Grundsatz: jedes Feld optional, unbekannte Felder ignorieren bzw. beim Zurücksc
 - Repo ist öffentlich: keine SGTIN, kein Token, keine Roh-Dumps einchecken
   (`files/last_state.json`, `files/last_profile.json`, Backups liegen nur app-privat auf dem Gerät).
 - Token nur in app-privaten SharedPreferences; `allowBackup=false`.
-- Schreibzugriffe nur für Heizprofile und nur nach Bestätigung (siehe `CLAUDE.md`).
+- Schreibzugriffe nur für Heizprofile und nur nach Bestätigung (Projektregel).
 - Raumbeschreibungen werden nur auf dem Gerät ausgewertet (Gemini Nano über AICore oder
   Stichwörter); Diktieren nutzt die System-Spracheingabe (deren Anbieter kann online erkennen).
 

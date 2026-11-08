@@ -1,6 +1,6 @@
 # Builds a signed release (AAB) for every version tag vX.Y.Z and uploads it to Google Play.
 #
-# One-time setup (see docs/RELEASE.md):
+# One-time setup:
 # - GitHub → Settings → Environments → "play-release": required reviewer (you), deployment
 #   tags "v*" only. All secrets below live in this environment, not in the repository.
 # - Secrets: UPLOAD_KEYSTORE_BASE64 (base64 of the upload .jks), UPLOAD_KEYSTORE_PASSWORD,

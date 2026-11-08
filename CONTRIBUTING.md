@@ -25,9 +25,7 @@ newer.
 ```
 
 To try it out you need a Homematic IP Access Point (HmIP-HAP) with a floor heating actuator.
-Structure, data flow and API quirks are described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md),
-measurements on the real system in [docs/FINDINGS.md](docs/FINDINGS.md), the plan in
-[docs/NEXT_STEPS.md](docs/NEXT_STEPS.md).
+Structure, data flow and API quirks are described in [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md).
 
 ## Contribution rules
 

@@ -4,7 +4,6 @@
 
 As of: 2026-11-01. Describes how the app is built, which data it gets from where and which
 assumptions about the (unofficial) Homematic IP Cloud API apply.
-What is planned next is in [NEXT_STEPS.md](NEXT_STEPS.md).
 
 ## Overview
 
@@ -165,8 +164,8 @@ Principle: every field optional, ignore unknown fields or keep them when writing
 - Debug builds log compression and size per request (`adb logcat -s PureHeat`) to measure data
   use.
 - Measured: the cloud does **not** compress (ignores `Accept-Encoding: gzip`);
-  `getCurrentState` ≈ 100 KB per fetch. Fetching less often is the main lever (see HISTORY
-  "Step 2", open items in NEXT_STEPS "Battery and data use").
+  `getCurrentState` ≈ 100 KB per fetch. Fetching less often is the main lever (adaptive
+  polling, see "Battery and data").
 
 ## Languages and texts
 
@@ -192,7 +191,7 @@ Principle: every field optional, ignore unknown fields or keep them when writing
 - The repo is public: never commit SGTIN, token or raw dumps (`files/last_state.json`,
   `files/last_profile.json`; backups stay app-private on the device).
 - Token only in app-private SharedPreferences; `allowBackup=false`.
-- Writes only for heating profiles and only after confirmation (see `CLAUDE.md`).
+- Writes only for heating profiles and only after confirmation (project rule).
 - Room descriptions are only evaluated on the device (Gemini Nano via AICore or keywords);
   dictation uses the system speech input (its provider may recognise online).
 

@@ -25,9 +25,7 @@ Voraussetzungen: Android Studio (aktuell), JDK 17, ein Android-Gerät oder Emula
 ```
 
 Zum Ausprobieren brauchst du einen Homematic IP Access Point (HmIP-HAP) mit Fußbodenheizungsaktor.
-Aufbau, Datenfluss und API-Besonderheiten stehen in [docs/ARCHITECTURE.de.md](docs/ARCHITECTURE.de.md),
-Messungen am echten System in [docs/FINDINGS.de.md](docs/FINDINGS.de.md), die Planung in
-[docs/NEXT_STEPS.md](docs/NEXT_STEPS.md) (nur Englisch).
+Aufbau, Datenfluss und API-Besonderheiten stehen in [docs/ARCHITECTURE.de.md](docs/ARCHITECTURE.de.md).
 
 ## Regeln für Beiträge
 

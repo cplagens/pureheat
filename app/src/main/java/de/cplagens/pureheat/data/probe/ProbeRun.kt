@@ -25,7 +25,7 @@ object Strategy {
 /** How the model parameters were obtained. */
 object ModelSource {
     const val FIT = "fit"
-    /** Starting values from the first measurements (FINDINGS.md) while the room is still learning. */
+    /** Starting values from the first measurements on a real system while the room is still learning. */
     const val PRIOR = "prior"
 }
 
@@ -67,7 +67,7 @@ object ProbeRun {
     const val HIT_MINUTES = 30L
     private const val GRID_MS = 15 * 60_000L
 
-    /** Starting values while a room has not learned enough (first measurements, see FINDINGS.md). */
+    /** Starting values while a room has not learned enough (first measurements on a real system). */
     val PRIOR = RoomModel(k = 0.02, power = 0.8, deadTimeHours = 1.5, coolingPhases = 0, heatingPhases = 0, kSpread = null)
 
     /** Setpoint of a weekly profile at time [t] in [zone]. */
@@ -168,7 +168,7 @@ data class ProbeScore(
 ) {
     val hitRate: Double get() = if (evaluated == 0) 0.0 else hits.toDouble() / evaluated
 
-    /** Thresholds from NEXT_STEPS for offering the optimal control (step 6). */
+    /** Thresholds for offering the optimal control (planned step 6). */
     val trustworthy: Boolean
         get() = days >= MIN_DAYS && hitRate >= MIN_HIT_RATE && (meanAbsErrorMinutes ?: Long.MAX_VALUE) <= MAX_MEAN_ERROR
 

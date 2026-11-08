@@ -167,9 +167,6 @@ Ein ⭐ für das Repository, Fehlermeldungen und Verbesserungsvorschläge helfen
 | [NOTICE](NOTICE) | Urheberrecht und Hinweise (Englisch) |
 | [docs/privacy.md](docs/privacy.md#deutsch) | Datenschutzerklärung |
 | [docs/ARCHITECTURE.de.md](docs/ARCHITECTURE.de.md) | Aufbau, Datenfluss, Datenbank, API-Besonderheiten |
-| [docs/FINDINGS.de.md](docs/FINDINGS.de.md) | Erkenntnisse am echten System |
-| [docs/NEXT_STEPS.md](docs/NEXT_STEPS.md) | Roadmap (Englisch) |
-| [docs/STATUS.md](docs/STATUS.md) | Aktueller Entwicklungsstand (Englisch) |
 
 ## Lizenz
 

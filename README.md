@@ -164,11 +164,6 @@ A ⭐ for the repository, bug reports and suggestions help too – see
 | [NOTICE](NOTICE) | Copyright and notices |
 | [docs/privacy.md](docs/privacy.md#english) | Privacy policy |
 | [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Structure, data flow, database, API quirks |
-| [docs/FINDINGS.md](docs/FINDINGS.md) | Findings on the real system |
-| [docs/NEXT_STEPS.md](docs/NEXT_STEPS.md) | Roadmap (open items) |
-| [docs/HISTORY.md](docs/HISTORY.md) | What was built and decided, per step |
-| [docs/RELEASE.md](docs/RELEASE.md) | Versioning, signing and the release pipeline to Google Play |
-| [docs/STATUS.md](docs/STATUS.md) | Current development status |
 
 German versions: [README.de.md](README.de.md) and the matching `*.de.md` files; the privacy policy
 contains both languages.
