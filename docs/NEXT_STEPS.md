@@ -122,8 +122,7 @@ automatic control per room. In addition the app should show how much heating tim
 
 ## Play Store (HISTORY "Play Store preparation …", "Export/import, target API 36 …")
 
-1. Mention the demo mode in the review notes.
-2. **Donations via Google Play Billing** – *needs the user's decision first.* Effects: the listing
+1. **Donations via Google Play Billing** – *needs the user's decision first.* Effects: the listing
    shows "Contains in-app purchases"; a payments profile makes the developer's **physical address
    public** in the listing; Google keeps 15 %; tax details in the payments profile; IARC
    questionnaire: digital purchases ("In-app purchases" note, same age rating); Data safety: check

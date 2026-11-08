@@ -275,6 +275,14 @@ properties with AI that influence heating; show keywords as suggestions.
   against the code (sign-out deletes credentials, history, descriptions, probe run, backups).
   Contact: GitHub issues instead of e-mail (no address in the public repo). Linked in `README.md`.
   Publishing: GitHub Pages (branch `main`, folder `/docs`) – done by the user.
+- **Reviewer instructions (2026-11-08):** `PLAY_STORE_GUIDE.md` 3.2 "App access" now walks the Play
+  reviewers through the demo mode (setup screen → "Try demo mode" below "Connect", what to try,
+  leave via "Log out" at the end of the overview; no credentials). Checklist item ticked.
+- **Store graphics (2026-11-08):** `docs/store/icon.svg` → `icon-512.png` (512 × 512, 32-bit, full-bleed
+  square of the logo – Play masks the corners), `feature-graphic-{en,de}.svg` → `.jpg` (1024 × 500,
+  no alpha: symbol + "PureHeat" + tagline from the short description on the teal→navy gradient).
+  `scripts/render-store-graphics.sh` renders them with headless Chrome; ffmpeg adds the alpha
+  channel Chrome drops for opaque images.
 
 ## Room configuration limits detection, heating profile from text (2026-11-04)
 
