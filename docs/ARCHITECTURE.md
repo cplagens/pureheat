@@ -40,7 +40,8 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 |---|---|
 | `PureHeatApp.kt` | `Application`: holds `CredentialStore` and `HeatingRepository` (simple manual DI), schedules the `HistoryWorker` |
 | `MainActivity.kt` | Single-activity app; navigation via state (`profileRoomId`, `historyRoomId`, `propertiesRoomId`) + `BackHandler`; starts the 5 min polling only in state `STARTED` |
-| `SupportLinks.kt` | Voluntary support links (as in PureRemote); intentionally empty because of Play policies |
+| `SupportLinks.kt` | Source code link (no payment links – Play policies) |
+| `data/support/CoffeeBilling.kt` | Voluntary tip via Google Play Billing: consumable product `coffee`, consumed right away; `CoffeeState` (price or hidden, pending, thanked) |
 | **hmip/** | |
 | `HmipClient.kt` | Cloud API: lookup, client registration (blue button), `getCurrentState`, `getProfile`, `updateProfile` (also renaming: `name` in the profile), `setActiveProfile` |
 | `ErrorMessages.kt` | Exceptions → user error messages (`toUserMessage()`), HTTP error hints |
@@ -80,7 +81,7 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 | `ModelTexts.kt` | Texts for model predictions (duration, "unreachable", "still learning") |
 | `TimeSeriesChart.kt` | Reusable time series chart with a shared time cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | View/edit/save/activate/undo weekly profiles |
-| `AboutDialog.kt` | Version, description, language, data, logo preview |
+| `AboutDialog.kt` | Version, description, language, data, coffee tip (`SupportSection` + `SupportViewModel`), logo preview |
 | `SetupScreen.kt` | SGTIN/PIN input, hint about the blue button |
 
 Resources: adaptive icon in `res/mipmap-anydpi-v26/`, foreground/background/logo in

@@ -6,23 +6,10 @@
 package de.cplagens.pureheat
 
 /**
- * Hier die eigenen Links eintragen. Leere Einträge werden in der App automatisch ausgeblendet.
- * Gibt es gar keinen Eintrag, zeigt die App keinen Unterstützen-Bereich an.
- *
- * Absichtlich leer: Spenden über externe Links verstößt gegen die Google-Play-Richtlinien
- * (Zahlungen nur über Play Billing). Spenden-Links stehen nur in der README.
+ * External links shown in the app. Donations go only through Google Play Billing
+ * (`data/support/CoffeeBilling`) – links to other payment services break the Play policies;
+ * PayPal / GitHub Sponsors are only in the README.
  */
 object SupportLinks {
     const val SOURCE_CODE = "https://github.com/cplagens/pureheat"
-
-    const val KOFI = ""
-    const val PAYPAL = ""
-    const val GITHUB_SPONSORS = ""
-
-    val donationOptions: List<Pair<String, String>>
-        get() = listOf(
-            "Ko-fi" to KOFI,
-            "PayPal" to PAYPAL,
-            "GitHub Sponsors" to GITHUB_SPONSORS,
-        ).filter { it.second.isNotBlank() }
 }

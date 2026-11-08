@@ -411,4 +411,7 @@
     <string name="demo_desc_living">Soggiorno, 28 m², tre finestre a sud e a ovest, doppi vetri, parquet, due pareti esterne.</string>
     <string name="demo_desc_bedroom">Camera da letto, 14 m², una finestra a est, laminato, finestra a ribalta di notte.</string>
     <string name="demo_desc_bath">Bagno con doccia, 7 m², una finestra, piastrelle, scaldasalviette.</string>
+    <string name="coffee_buy">☕ Offrimi un caffè · %1$s</string>
+    <string name="coffee_pending">Pagamento in sospeso: verrà completato non appena Google Play lo conferma.</string>
+    <string name="coffee_thanks">Grazie mille per il caffè! ☕</string>
 </resources>

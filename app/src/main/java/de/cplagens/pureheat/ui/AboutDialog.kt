@@ -21,11 +21,8 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.ui.tooling.preview.Preview
 import de.cplagens.pureheat.R
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -37,8 +34,7 @@ import androidx.compose.ui.platform.LocalUriHandler
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.SupportLinks
 
-/** Version, short description, app language and the optional, voluntary support links (as in PureRemote). */
-@OptIn(ExperimentalLayoutApi::class)
+/** Version, short description, app language, data export/import and the optional, voluntary tip. */
 @Composable
 fun AboutDialog(onDismiss: () -> Unit, roomLabels: Map<String, String> = emptyMap()) {
     val uri = LocalUriHandler.current
@@ -46,7 +42,6 @@ fun AboutDialog(onDismiss: () -> Unit, roomLabels: Map<String, String> = emptyMa
     val version = remember {
         runCatching { ctx.packageManager.getPackageInfo(ctx.packageName, 0).versionName }.getOrNull().orEmpty()
     }
-    val options = SupportLinks.donationOptions
     AlertDialog(
         onDismissRequest = onDismiss,
         confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } },
@@ -64,15 +59,7 @@ fun AboutDialog(onDismiss: () -> Unit, roomLabels: Map<String, String> = emptyMa
                 LanguagePicker()
                 HorizontalDivider()
                 DataSection(roomLabels)
-                if (options.isNotEmpty()) {
-                    HorizontalDivider()
-                    Text(stringResource(R.string.support_text))
-                    FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                        options.forEach { (name, url) ->
-                            FilledTonalButton(onClick = { uri.openUri(url) }) { Text(name) }
-                        }
-                    }
-                }
+                SupportSection()
                 TextButton(onClick = { uri.openUri(SupportLinks.SOURCE_CODE) }, contentPadding = PaddingValues(0.dp)) {
                     Text(stringResource(R.string.source_code))
                 }

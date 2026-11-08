@@ -414,4 +414,7 @@
     <string name="demo_desc_living">Salon, 28 m², trzy okna na południe i zachód, podwójne szyby, parkiet, dwie ściany zewnętrzne.</string>
     <string name="demo_desc_bedroom">Sypialnia, 14 m², jedno okno na wschód, panele, w nocy okno uchylone.</string>
     <string name="demo_desc_bath">Łazienka z prysznicem, 7 m², jedno okno, płytki, grzejnik łazienkowy.</string>
+    <string name="coffee_buy">☕ Postaw mi kawę · %1$s</string>
+    <string name="coffee_pending">Płatność oczekuje – zostanie zakończona, gdy Google Play ją potwierdzi.</string>
+    <string name="coffee_thanks">Bardzo dziękuję za kawę! ☕</string>
 </resources>

@@ -8,11 +8,22 @@ plugins {
     alias(libs.plugins.ksp)
 }
 
-// Upload key for Play App Signing, kept outside the repo (keystore.properties and *.jks are in
-// .gitignore). Without the file the release build stays unsigned.
+// Upload key for Play App Signing, never in the repo: locally from keystore.properties (in
+// .gitignore), in CI from environment variables (GitHub secrets, see .github/workflows/release.yml).
+// Without either the release build stays unsigned.
 val keystoreProperties = Properties().apply {
     val file = rootProject.file("keystore.properties")
     if (file.isFile) file.inputStream().use { load(it) }
+}
+fun signingValue(property: String, env: String): String? = System.getenv(env) ?: keystoreProperties.getProperty(property)
+
+// Version: `appVersion` in gradle.properties; a release build in CI passes the tag (v1.2.3 →
+// -PappVersion=1.2.3). versionCode = major·10000 + minor·100 + patch, so it grows with every
+// release (minor and patch below 100).
+val appVersion = providers.gradleProperty("appVersion").get()
+val appVersionCode = appVersion.split(".").map { it.toInt() }.let { (major, minor, patch) ->
+    require(minor < 100 && patch < 100) { "minor and patch must be below 100: $appVersion" }
+    major * 10_000 + minor * 100 + patch
 }
 
 android {
@@ -24,17 +35,19 @@ android {
         applicationId = "de.cplagens.pureheat"
         minSdk = 26
         targetSdk = 36
-        versionCode = 1
-        versionName = "0.1.0"
+        versionCode = appVersionCode
+        versionName = appVersion
     }
 
     signingConfigs {
-        if (keystoreProperties.getProperty("storeFile") != null) {
+        val storePath = signingValue("storeFile", "PUREHEAT_KEYSTORE")
+        if (storePath != null) {
             create("release") {
-                storeFile = file(keystoreProperties.getProperty("storeFile"))
-                storePassword = keystoreProperties.getProperty("storePassword")
-                keyAlias = keystoreProperties.getProperty("keyAlias")
-                keyPassword = keystoreProperties.getProperty("keyPassword")
+                storeFile = file(storePath)
+                storePassword = signingValue("storePassword", "PUREHEAT_KEYSTORE_PASSWORD")
+                keyAlias = signingValue("keyAlias", "PUREHEAT_KEY_ALIAS")
+                // PKCS12 keystores (keytool's default) use the store password for the key.
+                keyPassword = signingValue("keyPassword", "PUREHEAT_KEY_PASSWORD") ?: storePassword
             }
         }
     }
@@ -82,6 +95,8 @@ dependencies {
     ksp(libs.androidx.room.compiler)
     // On-device Gemini Nano for turning room descriptions into properties (falls back to keywords).
     implementation(libs.mlkit.genai.prompt)
+    // Voluntary "buy me a coffee" tip (data/support/CoffeeBilling).
+    implementation(libs.play.billing)
     debugImplementation(libs.androidx.ui.tooling)
 
     testImplementation(libs.junit)

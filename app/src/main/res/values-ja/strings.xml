@@ -405,4 +405,7 @@
     <string name="demo_desc_living">リビング、28 m²、南向きと西向きの窓が3つ、複層ガラス、フローリング、外壁2面。</string>
     <string name="demo_desc_bedroom">寝室、14 m²、東向きの窓が1つ、ラミネート床、夜は窓を少し開けている。</string>
     <string name="demo_desc_bath">シャワー付き浴室、7 m²、窓1つ、タイル、タオルウォーマー。</string>
+    <string name="coffee_buy">☕ コーヒーをおごる · %1$s</string>
+    <string name="coffee_pending">支払いは保留中です。Google Play で確認されると完了します。</string>
+    <string name="coffee_thanks">コーヒーをありがとうございます！☕</string>
 </resources>

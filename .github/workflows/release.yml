@@ -1,0 +1,79 @@
+# Builds a signed release (AAB) for every version tag vX.Y.Z and uploads it to Google Play.
+#
+# One-time setup (see docs/RELEASE.md):
+# - GitHub → Settings → Environments → "play-release": required reviewer (you), deployment
+#   tags "v*" only. All secrets below live in this environment, not in the repository.
+# - Secrets: UPLOAD_KEYSTORE_BASE64 (base64 of the upload .jks), UPLOAD_KEYSTORE_PASSWORD,
+#   UPLOAD_KEY_ALIAS, PLAY_SERVICE_ACCOUNT_JSON (service account with release rights for this app).
+# - Variable (optional): PLAY_TRACK = internal | alpha (closed testing) | beta | production;
+#   default internal.
+# The very first upload of an app has to be done by hand in the Play Console.
+name: Release to Google Play
+
+on:
+  push:
+    tags: ["v*.*.*"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: play-release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    environment: play-release
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21
+
+      - uses: gradle/actions/setup-gradle@v4
+
+      - name: Version from tag
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          if [[ ! "$version" =~ ^[0-9]+\.[0-9]+\.[0-9]+$ ]]; then
+            echo "::error::Tag must look like v1.2.3, got $GITHUB_REF_NAME"; exit 1
+          fi
+          echo "APP_VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Unit tests and lint
+        run: ./gradlew testDebugUnitTest lintRelease --console=plain -PappVersion="$APP_VERSION"
+
+      - name: Upload key
+        env:
+          UPLOAD_KEYSTORE_BASE64: ${{ secrets.UPLOAD_KEYSTORE_BASE64 }}
+        run: |
+          echo "$UPLOAD_KEYSTORE_BASE64" | base64 --decode > "$RUNNER_TEMP/upload.jks"
+          chmod 600 "$RUNNER_TEMP/upload.jks"
+
+      - name: Signed app bundle
+        env:
+          PUREHEAT_KEYSTORE: ${{ runner.temp }}/upload.jks
+          PUREHEAT_KEYSTORE_PASSWORD: ${{ secrets.UPLOAD_KEYSTORE_PASSWORD }}
+          PUREHEAT_KEY_ALIAS: ${{ secrets.UPLOAD_KEY_ALIAS }}
+        run: ./gradlew bundleRelease --console=plain -PappVersion="$APP_VERSION"
+
+      - name: Remove upload key
+        if: always()
+        run: rm -f "$RUNNER_TEMP/upload.jks"
+
+      - name: Upload to Google Play
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: de.cplagens.pureheat
+          releaseFiles: app/build/outputs/bundle/release/app-release.aab
+          releaseName: ${{ env.APP_VERSION }}
+          track: ${{ vars.PLAY_TRACK || 'internal' }}
+          status: completed
+          whatsNewDirectory: distribution/whatsnew

@@ -6,6 +6,9 @@ Newest version on top. Versions follow `versionName` in `app/build.gradle.kts`.
 
 ## Unreleased
 
+- **Buy me a coffee:** in Info, a voluntary tip of 1.99 € / $1.99 via Google Play. It unlocks
+  nothing; the section only appears when the app is installed from Google Play.
+
 - **Demo mode:** “Try demo mode” on the setup screen shows a sample flat with invented data – without
   an access point, offline; leave it with “Log out”.
 - Overview: a detected shower or open window is always labelled above the chart, even when there

@@ -408,4 +408,7 @@
     <string name="demo_desc_living">Woonkamer, 28 m², drie ramen op het zuiden en westen, dubbel glas, parket, twee buitenmuren.</string>
     <string name="demo_desc_bedroom">Slaapkamer, 14 m², één raam op het oosten, laminaat, raam \'s nachts op een kier.</string>
     <string name="demo_desc_bath">Badkamer met douche, 7 m², één raam, tegels, handdoekradiator.</string>
+    <string name="coffee_buy">☕ Trakteer me op een koffie · %1$s</string>
+    <string name="coffee_pending">Betaling in behandeling – wordt afgerond zodra Google Play die bevestigt.</string>
+    <string name="coffee_thanks">Heel erg bedankt voor de koffie! ☕</string>
 </resources>

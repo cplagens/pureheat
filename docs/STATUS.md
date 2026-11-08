@@ -29,14 +29,11 @@ measurements: `FINDINGS.md`, open review findings: `REVIEW.md` (if present). "co
 1. **Check on the device** (2026-11-06 done: outdoor line, 7/60 days, dark mode, language switch,
    window detection after the rework – HISTORY): still open export share/save as file, import of the
    own file (the user taps through), rename profile (cloud write – only with the user's OK).
-2. Play Store preparation (checklist in `PLAY_STORE_GUIDE.md`): done 2026-11-08 – reviewer
-   instructions for the demo mode, icon 512 + feature graphics de/en (`docs/store/`). Open: phone
-   screenshots for the listing (from the demo, no private names), store texts entered by the user;
-   donations via Play Billing need the user's decision (NEXT_STEPS). For the user: create upload keystore +
-   `keystore.properties`, enable GitHub Pages for `/docs`, confirm contact in `privacy.md`,
-   `.github/FUNDING.yml`: `github:` only once GitHub Sponsors is enabled.
-   Decided 2026-11-05: **no donation links in the app** (Play policies, `SupportLinks.kt` empty →
-   section hidden); PayPal only in the README (en `README.md`, de `README.de.md`).
+2. Play Store (NEXT_STEPS "Play Store", `docs/RELEASE.md`): done 2026-11-08 – reviewer instructions,
+   store graphics, **coffee tip via Play Billing**, versioning from tags, release workflow
+   (tag `vX.Y.Z` → signed AAB → Play). For the user: upload keystore (RSA 4096), first upload by
+   hand, product `coffee`, service account, GitHub environment `play-release`; then test the
+   purchase as license tester. Agent: phone screenshots from the demo. PayPal only in the README.
 3. First review with `/pureheat-review full`, findings in `docs/REVIEW.md`.
 4. Note for the user: re-recognise + save the bathroom description (still saved as "ground floor").
 5. Look at probe run results; step 6 (comfort times + optimal profile as a suggestion).

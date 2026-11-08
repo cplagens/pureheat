@@ -405,4 +405,7 @@
     <string name="demo_desc_living">客厅，28 m²，三扇朝南和朝西的窗户，双层玻璃，木地板，两面外墙。</string>
     <string name="demo_desc_bedroom">卧室，14 m²，一扇朝东的窗户，复合地板，夜间开窗通风。</string>
     <string name="demo_desc_bath">带淋浴的浴室，7 m²，一扇窗，瓷砖，毛巾加热架。</string>
+    <string name="coffee_buy">☕ 请我喝杯咖啡 · %1$s</string>
+    <string name="coffee_pending">付款待处理——Google Play 确认后即完成。</string>
+    <string name="coffee_thanks">非常感谢您的咖啡！☕</string>
 </resources>

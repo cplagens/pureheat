@@ -424,4 +424,7 @@
     <string name="demo_desc_living">Wohnzimmer, 28 m², drei Fenster nach Süden und Westen, Zweifachverglasung, Parkett, zwei Außenwände.</string>
     <string name="demo_desc_bedroom">Schlafzimmer, 14 m², ein Fenster nach Osten, Laminat, nachts Fenster gekippt.</string>
     <string name="demo_desc_bath">Bad mit Dusche, 7 m², ein Fenster, Fliesen, Handtuchheizkörper.</string>
+    <string name="coffee_buy">☕ Spendier mir einen Kaffee · %1$s</string>
+    <string name="coffee_pending">Zahlung ausstehend – sie wird abgeschlossen, sobald Google Play sie bestätigt.</string>
+    <string name="coffee_thanks">Vielen Dank für den Kaffee! ☕</string>
 </resources>

@@ -411,4 +411,7 @@
     <string name="demo_desc_living">Salón, 28 m², tres ventanas al sur y al oeste, doble acristalamiento, parqué, dos paredes exteriores.</string>
     <string name="demo_desc_bedroom">Dormitorio, 14 m², una ventana al este, laminado, ventana entreabierta por la noche.</string>
     <string name="demo_desc_bath">Baño con ducha, 7 m², una ventana, azulejos, radiador toallero.</string>
+    <string name="coffee_buy">☕ Invítame a un café · %1$s</string>
+    <string name="coffee_pending">Pago pendiente: se completará en cuanto Google Play lo confirme.</string>
+    <string name="coffee_thanks">¡Muchas gracias por el café! ☕</string>
 </resources>

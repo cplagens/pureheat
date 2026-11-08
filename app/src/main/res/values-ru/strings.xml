@@ -414,4 +414,7 @@
     <string name="demo_desc_living">Гостиная, 28 м², три окна на юг и запад, двойное остекление, паркет, две наружные стены.</string>
     <string name="demo_desc_bedroom">Спальня, 14 м², одно окно на восток, ламинат, ночью окно на проветривании.</string>
     <string name="demo_desc_bath">Ванная с душем, 7 м², одно окно, плитка, полотенцесушитель.</string>
+    <string name="coffee_buy">☕ Угостить меня кофе · %1$s</string>
+    <string name="coffee_pending">Платёж ожидает подтверждения – он завершится, как только Google Play его подтвердит.</string>
+    <string name="coffee_thanks">Большое спасибо за кофе! ☕</string>
 </resources>

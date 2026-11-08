@@ -411,4 +411,7 @@
     <string name="demo_desc_living">Sala de estar, 28 m², três janelas a sul e a oeste, vidro duplo, parquet, duas paredes exteriores.</string>
     <string name="demo_desc_bedroom">Quarto, 14 m², uma janela a leste, laminado, janela entreaberta à noite.</string>
     <string name="demo_desc_bath">Casa de banho com duche, 7 m², uma janela, azulejos, toalheiro aquecido.</string>
+    <string name="coffee_buy">☕ Paga-me um café · %1$s</string>
+    <string name="coffee_pending">Pagamento pendente – será concluído assim que o Google Play o confirmar.</string>
+    <string name="coffee_thanks">Muito obrigado pelo café! ☕</string>
 </resources>

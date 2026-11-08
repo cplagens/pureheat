@@ -17,6 +17,10 @@ Daten nur an folgende Stellen:
    Access Points und ein Zugangstoken übertragen. Es gilt die Datenschutzerklärung von eQ-3.
 2. **Open-Meteo** (open-meteo.com) – für Wetter und Vorhersage. Übertragen wird nur der Standort
    deines Zuhauses, auf etwa 1 km gerundet. Kein Konto, keine weiteren Daten.
+3. **Google Play** – nur wenn du freiwillig „einen Kaffee spendierst“: Die Zahlung läuft vollständig
+   über Google Play (Google Play Billing); es gilt die Datenschutzerklärung von Google. Die App
+   erfährt nur, ob der Kauf geklappt hat, und speichert dazu nichts. Der Entwickler sieht nur die
+   Bestelldaten, die Google in der Play Console anzeigt, und nutzt sie nur für die Abrechnung.
 
 Alle Messwerte, Raumbeschreibungen und Einstellungen werden **nur auf deinem Telefon** gespeichert
 (bis zu 2 Jahre). Raumbeschreibungen und Beschreibungen von Heizprofilen werden mit KI **auf dem
@@ -39,6 +43,10 @@ PureHeat is a free open-source app without ads and without tracking. The app onl
    an access token are sent. eQ-3's privacy policy applies.
 2. **Open-Meteo** (open-meteo.com) – for weather and forecast. Only the location of your home,
    rounded to about 1 km, is sent. No account, no other data.
+3. **Google Play** – only if you voluntarily "buy me a coffee": the payment is handled entirely by
+   Google Play (Google Play Billing); Google's privacy policy applies. The app only learns whether
+   the purchase succeeded and stores nothing about it. The developer only sees the order details
+   Google shows in the Play Console and uses them only for accounting.
 
 All measurements, room descriptions and settings are stored **only on your phone** (up to 2 years).
 Room descriptions and heating profile descriptions are analysed with AI **on the device** (Gemini

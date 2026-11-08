@@ -283,6 +283,22 @@ properties with AI that influence heating; show keywords as suggestions.
   no alpha: symbol + "PureHeat" + tagline from the short description on the teal→navy gradient).
   `scripts/render-store-graphics.sh` renders them with headless Chrome; ffmpeg adds the alpha
   channel Chrome drops for opaque images.
+- **Buy me a coffee (2026-11-08, user's decision):** Play Billing Library 9.1.0
+  (`com.android.billingclient:billing`). `data/support/CoffeeBilling`: one consumable INAPP product
+  `coffee` (price in the Play Console: 1.99 EUR / 1.99 USD), `enablePendingPurchases(…
+  enableOneTimeProducts())`, `enableAutoServiceReconnection()`, PBL 8+ `QueryProductDetailsResult`;
+  purchases are consumed right away (nothing unlocked, no server check), open/pending ones on the
+  next connect. `SupportViewModel` + `SupportSection` in the Info dialog replace the empty link
+  list (`SupportLinks` now only has the source link); the section is hidden when Play can't offer
+  the product (sideload, debug, not set up). Texts `coffee_buy/pending/thanks` in 12 languages;
+  `docs/privacy.md` (de + en) mentions Google Play payments.
+- **Versioning and release pipeline (2026-11-08):** `appVersion` in `gradle.properties`;
+  `versionCode = major·10000 + minor·100 + patch`. `.github/workflows/release.yml`: tag `vX.Y.Z`
+  → tests + lint → signed `bundleRelease` (upload key from environment secrets via
+  `PUREHEAT_KEYSTORE*` variables) → `r0adkll/upload-google-play` to `vars.PLAY_TRACK` (default
+  internal) with `distribution/whatsnew/`. GitHub environment `play-release` with required reviewer
+  and tag rule; Play App Signing makes the upload key resettable; RSA 4096 instead of EC for the
+  upload key (Play-documented, EC acceptance uncertain). Details and setup: `docs/RELEASE.md`.
 
 ## Room configuration limits detection, heating profile from text (2026-11-04)
 

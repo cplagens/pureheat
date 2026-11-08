@@ -435,4 +435,8 @@
     <string name="demo_desc_living">Living room, 28 m², three windows facing south and west, double glazing, parquet, two exterior walls.</string>
     <string name="demo_desc_bedroom">Bedroom, 14 m², one window facing east, laminate, window tilted at night.</string>
     <string name="demo_desc_bath">Bathroom with shower, 7 m², one window, tiles, towel radiator.</string>
+    <!-- Voluntary tip (Google Play Billing) -->
+    <string name="coffee_buy">☕ Buy me a coffee · %1$s</string>
+    <string name="coffee_pending">Payment pending – it completes as soon as Google Play confirms it.</string>
+    <string name="coffee_thanks">Thank you so much for the coffee! ☕</string>
 </resources>

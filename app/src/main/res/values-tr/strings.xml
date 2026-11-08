@@ -408,4 +408,7 @@
     <string name="demo_desc_living">Oturma odası, 28 m², güneye ve batıya bakan üç pencere, çift cam, parke, iki dış duvar.</string>
     <string name="demo_desc_bedroom">Yatak odası, 14 m², doğuya bakan bir pencere, laminat, geceleri pencere aralık.</string>
     <string name="demo_desc_bath">Duşlu banyo, 7 m², bir pencere, fayans, havlu radyatörü.</string>
+    <string name="coffee_buy">☕ Bana bir kahve ısmarla · %1$s</string>
+    <string name="coffee_pending">Ödeme beklemede – Google Play onayladığında tamamlanacak.</string>
+    <string name="coffee_thanks">Kahve için çok teşekkürler! ☕</string>
 </resources>

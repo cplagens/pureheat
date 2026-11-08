@@ -122,16 +122,16 @@ automatic control per room. In addition the app should show how much heating tim
 
 ## Play Store (HISTORY "Play Store preparation …", "Export/import, target API 36 …")
 
-1. **Donations via Google Play Billing** – *needs the user's decision first.* Effects: the listing
-   shows "Contains in-app purchases"; a payments profile makes the developer's **physical address
-   public** in the listing; Google keeps 15 %; tax details in the payments profile; IARC
-   questionnaire: digital purchases ("In-app purchases" note, same age rating); Data safety: check
-   "purchase history"; one sentence on Google Play payments in `docs/privacy.md`. External links
-   (PayPal, GitHub Sponsors) stay out of the app (decided 2026-11-05).
-   Implementation: Play Billing Library, section "Support" with 2–3 consumable products, `consumeAsync`
-   within 3 days (otherwise auto-refund), no server verification needed (nothing is unlocked), all
-   texts in the 12 languages, store text "all features free, optional voluntary support". For a
-   later F-Droid build: product flavour without Billing.
+1. **For the user – release setup** (`docs/RELEASE.md` "One-time setup"): upload keystore (RSA 4096),
+   first upload by hand, in-app product `coffee` at 1.99 EUR / 1.99 USD, service account,
+   GitHub environment `play-release` with secrets. Payments profile: the developer address becomes
+   public in the listing. Questionnaires: IARC "digital purchases", Data safety "purchase history"
+   (check), store text "all features free, optional voluntary tip".
+2. Test the coffee purchase with a license tester from the internal track (purchase, pending
+   payment, consume, buy again); result into FINDINGS.
+3. Phone screenshots for the listing (from the demo, no private names).
+4. Later: F-Droid build as a product flavour without the billing library; pin the workflow
+   actions to commit SHAs (+ Dependabot).
 
 ## Step 6 – comfort times and optimal profile
 
