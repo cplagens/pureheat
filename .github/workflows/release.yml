@@ -5,9 +5,9 @@
 #   tags "v*" only. All secrets below live in this environment, not in the repository.
 # - Secrets: UPLOAD_KEYSTORE_BASE64 (base64 of the upload .jks), UPLOAD_KEYSTORE_PASSWORD,
 #   UPLOAD_KEY_ALIAS, PLAY_SERVICE_ACCOUNT_JSON (service account with release rights for this app).
-# - Variable (optional): PLAY_TRACK = internal | alpha (closed testing) | beta | production;
-#   default internal.
-# The very first upload of an app has to be done by hand in the Play Console.
+# - Variables (optional): PLAY_TRACK = internal | alpha (closed testing) | beta | production
+#   (default internal); PLAY_UPLOAD = off to only build (e.g. for the very first release, which
+#   has to be uploaded by hand in the Play Console – the bundle is kept as a run artifact).
 name: Release to Google Play
 
 on:
@@ -67,7 +67,18 @@ jobs:
         if: always()
         run: rm -f "$RUNNER_TEMP/upload.jks"
 
+      # The signed bundle is also kept with the run (no secrets in it) – needed for the very first
+      # upload, which the Play API can't do: download it here and upload it in the Play Console.
+      - name: Keep the app bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: pureheat-${{ env.APP_VERSION }}-aab
+          path: app/build/outputs/bundle/release/app-release.aab
+          retention-days: 30
+
+      # Variable PLAY_UPLOAD = off skips the upload (first release, or a build for testing only).
       - name: Upload to Google Play
+        if: vars.PLAY_UPLOAD != 'off'
         uses: r0adkll/upload-google-play@v1
         with:
           serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}

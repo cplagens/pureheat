@@ -89,7 +89,7 @@ Gerät**:
 |---|---|
 | Ist- und Solltemperatur, Luftfeuchte und Ventilöffnung je Raum | Verlauf, Raummodell, Fenster- und Duscherkennung |
 | Ventilöffnung je Heizkreis | Welcher Kreis heizt, Ventil-Warnungen |
-| Außentemperatur und stündliche Prognose | Wärmeverlust im Modell, Aufheiz-Vorhersagen |
+| Außentemperatur, Außenluftfeuchte und stündliche Prognose | Wärmeverlust im Modell, Aufheiz-Vorhersagen, Fenster-Erkennung |
 | Vorhersagen des Probelaufs und ihre Ergebnisse | Prüfen, wie gut das Modell ist |
 | Deine Raumbeschreibungen und Ansichtseinstellungen | Erkennungsregeln, Darstellung |
 
@@ -100,12 +100,16 @@ automatisch gelöscht. Export und Import passieren nur, wenn du sie auslöst.
 
 - **Keine Werbung, kein Tracking, keine Analyse, kein eigener Server** – es gibt kein
   PureHeat-Backend, das irgendetwas sammeln könnte.
-- **Nur eine Berechtigung: Internet.** Kein Zugriff auf GPS, Kontakte, Kamera oder Dateien.
+- **Keine Berechtigungen, die deine Zustimmung brauchen** – kein Zugriff auf Standort, Kontakte,
+  Kamera, Mikrofon oder Dateien. Nur Systemberechtigungen, die bei der Installation gelten: Internet,
+  Netzwerkstatus, Start nach Neustart und Wake-Lock (Aufzeichnung im Hintergrund über WorkManager)
+  sowie Google-Play-Abrechnung (freiwilliger Kaffee).
 - Auth-Token und alle Messwerte liegen im privaten Speicher der App; die Android-Sicherung ist
   abgeschaltet, nichts landet in einem Cloud-Backup.
 - Daten gehen nur an die Homematic IP Cloud (die dein System ohnehin nutzt) und an
   [Open-Meteo](https://open-meteo.com) für die Wetterprognose – mit auf ~1 km gerundetem
-  Standort des Hauses und ohne Kennung.
+  Standort des Hauses und ohne Kennung. Nur wenn du einen Kaffee spendierst: Google Play wickelt die
+  Zahlung ab.
 - KI läuft **auf dem Gerät** (Gemini Nano); Raumbeschreibungen verlassen das Telefon nicht.
 - **Schreibzugriffe nur für Heizprofile** und nur nach deiner Bestätigung. PureHeat stellt nie von
   sich aus Temperaturen ein; die KI macht nur Vorschläge.
@@ -120,7 +124,8 @@ automatisch gelöscht. Export und Import passieren nur, wenn du sie auslöst.
 
 ## Einrichtung
 
-1. App bauen und installieren: `./gradlew installDebug`
+1. App aus [Google Play](https://play.google.com/store/apps/details?id=de.cplagens.pureheat)
+   installieren (ab Version 1.0.0) oder selbst bauen: `./gradlew installDebug`
 2. In der App die SGTIN des Access Points eingeben (steht auf dem Aufkleber unter dem Gerät).
 3. Wenn die App dazu auffordert, den blauen Knopf am Access Point drücken.
 
@@ -152,6 +157,7 @@ Der Akkuverbrauch bleibt trotzdem minimal:
 PureHeat ist und bleibt kostenlos, ohne Werbung und ohne Tracking. Wenn dir die App gefällt, kannst du
 die Entwicklung freiwillig unterstützen:
 
+- ☕ In der App: **Info → „Spendier mir einen Kaffee“** (1,99 € / 1,99 $ über Google Play, schaltet nichts frei)
 - 💙 [PayPal](https://paypal.me/ChristianPlagens)
 
 Ein ⭐ für das Repository, Fehlermeldungen und Verbesserungsvorschläge helfen ebenfalls – siehe

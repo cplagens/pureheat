@@ -1,3 +1,6 @@
-- Spendier dem Entwickler einen Kaffee (freiwillig, über Google Play) unter Info.
-- Bessere Fenster-offen-Erkennung: nutzt die Außenfeuchte, weniger Fehlalarme.
-- Diagramme: Datum und Wochenraster bei langen Zeiträumen, aufgeräumte Beschriftungen.
+Erste Version von PureHeat:
+- Sieh, welcher Heizkreis offen ist und wie weit jedes Ventil öffnet.
+- Verlauf, Raummodell mit Aufheizzeiten und ein Probelauf seiner Vorhersagen.
+- Fenster-offen- und Duschen-Erkennung ohne zusätzliche Sensoren.
+- Heizprofile bearbeiten oder aus einer Beschreibung erstellen.
+- Demo-Modus ohne Access Point. 12 Sprachen, kostenlos, ohne Werbung.

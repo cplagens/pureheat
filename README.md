@@ -87,7 +87,7 @@ device**:
 |---|---|
 | Current and target temperature, humidity and valve opening per room | History, room model, window and shower detection |
 | Valve opening per heating circuit | Which circuit is heating, valve warnings |
-| Outdoor temperature and hourly forecast | Heat loss in the model, heat-up predictions |
+| Outdoor temperature, outdoor humidity and hourly forecast | Heat loss in the model, heat-up predictions, window detection |
 | Predictions of the probe run and their results | Checking how good the model is |
 | Your room descriptions and view settings | Detection rules, layout |
 
@@ -98,12 +98,15 @@ automatically after that. Export and import only happen when you trigger them.
 
 - **No ads, no tracking, no analytics, no own server** – there is no PureHeat backend that could
   collect anything.
-- **Only one permission: internet.** No access to GPS, contacts, camera or files.
+- **No permissions that need your consent** – no access to location, contacts, camera, microphone
+  or files. Only system permissions granted at install: internet, network state, start after a
+  reboot and wake lock (background recording via WorkManager), and Google Play billing (optional
+  coffee).
 - The auth token and all measurements stay in the app's private storage; Android backup is
   switched off, so nothing ends up in a cloud backup.
 - Data goes only to the Homematic IP Cloud (which your system uses anyway) and to
   [Open-Meteo](https://open-meteo.com) for the weather forecast – with the home location rounded to
-  ~1 km and without any identifier.
+  ~1 km and without any identifier. Only if you buy a coffee: Google Play handles the payment.
 - AI runs **on the device** (Gemini Nano); room descriptions never leave the phone.
 - **Writes only for heating profiles**, and only after your confirmation. PureHeat never sets
   temperatures on its own; the AI only makes suggestions.
@@ -118,7 +121,8 @@ automatically after that. Export and import only happen when you trigger them.
 
 ## Setup
 
-1. Build and install the app: `./gradlew installDebug`
+1. Install the app from [Google Play](https://play.google.com/store/apps/details?id=de.cplagens.pureheat)
+   (from version 1.0.0) or build it yourself: `./gradlew installDebug`
 2. Enter the SGTIN of the Access Point in the app (printed on the sticker under the device).
 3. When the app asks for it, press the blue button on the Access Point.
 
@@ -149,6 +153,7 @@ The battery drain stays minimal anyway:
 PureHeat is and will stay free, without ads and without tracking. If you like the app, you can
 support its development voluntarily:
 
+- ☕ In the app: **Info → “Buy me a coffee”** (1.99 € / $1.99 via Google Play, unlocks nothing)
 - 💙 [PayPal](https://paypal.me/ChristianPlagens)
 
 A ⭐ for the repository, bug reports and suggestions help too – see

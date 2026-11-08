@@ -1,3 +1,6 @@
-- Buy the developer a coffee (optional, via Google Play) in Info.
-- Better open-window detection: uses the outside humidity, fewer false alarms.
-- Charts: dates and weekly grid for long ranges, cleaner labels.
+First release of PureHeat:
+- See which floor heating circuit is open and how far each valve opens.
+- History, room model with heat-up times and a probe run of its predictions.
+- Open-window and shower detection without extra sensors.
+- Edit heating profiles, or create them from a description.
+- Demo mode without an access point. 12 languages, free, no ads.

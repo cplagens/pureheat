@@ -39,7 +39,8 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 |---|---|
 | `PureHeatApp.kt` | `Application`: hält `CredentialStore` und `HeatingRepository` (einfache manuelle DI), plant den `HistoryWorker` |
 | `MainActivity.kt` | Ein-Activity-App; Navigation per Zustand (`profileRoomId`, `historyRoomId`, `propertiesRoomId`) + `BackHandler`; startet das 5-min-Polling nur im Zustand `STARTED` |
-| `SupportLinks.kt` | Freiwillige Unterstützen-Links (wie in PureRemote); wegen der Play-Richtlinien absichtlich leer |
+| `SupportLinks.kt` | Link zum Quellcode (keine Zahlungs-Links – Play-Richtlinien) |
+| `data/support/CoffeeBilling.kt` | Freiwillige Unterstützung über Google Play Billing: verbrauchbares Produkt `coffee`, wird sofort verbraucht; `CoffeeState` (Preis oder ausgeblendet, ausstehend, bedankt) |
 | **hmip/** | |
 | `HmipClient.kt` | Cloud-API: Lookup, Client-Registrierung (blauer Knopf), `getCurrentState`, `getProfile`, `updateProfile` (auch Umbenennen: `name` im Profil), `setActiveProfile` |
 | `ErrorMessages.kt` | Exceptions → deutsche Fehlermeldungen (`toUserMessage()`), HTTP-Fehlerhinweise |
@@ -51,7 +52,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `ForecastClient.kt` | Open-Meteo-Abruf (stündliche Außentemperatur, 3 Tage) mit gerundetem Standort |
 | `HistoryWorker.kt` | Sich selbst neu planende Abrufkette (`history-chain`) + stündlicher `HistoryWatchdogWorker` |
 | `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
-| `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 2): `room_sample`, `circuit_sample`, `weather_sample` |
+| `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 6): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction` |
 | `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Phasen „Ventil offen/zu“ (mit Totzeit-Tiefpunkt und Ende des freien Aufheizens) |
 | `history/BathingDetection.kt` | Reine Heuristik: Duschen/Baden aus schnellem Luftfeuchte-Anstieg; Ausklammern fürs Modell |
 | `RoomOrder.kt` | Reine Logik: Reihenfolge der Raumkarten (Thermostate hinter ihrem Raum, gespeicherte Reihenfolge) |
@@ -79,7 +80,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `ModelTexts.kt` | Deutsche Texte für Modellvorhersagen (Dauer, „nicht erreichbar“, „lernt noch“) |
 | `TimeSeriesChart.kt` | Wiederverwendbares Zeitreihen-Diagramm mit gemeinsamem Zeit-Cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | Wochenprofile ansehen/bearbeiten/speichern/aktivieren/rückgängig |
-| `AboutDialog.kt` | Version, Beschreibung, Sprache, Daten, Logo-Preview |
+| `AboutDialog.kt` | Version, Beschreibung, Sprache, Daten, Kaffee spendieren (`SupportSection` + `SupportViewModel`), Logo-Preview |
 | `SetupScreen.kt` | SGTIN/PIN-Eingabe, Hinweis auf blauen Knopf |
 
 Ressourcen: adaptives Icon in `res/mipmap-anydpi-v26/`, Vordergrund/Hintergrund/Logo in
@@ -106,18 +107,18 @@ das Logo zusätzlich als `docs/assets/logo.svg`.
 3. Profil erneut laden und mit dem gesendeten vergleichen; Abweichung → Fehlermeldung.
 „Rückgängig“ spielt das Backup auf demselben Weg zurück.
 
-## Datenmodell (Room, `history.db`, Version 5)
+## Datenmodell (Room, `history.db`, Version 6)
 
 | Tabelle | Schlüssel | Felder |
 |---|---|---|
 | `room_sample` | roomId + timestamp | actualTemperature, setPointTemperature, valvePosition (max. der Kanäle bzw. Gruppenwert), humidity (ab v3) |
 | `circuit_sample` | deviceId + channelIndex + timestamp | valvePosition |
-| `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`) |
+| `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`), outsideAbsHumidity g/m³ (`home.weather.vaporAmount`, seit v6) |
 | `prediction` | roomId + strategy + eventTime | Probelauf: Ziel, Starttemperatur, vorhergesagte/tatsächliche Erreichzeit, Modellquelle (fit/prior), Ergebnis (ab v5) |
 | `forecast_sample` | timestamp | temperature (Open-Meteo, stündlich), fetchedAt; bei jedem Abruf ersetzt (ab v4) |
 
 Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidity`, 3 → 4 legt
-`forecast_sample` an; vorhandene Daten
+`forecast_sample` an, 4 → 5 `prediction`, 5 → 6 ergänzt `weather_sample.outsideAbsHumidity`; vorhandene Daten
 bleiben erhalten. Die REST-Server-Adresse wird in SharedPreferences `hmip_server` gecacht
 (neuer Lookup nur nach Fehler – der Lookup-Dienst antwortet bei zu vielen Anfragen mit 418).
 Größe gemessen: ca. 710 Zeilen bzw. 120 KB/Tag → nach 2 Jahren ca. 90 MB.
