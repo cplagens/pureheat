@@ -14,8 +14,6 @@ import java.util.Date
 /** Texts for detected open-window times. */
 internal object WindowTexts {
     private fun time(ctx: Context, t: Long) = DateFormat.getTimeFormat(ctx).format(Date(t))
-    private fun dayTime(ctx: Context, t: Long) =
-        DateFormat.format(DateFormat.getBestDateTimePattern(currentLocale(ctx), "EEE Hm"), t).toString()
 
     /** The last event of the shown 24 h; null if none. */
     fun dashboardLine(ctx: Context, events: List<WindowEvent>): String? {
@@ -41,3 +39,13 @@ internal object WindowTexts {
 }
 
 internal fun currentLocale(ctx: Context) = ctx.resources.configuration.locales[0]
+
+/**
+ * Weekday and time in the app language and the user's 12/24 h setting, e.g. "Mon 21:15" or
+ * "Mon 9:15 PM"; with [withDate] also the day and month.
+ */
+internal fun dayTime(ctx: Context, t: Long, withDate: Boolean = false): String {
+    val time = if (DateFormat.is24HourFormat(ctx)) "Hm" else "hm"
+    val skeleton = (if (withDate) "EEEdM" else "EEE") + time
+    return DateFormat.format(DateFormat.getBestDateTimePattern(currentLocale(ctx), skeleton), t).toString()
+}

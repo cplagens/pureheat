@@ -259,7 +259,7 @@ fun RoomDetailScreen(
                     Text(
                         stringResource(
                             R.string.bathing_event,
-                            dayTime(ctx, b.start, "EEE Hm"),
+                            dayTime(ctx, b.start),
                             DateFormat.getTimeFormat(ctx).format(Date(b.end)),
                             b.humidityBefore,
                             b.humidityPeak,
@@ -426,7 +426,7 @@ private fun ProbeCard(probe: ProbeState) {
 
 private fun describePrediction(ctx: Context, p: PredictionEntity, now: Long): String {
     val time: (Long) -> String = { DateFormat.getTimeFormat(ctx).format(Date(it)) }
-    val event = dayTime(ctx, p.eventTime, "EEE Hm")
+    val event = dayTime(ctx, p.eventTime)
     val predicted = p.predictedReach?.let(time) ?: ctx.getString(R.string.probe_not_reached)
     val prior = if (p.modelSource == ModelSource.PRIOR) ctx.getString(R.string.probe_prior) else ""
     if (p.eventTime >= now || p.outcome == null) {
@@ -463,7 +463,7 @@ private fun Readout(selected: Long?, values: List<String>, onClear: () -> Unit) 
                 )
             } else {
                 Row(verticalAlignment = Alignment.CenterVertically) {
-                    Text(dayTime(ctx, selected, "EEE dd.MM. Hm"), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
+                    Text(dayTime(ctx, selected, withDate = true), style = MaterialTheme.typography.labelLarge, modifier = Modifier.weight(1f))
                     TextButton(onClick = onClear) { Text(stringResource(R.string.close)) }
                 }
                 Text(
@@ -504,7 +504,7 @@ private fun PhaseRow(p: ThermalPhase) {
             // (e.g. a towel radiator in the same room).
             stringResource(
                 if (p.kind == PhaseKind.HEATING) R.string.phase_open else R.string.phase_closed,
-                dayTime(ctx, p.start, "EEE Hm"),
+                dayTime(ctx, p.start),
                 DateFormat.getTimeFormat(ctx).format(Date(p.end)),
             ),
             style = MaterialTheme.typography.labelLarge,
@@ -542,10 +542,6 @@ private fun BandLegend(label: String) {
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
-
-/** Localised weekday/date/time, e.g. "Mon 21:15" or "Mon 9:15 PM". */
-private fun dayTime(ctx: Context, t: Long, skeleton: String) =
-    DateFormat.format(DateFormat.getBestDateTimePattern(currentLocale(ctx), skeleton), t).toString()
 
 /** Value of the sample closest to [t], if one lies within 30 min. */
 private fun List<Pair<Long, Double>>.nearest(t: Long): Double? =
