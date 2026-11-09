@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # PureHeat – drive the emulator for Play Store screenshots (only the emulator, never the phone).
 #
-#   scripts/emu.sh setup [en|de]   1080×1920 (9:16, Play allows ≤ 2:1), time zone Australia/Brisbane
-#                                  (evening in Berlin = morning there → morning heat-up in the demo),
+#   scripts/emu.sh setup [en|de] [TZ]  1080×1920 (9:16, Play allows ≤ 2:1), time zone TZ where it is
+#                                  about 7:00 now (morning heat-up in the demo): Berlin evening →
+#                                  Australia/Brisbane (default), Berlin morning → Atlantic/Azores,
 #                                  clean status bar, app language; then start the app → "Try demo mode"
 #   scripts/emu.sh find TEXT       bounds of views whose text starts with TEXT (no screenshot needed)
 #   scripts/emu.sh tap X Y [S]     tap, wait S seconds (default 2)
@@ -31,7 +32,7 @@ bar() {
 case "${1:-}" in
   setup)
     adb shell wm size 1080x1920
-    adb shell service call alarm 3 s16 Australia/Brisbane > /dev/null
+    adb shell service call alarm 3 s16 "${3:-Australia/Brisbane}" > /dev/null
     adb shell cmd uimode night no > /dev/null
     adb shell cmd locale set-app-locales de.cplagens.pureheat --locales "${2:-en}" > /dev/null
     bar
@@ -46,7 +47,7 @@ case "${1:-}" in
   scroll) adb shell input swipe 540 1500 540 $((1500 - $2)) 1500; sleep 2 ;;
   back) adb shell input keyevent 4; sleep 2 ;;
   shot) adb exec-out screencap -p > "/tmp/ph/$2.png" ;;
-  clean) ffmpeg -loglevel error -y -i "/tmp/ph/$2.png" -vf "drawbox=x=90:y=0:w=70:h=62:color=0xFEF7FF:t=fill" "$3" ;;
+  clean) ffmpeg -loglevel error -y -i "/tmp/ph/$2.png" -vf "drawbox=x=90:y=0:w=120:h=62:color=0xFEF7FF:t=fill" "$3" ;;
   find)
     adb shell uiautomator dump /sdcard/ui.xml > /dev/null 2>&1
     adb exec-out cat /sdcard/ui.xml | tr '>' '\n' | grep -F "text=\"$2" | grep -o 'bounds="[^"]*"'
