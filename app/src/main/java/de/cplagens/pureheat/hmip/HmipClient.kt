@@ -16,6 +16,8 @@ import kotlinx.coroutines.withContext
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonObject
+import kotlinx.serialization.json.JsonPrimitive
+import kotlinx.serialization.json.contentOrNull
 import kotlinx.serialization.json.buildJsonObject
 import kotlinx.serialization.json.jsonObject
 import kotlinx.serialization.json.jsonPrimitive
@@ -69,7 +71,7 @@ class HmipClient(
     private fun clientCharacteristics(): JsonObject = buildJsonObject {
         put("apiVersion", "10")
         put("applicationIdentifier", "PureHeat")
-        put("applicationVersion", "0.1")
+        put("applicationVersion", BuildConfig.VERSION_NAME)
         put("deviceManufacturer", android.os.Build.MANUFACTURER ?: "unknown")
         put("deviceType", "Phone")
         put("language", "de_DE")
@@ -121,8 +123,8 @@ class HmipClient(
         if (code != 200) throw httpFailure(R.string.ctx_lookup, code, text)
         val obj = json.parseToJsonElement(text).jsonObject
         return Endpoints(
-            rest = obj["urlREST"]!!.jsonPrimitive.content,
-            websocket = obj["urlWebSocket"]!!.jsonPrimitive.content,
+            rest = obj.requireString("urlREST"),
+            websocket = obj.requireString("urlWebSocket"),
         )
     }
 
@@ -167,7 +169,7 @@ class HmipClient(
 
         val (tokCode, tokText) = post("$rest/hmip/auth/requestAuthToken", idBody, headers)
         if (tokCode != 200) throw httpFailure(R.string.ctx_token_request, tokCode, tokText)
-        val authToken = json.parseToJsonElement(tokText).jsonObject["authToken"]!!.jsonPrimitive.content
+        val authToken = json.parseToJsonElement(tokText).jsonObject.requireString("authToken")
 
         val (confCode, confText) = post(
             "$rest/hmip/auth/confirmAuthToken",
@@ -255,6 +257,9 @@ class HmipClient(
             R.string.ctx_profile_activate,
         )
     }
+
+    private fun JsonObject.requireString(key: String): String =
+        (this[key] as? JsonPrimitive)?.contentOrNull ?: throw HmipException(UiText.Res(R.string.err_unexpected, "$key missing"))
 
     private suspend fun authed(
         sgtin: String,

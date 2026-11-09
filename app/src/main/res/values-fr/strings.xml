@@ -414,4 +414,9 @@
     <string name="coffee_buy">☕ M’offrir un café · %1$s</string>
     <string name="coffee_pending">Paiement en attente – il sera finalisé dès que Google Play l’aura confirmé.</string>
     <string name="coffee_thanks">Merci beaucoup pour le café ! ☕</string>
+    <string name="undo">Annuler la modification</string>
+    <string name="profile_undo_q">Annuler le dernier enregistrement ?</string>
+    <string name="profile_undo_text">La pièce « %s » retrouve le programme hebdomadaire d’avant le dernier enregistrement. La version actuelle est conservée, l’opération reste donc réversible.</string>
+    <string name="stepper_decrease">Diminuer : %s</string>
+    <string name="stepper_increase">Augmenter : %s</string>
 </resources>

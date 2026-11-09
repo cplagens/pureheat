@@ -414,4 +414,9 @@
     <string name="coffee_buy">☕ Invítame a un café · %1$s</string>
     <string name="coffee_pending">Pago pendiente: se completará en cuanto Google Play lo confirme.</string>
     <string name="coffee_thanks">¡Muchas gracias por el café! ☕</string>
+    <string name="undo">Deshacer</string>
+    <string name="profile_undo_q">¿Deshacer el último guardado?</string>
+    <string name="profile_undo_text">La habitación «%s» vuelve al programa semanal anterior al último guardado. La versión actual se conserva, así que se puede deshacer de nuevo.</string>
+    <string name="stepper_decrease">Reducir: %s</string>
+    <string name="stepper_increase">Aumentar: %s</string>
 </resources>

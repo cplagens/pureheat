@@ -51,6 +51,8 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.compose.ui.text.drawText
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.rememberTextMeasurer
@@ -90,6 +92,7 @@ fun ProfileScreen(
     var expandedDay by rememberSaveable { mutableStateOf<Weekday?>(null) }
     var confirmSave by remember { mutableStateOf(false) }
     var confirmActivate by remember { mutableStateOf<ProfileRef?>(null) }
+    var confirmUndo by remember { mutableStateOf(false) }
     var renaming by remember { mutableStateOf<ProfileRef?>(null) }
     val profile = state.edited
     val busy = state.loading || state.saving
@@ -212,7 +215,7 @@ fun ProfileScreen(
                         Button(onClick = { confirmSave = true }, enabled = !busy) { Text(stringResource(R.string.save_ellipsis)) }
                         TextButton(onClick = vm::discard, enabled = !busy) { Text(stringResource(R.string.discard)) }
                     } else if (state.hasBackup) {
-                        TextButton(onClick = { vm.undo(onChanged) }, enabled = !busy) { Text(stringResource(R.string.profile_undo)) }
+                        TextButton(onClick = { confirmUndo = true }, enabled = !busy) { Text(stringResource(R.string.profile_undo)) }
                     }
                 }
             }
@@ -243,6 +246,21 @@ fun ProfileScreen(
                 }) { Text(stringResource(R.string.activate)) }
             },
             dismissButton = { TextButton(onClick = { confirmActivate = null }) { Text(stringResource(R.string.cancel)) } },
+        )
+    }
+
+    if (confirmUndo) {
+        AlertDialog(
+            onDismissRequest = { confirmUndo = false },
+            title = { Text(stringResource(R.string.profile_undo_q)) },
+            text = { Text(stringResource(R.string.profile_undo_text, room.label.trim())) },
+            confirmButton = {
+                TextButton(onClick = {
+                    confirmUndo = false
+                    vm.undo(onChanged)
+                }) { Text(stringResource(R.string.undo)) }
+            },
+            dismissButton = { TextButton(onClick = { confirmUndo = false }) { Text(stringResource(R.string.cancel)) } },
         )
     }
 
@@ -448,9 +466,11 @@ private fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: (
     Column {
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         Row(verticalAlignment = Alignment.CenterVertically) {
-            FilledTonalIconButton(onClick = onMinus) { Text("−") }
+            val decrease = stringResource(R.string.stepper_decrease, label)
+            val increase = stringResource(R.string.stepper_increase, label)
+            FilledTonalIconButton(onClick = onMinus, modifier = Modifier.semantics { contentDescription = decrease }) { Text("−") }
             Text(value, style = MaterialTheme.typography.bodyMedium, modifier = Modifier.padding(horizontal = 4.dp))
-            FilledTonalIconButton(onClick = onPlus) { Text("+") }
+            FilledTonalIconButton(onClick = onPlus, modifier = Modifier.semantics { contentDescription = increase }) { Text("+") }
         }
     }
 }

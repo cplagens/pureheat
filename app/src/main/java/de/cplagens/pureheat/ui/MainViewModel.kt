@@ -180,6 +180,10 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
                     lastUpdated = System.currentTimeMillis(),
                 ) ?: it
             }
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            // Screen left while fetching: no error message, the next poll starts over.
+            _ui.update { (it as? UiState.Dashboard)?.copy(loading = false) ?: it }
+            throw e
         } catch (e: Exception) {
             _ui.update { (it as? UiState.Dashboard)?.copy(loading = false, error = e.toUiText()) ?: it }
         }

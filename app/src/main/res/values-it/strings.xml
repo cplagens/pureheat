@@ -414,4 +414,9 @@
     <string name="coffee_buy">☕ Offrimi un caffè · %1$s</string>
     <string name="coffee_pending">Pagamento in sospeso: verrà completato non appena Google Play lo conferma.</string>
     <string name="coffee_thanks">Grazie mille per il caffè! ☕</string>
+    <string name="undo">Ripristina</string>
+    <string name="profile_undo_q">Annullare l’ultimo salvataggio?</string>
+    <string name="profile_undo_text">La stanza «%s» torna al programma settimanale precedente all’ultimo salvataggio. La versione attuale viene conservata, quindi l’operazione è reversibile.</string>
+    <string name="stepper_decrease">Diminuisci: %s</string>
+    <string name="stepper_increase">Aumenta: %s</string>
 </resources>

@@ -411,4 +411,9 @@
     <string name="coffee_buy">☕ Bana bir kahve ısmarla · %1$s</string>
     <string name="coffee_pending">Ödeme beklemede – Google Play onayladığında tamamlanacak.</string>
     <string name="coffee_thanks">Kahve için çok teşekkürler! ☕</string>
+    <string name="undo">Geri al</string>
+    <string name="profile_undo_q">Son kaydetme geri alınsın mı?</string>
+    <string name="profile_undo_text">“%s” odası son kaydetmeden önceki haftalık programa döner. Mevcut sürüm saklanır, bu yüzden işlem yeniden geri alınabilir.</string>
+    <string name="stepper_decrease">Azalt: %s</string>
+    <string name="stepper_increase">Artır: %s</string>
 </resources>

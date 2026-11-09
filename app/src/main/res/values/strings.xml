@@ -439,4 +439,9 @@
     <string name="coffee_buy">☕ Buy me a coffee · %1$s</string>
     <string name="coffee_pending">Payment pending – it completes as soon as Google Play confirms it.</string>
     <string name="coffee_thanks">Thank you so much for the coffee! ☕</string>
+    <string name="undo">Undo</string>
+    <string name="profile_undo_q">Undo last save?</string>
+    <string name="profile_undo_text">The room “%s” gets back the weekly profile from before the last save. The current version is kept, so this can be undone again.</string>
+    <string name="stepper_decrease">Decrease %s</string>
+    <string name="stepper_increase">Increase %s</string>
 </resources>

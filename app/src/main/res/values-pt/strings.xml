@@ -414,4 +414,9 @@
     <string name="coffee_buy">☕ Paga-me um café · %1$s</string>
     <string name="coffee_pending">Pagamento pendente – será concluído assim que o Google Play o confirmar.</string>
     <string name="coffee_thanks">Muito obrigado pelo café! ☕</string>
+    <string name="undo">Desfazer</string>
+    <string name="profile_undo_q">Desfazer o último salvamento?</string>
+    <string name="profile_undo_text">O cômodo “%s” volta ao programa semanal de antes do último salvamento. A versão atual é guardada, então é possível desfazer de novo.</string>
+    <string name="stepper_decrease">Diminuir: %s</string>
+    <string name="stepper_increase">Aumentar: %s</string>
 </resources>

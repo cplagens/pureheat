@@ -408,4 +408,9 @@
     <string name="coffee_buy">☕ 请我喝杯咖啡 · %1$s</string>
     <string name="coffee_pending">付款待处理——Google Play 确认后即完成。</string>
     <string name="coffee_thanks">非常感谢您的咖啡！☕</string>
+    <string name="undo">撤销</string>
+    <string name="profile_undo_q">撤销上次保存？</string>
+    <string name="profile_undo_text">房间“%s”将恢复为上次保存前的每周计划。当前版本会被保留，因此可以再次撤销。</string>
+    <string name="stepper_decrease">降低%s</string>
+    <string name="stepper_increase">提高%s</string>
 </resources>

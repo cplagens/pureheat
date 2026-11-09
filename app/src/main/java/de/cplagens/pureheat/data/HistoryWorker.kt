@@ -40,6 +40,9 @@ class HistoryWorker(context: Context, params: WorkerParameters) : CoroutineWorke
             app.repository.maybeRunProbe(state, System.currentTimeMillis(), isCharging(), foreground = false)
             val (latest, previous) = app.repository.lastTwoRecordings()
             PollingPolicy.nextDelayMinutes(latest, previous, Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+        } catch (e: kotlinx.coroutines.CancellationException) {
+            // Stopped by WorkManager (logout, constraints): don't re-enqueue from here.
+            throw e
         } catch (e: Exception) {
             // A missed sample just leaves a gap; try again after the normal interval.
             PollingPolicy.STABLE_MINUTES

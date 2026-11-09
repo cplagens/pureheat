@@ -417,4 +417,9 @@
     <string name="coffee_buy">☕ Postaw mi kawę · %1$s</string>
     <string name="coffee_pending">Płatność oczekuje – zostanie zakończona, gdy Google Play ją potwierdzi.</string>
     <string name="coffee_thanks">Bardzo dziękuję za kawę! ☕</string>
+    <string name="undo">Cofnij</string>
+    <string name="profile_undo_q">Cofnąć ostatni zapis?</string>
+    <string name="profile_undo_text">Pomieszczenie „%s” wróci do programu tygodniowego sprzed ostatniego zapisu. Bieżąca wersja zostanie zachowana, więc można to ponownie cofnąć.</string>
+    <string name="stepper_decrease">Zmniejsz: %s</string>
+    <string name="stepper_increase">Zwiększ: %s</string>
 </resources>

@@ -427,4 +427,9 @@
     <string name="coffee_buy">☕ Spendier mir einen Kaffee · %1$s</string>
     <string name="coffee_pending">Zahlung ausstehend – sie wird abgeschlossen, sobald Google Play sie bestätigt.</string>
     <string name="coffee_thanks">Vielen Dank für den Kaffee! ☕</string>
+    <string name="undo">Rückgängig</string>
+    <string name="profile_undo_q">Letzte Speicherung rückgängig machen?</string>
+    <string name="profile_undo_text">Der Raum „%s“ bekommt wieder das Wochenprofil von vor der letzten Speicherung. Die aktuelle Version wird gesichert, du kannst das also wieder rückgängig machen.</string>
+    <string name="stepper_decrease">%s verringern</string>
+    <string name="stepper_increase">%s erhöhen</string>
 </resources>

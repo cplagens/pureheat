@@ -417,4 +417,9 @@
     <string name="coffee_buy">☕ Угостить меня кофе · %1$s</string>
     <string name="coffee_pending">Платёж ожидает подтверждения – он завершится, как только Google Play его подтвердит.</string>
     <string name="coffee_thanks">Большое спасибо за кофе! ☕</string>
+    <string name="undo">Отменить</string>
+    <string name="profile_undo_q">Отменить последнее сохранение?</string>
+    <string name="profile_undo_text">Для комнаты «%s» будет восстановлена недельная программа, действовавшая до последнего сохранения. Текущая версия сохраняется, поэтому это можно снова отменить.</string>
+    <string name="stepper_decrease">Уменьшить: %s</string>
+    <string name="stepper_increase">Увеличить: %s</string>
 </resources>

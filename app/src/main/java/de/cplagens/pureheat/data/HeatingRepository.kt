@@ -80,7 +80,7 @@ class HeatingRepository(
         if (BuildConfig.DEBUG) Log.d(TAG, raw.toString())
         // Logcat truncates long lines; the full dump is readable with
         // adb exec-out run-as de.cplagens.pureheat cat files/last_state.json
-        debugDump("last_state.json", raw)
+        debugDump(DEBUG_DUMPS[0], raw)
         val state = HeatingStateParser.parse(raw)
         val now = System.currentTimeMillis()
         record(state, now)
@@ -234,7 +234,12 @@ class HeatingRepository(
         dao.clearPredictions()
         probePrefs.edit().clear().apply()
         descriptions.clear()
-        withContext(Dispatchers.IO) { backupDir().deleteRecursively() }
+        withContext(Dispatchers.IO) {
+            backupDir().deleteRecursively()
+            // Last export for the share sheet (history + room labels, see DataViewModel) and debug dumps.
+            File(context.cacheDir, "exports").deleteRecursively()
+            DEBUG_DUMPS.forEach { File(context.filesDir, it).delete() }
+        }
     }
 
     // --- Heating profiles -------------------------------------------------------------------
@@ -243,7 +248,7 @@ class HeatingRepository(
         val creds = requireCreds()
         return api(creds) { rest ->
             val raw = cloud(creds).getProfile(creds.sgtin, creds.authToken, rest, groupId, index, profileId)
-            debugDump("last_profile.json", raw)
+            debugDump(DEBUG_DUMPS[1], raw)
             HeatingProfileCodec.parse(raw, groupId, index)
         }
     }
@@ -335,6 +340,8 @@ class HeatingRepository(
         // The UI polls every minute; five-minute resolution is plenty for floor heating.
         val last = dao.lastTimestamp()
         if (last != null && now - last < MIN_SAMPLE_INTERVAL_MS) return
+        // Logged out while this fetch was in flight: don't leave samples behind after clear().
+        if (store.load() == null) return
 
         dao.insertRooms(state.rooms.map { it.toSample(now) })
         val circuits = state.rooms.flatMap { it.circuits } + state.unassignedCircuits
@@ -364,6 +371,7 @@ class HeatingRepository(
     private companion object {
         const val TAG = "PureHeat"
         const val KEY_REST_URL = "rest_url"
+        val DEBUG_DUMPS = listOf("last_state.json", "last_profile.json")
         const val FORECAST_INTERVAL_MS = 6 * 3_600_000L
         const val PREDICTION_HORIZON_MS = 12 * 3_600_000L
         const val KEY_PROBE_RUN = "last_run"

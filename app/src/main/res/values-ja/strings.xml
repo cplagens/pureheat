@@ -408,4 +408,9 @@
     <string name="coffee_buy">☕ コーヒーをおごる · %1$s</string>
     <string name="coffee_pending">支払いは保留中です。Google Play で確認されると完了します。</string>
     <string name="coffee_thanks">コーヒーをありがとうございます！☕</string>
+    <string name="undo">元に戻す</string>
+    <string name="profile_undo_q">前回の保存を元に戻しますか？</string>
+    <string name="profile_undo_text">「%s」は前回保存する前の週間プログラムに戻ります。現在のバージョンは保持されるため、再び元に戻せます。</string>
+    <string name="stepper_decrease">%sを下げる</string>
+    <string name="stepper_increase">%sを上げる</string>
 </resources>

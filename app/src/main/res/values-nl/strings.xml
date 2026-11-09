@@ -411,4 +411,9 @@
     <string name="coffee_buy">☕ Trakteer me op een koffie · %1$s</string>
     <string name="coffee_pending">Betaling in behandeling – wordt afgerond zodra Google Play die bevestigt.</string>
     <string name="coffee_thanks">Heel erg bedankt voor de koffie! ☕</string>
+    <string name="undo">Ongedaan maken</string>
+    <string name="profile_undo_q">Laatste opslag ongedaan maken?</string>
+    <string name="profile_undo_text">De kamer ‘%s’ krijgt weer het weekprogramma van vóór de laatste opslag. De huidige versie blijft bewaard, dus dit kan opnieuw ongedaan worden gemaakt.</string>
+    <string name="stepper_decrease">%s verlagen</string>
+    <string name="stepper_increase">%s verhogen</string>
 </resources>
