@@ -50,8 +50,11 @@ object HistoryAnalysis {
     const val MAX_RISE = 0.3
     const val MIN_BELOW_SETPOINT = 0.5
 
-    /** Samples further apart than this split the history: we don't know what happened in between. */
-    const val MAX_GAP_MILLIS = 60 * 60 * 1000L
+    /**
+     * Samples further apart than this split the history: we don't know what happened in between.
+     * At night (Doze) the phone fetches about hourly, often a few minutes late – so a bit above 1 h.
+     */
+    const val MAX_GAP_MILLIS = 75 * 60 * 1000L
 
     /**
      * Detects "valve open for at least 2 h, room still clearly below the setpoint and
@@ -93,7 +96,7 @@ object HistoryAnalysis {
 
     /**
      * Splits one room's history into heating (valve ≥ 50 %) and cooling (valve closed)
-     * phases of at least an hour. Gaps > 1 h and missing temperatures end a phase.
+     * phases of at least an hour. Gaps > 75 min and missing temperatures end a phase.
      * [samples] and [weather] must be sorted by timestamp.
      */
     fun phases(samples: List<RoomSample>, weather: List<WeatherSample>): List<ThermalPhase> {

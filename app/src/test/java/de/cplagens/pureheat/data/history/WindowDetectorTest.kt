@@ -56,12 +56,64 @@ class WindowDetectorTest {
     }
 
     @Test
-    fun heatingStartEndsEvent() {
-        val samples = listOf(s(0, 22.0), s(1, 21.4), s(2, 21.0), s(3, 20.8, valve = 1.0))
+    fun heatingStartDoesNotEndEvent() {
+        // Morning heating starts with the window still open: the room keeps falling.
+        val samples = listOf(s(0, 22.0), s(1, 21.4), s(2, 21.0), s(3, 20.8, valve = 1.0), s(4, 20.6, valve = 1.0))
         val e = WindowDetector.detect(samples).single()
-        assertEquals(2 * quarter, e.end)
-        // Heating started: we don't know whether the window was closed.
-        assertTrue(!e.closeDetected)
+        assertNull(e.end)
+        assertEquals(20.6, e.minTemperature, 1e-9)
+    }
+
+    @Test
+    fun whileHeatingOnlyAClearRiseCloses() {
+        // Real morning (2026-11-09, room 1): heating from 04:40, window closed after 07:00.
+        val temps = listOf(22.0, 21.4, 21.0, 20.6, 20.0, 20.0, 20.3, 20.3, 20.6)
+        val samples = temps.mapIndexed { i, t -> s(i, t, valve = if (i >= 3) 1.0 else 0.0) }
+        val e = WindowDetector.detect(samples).single()
+        assertEquals(8 * quarter, e.end)
+        assertTrue(e.closeDetected)
+    }
+
+    @Test
+    fun whileHeatingASlowCreepIsNoClosing() {
+        // Real morning (2026-11-09, room 2): the heating creeps up 0.5 K in 80 min against the open window.
+        val samples = listOf(
+            m(0, 21.0), m(30, 20.4), m(100, 19.4).copy(valvePosition = 1.0), m(120, 19.8).copy(valvePosition = 1.0),
+            m(160, 19.8).copy(valvePosition = 1.0), m(176, 19.9).copy(valvePosition = 1.0),
+            m(206, 20.6).copy(valvePosition = 1.0),
+        )
+        assertEquals(206 * 60_000L, WindowDetector.detect(samples).single().end)
+    }
+
+    @Test
+    fun whileHeatingReturningHumidityCloses() {
+        val samples = listOf(
+            s(0, 22.0, rh = 45), s(1, 21.4, rh = 40), s(2, 20.0, 1.0, rh = 38),
+            s(3, 20.1, 1.0, rh = 38), s(4, 20.2, 1.0, rh = 43),
+        )
+        val e = WindowDetector.detect(samples).single()
+        assertEquals(4 * quarter, e.end)
+        assertTrue(e.closeDetected)
+    }
+
+    @Test
+    fun smallWobbleAtNightIsNoClosing() {
+        // Real night (2026-11-08, room 2): tilted window, +0.2 K wobble, then it keeps falling.
+        val samples = listOf(
+            m(0, 23.0), m(30, 22.7), m(45, 22.3), m(75, 21.4), m(90, 21.1), m(150, 21.1),
+            m(210, 21.3), m(240, 21.1), m(300, 21.1), m(360, 20.8), m(420, 20.4),
+        )
+        val e = WindowDetector.detect(samples).single()
+        assertNull(e.end)
+        assertEquals(20.4, e.minTemperature, 1e-9)
+    }
+
+    @Test
+    fun closingStaysWhenTheRoomDoesNotFallBelowItsLowAgain() {
+        val temps = listOf(23.2, 23.2, 22.7, 22.3, 22.0, 22.2, 22.1, 22.0, 22.0)
+        val e = WindowDetector.detect(temps.mapIndexed { i, t -> s(i, t) }).single()
+        assertEquals(5 * quarter, e.end)
+        assertTrue(e.closeDetected)
     }
 
     private fun m(minute: Int, t: Double, rh: Int? = null) = RoomSample("r", minute * 60_000L, t, 15.0, 0.0, rh)

@@ -58,7 +58,7 @@ class HistoryAnalysisTest {
     }
 
     @Test
-    fun `gap longer than 1 h splits the open span`() {
+    fun `gap longer than 75 min splits the open span`() {
         val before = (0 until 6).map { RoomSample("room", it * 15 * minute, 21.6, 26.0, 1.0) }
         val after = (0 until 5).map { RoomSample("room", 5 * 60 * minute + it * 15 * minute, 21.6, 26.0, 1.0) }
         // 1 h of samples after the gap is not enough on its own.

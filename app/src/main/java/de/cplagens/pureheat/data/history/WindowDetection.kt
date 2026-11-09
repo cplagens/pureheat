@@ -22,7 +22,7 @@ data class WindowEvent(
     val humidityDrop: Int?,
     /**
      * True if the closing was actually seen (temperature rose again). Otherwise [end] is only
-     * the last moment we know it was still open (heating started, gap in the data, time limit).
+     * the last moment we know it was still open (gap in the data, time limit).
      */
     val closeDetected: Boolean = false,
 ) {
@@ -39,7 +39,12 @@ data class WindowEvent(
  *   only counts while the outside air is known to be clearly drier ([DRY_OUTSIDE]; or unknown) –
  *   on mild, wet days airing barely changes it, then only the temperature rules apply;
  * - **closed:** the temperature rises again by ≥ 0.2 K above the lowest point with the valve still
- *   closed (the air warms up from walls and floor), or heating starts, or a long gap / > 16 h.
+ *   closed (the air warms up from walls and floor). While heating – the morning heating often
+ *   starts with the window still open – only a rise of ≥ 0.5 K that is still going on at ≥ 0.5 K/h
+ *   (against an open window the heating only creeps up), or the absolute humidity coming back
+ *   (≥ 0.6 g/m³ between two samples) counts. Otherwise the event ends at a long gap / > 16 h;
+ * - **not closed after all:** a tilted window at night lets the temperature wobble by 0.2 K; if it
+ *   falls below the lowest point again within 3 h, the window was still open and the event goes on.
  *
  * Some sensors only report changes of ~0.3–0.4 K, so after hours of the same value a slow cooling
  * shows up as one sudden step. The rate is therefore taken since the value *first appeared*, not
@@ -60,6 +65,12 @@ object WindowDetector {
     /** A drop this large between two samples counts even right after a long stretch of the same value. */
     const val STRONG_DROP = 0.5
     const val RECOVERY_RISE = 0.2
+    /** With the valve open the room warms even with the window open: it takes a clearer rise. */
+    const val HEATING_RECOVERY_RISE = 0.5
+    /** K/h in the last step: against an open window the heating only creeps up slowly. */
+    const val HEATING_RECOVERY_RATE = 0.5
+    /** A "closed" followed this soon by a fall below the lowest point was only a wobble. */
+    const val REOPEN_MS = 3 * 3_600_000L
     const val MAX_STEP_MS = 75 * 60_000L
     const val MAX_OPEN_MS = 16 * 3_600_000L
     private const val CLOSED = 0.05
@@ -98,6 +109,8 @@ object WindowDetector {
         // Since when the temperature of `a` has been reported unchanged.
         var runTemperature: Double? = null
         var runStart = 0L
+        // Last event closed by a rise, while it may still turn out to be a wobble.
+        var lastClosed: WindowEvent? = null
 
         for (i in 1 until samples.size) {
             val a = samples[i - 1]
@@ -114,19 +127,30 @@ object WindowDetector {
             if (current != null) {
                 val heating = (b.valvePosition ?: 0.0) > CLOSED
                 val tooLong = b.timestamp - current.start > MAX_OPEN_MS
+                // Measured from the lowest point, so a slow rise over several samples counts too.
+                val rise = diff(tb, minOf(current.minTemperature, ta))
+                val closed = if (heating) {
+                    // Since the value first appeared, as for the opening: 0.1 K in 10 min is no rate.
+                    val rate = diff(tb, ta) / ((b.timestamp - runStart) / 3_600_000.0)
+                    (rise >= HEATING_RECOVERY_RISE && rate >= HEATING_RECOVERY_RATE) ||
+                        (humidityRise(a, ta, b, tb) ?: 0.0) >= ABS_HUMIDITY_DROP
+                } else {
+                    rise >= RECOVERY_RISE
+                }
                 when {
-                    step > 2 * MAX_STEP_MS || heating || tooLong -> {
+                    step > 2 * MAX_STEP_MS || tooLong -> {
                         // We can't tell when it was closed; end at the last sample we trust.
                         events += current.copy(end = a.timestamp)
                         open = null
                     }
-                    // Measured from the lowest point, so a slow rise over several samples counts too.
-                    diff(tb, minOf(current.minTemperature, ta)) >= RECOVERY_RISE -> {
-                        events += current.copy(
+                    closed -> {
+                        val event = current.copy(
                             end = b.timestamp,
                             minTemperature = minOf(current.minTemperature, ta),
                             closeDetected = true,
                         )
+                        events += event
+                        lastClosed = event
                         open = null
                     }
                     else -> open = current.copy(minTemperature = minOf(current.minTemperature, tb))
@@ -134,6 +158,18 @@ object WindowDetector {
                 continue
             }
 
+            val closed = lastClosed
+            if (closed != null) {
+                if (step > MAX_STEP_MS || b.timestamp - closed.end!! > REOPEN_MS) {
+                    lastClosed = null
+                } else if (diff(closed.minTemperature, tb) > 0) {
+                    // Below the lowest point again: the window was never closed.
+                    events.removeAt(events.lastIndex)
+                    open = closed.copy(end = null, closeDetected = false, minTemperature = tb)
+                    lastClosed = null
+                    continue
+                }
+            }
             if (step > MAX_STEP_MS) continue
             if ((a.valvePosition ?: 1.0) > CLOSED || (b.valvePosition ?: 1.0) > CLOSED) continue
             val drop = diff(ta, tb)
@@ -151,6 +187,7 @@ object WindowDetector {
             val byHumidity = usableAbsDrop != null && usableAbsDrop >= ABS_HUMIDITY_DROP && drop >= HUMIDITY_MIN_TEMP_DROP
             val byStrongDrop = drop >= STRONG_DROP && drop / (step / 3_600_000.0) >= MIN_DROP_RATE
             if (byTemperature || byHumidity || byStrongDrop) {
+                lastClosed = null
                 open = WindowEvent(
                     start = a.timestamp,
                     end = null,
@@ -162,6 +199,13 @@ object WindowDetector {
         }
         open?.let { events += it }
         return events
+    }
+
+    /** Rise of the absolute humidity from [a] to [b] in g/m³; null without humidity. */
+    private fun humidityRise(a: RoomSample, ta: Double, b: RoomSample, tb: Double): Double? {
+        val ha = a.humidity ?: return null
+        val hb = b.humidity ?: return null
+        return absoluteHumidity(tb, hb) - absoluteHumidity(ta, ha)
     }
 
     /**

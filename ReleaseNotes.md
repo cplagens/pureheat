@@ -7,6 +7,9 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 
 ## Unreleased
 
+- Open window: no longer counted as closed when the heating starts or the temperature only
+  wobbles slightly; morning heating against an open window is left out of the room model.
+
 ## 1.0.0 – first release (November 2026)
 
 **Display**
