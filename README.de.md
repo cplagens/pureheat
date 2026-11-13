@@ -26,6 +26,17 @@
   <a href="https://paypal.me/ChristianPlagens"><img src="https://img.shields.io/badge/PayPal-spenden-00457C?logo=paypal&logoColor=white" alt="Über PayPal spenden"></a>
 </p>
 
+<p align="center">
+  <a href="#beta-testen"><img src="https://img.shields.io/badge/Google%20Play-Beta%20testen-01875F?logo=googleplay&logoColor=white" alt="Beta auf Google Play testen"></a>
+</p>
+
+> [!TIP]
+> <a id="beta-testen"></a>**Beta testen:** 1) Der Google-Gruppe
+> [pureheat-test](https://groups.google.com/g/pureheat-test) beitreten, 2) bei
+> [Google Play](https://play.google.com/apps/testing/de.cplagens.pureheat) teilnehmen und die App mit
+> demselben Google-Konto installieren. Bitte 14 Tage installiert lassen und Fehler und Ideen als
+> [Issues](https://github.com/cplagens/pureheat/issues) melden. Kein Homematic IP? Der Demo-Modus geht auch.
+
 ---
 
 | <img src="docs/screenshots/dashboard.png" width="200" alt="Übersicht mit Ventilöffnung je Heizkreis, erkanntem Duschen und offenem Fenster"> | <img src="docs/screenshots/room-detail.png" width="200" alt="Detailansicht mit Temperatur, Außentemperatur, Ventil und Luftfeuchte"> | <img src="docs/screenshots/room-model.png" width="200" alt="Gelerntes Raummodell und Probelauf mit Trefferquote"> | <img src="docs/screenshots/heating-profile.png" width="200" alt="Wochen-Heizprofil"> |
