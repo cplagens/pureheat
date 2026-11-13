@@ -26,6 +26,17 @@
   <a href="https://paypal.me/ChristianPlagens"><img src="https://img.shields.io/badge/PayPal-donate-00457C?logo=paypal&logoColor=white" alt="Donate via PayPal"></a>
 </p>
 
+<p align="center">
+  <a href="#join-the-beta"><img src="https://img.shields.io/badge/Google%20Play-join%20the%20beta-01875F?logo=googleplay&logoColor=white" alt="Join the beta on Google Play"></a>
+</p>
+
+> [!TIP]
+> <a id="join-the-beta"></a>**Join the beta:** 1) Join the Google Group
+> [pureheat-test](https://groups.google.com/g/pureheat-test), 2) opt in on
+> [Google Play](https://play.google.com/apps/testing/de.cplagens.pureheat) and install the app with the
+> same Google account. Please keep it installed for 14 days and report bugs and ideas as
+> [issues](https://github.com/cplagens/pureheat/issues). No Homematic IP system? The demo mode works too.
+
 ---
 
 | <img src="docs/screenshots/dashboard.png" width="200" alt="Overview with valve opening per circuit, detected shower and open window"> | <img src="docs/screenshots/room-detail.png" width="200" alt="Room detail with temperature, outdoor temperature, valve and humidity"> | <img src="docs/screenshots/room-model.png" width="200" alt="Learned room model and probe run with hit rate"> | <img src="docs/screenshots/heating-profile.png" width="200" alt="Weekly heating profile"> |
