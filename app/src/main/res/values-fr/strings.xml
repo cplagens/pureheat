@@ -421,4 +421,14 @@
     <string name="stepper_increase">Augmenter : %s</string>
     <string name="probe_score_greybox">Modèle boîte grise (toutes les données, en parallèle) : %1$d évaluées · à l\'heure %2$d %% · écart moyen %3$s min</string>
     <string name="save_changes_list">Modifications (%d)</string>
+    <string name="greybox_pending">Modèle boîte grise (toutes les données) : premier ajustement après 7 jours de données, puis chaque semaine pendant la charge.</string>
+    <string name="greybox_title">Modèle boîte grise (toutes les données, ajusté le %s)</string>
+    <string name="greybox_parameters">k : %1$s · P : %2$s · autres sources de chaleur : %3$s · temps mort : %4$s</string>
+    <string name="greybox_measured">%s (mesuré)</string>
+    <string name="greybox_estimated">%s (estimé)</string>
+    <string name="greybox_gain">%+.2f °C/h</string>
+    <string name="greybox_versions">Versions (erreur à 1 h sur la dernière semaine, non utilisée pour l’ajustement) : %s</string>
+    <string name="greybox_version">%1$s ±%2$.2f °C</string>
+    <string name="greybox_version_first">%s premier ajustement</string>
+    <string name="greybox_version_rejected">%1$s ±%2$.2f °C (ancien conservé)</string>
 </resources>

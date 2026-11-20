@@ -421,4 +421,14 @@
     <string name="stepper_increase">Aumentar: %s</string>
     <string name="probe_score_greybox">Modelo de caixa cinzenta (todos os dados, em paralelo): %1$d avaliadas · a tempo %2$d %% · desvio médio %3$s min</string>
     <string name="save_changes_list">Alterações (%d)</string>
+    <string name="greybox_pending">Modelo de caixa cinzenta (todos os dados): primeiro ajuste após 7 dias de dados, depois semanalmente durante o carregamento.</string>
+    <string name="greybox_title">Modelo de caixa cinzenta (todos os dados, ajustado em %s)</string>
+    <string name="greybox_parameters">k: %1$s · P: %2$s · outras fontes de calor: %3$s · tempo morto: %4$s</string>
+    <string name="greybox_measured">%s (medido)</string>
+    <string name="greybox_estimated">%s (estimado)</string>
+    <string name="greybox_gain">%+.2f °C/h</string>
+    <string name="greybox_versions">Versões (erro a 1 h na última semana, não usada no ajuste): %s</string>
+    <string name="greybox_version">%1$s ±%2$.2f °C</string>
+    <string name="greybox_version_first">%s primeiro ajuste</string>
+    <string name="greybox_version_rejected">%1$s ±%2$.2f °C (mantido o anterior)</string>
 </resources>

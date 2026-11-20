@@ -7,6 +7,7 @@ package de.cplagens.pureheat.ui
 
 import android.content.Context
 import de.cplagens.pureheat.R
+import de.cplagens.pureheat.data.model.GreyBoxModel
 import de.cplagens.pureheat.data.model.Prediction
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.data.model.RoomModel
@@ -34,6 +35,34 @@ internal object ModelTexts {
             phrase(ctx, insight.heatUp, levels.comfort, outside),
             phrase(ctx, insight.coolDown, levels.setback, outside),
             outside,
+        )
+    }
+
+    /** Same line as [summary] with the grey-box model; no "still learning": it always has values. */
+    fun greyBoxSummary(ctx: Context, model: GreyBoxModel, insight: RoomInsight): String? {
+        val levels = insight.levels ?: return null
+        val outside = insight.outside ?: return null
+        return ctx.getString(
+            if (insight.outsideIsForecast) R.string.model_summary_forecast else R.string.model_summary,
+            levels.setback,
+            levels.comfort,
+            phrase(ctx, model.heatUp(levels.setback, levels.comfort, outside), levels.comfort, outside),
+            phrase(ctx, model.coolDown(levels.comfort, levels.setback, outside), levels.setback, outside),
+            outside,
+        )
+    }
+
+    /** "k: 0.031/h measured · P: 0.48 °C/h estimated · other sources: … · dead time: 2 h". */
+    fun greyBoxParameters(ctx: Context, m: GreyBoxModel): String {
+        val tag: (String, Boolean) -> String = { value, measured ->
+            ctx.getString(if (measured) R.string.greybox_measured else R.string.greybox_estimated, value)
+        }
+        return ctx.getString(
+            R.string.greybox_parameters,
+            tag(ctx.getString(R.string.model_k, m.k), m.kMeasured),
+            tag(ctx.getString(R.string.model_p, m.power), m.powerMeasured),
+            tag(ctx.getString(R.string.greybox_gain, m.gain), m.gainMeasured),
+            ctx.getString(R.string.duration_h, m.lagHours),
         )
     }
 

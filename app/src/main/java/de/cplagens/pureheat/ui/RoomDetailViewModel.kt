@@ -16,6 +16,7 @@ import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.BathingDetector
 import de.cplagens.pureheat.data.history.BathingEvent
 import de.cplagens.pureheat.data.history.HistoryAnalysis
+import de.cplagens.pureheat.data.history.RoomModelEntity
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.ThermalPhase
 import de.cplagens.pureheat.data.history.WeatherSample
@@ -117,9 +118,16 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
     private val _insight = MutableStateFlow<RoomInsight?>(null)
     val insight: StateFlow<RoomInsight?> = _insight
 
+    /** Grey-box model versions of this room, newest first (fitted weekly over all data). */
+    private val _greyBoxVersions = MutableStateFlow<List<RoomModelEntity>?>(null)
+    val greyBoxVersions: StateFlow<List<RoomModelEntity>?> = _greyBoxVersions
+
     init {
         viewModelScope.launch {
             _insight.value = runCatching { repository.roomInsights()[roomId] }.getOrNull()
+        }
+        viewModelScope.launch {
+            _greyBoxVersions.value = runCatching { repository.roomModelVersions(roomId) }.getOrDefault(emptyList())
         }
     }
 

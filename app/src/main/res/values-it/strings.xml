@@ -421,4 +421,14 @@
     <string name="stepper_increase">Aumenta: %s</string>
     <string name="probe_score_greybox">Modello a scatola grigia (tutti i dati, in parallelo): %1$d valutate · puntuali %2$d %% · scarto medio %3$s min</string>
     <string name="save_changes_list">Modifiche (%d)</string>
+    <string name="greybox_pending">Modello a scatola grigia (tutti i dati): primo adattamento dopo 7 giorni di dati, poi ogni settimana durante la ricarica.</string>
+    <string name="greybox_title">Modello a scatola grigia (tutti i dati, adattato il %s)</string>
+    <string name="greybox_parameters">k: %1$s · P: %2$s · altre fonti di calore: %3$s · tempo morto: %4$s</string>
+    <string name="greybox_measured">%s (misurato)</string>
+    <string name="greybox_estimated">%s (stimato)</string>
+    <string name="greybox_gain">%+.2f °C/h</string>
+    <string name="greybox_versions">Versioni (errore a 1 h sull’ultima settimana, non usata per l’adattamento): %s</string>
+    <string name="greybox_version">%1$s ±%2$.2f °C</string>
+    <string name="greybox_version_first">%s primo adattamento</string>
+    <string name="greybox_version_rejected">%1$s ±%2$.2f °C (mantenuto il precedente)</string>
 </resources>

@@ -446,4 +446,14 @@
     <string name="stepper_increase">Increase %s</string>
     <string name="probe_score_greybox">Grey-box model (all data, side by side): %1$d evaluated · on time %2$d %% · off by %3$s min on average</string>
     <string name="save_changes_list">Changes (%d)</string>
+    <string name="greybox_pending">Grey-box model (all data): first fit after 7 days of data, then weekly while charging.</string>
+    <string name="greybox_title">Grey-box model (all data, fitted %s)</string>
+    <string name="greybox_parameters">k: %1$s · P: %2$s · other heat sources: %3$s · dead time: %4$s</string>
+    <string name="greybox_measured">%s (measured)</string>
+    <string name="greybox_estimated">%s (estimated)</string>
+    <string name="greybox_gain">%+.2f °C/h</string>
+    <string name="greybox_versions">Versions (1-h error on the last week, not used for the fit): %s</string>
+    <string name="greybox_version">%1$s ±%2$.2f °C</string>
+    <string name="greybox_version_first">%s first fit</string>
+    <string name="greybox_version_rejected">%1$s ±%2$.2f °C (old one kept)</string>
 </resources>

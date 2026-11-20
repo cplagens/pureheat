@@ -241,6 +241,10 @@ interface HistoryDao {
     @Query("SELECT * FROM room_model WHERE roomId = :roomId AND adopted = 1 ORDER BY fittedAt DESC LIMIT 1")
     suspend fun currentRoomModel(roomId: String): RoomModelEntity?
 
+    /** Newest versions first, adopted or not (detail view). */
+    @Query("SELECT * FROM room_model WHERE roomId = :roomId ORDER BY fittedAt DESC LIMIT :limit")
+    suspend fun roomModelVersions(roomId: String, limit: Int): List<RoomModelEntity>
+
     @Query("SELECT MAX(fittedAt) FROM room_model WHERE roomId = :roomId")
     suspend fun lastRoomModelFit(roomId: String): Long?
 

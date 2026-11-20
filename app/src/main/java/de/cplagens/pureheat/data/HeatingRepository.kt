@@ -12,6 +12,7 @@ import de.cplagens.pureheat.R
 import de.cplagens.pureheat.ui.UiText
 import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.HistoryDao
+import de.cplagens.pureheat.data.history.RoomModelEntity
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WeatherSample
 import de.cplagens.pureheat.data.history.ForecastSample
@@ -231,6 +232,10 @@ class HeatingRepository(
         val properties = descriptions.all.value.mapValues { it.value.properties }
         return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside, properties) }
     }
+
+    /** Grey-box model versions of [roomId], newest first; the one in use is the first adopted. */
+    suspend fun roomModelVersions(roomId: String, limit: Int = 6): List<RoomModelEntity> =
+        dao.roomModelVersions(roomId, limit)
 
     /**
      * Fits the grey-box model of every room that is due ([GreyBoxTraining.due]) over its whole

@@ -46,6 +46,8 @@ import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.history.PhaseKind
 import de.cplagens.pureheat.data.history.ThermalPhase
 import de.cplagens.pureheat.data.history.PredictionEntity
+import de.cplagens.pureheat.data.history.RoomModelEntity
+import de.cplagens.pureheat.data.model.toModel
 import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.model.RoomInsight
@@ -78,6 +80,7 @@ fun RoomDetailScreen(
     val shown: (DetailSection) -> Boolean = { it !in hidden }
     var customizing by rememberSaveable { mutableStateOf(false) }
     val insight by vm.insight.collectAsStateWithLifecycle()
+    val greyBoxVersions by vm.greyBoxVersions.collectAsStateWithLifecycle()
     val probe by vm.probe.collectAsStateWithLifecycle()
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
     val ctx = LocalContext.current
@@ -232,7 +235,7 @@ fun RoomDetailScreen(
 
         if (room.actualTemperature != null) {
             if (shown(DetailSection.PROPERTIES)) item { PropertiesCard(description?.properties, onOpenProperties) }
-            if (shown(DetailSection.MODEL)) item { ModelCard(insight) }
+            if (shown(DetailSection.MODEL)) item { ModelCard(insight, greyBoxVersions) }
             if (shown(DetailSection.PROBE)) item { ProbeCard(probe) }
             // A room described as windowless has nothing to detect.
             if (shown(DetailSection.WINDOWS) && description?.properties?.hasWindows != false) {
@@ -342,7 +345,7 @@ private fun PropertiesCard(properties: RoomProperties?, onOpen: () -> Unit) {
 
 /** What the room model has learned, with the predictions and how reliable they are. */
 @Composable
-private fun ModelCard(insight: RoomInsight?) {
+private fun ModelCard(insight: RoomInsight?, greyBoxVersions: List<RoomModelEntity>?) {
     val ctx = LocalContext.current
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Card(Modifier.fillMaxWidth()) {
@@ -380,8 +383,40 @@ private fun ModelCard(insight: RoomInsight?) {
                 Text(stringResource(R.string.model_levels, it.setback, it.comfort), style = MaterialTheme.typography.bodySmall, color = muted)
             }
             Text(stringResource(R.string.model_explanation), style = MaterialTheme.typography.bodySmall, color = muted)
+            greyBoxVersions?.let { GreyBoxSection(insight, it) }
         }
     }
+}
+
+/** The grey-box model in use (weekly fit over all data) and its versions with the hold-out error. */
+@Composable
+private fun GreyBoxSection(insight: RoomInsight, versions: List<RoomModelEntity>) {
+    val ctx = LocalContext.current
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    val current = versions.firstOrNull { it.adopted }
+    if (current == null) {
+        Text(stringResource(R.string.greybox_pending), style = MaterialTheme.typography.bodySmall, color = muted)
+        return
+    }
+    val date: (Long) -> String = { DateFormat.getDateFormat(ctx).format(Date(it)) }
+    Text(stringResource(R.string.greybox_title, date(current.fittedAt)), style = MaterialTheme.typography.labelMedium)
+    ModelTexts.greyBoxSummary(ctx, current.toModel(), insight)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
+    Text(ModelTexts.greyBoxParameters(ctx, current.toModel()), style = MaterialTheme.typography.bodySmall, color = muted)
+    Text(
+        stringResource(
+            R.string.greybox_versions,
+            versions.joinToString(" · ") { v ->
+                val e = v.holdoutRmse
+                when {
+                    e == null -> ctx.getString(R.string.greybox_version_first, date(v.fittedAt))
+                    v.adopted -> ctx.getString(R.string.greybox_version, date(v.fittedAt), e)
+                    else -> ctx.getString(R.string.greybox_version_rejected, date(v.fittedAt), e)
+                }
+            },
+        ),
+        style = MaterialTheme.typography.bodySmall,
+        color = muted,
+    )
 }
 
 /** Probe run (step 5): how well the predictions matched reality. Nothing is written to the heating. */
