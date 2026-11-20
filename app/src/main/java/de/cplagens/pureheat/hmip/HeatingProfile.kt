@@ -152,9 +152,17 @@ object ProfileEditing {
         return periods.toMutableList().also { it[index] = updated }
     }
 
-    /** Adds a period in the largest free gap (up to 2 h long), or returns null if there is no room. */
+    /**
+     * Adds a period (up to 2 h long) right after the last one if it fits there, otherwise in the
+     * largest free gap; returns null if there is no room.
+     */
     fun addPeriod(day: ProfileDay, temperature: Double): ProfileDay? {
         if (day.periods.size >= MAX_PERIODS) return null
+        val last = day.periods.lastOrNull()
+        if (last != null && MINUTES_PER_DAY - last.end >= STEP_MINUTES * 2) {
+            val end = minOf(last.end + 120, MINUTES_PER_DAY)
+            return day.copy(periods = day.periods + HeatingPeriod(last.end, end, temperature))
+        }
         val bounds = listOf(0) + day.periods.flatMap { listOf(it.start, it.end) } + MINUTES_PER_DAY
         val gaps = bounds.chunked(2).filter { it.size == 2 }.map { it[0] to it[1] }
         val (from, to) = gaps.maxByOrNull { it.second - it.first } ?: return null

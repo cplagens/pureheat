@@ -12,6 +12,8 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 - Open window: no longer counted as closed when the heating starts or the temperature only
   wobbles slightly; morning heating against an open window is left out of the room model.
 - Heating profile: "Undo last save" now asks for confirmation before writing to the cloud.
+- Heating profile editor: "Add phase" now appends the new phase right after the last one
+  (instead of in the largest gap, usually the early morning).
 - Logging out also deletes the last data export from the app cache.
 - Profile editor: the −/+ buttons are announced with their value name by screen readers.
 

@@ -86,9 +86,13 @@ class HeatingProfileTest {
     }
 
     @Test
-    fun addPeriodUsesLargestGapAndRespectsLimit() {
-        val day = ProfileDay(17.0, listOf(HeatingPeriod(360, 480, 21.0), HeatingPeriod(1020, 1320, 21.5)))
-        val added = ProfileEditing.addPeriod(day, 21.0)
+    fun addPeriodAppendsAfterLastOrUsesLargestGapAndRespectsLimit() {
+        val day = ProfileDay(17.0, listOf(HeatingPeriod(360, 480, 21.0), HeatingPeriod(1020, 1290, 21.5)))
+        val appended = ProfileEditing.addPeriod(day, 21.0)!!.periods.last()
+        assertEquals(HeatingPeriod(1290, 1410, 21.0), appended)
+
+        val lateEnd = day.copy(periods = listOf(HeatingPeriod(360, 480, 21.0), HeatingPeriod(1020, 1420, 21.5)))
+        val added = ProfileEditing.addPeriod(lateEnd, 21.0)
         assertNotNull(added)
         val new = added!!.periods[1]
         assertTrue(new.start >= 480 && new.end <= 1020)
