@@ -15,7 +15,7 @@ class ModelCurveTest {
     private val levels = SetPointLevels(setback = 18.0, comfort = 21.0)
     private val hour = 3_600_000L
 
-    private fun greyBox(k: Double = 0.03, p: Double = 0.6, g: Double = 0.0, lag: Int = 1) = GreyBoxModel(
+    private fun greyBox(k: Double = 0.03, p: Double = 1.0, g: Double = 0.0, lag: Int = 1) = GreyBoxModel(
         k = k, power = p, gain = g, lagHours = lag, kSe = 0.0, powerSe = 0.0, gainSe = 0.0,
         rmse = 0.0, n = 100, prior = GreyBoxPrior(),
     )

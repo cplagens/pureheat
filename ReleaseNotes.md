@@ -7,8 +7,9 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 
 ## Unreleased
 
-- Room model card: shows the model from all data with its predictions, which values are
-  measured or only estimated, and its weekly versions with the error on the last week.
+- Room model card: a chart of a simulated day (setback → comfort → setback) for both models;
+  the model from all data with its predictions, which values are measured or only estimated,
+  and its weekly versions with the error on the last week (also as a chart).
 - Probe run: once a room model from all data exists (after 7 days), it predicts side by side
   with the physics model; the detail view shows its own hit rate.
 - Open window: no longer counted as closed when the heating starts or the temperature only
