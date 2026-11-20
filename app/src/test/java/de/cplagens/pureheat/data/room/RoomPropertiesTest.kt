@@ -159,6 +159,18 @@ class RoomPropertiesTest {
     }
 
     @Test
+    fun greyBoxPriorFollowsTheProperties() {
+        val base = de.cplagens.pureheat.data.model.GreyBoxPrior()
+        assertEquals(base, RoomPriors.greyBox(null))
+        assertEquals(base, RoomPriors.greyBox(RoomProperties()))
+        val attic = RoomPriors.greyBox(RoomProperties(position = Position.ATTIC, floorCovering = FloorCovering.CARPET))
+        assertTrue(attic.k > base.k && attic.power < base.power)
+        // Same uncertainty everywhere, so "measured" means the same in every room.
+        assertEquals(base.kSd, attic.kSd, 0.0)
+        assertEquals(base.powerSd, attic.powerSd, 0.0)
+    }
+
+    @Test
     fun fittedModelWinsOverProperties() {
         val fitted = ProbeRun.PRIOR.copy(k = 0.05, power = 1.2, deadTimeHours = 2.0, coolingPhases = 5, heatingPhases = 5)
         val (m, source) = ProbeRun.modelFor(fitted, RoomProperties(floorCovering = FloorCovering.CARPET))

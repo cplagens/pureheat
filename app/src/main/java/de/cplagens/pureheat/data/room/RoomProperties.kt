@@ -5,6 +5,7 @@
  */
 package de.cplagens.pureheat.data.room
 
+import de.cplagens.pureheat.data.model.GreyBoxPrior
 import de.cplagens.pureheat.data.model.RoomModel
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.JsonArray
@@ -158,6 +159,15 @@ object RoomPriors {
         val power = (base.power ?: return base) * powerFactor(p)
         val dead = (base.deadTimeHours ?: return base) + deadTimeOffset(p)
         return base.copy(k = k, power = power, deadTimeHours = dead.coerceAtLeast(0.5))
+    }
+
+    /**
+     * Prior of the grey-box fit: the typical values scaled like [model]. The standard deviations
+     * stay as they are, so "measured" means the same in every room.
+     */
+    fun greyBox(p: RoomProperties?, base: GreyBoxPrior = GreyBoxPrior()): GreyBoxPrior {
+        if (p == null || p.isEmpty) return base
+        return base.copy(k = base.k * kFactor(p), power = base.power * powerFactor(p))
     }
 
     fun kFactor(p: RoomProperties): Double {

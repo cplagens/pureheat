@@ -29,6 +29,7 @@ import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.ProbeRun
 import de.cplagens.pureheat.data.probe.Strategy
 import de.cplagens.pureheat.data.room.RoomDescriptionStore
+import de.cplagens.pureheat.data.room.RoomPriors
 import de.cplagens.pureheat.data.demo.DemoCloud
 import de.cplagens.pureheat.data.demo.DemoHome
 import de.cplagens.pureheat.hmip.HeatingCloud
@@ -243,11 +244,12 @@ class HeatingRepository(
             if (!GreyBoxTraining.due(dao.lastRoomModelFit(roomId), now)) continue
             val samples = dao.roomSamples(roomId, 0)
             val result = withContext(Dispatchers.Default) {
-                val windows = if (descriptions.get(roomId)?.properties?.hasWindows == false) emptyList()
+                val properties = descriptions.get(roomId)?.properties
+                val windows = if (properties?.hasWindows == false) emptyList()
                 else WindowDetector.detect(samples, outsideHumidity)
                 // Same exclusions as the physics model: open windows and hot water are not the heating.
                 val clean = BathingDetector.withoutBathingTimes(WindowDetector.withoutWindowTimes(samples, windows), BathingDetector.detect(samples))
-                GreyBoxTraining.train(GreyBoxFitter.hourly(clean, weather), dao.currentRoomModel(roomId)?.toModel())
+                GreyBoxTraining.train(GreyBoxFitter.hourly(clean, weather), dao.currentRoomModel(roomId)?.toModel(), RoomPriors.greyBox(properties))
             } ?: continue
             dao.insertRoomModel(result.toEntity(roomId, now))
             if (BuildConfig.DEBUG) Log.d(TAG, "Grey box $roomId: n=${result.model.n} hold-out=${result.holdoutRmse} vs ${result.previousHoldoutRmse}, adopted=${result.adopted}")
