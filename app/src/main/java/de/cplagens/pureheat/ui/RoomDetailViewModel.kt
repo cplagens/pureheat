@@ -32,6 +32,7 @@ import kotlinx.coroutines.flow.map
 import de.cplagens.pureheat.data.history.PredictionEntity
 import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.probe.ProbeScore
+import de.cplagens.pureheat.data.probe.Strategy
 import kotlinx.coroutines.launch
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.data.room.RoomDescription
@@ -133,11 +134,24 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
 }
 
 data class ProbeState(
+    /** Predictions of the physics model (listed in the card). */
     val predictions: List<PredictionEntity> = emptyList(),
     val score: ProbeScore = ProbeScore(0, 0, null, 0),
+    /** Score of the grey-box model side by side; null until it has made predictions. */
+    val greyBoxScore: ProbeScore? = null,
 ) {
     companion object {
         fun from(predictions: List<PredictionEntity>): ProbeState {
+            val byStrategy = predictions.groupBy { it.strategy }
+            val physics = byStrategy[Strategy.PHYSICS].orEmpty()
+            return ProbeState(
+                predictions = physics,
+                score = score(physics),
+                greyBoxScore = byStrategy[Strategy.GREYBOX]?.let(::score),
+            )
+        }
+
+        private fun score(predictions: List<PredictionEntity>): ProbeScore {
             // Disturbed ones (open window, manual change) don't count.
             val counted = predictions.filter { it.outcome != null && it.outcome != Outcome.DISTURBED }
             val errors = counted.mapNotNull { p ->
@@ -145,15 +159,11 @@ data class ProbeState(
                 val b = p.predictedReach
                 if (a != null && b != null) kotlin.math.abs(a - b) / 60_000 else null
             }
-            val days = counted.map { it.eventTime / 86_400_000L }.distinct().size
-            return ProbeState(
-                predictions = predictions,
-                score = ProbeScore(
-                    evaluated = counted.size,
-                    hits = counted.count { it.outcome == Outcome.HIT },
-                    meanAbsErrorMinutes = errors.takeIf { it.isNotEmpty() }?.average()?.toLong(),
-                    days = days,
-                ),
+            return ProbeScore(
+                evaluated = counted.size,
+                hits = counted.count { it.outcome == Outcome.HIT },
+                meanAbsErrorMinutes = errors.takeIf { it.isNotEmpty() }?.average()?.toLong(),
+                days = counted.map { it.eventTime / 86_400_000L }.distinct().size,
             )
         }
     }

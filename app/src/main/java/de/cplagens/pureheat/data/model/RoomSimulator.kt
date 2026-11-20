@@ -12,7 +12,8 @@ data class SimPoint(val time: Long, val temperature: Double, val setPoint: Doubl
  * Forward simulation of one room with the first-order model, like a thermostat would run it:
  * the valve opens when the room is ≥ 0.2 K below the setpoint and closes when it reaches it;
  * the floor only starts heating after the dead time – unless the valve was closed only briefly
- * (< [WARM_SCREED_MS]), then the screed is still warm. Pure Kotlin; used by the probe run (step 5)
+ * (< [WARM_SCREED_MS]), then the screed is still warm. `gain` is the grey box's heat from other
+ * sources in K/h (0 for the physics model). Pure Kotlin; used by the probe run (step 5)
  * and later for the optimal profile (step 6) and the savings comparison (step 7).
  */
 object RoomSimulator {
@@ -30,6 +31,7 @@ object RoomSimulator {
         end: Long,
         setPointAt: (Long) -> Double?,
         outsideAt: (Long) -> Double,
+        gain: Double = 0.0,
     ): List<SimPoint> {
         val out = ArrayList<SimPoint>(((end - start) / STEP_MS + 1).toInt())
         val dtH = STEP_MS / 3_600_000.0
@@ -57,7 +59,7 @@ object RoomSimulator {
             }
             out += SimPoint(t, temp, sp ?: Double.NaN, open)
             val heating = openSince?.let { warm || (t - it) / 3_600_000.0 >= deadTimeHours } ?: false
-            temp += dtH * ((if (heating) power else 0.0) - k * (temp - outsideAt(t)))
+            temp += dtH * ((if (heating) power else 0.0) + gain - k * (temp - outsideAt(t)))
             t += STEP_MS
         }
         return out

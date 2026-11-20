@@ -7,6 +7,8 @@ package de.cplagens.pureheat.data.probe
 
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WindowEvent
+import de.cplagens.pureheat.data.model.GreyBoxModel
+import de.cplagens.pureheat.data.model.GreyBoxPrior
 import de.cplagens.pureheat.data.model.RoomModel
 import de.cplagens.pureheat.data.model.RoomSimulator
 import de.cplagens.pureheat.hmip.HeatingPeriod
@@ -57,6 +59,22 @@ class ProbeRunTest {
         // Room cools to ~17.4 °C by 06:00; then 1 h dead time + ln((0.8−0.244)/(0.8−0.316))/0.02 ≈ 6.9 h.
         assertEquals(17.4, morning.startTemperature, 0.2)
         assertTrue((morning.predictedReach!! - morning.eventTime) / hour in 7..8)
+    }
+
+    @Test
+    fun greyBoxHeatsFasterWithOtherHeatSources() {
+        fun greyBox(gain: Double) = GreyBoxModel(
+            k = 0.02, power = 0.8, gain = gain, lagHours = 1, kSe = 0.001, powerSe = 0.01, gainSe = 0.01,
+            rmse = 0.05, n = 500, prior = GreyBoxPrior(),
+        )
+        val without = ProbeRun.predictGreyBox(greyBox(0.0), 19.0, monday, days, zone) { 5.0 }.single()
+        val with = ProbeRun.predictGreyBox(greyBox(0.2), 19.0, monday, days, zone) { 5.0 }.single()
+        // Without g it is the physics model with the lag as dead time.
+        val physics = ProbeRun.predict(model, 19.0, monday, days, zone) { 5.0 }.single()
+        assertEquals(physics, without)
+        // g keeps the room warmer overnight and adds to the heating power.
+        assertTrue(with.startTemperature > without.startTemperature)
+        assertTrue(with.predictedReach!! < without.predictedReach!!)
     }
 
     @Test

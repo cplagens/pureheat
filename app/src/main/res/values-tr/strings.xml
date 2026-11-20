@@ -416,4 +416,5 @@
     <string name="profile_undo_text">“%s” odası son kaydetmeden önceki haftalık programa döner. Mevcut sürüm saklanır, bu yüzden işlem yeniden geri alınabilir.</string>
     <string name="stepper_decrease">Azalt: %s</string>
     <string name="stepper_increase">Artır: %s</string>
+    <string name="probe_score_greybox">Gri kutu modeli (tüm veriler, karşılaştırma): %1$d değerlendirildi · zamanında %%%2$d · ortalama %3$s dk sapma</string>
 </resources>

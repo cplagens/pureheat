@@ -7,6 +7,8 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 
 ## Unreleased
 
+- Probe run: once a room model from all data exists (after 7 days), it predicts side by side
+  with the physics model; the detail view shows its own hit rate.
 - Open window: no longer counted as closed when the heating starts or the temperature only
   wobbles slightly; morning heating against an open window is left out of the room model.
 - Heating profile: "Undo last save" now asks for confirmation before writing to the cloud.

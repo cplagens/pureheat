@@ -422,4 +422,5 @@
     <string name="profile_undo_text">Для комнаты «%s» будет восстановлена недельная программа, действовавшая до последнего сохранения. Текущая версия сохраняется, поэтому это можно снова отменить.</string>
     <string name="stepper_decrease">Уменьшить: %s</string>
     <string name="stepper_increase">Увеличить: %s</string>
+    <string name="probe_score_greybox">Модель «серого ящика» (все данные, для сравнения): оценено %1$d · вовремя %2$d %% · в среднем ошибка %3$s мин</string>
 </resources>

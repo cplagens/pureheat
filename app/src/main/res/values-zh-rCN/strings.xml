@@ -413,4 +413,5 @@
     <string name="profile_undo_text">房间“%s”将恢复为上次保存前的每周计划。当前版本会被保留，因此可以再次撤销。</string>
     <string name="stepper_decrease">降低%s</string>
     <string name="stepper_increase">提高%s</string>
+    <string name="probe_score_greybox">灰箱模型(全部数据,对比):已评估 %1$d 次 · 准时 %2$d %% · 平均偏差 %3$s 分钟</string>
 </resources>

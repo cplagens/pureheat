@@ -25,6 +25,7 @@ import de.cplagens.pureheat.data.model.toModel
 import de.cplagens.pureheat.data.history.PredictionEntity
 import de.cplagens.pureheat.data.history.WindowDetector
 import de.cplagens.pureheat.data.probe.HeatUpPrediction
+import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.ProbeRun
 import de.cplagens.pureheat.data.probe.Strategy
 import de.cplagens.pureheat.data.room.RoomDescriptionStore
@@ -183,18 +184,25 @@ class HeatingRepository(
                 ?: return@flatMap emptyList()
             val fitted = insights[room.id]?.model ?: RoomModelFitter.fit(emptyList())
             val (model, source) = ProbeRun.modelFor(fitted, descriptions.get(room.id)?.properties)
-            ProbeRun.predict(model, temp, now, profile.days, zone, outsideAt).map {
+            val entity: (HeatUpPrediction, String, String) -> PredictionEntity = { it, strategy, src ->
                 PredictionEntity(
                     roomId = room.id,
-                    strategy = Strategy.PHYSICS,
+                    strategy = strategy,
                     eventTime = it.eventTime,
                     createdAt = now,
                     targetTemperature = it.target,
                     startTemperature = it.startTemperature,
                     predictedReach = it.predictedReach,
-                    modelSource = source,
+                    modelSource = src,
                 )
             }
+            val physics = ProbeRun.predict(model, temp, now, profile.days, zone, outsideAt).map { entity(it, Strategy.PHYSICS, source) }
+            // Side by side: the grey box in use (after its first weekly fit); "starting values" while k or P is only estimated.
+            val greyBox = dao.currentRoomModel(room.id)?.toModel()?.let { gb ->
+                val src = if (gb.kMeasured && gb.powerMeasured) ModelSource.FIT else ModelSource.PRIOR
+                ProbeRun.predictGreyBox(gb, temp, now, profile.days, zone, outsideAt).map { entity(it, Strategy.GREYBOX, src) }
+            }.orEmpty()
+            physics + greyBox
         }
         dao.insertPredictions(predictions)
         dao.deletePredictionsBefore(now - RETENTION_MS)

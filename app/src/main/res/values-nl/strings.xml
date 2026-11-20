@@ -416,4 +416,5 @@
     <string name="profile_undo_text">De kamer ‘%s’ krijgt weer het weekprogramma van vóór de laatste opslag. De huidige versie blijft bewaard, dus dit kan opnieuw ongedaan worden gemaakt.</string>
     <string name="stepper_decrease">%s verlagen</string>
     <string name="stepper_increase">%s verhogen</string>
+    <string name="probe_score_greybox">Grey-boxmodel (alle data, ter vergelijking): %1$d beoordeeld · op tijd %2$d %% · gemiddeld %3$s min ernaast</string>
 </resources>

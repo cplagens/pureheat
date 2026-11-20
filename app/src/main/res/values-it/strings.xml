@@ -419,4 +419,5 @@
     <string name="profile_undo_text">La stanza «%s» torna al programma settimanale precedente all’ultimo salvataggio. La versione attuale viene conservata, quindi l’operazione è reversibile.</string>
     <string name="stepper_decrease">Diminuisci: %s</string>
     <string name="stepper_increase">Aumenta: %s</string>
+    <string name="probe_score_greybox">Modello a scatola grigia (tutti i dati, in parallelo): %1$d valutate · puntuali %2$d %% · scarto medio %3$s min</string>
 </resources>

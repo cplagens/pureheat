@@ -7,6 +7,7 @@ package de.cplagens.pureheat.data.probe
 
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WindowEvent
+import de.cplagens.pureheat.data.model.GreyBoxModel
 import de.cplagens.pureheat.data.model.RoomModel
 import de.cplagens.pureheat.data.model.RoomSimulator
 import de.cplagens.pureheat.data.room.RoomPriors
@@ -17,9 +18,11 @@ import java.time.Instant
 import java.time.ZoneId
 import kotlin.math.abs
 
-/** Strategies that make predictions side by side (physics now; later grey box / AI in simulation mode). */
+/** Strategies that make predictions side by side (later also AI in simulation mode). */
 object Strategy {
     const val PHYSICS = "physics"
+    /** Grey-box model fitted over all data, with other heat sources (`room_model`). */
+    const val GREYBOX = "greybox"
 }
 
 /** How the model parameters were obtained. */
@@ -101,8 +104,33 @@ object ProbeRun {
     ): List<HeatUpPrediction> {
         val k = model.k ?: return emptyList()
         val p = model.power ?: return emptyList()
+        return predict(k, p, model.deadTimeHours ?: 0.0, 0.0, startTemperature, now, days, zone, outsideAt)
+    }
+
+    /** Same as [predict] with the grey-box model: its lag is the dead time, g heats all the time. */
+    fun predictGreyBox(
+        model: GreyBoxModel,
+        startTemperature: Double,
+        now: Long,
+        days: Map<Weekday, ProfileDay>,
+        zone: ZoneId,
+        outsideAt: (Long) -> Double,
+    ): List<HeatUpPrediction> =
+        predict(model.k, model.power, model.lagHours.toDouble(), model.gain, startTemperature, now, days, zone, outsideAt)
+
+    private fun predict(
+        k: Double,
+        p: Double,
+        deadTimeHours: Double,
+        gain: Double,
+        startTemperature: Double,
+        now: Long,
+        days: Map<Weekday, ProfileDay>,
+        zone: ZoneId,
+        outsideAt: (Long) -> Double,
+    ): List<HeatUpPrediction> {
         val sp: (Long) -> Double? = { setPointAt(days, it, zone) }
-        val sim = RoomSimulator.simulate(k, p, model.deadTimeHours ?: 0.0, startTemperature, now, now + HORIZON_MS + REACH_WINDOW_MS, sp, outsideAt)
+        val sim = RoomSimulator.simulate(k, p, deadTimeHours, startTemperature, now, now + HORIZON_MS + REACH_WINDOW_MS, sp, outsideAt, gain)
 
         val result = mutableListOf<HeatUpPrediction>()
         var t = now - now % GRID_MS + GRID_MS

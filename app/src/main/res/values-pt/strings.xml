@@ -419,4 +419,5 @@
     <string name="profile_undo_text">O cômodo “%s” volta ao programa semanal de antes do último salvamento. A versão atual é guardada, então é possível desfazer de novo.</string>
     <string name="stepper_decrease">Diminuir: %s</string>
     <string name="stepper_increase">Aumentar: %s</string>
+    <string name="probe_score_greybox">Modelo de caixa cinzenta (todos os dados, em paralelo): %1$d avaliadas · a tempo %2$d %% · desvio médio %3$s min</string>
 </resources>

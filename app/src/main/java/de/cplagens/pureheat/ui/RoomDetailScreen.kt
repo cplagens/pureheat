@@ -410,6 +410,18 @@ private fun ProbeCard(probe: ProbeState) {
                     style = MaterialTheme.typography.bodyMedium,
                 )
             }
+            probe.greyBoxScore?.takeIf { it.evaluated > 0 }?.let { g ->
+                Text(
+                    stringResource(
+                        R.string.probe_score_greybox,
+                        g.evaluated,
+                        (g.hitRate * 100).toInt(),
+                        g.meanAbsErrorMinutes?.toString() ?: "–",
+                    ),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = muted,
+                )
+            }
             Text(
                 stringResource(if (s.trustworthy) R.string.probe_ready else R.string.probe_not_ready),
                 style = MaterialTheme.typography.bodySmall,
