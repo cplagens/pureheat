@@ -431,4 +431,11 @@
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s premier ajustement</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (ancien conservé)</string>
+    <string name="model_curve_title">Journée simulée à %.0f °C dehors : réduit, 12 h confort, retour au réduit</string>
+    <string name="legend_greybox">Boîte grise</string>
+    <string name="legend_physics">Modèle physique</string>
+    <string name="model_curve_at">Après %1$s : %2$s</string>
+    <string name="model_curve_value">%1$s %2$.1f °C</string>
+    <string name="greybox_versions_chart">Erreur sur la dernière semaine par version (plus bas = mieux)</string>
+    <string name="greybox_rmse_axis">±%.2f °C</string>
 </resources>

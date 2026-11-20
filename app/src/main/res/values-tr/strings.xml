@@ -428,4 +428,11 @@
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s ilk uyarlama</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (eskisi korundu)</string>
+    <string name="model_curve_title">Dışarıda %.0f °C ile simüle edilmiş gün: düşük, 12 saat konfor, düşüğe dönüş</string>
+    <string name="legend_greybox">Gri kutu</string>
+    <string name="legend_physics">Fizik modeli</string>
+    <string name="model_curve_at">%1$s sonra: %2$s</string>
+    <string name="model_curve_value">%1$s %2$.1f °C</string>
+    <string name="greybox_versions_chart">Sürüm başına son haftadaki hata (düşük olan daha iyi)</string>
+    <string name="greybox_rmse_axis">±%.2f °C</string>
 </resources>

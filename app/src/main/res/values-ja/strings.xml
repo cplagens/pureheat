@@ -425,4 +425,11 @@
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s 初回フィット</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C(旧モデルを維持)</string>
+    <string name="model_curve_title">外気温 %.0f °C でのシミュレーション:節約→ 12 時間快適→節約</string>
+    <string name="legend_greybox">グレーボックス</string>
+    <string name="legend_physics">物理モデル</string>
+    <string name="model_curve_at">%1$s 後:%2$s</string>
+    <string name="model_curve_value">%1$s %2$.1f °C</string>
+    <string name="greybox_versions_chart">バージョンごとの直近1週間の誤差(低いほど良い)</string>
+    <string name="greybox_rmse_axis">±%.2f °C</string>
 </resources>

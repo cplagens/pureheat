@@ -48,6 +48,13 @@ import de.cplagens.pureheat.data.history.ThermalPhase
 import de.cplagens.pureheat.data.history.PredictionEntity
 import de.cplagens.pureheat.data.history.RoomModelEntity
 import de.cplagens.pureheat.data.model.toModel
+import de.cplagens.pureheat.data.model.GreyBoxModel
+import de.cplagens.pureheat.data.model.ModelCurve
+import androidx.compose.runtime.remember
+import java.time.LocalDate
+import java.time.ZoneId
+import kotlin.math.ceil
+import kotlin.math.floor
 import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.model.RoomInsight
@@ -357,6 +364,8 @@ private fun ModelCard(insight: RoomInsight?, greyBoxVersions: List<RoomModelEnti
             }
             val m = insight.model
             val unknown = stringResource(R.string.unknown)
+            val greyBox = remember(greyBoxVersions) { greyBoxVersions?.firstOrNull { it.adopted }?.toModel() }
+            ModelCurveChart(insight, greyBox)
             ModelTexts.summary(ctx, insight)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
             Text(
                 stringResource(
@@ -417,6 +426,97 @@ private fun GreyBoxSection(insight: RoomInsight, versions: List<RoomModelEntity>
         style = MaterialTheme.typography.bodySmall,
         color = muted,
     )
+    VersionsChart(versions)
+}
+
+/**
+ * One simulated day ([ModelCurve]) with the setpoint, the grey box and the physics model (once it
+ * has learned enough), so the predictions can be compared at a glance. Tap for values.
+ */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ModelCurveChart(insight: RoomInsight, greyBox: GreyBoxModel?) {
+    val levels = insight.levels ?: return
+    val outside = insight.outside ?: return
+    val ctx = LocalContext.current
+    // Local midnight, so the 6-h grid lines fall on 6, 12 and 18 h of the cycle.
+    val start = remember { LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli() }
+    val physics = remember(insight, start) { ModelCurve.physics(insight.model, levels, outside, start) }
+    val grey = remember(greyBox, insight, start) { greyBox?.let { ModelCurve.greyBox(it, levels, outside, start) } }
+    val any = grey ?: physics ?: return
+    val end = start + ModelCurve.HOURS * 3_600_000L
+    val setPointColor = MaterialTheme.colorScheme.onSurfaceVariant
+    val greyColor = MaterialTheme.colorScheme.primary
+    val physicsColor = MaterialTheme.colorScheme.tertiary
+    val setPoints = any.map { it.time to it.setPoint }
+    val greyPoints = grey?.map { it.time to it.temperature }.orEmpty()
+    val physicsPoints = physics?.map { it.time to it.temperature }.orEmpty()
+    val temps = greyPoints.map { it.second } + physicsPoints.map { it.second } + listOf(levels.setback, levels.comfort)
+    var selected by remember { mutableStateOf<Long?>(null) }
+
+    Text(stringResource(R.string.model_curve_title, outside), style = MaterialTheme.typography.labelMedium)
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+        Legend(stringResource(R.string.legend_setpoint), setPointColor, dashed = true)
+        if (grey != null) Legend(stringResource(R.string.legend_greybox), greyColor, dashed = false)
+        if (physics != null) Legend(stringResource(R.string.legend_physics), physicsColor, dashed = true)
+    }
+    TimeSeriesChart(
+        series = listOf(
+            ChartSeries("setpoint", setPointColor, setPoints, step = true, dashed = true),
+            ChartSeries("physics", physicsColor, physicsPoints, dashed = true),
+            ChartSeries("greybox", greyColor, greyPoints),
+        ),
+        start = start,
+        end = end,
+        yMin = floor(temps.min()) - 0.5,
+        yMax = ceil(temps.max()) + 0.5,
+        selected = selected,
+        onSelect = { selected = it },
+        yLabel = { ctx.getString(R.string.temp_c0, it) },
+        modifier = Modifier.fillMaxWidth().height(120.dp),
+    )
+    Row(Modifier.fillMaxWidth()) {
+        listOf(0, ModelCurve.HOURS / 2, ModelCurve.HOURS).forEachIndexed { i, h ->
+            if (i > 0) Spacer(Modifier.weight(1f))
+            Text(stringResource(R.string.duration_h, h), style = MaterialTheme.typography.labelSmall, color = setPointColor)
+        }
+    }
+    selected?.let { t ->
+        val values = buildList {
+            setPoints.nearest(t)?.let { add(ctx.getString(R.string.model_curve_value, ctx.getString(R.string.legend_setpoint), it)) }
+            greyPoints.nearest(t)?.let { add(ctx.getString(R.string.model_curve_value, ctx.getString(R.string.legend_greybox), it)) }
+            physicsPoints.nearest(t)?.let { add(ctx.getString(R.string.model_curve_value, ctx.getString(R.string.legend_physics), it)) }
+        }
+        Text(
+            stringResource(R.string.model_curve_at, ModelTexts.duration(ctx, (t - start) / 3_600_000.0), values.joinToString(" · ")),
+            style = MaterialTheme.typography.bodySmall,
+        )
+    }
+}
+
+/** Hold-out error of each grey-box version over time; only once there are two to compare. */
+@Composable
+private fun VersionsChart(versions: List<RoomModelEntity>) {
+    val ctx = LocalContext.current
+    val points = versions.mapNotNull { v -> v.holdoutRmse?.let { v.fittedAt to it } }.sortedBy { it.first }
+    if (points.size < 2) return
+    val pad = 12 * 3_600_000L
+    val start = points.first().first - pad
+    val end = points.last().first + pad
+    var selected by remember { mutableStateOf<Long?>(null) }
+    Text(stringResource(R.string.greybox_versions_chart), style = MaterialTheme.typography.labelMedium)
+    TimeSeriesChart(
+        series = listOf(ChartSeries("holdout", MaterialTheme.colorScheme.primary, points)),
+        start = start,
+        end = end,
+        yMin = 0.0,
+        yMax = points.maxOf { it.second } * 1.2,
+        selected = selected,
+        onSelect = { selected = it },
+        yLabel = { ctx.getString(R.string.greybox_rmse_axis, it) },
+        modifier = Modifier.fillMaxWidth().height(80.dp),
+    )
+    TimeAxis(start, end)
 }
 
 /** Probe run (step 5): how well the predictions matched reality. Nothing is written to the heating. */

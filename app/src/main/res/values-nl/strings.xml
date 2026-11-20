@@ -428,4 +428,11 @@
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s eerste aanpassing</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (oude behouden)</string>
+    <string name="model_curve_title">Gesimuleerde dag bij %.0f °C buiten: verlaagd, 12 h comfort, terug naar verlaagd</string>
+    <string name="legend_greybox">Grey box</string>
+    <string name="legend_physics">Fysisch model</string>
+    <string name="model_curve_at">Na %1$s: %2$s</string>
+    <string name="model_curve_value">%1$s %2$.1f °C</string>
+    <string name="greybox_versions_chart">Fout in de laatste week per versie (lager is beter)</string>
+    <string name="greybox_rmse_axis">±%.2f °C</string>
 </resources>

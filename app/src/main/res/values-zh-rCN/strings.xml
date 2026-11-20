@@ -425,4 +425,11 @@
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s 首次拟合</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C(保留旧模型)</string>
+    <string name="model_curve_title">室外 %.0f °C 时的模拟一天:节能、舒适 12 小时、回到节能</string>
+    <string name="legend_greybox">灰箱</string>
+    <string name="legend_physics">物理模型</string>
+    <string name="model_curve_at">%1$s 后:%2$s</string>
+    <string name="model_curve_value">%1$s %2$.1f °C</string>
+    <string name="greybox_versions_chart">各版本在最近一周的误差(越低越好)</string>
+    <string name="greybox_rmse_axis">±%.2f °C</string>
 </resources>

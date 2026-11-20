@@ -456,4 +456,11 @@
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s first fit</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (old one kept)</string>
+    <string name="model_curve_title">Simulated day at %.0f °C outside: setback, 12 h comfort, back to setback</string>
+    <string name="legend_greybox">Grey box</string>
+    <string name="legend_physics">Physics model</string>
+    <string name="model_curve_at">After %1$s: %2$s</string>
+    <string name="model_curve_value">%1$s %2$.1f °C</string>
+    <string name="greybox_versions_chart">Error on the last week per version (lower is better)</string>
+    <string name="greybox_rmse_axis">±%.2f °C</string>
 </resources>
