@@ -51,13 +51,16 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 | `HeatingRepository.kt` | Only access to the cloud: fetch + record state, load/save profiles (backup before, check after), debug dumps |
 | `ForecastClient.kt` | Open-Meteo fetch (hourly outdoor temperature, 3 days) with rounded location |
 | `HistoryWorker.kt` | Self-rescheduling fetch chain (`history-chain`) + hourly `HistoryWatchdogWorker` |
+| `RoomModelWorker.kt` | Daily while charging (`room-model`, no network): `refitGreyBoxModels()` – each room at most once a week |
 | `PollingPolicy.kt` | Pure logic: next fetch in 15 min (valve/target changing), 30 min (stable) or 60 min (night) |
-| `history/HistoryDatabase.kt` | Room DB `history.db` (version 6): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction` |
+| `history/HistoryDatabase.kt` | Room DB `history.db` (version 7): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction`, `room_model` |
 | `history/HistoryAnalysis.kt` | Pure analysis: warning "valve open but no heat", heat-up rate, phases "valve open/closed" (with dead-time minimum and end of free heat-up) |
 | `history/BathingDetection.kt` | Pure heuristic: showering/bathing from a quick rise in humidity; exclusion for the model |
 | `RoomOrder.kt` | Pure logic: order of the room cards (thermostats after their room, saved order) |
 | `history/WindowDetection.kt` | Pure heuristic: window open from temperature drop/rise (+ humidity) with the valve closed; exclusion of these times for the model |
 | `model/RoomModel.kt` | Pure thermal model per room (k, P, dead time), fitting from phases, prediction of heat-up/cool-down time; `SetPointLevels` (eco/comfort temperature from target values) |
+| `model/GreyBoxModel.kt` | Pure grey-box model over all hourly data (`ΔT = −k(T − Tₐ) + P·valve(t − lag) + g`), ridge fit with prior, "measured"/"estimated" per parameter |
+| `model/GreyBoxTraining.kt` | Pure: first model after 7 days, weekly candidate fitted without the last week; adopted only if its hold-out error is not worse than the model in use |
 | `model/RoomSimulator.kt` | Pure forward simulation of a room (thermostat behaviour, dead time, forecast) |
 | `probe/ProbeRun.kt` | Pure probe run: prediction of heat-up times from the active profile, evaluation against the measurement, hit rate |
 | `model/RoomInsight.kt` | Model + eco/comfort + outdoor temperature per room, with ready-made predictions |
@@ -107,7 +110,7 @@ logo also exists as `docs/assets/logo.svg`.
 3. load the profile again and compare it with what was sent; difference → error message.
 "Undo" plays the backup back the same way.
 
-## Data model (Room, `history.db`, version 6)
+## Data model (Room, `history.db`, version 7)
 
 | Table | Key | Fields |
 |---|---|---|
@@ -116,9 +119,10 @@ logo also exists as `docs/assets/logo.svg`.
 | `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`), outsideAbsHumidity g/m³ (`home.weather.vaporAmount`, since v6) |
 | `prediction` | roomId + strategy + eventTime | Probe run: target, start temperature, predicted/actual reach time, model source (fit/prior), result (since v5) |
 | `forecast_sample` | timestamp | temperature (Open-Meteo, hourly), fetchedAt; replaced on every fetch (since v4) |
+| `room_model` | roomId + fittedAt | Grey-box versions: k, power, gain, lagHours, standard errors, rmse, n, holdoutRmse, previousHoldoutRmse, adopted, prior (since v7); in use = newest adopted row |
 
 Migration 1 → 2 creates `weather_sample`, 2 → 3 adds `room_sample.humidity`, 3 → 4 creates
-`forecast_sample`, 4 → 5 `prediction`, 5 → 6 adds `weather_sample.outsideAbsHumidity`; existing data is kept. The REST server address is cached in SharedPreferences
+`forecast_sample`, 4 → 5 `prediction`, 5 → 6 adds `weather_sample.outsideAbsHumidity`, 6 → 7 creates `room_model`; existing data is kept. The REST server address is cached in SharedPreferences
 `hmip_server` (new lookup only after an error – the lookup service answers 418 to too many
 requests).
 Measured size: about 710 rows or 120 KB/day → about 90 MB after 2 years.

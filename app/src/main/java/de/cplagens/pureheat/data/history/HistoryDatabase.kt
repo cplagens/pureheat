@@ -85,6 +85,36 @@ data class PredictionEntity(
     val outcome: String? = null,
 )
 
+/**
+ * One fitted grey-box model version of a room (since DB v7). The model in use is the newest row with
+ * [adopted]; rejected candidates are kept so the improvement over time is visible.
+ */
+@Entity(tableName = "room_model", primaryKeys = ["roomId", "fittedAt"])
+data class RoomModelEntity(
+    val roomId: String,
+    val fittedAt: Long,
+    val k: Double,
+    val power: Double,
+    val gain: Double,
+    val lagHours: Int,
+    val kSe: Double,
+    val powerSe: Double,
+    val gainSe: Double,
+    val rmse: Double,
+    val n: Int,
+    /** One-step error on the hold-out week; null for the first model. */
+    val holdoutRmse: Double?,
+    /** Error of the model in use before, on the same week. */
+    val previousHoldoutRmse: Double?,
+    val adopted: Boolean,
+    val priorK: Double,
+    val priorKSd: Double,
+    val priorPower: Double,
+    val priorPowerSd: Double,
+    val priorGain: Double,
+    val priorGainSd: Double,
+)
+
 @Dao
 interface HistoryDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
@@ -199,11 +229,28 @@ interface HistoryDao {
 
     @Query("DELETE FROM circuit_sample")
     suspend fun clearCircuits()
+
+    // --- Grey-box room model (since v7) ---
+
+    @Query("SELECT DISTINCT roomId FROM room_sample")
+    suspend fun roomIds(): List<String>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertRoomModel(model: RoomModelEntity)
+
+    @Query("SELECT * FROM room_model WHERE roomId = :roomId AND adopted = 1 ORDER BY fittedAt DESC LIMIT 1")
+    suspend fun currentRoomModel(roomId: String): RoomModelEntity?
+
+    @Query("SELECT MAX(fittedAt) FROM room_model WHERE roomId = :roomId")
+    suspend fun lastRoomModelFit(roomId: String): Long?
+
+    @Query("DELETE FROM room_model")
+    suspend fun clearRoomModels()
 }
 
 @Database(
-    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class, PredictionEntity::class],
-    version = 6,
+    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class, PredictionEntity::class, RoomModelEntity::class],
+    version = 7,
     exportSchema = false,
 )
 abstract class HistoryDatabase : RoomDatabase() {
@@ -258,9 +305,24 @@ abstract class HistoryDatabase : RoomDatabase() {
             }
         }
 
+        /** v7: grey-box model versions per room. */
+        private val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `room_model` (`roomId` TEXT NOT NULL, `fittedAt` INTEGER NOT NULL, " +
+                        "`k` REAL NOT NULL, `power` REAL NOT NULL, `gain` REAL NOT NULL, `lagHours` INTEGER NOT NULL, " +
+                        "`kSe` REAL NOT NULL, `powerSe` REAL NOT NULL, `gainSe` REAL NOT NULL, `rmse` REAL NOT NULL, " +
+                        "`n` INTEGER NOT NULL, `holdoutRmse` REAL, `previousHoldoutRmse` REAL, `adopted` INTEGER NOT NULL, " +
+                        "`priorK` REAL NOT NULL, `priorKSd` REAL NOT NULL, `priorPower` REAL NOT NULL, " +
+                        "`priorPowerSd` REAL NOT NULL, `priorGain` REAL NOT NULL, `priorGainSd` REAL NOT NULL, " +
+                        "PRIMARY KEY(`roomId`, `fittedAt`))",
+                )
+            }
+        }
+
         fun create(context: Context): HistoryDatabase =
             Room.databaseBuilder(context, HistoryDatabase::class.java, "history.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
                 .build()
     }
 }

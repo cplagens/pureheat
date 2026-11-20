@@ -15,8 +15,13 @@ import de.cplagens.pureheat.data.history.HistoryDao
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WeatherSample
 import de.cplagens.pureheat.data.history.ForecastSample
+import de.cplagens.pureheat.data.history.BathingDetector
+import de.cplagens.pureheat.data.model.GreyBoxFitter
+import de.cplagens.pureheat.data.model.GreyBoxTraining
 import de.cplagens.pureheat.data.model.RoomInsight
 import de.cplagens.pureheat.data.model.RoomModelFitter
+import de.cplagens.pureheat.data.model.toEntity
+import de.cplagens.pureheat.data.model.toModel
 import de.cplagens.pureheat.data.history.PredictionEntity
 import de.cplagens.pureheat.data.history.WindowDetector
 import de.cplagens.pureheat.data.probe.HeatUpPrediction
@@ -218,6 +223,29 @@ class HeatingRepository(
         return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside, properties) }
     }
 
+    /**
+     * Fits the grey-box model of every room that is due ([GreyBoxTraining.due]) over its whole
+     * history and stores the version; the candidate replaces the model in use only if it predicts
+     * the last week at least as well. Local only, no cloud calls.
+     */
+    suspend fun refitGreyBoxModels(now: Long = System.currentTimeMillis()) {
+        val weather = dao.weatherSamplesSinceOnce(0)
+        val outsideHumidity = WindowDetector.outsideHumidity(weather)
+        for (roomId in dao.roomIds()) {
+            if (!GreyBoxTraining.due(dao.lastRoomModelFit(roomId), now)) continue
+            val samples = dao.roomSamples(roomId, 0)
+            val result = withContext(Dispatchers.Default) {
+                val windows = if (descriptions.get(roomId)?.properties?.hasWindows == false) emptyList()
+                else WindowDetector.detect(samples, outsideHumidity)
+                // Same exclusions as the physics model: open windows and hot water are not the heating.
+                val clean = BathingDetector.withoutBathingTimes(WindowDetector.withoutWindowTimes(samples, windows), BathingDetector.detect(samples))
+                GreyBoxTraining.train(GreyBoxFitter.hourly(clean, weather), dao.currentRoomModel(roomId)?.toModel())
+            } ?: continue
+            dao.insertRoomModel(result.toEntity(roomId, now))
+            if (BuildConfig.DEBUG) Log.d(TAG, "Grey box $roomId: n=${result.model.n} hold-out=${result.holdoutRmse} vs ${result.previousHoldoutRmse}, adopted=${result.adopted}")
+        }
+    }
+
     /** Room samples of the last two recordings (newest first) for [PollingPolicy]. */
     suspend fun lastTwoRecordings(): Pair<List<RoomSample>, List<RoomSample>> {
         val ts = dao.lastTimestamps(2)
@@ -232,6 +260,7 @@ class HeatingRepository(
         dao.clearWeather()
         dao.clearForecast()
         dao.clearPredictions()
+        dao.clearRoomModels()
         probePrefs.edit().clear().apply()
         descriptions.clear()
         withContext(Dispatchers.IO) {

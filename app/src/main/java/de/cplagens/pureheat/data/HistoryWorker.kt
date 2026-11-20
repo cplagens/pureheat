@@ -85,6 +85,7 @@ class HistoryWorker(context: Context, params: WorkerParameters) : CoroutineWorke
             enqueueNext(context, PollingPolicy.ACTIVE_MINUTES, ExistingWorkPolicy.KEEP)
             val watchdog = PeriodicWorkRequestBuilder<HistoryWatchdogWorker>(1, TimeUnit.HOURS).build()
             wm.enqueueUniquePeriodicWork(WATCHDOG, ExistingPeriodicWorkPolicy.KEEP, watchdog)
+            RoomModelWorker.schedule(context)
         }
 
         fun cancel(context: Context) {
@@ -92,6 +93,7 @@ class HistoryWorker(context: Context, params: WorkerParameters) : CoroutineWorke
             wm.cancelUniqueWork(CHAIN)
             wm.cancelUniqueWork(WATCHDOG)
             wm.cancelUniqueWork(LEGACY_PERIODIC)
+            RoomModelWorker.cancel(context)
         }
     }
 }
