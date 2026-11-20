@@ -420,4 +420,5 @@
     <string name="stepper_decrease">Diminuer : %s</string>
     <string name="stepper_increase">Augmenter : %s</string>
     <string name="probe_score_greybox">Modèle boîte grise (toutes les données, en parallèle) : %1$d évaluées · à l\'heure %2$d %% · écart moyen %3$s min</string>
+    <string name="save_changes_list">Modifications (%d)</string>
 </resources>

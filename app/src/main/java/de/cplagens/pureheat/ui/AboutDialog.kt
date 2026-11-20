@@ -55,7 +55,6 @@ fun AboutDialog(onDismiss: () -> Unit, roomLabels: Map<String, String> = emptyMa
                 if (version.isNotEmpty()) Text(stringResource(R.string.version, version), style = MaterialTheme.typography.bodySmall)
                 Text(stringResource(R.string.about_text))
                 HorizontalDivider()
-                Text(stringResource(R.string.language), style = MaterialTheme.typography.titleSmall)
                 LanguagePicker()
                 HorizontalDivider()
                 DataSection(roomLabels)

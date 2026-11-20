@@ -420,4 +420,5 @@
     <string name="stepper_decrease">Diminuisci: %s</string>
     <string name="stepper_increase">Aumenta: %s</string>
     <string name="probe_score_greybox">Modello a scatola grigia (tutti i dati, in parallelo): %1$d valutate · puntuali %2$d %% · scarto medio %3$s min</string>
+    <string name="save_changes_list">Modifiche (%d)</string>
 </resources>

@@ -312,23 +312,16 @@ private fun SaveDialog(
     onDismiss: () -> Unit,
 ) {
     var selected by remember { mutableStateOf(emptySet<String>()) }
+    // Long change lists start collapsed so the room choice stays in view.
+    var showChanges by remember { mutableStateOf(changes.size <= 3) }
     AlertDialog(
         onDismissRequest = onDismiss,
         title = { Text(stringResource(R.string.save_changes_q)) },
         text = {
             LazyColumn(verticalArrangement = Arrangement.spacedBy(4.dp)) {
-                items(changes.size) { i -> Text(changes[i].asString(), style = MaterialTheme.typography.bodyMedium) }
-                item {
-                    Text(
-                        stringResource(R.string.save_backup_note),
-                        style = MaterialTheme.typography.bodySmall,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        modifier = Modifier.padding(top = 8.dp),
-                    )
-                }
                 if (otherRooms.isNotEmpty()) {
                     item {
-                        Text(stringResource(R.string.save_also_rooms), style = MaterialTheme.typography.labelLarge, modifier = Modifier.padding(top = 8.dp))
+                        Text(stringResource(R.string.save_also_rooms), style = MaterialTheme.typography.labelLarge)
                     }
                     items(otherRooms.size) { i ->
                         val r = otherRooms[i]
@@ -340,6 +333,25 @@ private fun SaveDialog(
                             Text(r.label.trim())
                         }
                     }
+                    item { HorizontalDivider(Modifier.padding(vertical = 4.dp)) }
+                }
+                item {
+                    Text(
+                        stringResource(R.string.save_changes_list, changes.size) + if (showChanges) " ▾" else " ▸",
+                        style = MaterialTheme.typography.labelLarge,
+                        modifier = Modifier.fillMaxWidth().clickable { showChanges = !showChanges }.padding(vertical = 4.dp),
+                    )
+                }
+                if (showChanges) {
+                    items(changes.size) { i -> Text(changes[i].asString(), style = MaterialTheme.typography.bodyMedium) }
+                }
+                item {
+                    Text(
+                        stringResource(R.string.save_backup_note),
+                        style = MaterialTheme.typography.bodySmall,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant,
+                        modifier = Modifier.padding(top = 8.dp),
+                    )
                 }
             }
         },

@@ -417,4 +417,5 @@
     <string name="stepper_decrease">%s verlagen</string>
     <string name="stepper_increase">%s verhogen</string>
     <string name="probe_score_greybox">Grey-boxmodel (alle data, ter vergelijking): %1$d beoordeeld · op tijd %2$d %% · gemiddeld %3$s min ernaast</string>
+    <string name="save_changes_list">Wijzigingen (%d)</string>
 </resources>

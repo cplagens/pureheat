@@ -96,13 +96,16 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
         _ui.update { it.copy(saving = true, error = null, message = null) }
         viewModelScope.launch {
             try {
+                // Other rooms only get the changed days, as the save dialog says.
+                val changedDays = state.original?.let { o -> ProfileEditing.diff(o, edited).map { it.day }.toSet() }
+                val copied = if (changedDays == null) edited.days else edited.days.filterKeys { it in changedDays }
                 val saved = repository.saveProfile(edited, ref.profileId)
                 val failed = mutableListOf<String>()
                 for (room in alsoRooms) {
                     val target = room.profiles.firstOrNull { it.index == room.activeProfile } ?: continue
                     runCatching {
                         val other = repository.loadProfile(room.id, target.index, target.profileId)
-                        repository.saveProfile(other.copy(days = other.days + edited.days), target.profileId)
+                        repository.saveProfile(other.copy(days = other.days + copied), target.profileId)
                     }.onFailure { failed += room.label.trim() }
                 }
                 _ui.update {

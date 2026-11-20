@@ -445,4 +445,5 @@
     <string name="stepper_decrease">Decrease %s</string>
     <string name="stepper_increase">Increase %s</string>
     <string name="probe_score_greybox">Grey-box model (all data, side by side): %1$d evaluated · on time %2$d %% · off by %3$s min on average</string>
+    <string name="save_changes_list">Changes (%d)</string>
 </resources>

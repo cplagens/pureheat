@@ -14,6 +14,9 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 - Heating profile: "Undo last save" now asks for confirmation before writing to the cloud.
 - Heating profile editor: "Add phase" now appends the new phase right after the last one
   (instead of in the largest gap, usually the early morning).
+- Saving a heating profile: the choice of other rooms now comes first and long change lists are
+  collapsed; other rooms only get the changed days (before: the whole week).
+- Info: the language choice is collapsed to one line.
 - Logging out also deletes the last data export from the app cache.
 - Profile editor: the −/+ buttons are announced with their value name by screen readers.
 

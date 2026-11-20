@@ -423,4 +423,5 @@
     <string name="stepper_decrease">Уменьшить: %s</string>
     <string name="stepper_increase">Увеличить: %s</string>
     <string name="probe_score_greybox">Модель «серого ящика» (все данные, для сравнения): оценено %1$d · вовремя %2$d %% · в среднем ошибка %3$s мин</string>
+    <string name="save_changes_list">Изменения (%d)</string>
 </resources>

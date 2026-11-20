@@ -423,4 +423,5 @@
     <string name="stepper_decrease">Zmniejsz: %s</string>
     <string name="stepper_increase">Zwiększ: %s</string>
     <string name="probe_score_greybox">Model szarej skrzynki (wszystkie dane, równolegle): ocenionych %1$d · na czas %2$d %% · średnio %3$s min różnicy</string>
+    <string name="save_changes_list">Zmiany (%d)</string>
 </resources>

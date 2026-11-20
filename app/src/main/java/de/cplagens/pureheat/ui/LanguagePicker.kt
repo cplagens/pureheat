@@ -5,6 +5,7 @@
  */
 package de.cplagens.pureheat.ui
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -19,6 +20,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,13 +30,30 @@ import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.Lang
 import de.cplagens.pureheat.R
 
-/** Radio list of languages; "system language" first. A tap switches the app language at once. */
+/**
+ * "Language: <current>" header that expands to a radio list of languages ("system language"
+ * first). A tap switches the app language at once.
+ */
 @Composable
 fun LanguagePicker(modifier: Modifier = Modifier) {
     var selected by remember { mutableStateOf(Lang.current()) }
+    var expanded by rememberSaveable { mutableStateOf(false) }
     val entries = listOf("" to stringResource(R.string.system_language)) + Lang.options
     Column(modifier) {
-        entries.forEach { (tag, label) ->
+        Row(
+            Modifier
+                .fillMaxWidth()
+                .clickable { expanded = !expanded }
+                .padding(vertical = 4.dp),
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Text(stringResource(R.string.language), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+            Text(
+                (entries.firstOrNull { it.first == selected }?.second.orEmpty()) + if (expanded) " ▾" else " ▸",
+                style = MaterialTheme.typography.bodyMedium,
+            )
+        }
+        if (expanded) entries.forEach { (tag, label) ->
             Row(
                 Modifier
                     .fillMaxWidth()

@@ -414,4 +414,5 @@
     <string name="stepper_decrease">%sを下げる</string>
     <string name="stepper_increase">%sを上げる</string>
     <string name="probe_score_greybox">グレーボックスモデル(全データ、比較用):評価 %1$d 件 · 時間どおり %2$d %% · 平均誤差 %3$s 分</string>
+    <string name="save_changes_list">変更 (%d)</string>
 </resources>
