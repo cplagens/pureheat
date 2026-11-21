@@ -155,11 +155,8 @@
     <string name="probe_title">Probelauf (Vorhersage vs. Wirklichkeit)</string>
     <string name="probe_explanation">Einmal am Tag sagt die App aus dem aktiven Heizprofil, dem Raummodell und der Prognose vorher, wann jede Aufheizphase ihr Ziel erreicht, und vergleicht das danach mit der Messung. An der Heizung wird nichts verändert. Zeiten mit offenem Fenster oder manueller Änderung zählen nicht.</string>
     <string name="probe_none">Noch keine Vorhersagen – die ersten entstehen beim nächsten Tageslauf.</string>
-    <string name="probe_score">Bewertet: %1$d · pünktlich (±30 min): %2$d %% · im Schnitt %3$s min daneben · %4$d Tage</string>
     <string name="probe_ready">Genau genug: Für diesen Raum kann die Optimal-Steuerung angeboten werden.</string>
     <string name="probe_not_ready">Die Optimal-Steuerung wird angeboten ab 14 Tagen mit ≥ 80 % pünktlich und ≤ 30 min mittlerer Abweichung.</string>
-    <string name="probe_planned">Geplant %1$s → %2$.1f °C: erwartet %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C: erwartet %3$s · tatsächlich %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d min)"</string>
     <string name="probe_not_reached">nicht erreicht</string>
     <string name="probe_prior">" · Startwerte"</string>
@@ -167,7 +164,6 @@
     <string name="outcome_early">früher</string>
     <string name="outcome_late">später</string>
     <string name="outcome_not_reached">nicht erreicht</string>
-    <string name="outcome_disturbed">zählt nicht (Fenster/manuelle Änderung)</string>
 
     <!-- Heizprofile -->
     <string name="profiles_title">Heizprofile</string>
@@ -432,7 +428,6 @@
     <string name="profile_undo_text">Der Raum „%s“ bekommt wieder das Wochenprofil von vor der letzten Speicherung. Die aktuelle Version wird gesichert, du kannst das also wieder rückgängig machen.</string>
     <string name="stepper_decrease">%s verringern</string>
     <string name="stepper_increase">%s erhöhen</string>
-    <string name="probe_score_greybox">Grey-Box-Modell (alle Daten, zum Vergleich): %1$d ausgewertet · pünktlich %2$d %% · im Schnitt %3$s min daneben</string>
     <string name="save_changes_list">Änderungen (%d)</string>
     <string name="greybox_pending">Grey-Box-Modell (alle Daten): erste Anpassung nach 7 Tagen Daten, dann wöchentlich beim Laden.</string>
     <string name="greybox_title">Grey-Box-Modell (alle Daten, angepasst am %s)</string>
@@ -440,14 +435,12 @@
     <string name="greybox_measured">%s (gemessen)</string>
     <string name="greybox_estimated">%s (geschätzt)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">Versionen (1-h-Fehler in der letzten Woche, nicht zum Anpassen genutzt): %s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s erste Anpassung</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (altes behalten)</string>
     <string name="model_curve_title">Simulierter Tag bei %.0f °C außen: Absenkung, 12 h Komfort, zurück zur Absenkung</string>
     <string name="legend_greybox">Grey-Box</string>
     <string name="legend_physics">Physikmodell</string>
-    <string name="model_curve_at">Nach %1$s: %2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">Fehler in der letzten Woche je Version (niedriger ist besser)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

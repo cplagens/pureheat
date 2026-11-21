@@ -141,11 +141,8 @@
     <string name="probe_title">试运行（预测与实际）</string>
     <string name="probe_explanation">应用每天根据当前计划、房间模型和天气预报预测每次升温何时达到目标，之后再与测量值比较。不会对供暖做任何更改。开窗或手动更改的时段不计入。</string>
     <string name="probe_none">尚无预测 – 第一批预测将在下一次每日运行时生成。</string>
-    <string name="probe_score">已评估：%1$d · 准时（±30 分钟）：%2$d %% · 平均偏差 %3$s 分钟 · %4$d 天</string>
     <string name="probe_ready">足够准确：可以为此房间提供最优控制。</string>
     <string name="probe_not_ready">在 14 天内准时率 ≥ 80 % 且平均偏差 ≤ 30 分钟后，才会提供最优控制。</string>
-    <string name="probe_planned">计划 %1$s → %2$.1f °C：预计 %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C：预计 %3$s · 实际 %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d 分钟)"</string>
     <string name="probe_not_reached">未达到</string>
     <string name="probe_prior">" · 初始值"</string>
@@ -153,7 +150,6 @@
     <string name="outcome_early">提前</string>
     <string name="outcome_late">推迟</string>
     <string name="outcome_not_reached">未达到</string>
-    <string name="outcome_disturbed">不计入（开窗/手动更改）</string>
 
     <string name="profiles_title">供暖计划</string>
     <string name="profile_n">计划 %s</string>
@@ -413,7 +409,6 @@
     <string name="profile_undo_text">房间“%s”将恢复为上次保存前的每周计划。当前版本会被保留，因此可以再次撤销。</string>
     <string name="stepper_decrease">降低%s</string>
     <string name="stepper_increase">提高%s</string>
-    <string name="probe_score_greybox">灰箱模型(全部数据,对比):已评估 %1$d 次 · 准时 %2$d %% · 平均偏差 %3$s 分钟</string>
     <string name="save_changes_list">更改 (%d)</string>
     <string name="greybox_pending">灰箱模型(全部数据):有 7 天数据后首次拟合,之后每周在充电时拟合。</string>
     <string name="greybox_title">灰箱模型(全部数据,拟合于 %s)</string>
@@ -421,14 +416,12 @@
     <string name="greybox_measured">%s(已测得)</string>
     <string name="greybox_estimated">%s(估计)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">版本(最近一周的 1 小时误差,该周未用于拟合):%s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s 首次拟合</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C(保留旧模型)</string>
     <string name="model_curve_title">室外 %.0f °C 时的模拟一天:节能、舒适 12 小时、回到节能</string>
     <string name="legend_greybox">灰箱</string>
     <string name="legend_physics">物理模型</string>
-    <string name="model_curve_at">%1$s 后:%2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">各版本在最近一周的误差(越低越好)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

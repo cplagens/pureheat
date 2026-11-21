@@ -150,11 +150,8 @@
     <string name="probe_title">Пробный прогон (прогноз и реальность)</string>
     <string name="probe_explanation">Раз в день приложение по активному профилю, модели комнаты и прогнозу погоды предсказывает, когда каждый нагрев достигнет цели, а затем сравнивает это с измерением. В отоплении ничего не меняется. Периоды с открытым окном или ручным изменением не учитываются.</string>
     <string name="probe_none">Прогнозов пока нет – первые будут сделаны при следующем ежедневном запуске.</string>
-    <string name="probe_score">Оценено: %1$d · вовремя (±30 мин): %2$d %% · в среднем отклонение %3$s мин · %4$d дн.</string>
     <string name="probe_ready">Достаточно точно: для этой комнаты можно предложить оптимальное управление.</string>
     <string name="probe_not_ready">Оптимальное управление предлагается через 14 дней при ≥ 80 % вовремя и ≤ 30 мин среднего отклонения.</string>
-    <string name="probe_planned">Запланировано %1$s → %2$.1f °C: ожидается %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C: ожидалось %3$s · фактически %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d мин)"</string>
     <string name="probe_not_reached">не достигнуто</string>
     <string name="probe_prior">" · начальные значения"</string>
@@ -162,7 +159,6 @@
     <string name="outcome_early">раньше</string>
     <string name="outcome_late">позже</string>
     <string name="outcome_not_reached">не достигнуто</string>
-    <string name="outcome_disturbed">не учтено (окно/ручное изменение)</string>
 
     <string name="profiles_title">Профили отопления</string>
     <string name="profile_n">Профиль %s</string>
@@ -422,7 +418,6 @@
     <string name="profile_undo_text">Для комнаты «%s» будет восстановлена недельная программа, действовавшая до последнего сохранения. Текущая версия сохраняется, поэтому это можно снова отменить.</string>
     <string name="stepper_decrease">Уменьшить: %s</string>
     <string name="stepper_increase">Увеличить: %s</string>
-    <string name="probe_score_greybox">Модель «серого ящика» (все данные, для сравнения): оценено %1$d · вовремя %2$d %% · в среднем ошибка %3$s мин</string>
     <string name="save_changes_list">Изменения (%d)</string>
     <string name="greybox_pending">Модель «серого ящика» (все данные): первая подгонка после 7 дней данных, затем еженедельно во время зарядки.</string>
     <string name="greybox_title">Модель «серого ящика» (все данные, подогнана %s)</string>
@@ -430,14 +425,12 @@
     <string name="greybox_measured">%s (измерено)</string>
     <string name="greybox_estimated">%s (оценка)</string>
     <string name="greybox_gain">%+.2f °C/ч</string>
-    <string name="greybox_versions">Версии (ошибка за 1 ч на последней неделе, не использованной для подгонки): %s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s первая подгонка</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (оставлена прежняя)</string>
     <string name="model_curve_title">Смоделированный день при %.0f °C снаружи: понижение, 12 ч комфорт, снова понижение</string>
     <string name="legend_greybox">Серый ящик</string>
     <string name="legend_physics">Физическая модель</string>
-    <string name="model_curve_at">Через %1$s: %2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">Ошибка за последнюю неделю по версиям (меньше — лучше)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

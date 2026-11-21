@@ -147,11 +147,8 @@
     <string name="probe_title">Essai (prévision vs réalité)</string>
     <string name="probe_explanation">Une fois par jour, l’app prévoit à partir du programme actif, du modèle de la pièce et de la météo quand chaque montée en température atteindra sa consigne, puis compare avec la mesure. Rien n’est modifié sur le chauffage. Les périodes avec fenêtre ouverte ou modification manuelle ne comptent pas.</string>
     <string name="probe_none">Pas encore de prévisions – les premières sont faites au prochain passage quotidien.</string>
-    <string name="probe_score">Évaluées : %1$d · à l’heure (±30 min) : %2$d %% · écart moyen %3$s min · %4$d jours</string>
     <string name="probe_ready">Assez précis : la régulation optimale peut être proposée pour cette pièce.</string>
     <string name="probe_not_ready">La régulation optimale est proposée après 14 jours avec ≥ 80 % à l’heure et ≤ 30 min d’écart moyen.</string>
-    <string name="probe_planned">Prévu %1$s → %2$.1f °C : attendu %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C : attendu %3$s · réel %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d min)"</string>
     <string name="probe_not_reached">non atteint</string>
     <string name="probe_prior">" · valeurs de départ"</string>
@@ -159,7 +156,6 @@
     <string name="outcome_early">plus tôt</string>
     <string name="outcome_late">plus tard</string>
     <string name="outcome_not_reached">non atteint</string>
-    <string name="outcome_disturbed">non compté (fenêtre/modification manuelle)</string>
 
     <string name="profiles_title">Programmes de chauffage</string>
     <string name="profile_n">Programme %s</string>
@@ -419,7 +415,6 @@
     <string name="profile_undo_text">La pièce « %s » retrouve le programme hebdomadaire d’avant le dernier enregistrement. La version actuelle est conservée, l’opération reste donc réversible.</string>
     <string name="stepper_decrease">Diminuer : %s</string>
     <string name="stepper_increase">Augmenter : %s</string>
-    <string name="probe_score_greybox">Modèle boîte grise (toutes les données, en parallèle) : %1$d évaluées · à l\'heure %2$d %% · écart moyen %3$s min</string>
     <string name="save_changes_list">Modifications (%d)</string>
     <string name="greybox_pending">Modèle boîte grise (toutes les données) : premier ajustement après 7 jours de données, puis chaque semaine pendant la charge.</string>
     <string name="greybox_title">Modèle boîte grise (toutes les données, ajusté le %s)</string>
@@ -427,14 +422,12 @@
     <string name="greybox_measured">%s (mesuré)</string>
     <string name="greybox_estimated">%s (estimé)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">Versions (erreur à 1 h sur la dernière semaine, non utilisée pour l’ajustement) : %s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s premier ajustement</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (ancien conservé)</string>
     <string name="model_curve_title">Journée simulée à %.0f °C dehors : réduit, 12 h confort, retour au réduit</string>
     <string name="legend_greybox">Boîte grise</string>
     <string name="legend_physics">Modèle physique</string>
-    <string name="model_curve_at">Après %1$s : %2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">Erreur sur la dernière semaine par version (plus bas = mieux)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

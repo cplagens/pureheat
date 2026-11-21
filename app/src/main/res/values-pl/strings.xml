@@ -150,11 +150,8 @@
     <string name="probe_title">Próba (prognoza a rzeczywistość)</string>
     <string name="probe_explanation">Raz dziennie aplikacja przewiduje na podstawie aktywnego profilu, modelu pomieszczenia i prognozy pogody, kiedy każde nagrzewanie osiągnie wartość zadaną, a potem porównuje to z pomiarem. W ogrzewaniu nic nie jest zmieniane. Okresy z otwartym oknem lub ręczną zmianą się nie liczą.</string>
     <string name="probe_none">Brak prognoz – pierwsze powstaną przy następnym dziennym przebiegu.</string>
-    <string name="probe_score">Ocenione: %1$d · na czas (±30 min): %2$d %% · średnio %3$s min odchylenia · %4$d dni</string>
     <string name="probe_ready">Wystarczająco dokładne: dla tego pomieszczenia można zaproponować optymalne sterowanie.</string>
     <string name="probe_not_ready">Optymalne sterowanie jest proponowane po 14 dniach z ≥ 80 % na czas i ≤ 30 min średniego odchylenia.</string>
-    <string name="probe_planned">Zaplanowane %1$s → %2$.1f °C: oczekiwane %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C: oczekiwane %3$s · faktycznie %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d min)"</string>
     <string name="probe_not_reached">nieosiągnięte</string>
     <string name="probe_prior">" · wartości startowe"</string>
@@ -162,7 +159,6 @@
     <string name="outcome_early">wcześniej</string>
     <string name="outcome_late">później</string>
     <string name="outcome_not_reached">nieosiągnięte</string>
-    <string name="outcome_disturbed">nie liczy się (okno/ręczna zmiana)</string>
 
     <string name="profiles_title">Profile grzewcze</string>
     <string name="profile_n">Profil %s</string>
@@ -422,7 +418,6 @@
     <string name="profile_undo_text">Pomieszczenie „%s” wróci do programu tygodniowego sprzed ostatniego zapisu. Bieżąca wersja zostanie zachowana, więc można to ponownie cofnąć.</string>
     <string name="stepper_decrease">Zmniejsz: %s</string>
     <string name="stepper_increase">Zwiększ: %s</string>
-    <string name="probe_score_greybox">Model szarej skrzynki (wszystkie dane, równolegle): ocenionych %1$d · na czas %2$d %% · średnio %3$s min różnicy</string>
     <string name="save_changes_list">Zmiany (%d)</string>
     <string name="greybox_pending">Model szarej skrzynki (wszystkie dane): pierwsze dopasowanie po 7 dniach danych, potem co tydzień podczas ładowania.</string>
     <string name="greybox_title">Model szarej skrzynki (wszystkie dane, dopasowany %s)</string>
@@ -430,14 +425,12 @@
     <string name="greybox_measured">%s (zmierzone)</string>
     <string name="greybox_estimated">%s (szacowane)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">Wersje (błąd 1 h w ostatnim tygodniu, nieużytym do dopasowania): %s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s pierwsze dopasowanie</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (zachowano poprzedni)</string>
     <string name="model_curve_title">Symulowany dzień przy %.0f °C na zewnątrz: obniżenie, 12 h komfortu, powrót do obniżenia</string>
     <string name="legend_greybox">Szara skrzynka</string>
     <string name="legend_physics">Model fizyczny</string>
-    <string name="model_curve_at">Po %1$s: %2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">Błąd w ostatnim tygodniu dla wersji (niższy = lepiej)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

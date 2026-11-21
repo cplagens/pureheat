@@ -144,11 +144,8 @@
     <string name="probe_title">Proefrun (voorspelling vs. werkelijkheid)</string>
     <string name="probe_explanation">Eén keer per dag voorspelt de app uit het actieve profiel, het kamermodel en de weersverwachting wanneer elke opwarming haar doel bereikt, en vergelijkt dat daarna met de meting. Aan de verwarming wordt niets veranderd. Tijden met een open raam of handmatige wijziging tellen niet mee.</string>
     <string name="probe_none">Nog geen voorspellingen – de eerste worden bij de volgende dagelijkse run gemaakt.</string>
-    <string name="probe_score">Beoordeeld: %1$d · op tijd (±30 min): %2$d %% · gemiddeld %3$s min ernaast · %4$d dagen</string>
     <string name="probe_ready">Nauwkeurig genoeg: de optimale regeling kan voor deze kamer worden aangeboden.</string>
     <string name="probe_not_ready">De optimale regeling wordt aangeboden na 14 dagen met ≥ 80 % op tijd en ≤ 30 min gemiddelde afwijking.</string>
-    <string name="probe_planned">Gepland %1$s → %2$.1f °C: verwacht %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C: verwacht %3$s · werkelijk %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d min)"</string>
     <string name="probe_not_reached">niet bereikt</string>
     <string name="probe_prior">" · startwaarden"</string>
@@ -156,7 +153,6 @@
     <string name="outcome_early">eerder</string>
     <string name="outcome_late">later</string>
     <string name="outcome_not_reached">niet bereikt</string>
-    <string name="outcome_disturbed">telt niet (raam/handmatige wijziging)</string>
 
     <string name="profiles_title">Verwarmingsprofielen</string>
     <string name="profile_n">Profiel %s</string>
@@ -416,7 +412,6 @@
     <string name="profile_undo_text">De kamer ‘%s’ krijgt weer het weekprogramma van vóór de laatste opslag. De huidige versie blijft bewaard, dus dit kan opnieuw ongedaan worden gemaakt.</string>
     <string name="stepper_decrease">%s verlagen</string>
     <string name="stepper_increase">%s verhogen</string>
-    <string name="probe_score_greybox">Grey-boxmodel (alle data, ter vergelijking): %1$d beoordeeld · op tijd %2$d %% · gemiddeld %3$s min ernaast</string>
     <string name="save_changes_list">Wijzigingen (%d)</string>
     <string name="greybox_pending">Grey-boxmodel (alle data): eerste aanpassing na 7 dagen data, daarna wekelijks tijdens het opladen.</string>
     <string name="greybox_title">Grey-boxmodel (alle data, aangepast op %s)</string>
@@ -424,14 +419,12 @@
     <string name="greybox_measured">%s (gemeten)</string>
     <string name="greybox_estimated">%s (geschat)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">Versies (1-uursfout in de laatste week, niet gebruikt voor de aanpassing): %s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s eerste aanpassing</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (oude behouden)</string>
     <string name="model_curve_title">Gesimuleerde dag bij %.0f °C buiten: verlaagd, 12 h comfort, terug naar verlaagd</string>
     <string name="legend_greybox">Grey box</string>
     <string name="legend_physics">Fysisch model</string>
-    <string name="model_curve_at">Na %1$s: %2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">Fout in de laatste week per versie (lager is beter)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

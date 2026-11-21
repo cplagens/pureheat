@@ -162,11 +162,8 @@
     <string name="probe_title">Probe run (prediction vs. reality)</string>
     <string name="probe_explanation">Once a day the app predicts from the active profile, the room model and the forecast when each heat-up will reach its target, and compares this with the measurement afterwards. Nothing is changed at the heating. Times with an open window or a manual change don\'t count.</string>
     <string name="probe_none">No predictions yet – the first ones are made at the next daily run.</string>
-    <string name="probe_score">Evaluated: %1$d · on time (±30 min): %2$d %% · off by %3$s min on average · %4$d days</string>
     <string name="probe_ready">Accurate enough: the optimal control can be offered for this room.</string>
     <string name="probe_not_ready">The optimal control is offered after 14 days with ≥ 80 % on time and ≤ 30 min average deviation.</string>
-    <string name="probe_planned">Planned %1$s → %2$.1f °C: expected %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C: expected %3$s · actual %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d min)"</string>
     <string name="probe_not_reached">not reached</string>
     <string name="probe_prior">" · starting values"</string>
@@ -174,7 +171,6 @@
     <string name="outcome_early">earlier</string>
     <string name="outcome_late">later</string>
     <string name="outcome_not_reached">not reached</string>
-    <string name="outcome_disturbed">not counted (window/manual change)</string>
 
     <!-- Room properties (free text → structured, on-device AI or keywords) -->
     <string name="props_title">Room properties</string>
@@ -444,7 +440,6 @@
     <string name="profile_undo_text">The room “%s” gets back the weekly profile from before the last save. The current version is kept, so this can be undone again.</string>
     <string name="stepper_decrease">Decrease %s</string>
     <string name="stepper_increase">Increase %s</string>
-    <string name="probe_score_greybox">Grey-box model (all data, side by side): %1$d evaluated · on time %2$d %% · off by %3$s min on average</string>
     <string name="save_changes_list">Changes (%d)</string>
     <string name="greybox_pending">Grey-box model (all data): first fit after 7 days of data, then weekly while charging.</string>
     <string name="greybox_title">Grey-box model (all data, fitted %s)</string>
@@ -452,14 +447,12 @@
     <string name="greybox_measured">%s (measured)</string>
     <string name="greybox_estimated">%s (estimated)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">Versions (1-h error on the last week, not used for the fit): %s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s first fit</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (old one kept)</string>
     <string name="model_curve_title">Simulated day at %.0f °C outside: setback, 12 h comfort, back to setback</string>
     <string name="legend_greybox">Grey box</string>
     <string name="legend_physics">Physics model</string>
-    <string name="model_curve_at">After %1$s: %2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">Error on the last week per version (lower is better)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

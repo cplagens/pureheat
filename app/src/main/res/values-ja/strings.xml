@@ -141,11 +141,8 @@
     <string name="probe_title">試行（予測と実際）</string>
     <string name="probe_explanation">アプリは 1 日 1 回、有効なプロファイル・部屋モデル・天気予報から各加熱が目標に達する時刻を予測し、後で測定値と比較します。暖房には何も変更を加えません。窓が開いていた時間や手動変更があった時間は数えません。</string>
     <string name="probe_none">まだ予測はありません – 最初の予測は次回の日次実行で行われます。</string>
-    <string name="probe_score">評価済み: %1$d · 時間どおり（±30 分）: %2$d %% · 平均ずれ %3$s 分 · %4$d 日</string>
     <string name="probe_ready">十分な精度: この部屋には最適制御を提案できます。</string>
     <string name="probe_not_ready">最適制御は、14 日間で時間どおり ≥ 80 %、平均ずれ ≤ 30 分になると提案されます。</string>
-    <string name="probe_planned">予定 %1$s → %2$.1f °C: 予測 %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C: 予測 %3$s · 実際 %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d 分)"</string>
     <string name="probe_not_reached">未到達</string>
     <string name="probe_prior">" · 初期値"</string>
@@ -153,7 +150,6 @@
     <string name="outcome_early">早い</string>
     <string name="outcome_late">遅い</string>
     <string name="outcome_not_reached">未到達</string>
-    <string name="outcome_disturbed">対象外（窓／手動変更）</string>
 
     <string name="profiles_title">暖房プロファイル</string>
     <string name="profile_n">プロファイル %s</string>
@@ -413,7 +409,6 @@
     <string name="profile_undo_text">「%s」は前回保存する前の週間プログラムに戻ります。現在のバージョンは保持されるため、再び元に戻せます。</string>
     <string name="stepper_decrease">%sを下げる</string>
     <string name="stepper_increase">%sを上げる</string>
-    <string name="probe_score_greybox">グレーボックスモデル(全データ、比較用):評価 %1$d 件 · 時間どおり %2$d %% · 平均誤差 %3$s 分</string>
     <string name="save_changes_list">変更 (%d)</string>
     <string name="greybox_pending">グレーボックスモデル(全データ):7日分のデータ後に初回フィット、その後は充電中に毎週。</string>
     <string name="greybox_title">グレーボックスモデル(全データ、%s にフィット)</string>
@@ -421,14 +416,12 @@
     <string name="greybox_measured">%s(測定済み)</string>
     <string name="greybox_estimated">%s(推定)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">バージョン(フィットに使っていない直近1週間での1時間誤差):%s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s 初回フィット</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C(旧モデルを維持)</string>
     <string name="model_curve_title">外気温 %.0f °C でのシミュレーション:節約→ 12 時間快適→節約</string>
     <string name="legend_greybox">グレーボックス</string>
     <string name="legend_physics">物理モデル</string>
-    <string name="model_curve_at">%1$s 後:%2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">バージョンごとの直近1週間の誤差(低いほど良い)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>

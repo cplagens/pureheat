@@ -144,11 +144,8 @@
     <string name="probe_title">Deneme (tahmin ve gerçek)</string>
     <string name="probe_explanation">Uygulama günde bir kez etkin profil, oda modeli ve hava tahmininden her ısınmanın hedefine ne zaman ulaşacağını tahmin eder ve sonra bunu ölçümle karşılaştırır. Isıtmada hiçbir şey değiştirilmez. Açık pencere veya elle değişiklik olan zamanlar sayılmaz.</string>
     <string name="probe_none">Henüz tahmin yok – ilkleri bir sonraki günlük çalışmada yapılır.</string>
-    <string name="probe_score">Değerlendirilen: %1$d · zamanında (±30 dk): %%%2$d · ortalama %3$s dk sapma · %4$d gün</string>
     <string name="probe_ready">Yeterince doğru: bu oda için optimum kontrol önerilebilir.</string>
     <string name="probe_not_ready">Optimum kontrol, ≥ %80 zamanında ve ≤ 30 dk ortalama sapma ile 14 gün sonra önerilir.</string>
-    <string name="probe_planned">Planlanan %1$s → %2$.1f °C: beklenen %3$s</string>
-    <string name="probe_result">%1$s → %2$.1f °C: beklenen %3$s · gerçek %4$s%5$s · %6$s</string>
     <string name="probe_delta">" (%+d dk)"</string>
     <string name="probe_not_reached">ulaşılmadı</string>
     <string name="probe_prior">" · başlangıç değerleri"</string>
@@ -156,7 +153,6 @@
     <string name="outcome_early">daha erken</string>
     <string name="outcome_late">daha geç</string>
     <string name="outcome_not_reached">ulaşılmadı</string>
-    <string name="outcome_disturbed">sayılmadı (pencere/elle değişiklik)</string>
 
     <string name="profiles_title">Isıtma profilleri</string>
     <string name="profile_n">Profil %s</string>
@@ -416,7 +412,6 @@
     <string name="profile_undo_text">“%s” odası son kaydetmeden önceki haftalık programa döner. Mevcut sürüm saklanır, bu yüzden işlem yeniden geri alınabilir.</string>
     <string name="stepper_decrease">Azalt: %s</string>
     <string name="stepper_increase">Artır: %s</string>
-    <string name="probe_score_greybox">Gri kutu modeli (tüm veriler, karşılaştırma): %1$d değerlendirildi · zamanında %%%2$d · ortalama %3$s dk sapma</string>
     <string name="save_changes_list">Değişiklikler (%d)</string>
     <string name="greybox_pending">Gri kutu modeli (tüm veriler): 7 günlük veriden sonra ilk uyarlama, ardından şarj sırasında haftalık.</string>
     <string name="greybox_title">Gri kutu modeli (tüm veriler, uyarlama: %s)</string>
@@ -424,14 +419,12 @@
     <string name="greybox_measured">%s (ölçülmüş)</string>
     <string name="greybox_estimated">%s (tahmini)</string>
     <string name="greybox_gain">%+.2f °C/h</string>
-    <string name="greybox_versions">Sürümler (son haftada 1 saatlik hata, uyarlamada kullanılmadı): %s</string>
     <string name="greybox_version">%1$s ±%2$.2f °C</string>
     <string name="greybox_version_first">%s ilk uyarlama</string>
     <string name="greybox_version_rejected">%1$s ±%2$.2f °C (eskisi korundu)</string>
     <string name="model_curve_title">Dışarıda %.0f °C ile simüle edilmiş gün: düşük, 12 saat konfor, düşüğe dönüş</string>
     <string name="legend_greybox">Gri kutu</string>
     <string name="legend_physics">Fizik modeli</string>
-    <string name="model_curve_at">%1$s sonra: %2$s</string>
     <string name="model_curve_value">%1$s %2$.1f °C</string>
     <string name="greybox_versions_chart">Sürüm başına son haftadaki hata (düşük olan daha iyi)</string>
     <string name="greybox_rmse_axis">±%.2f °C</string>
