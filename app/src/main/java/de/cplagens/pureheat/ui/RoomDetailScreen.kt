@@ -78,7 +78,7 @@ fun RoomDetailScreen(
     val probe by vm.probe.collectAsStateWithLifecycle()
     val outlook by vm.outlook.collectAsStateWithLifecycle()
     LaunchedEffect(room.activeProfile, room.actualTemperature) { vm.loadOutlook(room) }
-    val greyBoxActive = greyBoxVersions?.any { it.adopted } == true
+    val greyBoxActive = insight?.active?.isGreyBox == true
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
     val ctx = LocalContext.current
     val muted = MaterialTheme.colorScheme.onSurfaceVariant

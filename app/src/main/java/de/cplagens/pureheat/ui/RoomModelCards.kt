@@ -83,8 +83,7 @@ internal fun ModelCard(insight: RoomInsight?, greyBoxVersions: List<RoomModelEnt
     var info by rememberSaveable { mutableStateOf(false) }
     var details by rememberSaveable { mutableStateOf(false) }
     var compare by rememberSaveable { mutableStateOf(false) }
-    val greyBox = remember(greyBoxVersions) { greyBoxVersions?.firstOrNull { it.adopted }?.toModel() }
-    val active = remember(insight, greyBox) { insight?.let { ActiveModel.choose(greyBox, it.model) } }
+    val active = remember(insight) { insight?.active }
     val comparison = remember(insight, active) { insight?.model?.let(SimParams::of)?.takeIf { active?.isGreyBox == true } }
 
     Card(Modifier.fillMaxWidth()) {

@@ -31,16 +31,12 @@ import kotlinx.coroutines.flow.flatMapLatest
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.flow.map
 import de.cplagens.pureheat.data.history.PredictionEntity
-import de.cplagens.pureheat.data.probe.Outcome
 import de.cplagens.pureheat.data.probe.ProbeScore
 import de.cplagens.pureheat.data.probe.Strategy
 import kotlinx.coroutines.launch
 import de.cplagens.pureheat.data.model.RoomInsight
-import de.cplagens.pureheat.data.model.ActiveModel
-import de.cplagens.pureheat.data.model.GreyBoxModel
 import de.cplagens.pureheat.data.model.RoomOutlook
 import de.cplagens.pureheat.data.model.SimParams
-import de.cplagens.pureheat.data.model.toModel
 import de.cplagens.pureheat.data.probe.ProbeRun
 import de.cplagens.pureheat.data.room.RoomDescription
 import de.cplagens.pureheat.hmip.Room
@@ -138,9 +134,6 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
         launch { _greyBoxVersions.value = runCatching { repository.roomModelVersions(roomId) }.getOrDefault(emptyList()) }
     }
 
-    /** The grey box in use; null before its first weekly fit (or while loading). */
-    private val greyBox: GreyBoxModel? get() = _greyBoxVersions.value?.firstOrNull { it.adopted }?.toModel()
-
     /** What the active model expects until the end of tomorrow; null without profile or model. */
     private val _outlook = MutableStateFlow<RoomOutlook?>(null)
     val outlook: StateFlow<RoomOutlook?> = _outlook
@@ -170,7 +163,7 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
         val ref = room.profiles.firstOrNull { it.index == room.activeProfile } ?: return null
         modelsLoaded.join()
         val insight = _insight.value ?: return null
-        val active = ActiveModel.choose(greyBox, insight.model) ?: return null
+        val active = insight.active ?: return null
         // The grey box's 1-h error on the hold-out week (else on its fit); the physics model has none.
         val adopted = _greyBoxVersions.value?.firstOrNull { it.adopted }
         val stepError = if (active.isGreyBox) adopted?.holdoutRmse ?: adopted?.rmse else null
@@ -220,32 +213,16 @@ data class ProbeState(
     }
 
     companion object {
-        const val SCORE_WINDOW_MS = 14 * 24 * 3_600_000L
+        const val SCORE_WINDOW_MS = ProbeScore.WINDOW_MS
 
         fun from(predictions: List<PredictionEntity>): ProbeState {
             val byStrategy = predictions.groupBy { it.strategy }
             val physics = byStrategy[Strategy.PHYSICS].orEmpty()
             return ProbeState(
                 predictions = physics,
-                score = score(physics),
+                score = ProbeScore.of(physics),
                 greyBoxPredictions = byStrategy[Strategy.GREYBOX].orEmpty(),
-                greyBoxScore = byStrategy[Strategy.GREYBOX]?.let(::score),
-            )
-        }
-
-        private fun score(predictions: List<PredictionEntity>): ProbeScore {
-            // Disturbed ones (open window, manual change) don't count.
-            val counted = predictions.filter { it.outcome != null && it.outcome != Outcome.DISTURBED }
-            val errors = counted.mapNotNull { p ->
-                val a = p.actualReach
-                val b = p.predictedReach
-                if (a != null && b != null) kotlin.math.abs(a - b) / 60_000 else null
-            }
-            return ProbeScore(
-                evaluated = counted.size,
-                hits = counted.count { it.outcome == Outcome.HIT },
-                meanAbsErrorMinutes = errors.takeIf { it.isNotEmpty() }?.average()?.toLong(),
-                days = counted.map { it.eventTime / 86_400_000L }.distinct().size,
+                greyBoxScore = byStrategy[Strategy.GREYBOX]?.let(ProbeScore::of),
             )
         }
     }

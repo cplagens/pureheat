@@ -6,6 +6,7 @@
 package de.cplagens.pureheat.data.model
 
 import de.cplagens.pureheat.data.history.BathingDetector
+import de.cplagens.pureheat.data.probe.ProbeScore
 import de.cplagens.pureheat.data.room.RoomProperties
 
 import de.cplagens.pureheat.data.history.HistoryAnalysis
@@ -25,9 +26,15 @@ data class RoomInsight(
     val outsideIsForecast: Boolean = false,
     /** Detected open-window times in the analysed history; excluded from the model. */
     val windowEvents: List<WindowEvent> = emptyList(),
-    /** Grey-box model in use (fitted over all data); null until the first weekly fit. */
+    /** Adopted grey-box model (fitted over all data); null until the first weekly fit. */
     val greyBox: GreyBoxModel? = null,
+    /** Probe-run scores of the last 14 days; null = no predictions yet. */
+    val greyBoxScore: ProbeScore? = null,
+    val physicsScore: ProbeScore? = null,
 ) {
+    /** The model the app shows first ([ActiveModel.choose]). */
+    val active: ActiveModel? get() = ActiveModel.choose(greyBox, model, greyBoxScore, physicsScore)
+
     /** Setback → comfort, e.g. in the morning. */
     val heatUp: Prediction
         get() = if (levels == null || outside == null) Prediction.Unknown

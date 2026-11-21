@@ -8,7 +8,8 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 ## Unreleased
 
 - Overview: each room's heat-up/cool-down line now comes from the room model fitted over all
-  data, so it shows times from the first week on instead of "still learning".
+  data, so it shows times from the first week on instead of "still learning". If the probe run
+  shows the classic model is clearly more accurate for a room, that one is shown instead.
 - Room detail: the temperature chart shows the next 12 hours as the room model expects them,
   and when each heat-up should reach its target. Room model card reworked: reliability badge,
   key figures, tomorrow with your active profile; details on demand. Probe run as a hit rate,

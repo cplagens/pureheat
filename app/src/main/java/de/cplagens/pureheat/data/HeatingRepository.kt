@@ -28,6 +28,7 @@ import de.cplagens.pureheat.data.history.WindowDetector
 import de.cplagens.pureheat.data.probe.HeatUpPrediction
 import de.cplagens.pureheat.data.probe.ModelSource
 import de.cplagens.pureheat.data.probe.ProbeRun
+import de.cplagens.pureheat.data.probe.ProbeScore
 import de.cplagens.pureheat.data.probe.Strategy
 import de.cplagens.pureheat.data.room.RoomDescriptionStore
 import de.cplagens.pureheat.data.room.RoomPriors
@@ -231,8 +232,17 @@ class HeatingRepository(
         val forecastOutside = forecast.takeIf { it.isNotEmpty() }?.average()
         val properties = descriptions.all.value.mapValues { it.value.properties }
         val insights = withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside, properties) }
-        // The grey box has values from the start (prior): the dashboard shows it while the physics model learns.
-        return insights.mapValues { (id, insight) -> insight.copy(greyBox = dao.currentRoomModel(id)?.toModel()) }
+        // The grey box has values from the start (prior): it is shown while the physics model learns,
+        // unless the probe run finds the physics model clearly better.
+        val predictions = dao.allPredictionsSince(now - ProbeScore.WINDOW_MS).groupBy { it.roomId }
+        return insights.mapValues { (id, insight) ->
+            val byStrategy = predictions[id].orEmpty().groupBy { it.strategy }
+            insight.copy(
+                greyBox = dao.currentRoomModel(id)?.toModel(),
+                greyBoxScore = byStrategy[Strategy.GREYBOX]?.let(ProbeScore::of),
+                physicsScore = byStrategy[Strategy.PHYSICS]?.let(ProbeScore::of),
+            )
+        }
     }
 
     /** Grey-box model versions of [roomId], newest first; the one in use is the first adopted. */

@@ -5,6 +5,8 @@
  */
 package de.cplagens.pureheat.data.model
 
+import de.cplagens.pureheat.data.probe.ProbeScore
+
 /**
  * The model the room screens show first: the grey box in use (fitted over all data), else the
  * physics model once it is confident. The other one is only offered for comparison. Pure Kotlin.
@@ -37,7 +39,16 @@ sealed interface ActiveModel {
     }
 
     companion object {
-        fun choose(greyBox: GreyBoxModel?, physics: RoomModel): ActiveModel? =
-            greyBox?.let(::Grey) ?: SimParams.of(physics)?.let { Physics(physics, it) }
+        /** Grey box first, unless the confident physics model is clearly better in the probe run. */
+        fun choose(
+            greyBox: GreyBoxModel?,
+            physics: RoomModel,
+            greyBoxScore: ProbeScore? = null,
+            physicsScore: ProbeScore? = null,
+        ): ActiveModel? {
+            val phys = SimParams.of(physics)?.let { Physics(physics, it) }
+            if (phys != null && physicsScore?.clearlyBetterThan(greyBoxScore) == true) return phys
+            return greyBox?.let(::Grey) ?: phys
+        }
     }
 }

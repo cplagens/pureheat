@@ -5,6 +5,7 @@
  */
 package de.cplagens.pureheat.data.probe
 
+import de.cplagens.pureheat.data.history.PredictionEntity
 import de.cplagens.pureheat.data.history.RoomSample
 import de.cplagens.pureheat.data.history.WindowEvent
 import de.cplagens.pureheat.data.model.GreyBoxModel
@@ -200,9 +201,44 @@ data class ProbeScore(
     val trustworthy: Boolean
         get() = days >= MIN_DAYS && hitRate >= MIN_HIT_RATE && (meanAbsErrorMinutes ?: Long.MAX_VALUE) <= MAX_MEAN_ERROR
 
+    /**
+     * Clearly better than [other] in the probe run (user 2026-11-22: then the physics model is shown
+     * first again): both have [MIN_COMPARED] evaluations, and this one is [HIT_RATE_MARGIN] more often
+     * on time without a larger mean error, or [ERROR_MARGIN_MINUTES] closer without fewer hits.
+     */
+    fun clearlyBetterThan(other: ProbeScore?): Boolean {
+        other ?: return false
+        if (evaluated < MIN_COMPARED || other.evaluated < MIN_COMPARED) return false
+        val err = meanAbsErrorMinutes ?: return false
+        val otherErr = other.meanAbsErrorMinutes ?: (Long.MAX_VALUE / 2)
+        return (hitRate >= other.hitRate + HIT_RATE_MARGIN && err <= otherErr) ||
+            (err <= otherErr - ERROR_MARGIN_MINUTES && hitRate >= other.hitRate)
+    }
+
     companion object {
         const val MIN_DAYS = 14
         const val MIN_HIT_RATE = 0.8
         const val MAX_MEAN_ERROR = 30L
+        const val MIN_COMPARED = 6
+        /** The probe run scores the last 14 days. */
+        const val WINDOW_MS = 14 * 24 * 3_600_000L
+        const val HIT_RATE_MARGIN = 0.15
+        const val ERROR_MARGIN_MINUTES = 15L
+
+        /** Score of one model's predictions; disturbed ones (open window, manual change) don't count. */
+        fun of(predictions: List<PredictionEntity>): ProbeScore {
+            val counted = predictions.filter { it.outcome != null && it.outcome != Outcome.DISTURBED }
+            val errors = counted.mapNotNull { p ->
+                val a = p.actualReach
+                val b = p.predictedReach
+                if (a != null && b != null) abs(a - b) / 60_000 else null
+            }
+            return ProbeScore(
+                evaluated = counted.size,
+                hits = counted.count { it.outcome == Outcome.HIT },
+                meanAbsErrorMinutes = errors.takeIf { it.isNotEmpty() }?.average()?.toLong(),
+                days = counted.map { it.eventTime / 86_400_000L }.distinct().size,
+            )
+        }
     }
 }

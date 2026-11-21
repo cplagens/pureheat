@@ -5,6 +5,7 @@
  */
 package de.cplagens.pureheat.data.model
 
+import de.cplagens.pureheat.data.probe.ProbeScore
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertFalse
 import org.junit.Assert.assertNotNull
@@ -32,6 +33,22 @@ class RoomOutlookTest {
         assertTrue(ActiveModel.choose(greyBox(), confident)!!.isGreyBox)
         assertFalse(ActiveModel.choose(null, confident)!!.isGreyBox)
         assertNull(ActiveModel.choose(null, learning))
+    }
+
+    @Test
+    fun physicsWinsBackOnlyWhenClearlyBetter() {
+        val grey = ProbeScore(evaluated = 10, hits = 5, meanAbsErrorMinutes = 40, days = 7)
+        val better = ProbeScore(evaluated = 10, hits = 8, meanAbsErrorMinutes = 35, days = 7)
+        val slightlyBetter = ProbeScore(evaluated = 10, hits = 6, meanAbsErrorMinutes = 35, days = 7)
+        val closer = ProbeScore(evaluated = 10, hits = 5, meanAbsErrorMinutes = 20, days = 7)
+        val tooFew = ProbeScore(evaluated = 3, hits = 3, meanAbsErrorMinutes = 5, days = 2)
+        assertFalse(ActiveModel.choose(greyBox(), confident, grey, better)!!.isGreyBox)
+        assertFalse(ActiveModel.choose(greyBox(), confident, grey, closer)!!.isGreyBox)
+        assertTrue(ActiveModel.choose(greyBox(), confident, grey, slightlyBetter)!!.isGreyBox)
+        assertTrue(ActiveModel.choose(greyBox(), confident, grey, tooFew)!!.isGreyBox)
+        assertTrue(ActiveModel.choose(greyBox(), confident, null, better)!!.isGreyBox)
+        // A physics model that is still learning never takes over.
+        assertTrue(ActiveModel.choose(greyBox(), learning, grey, better)!!.isGreyBox)
     }
 
     @Test
