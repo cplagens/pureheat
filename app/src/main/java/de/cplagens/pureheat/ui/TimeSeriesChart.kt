@@ -53,6 +53,10 @@ data class ChartSeries(
      * jobs for hours, and a connected line reads better (as in the overview). Valve areas keep the gaps.
      */
     val breakOnGaps: Boolean = area,
+    /** Only a dot per point, no line (e.g. predicted reach times). */
+    val dots: Boolean = false,
+    /** Fill between [points] and these (same times) instead of drawing a line: an uncertainty band. */
+    val lower: List<Pair<Long, Double>>? = null,
 )
 
 /**
@@ -73,7 +77,10 @@ fun TimeSeriesChart(
     /** Highlighted time ranges drawn behind the series (end null = until [end]). */
     bands: List<Pair<Long, Long?>> = emptyList(),
     bandColor: Color = Color.Transparent,
+    /** Everything after this time is a prediction: shaded lightly, with a line at [now]. */
+    now: Long? = null,
 ) {
+    val futureColor = MaterialTheme.colorScheme.onSurface.copy(alpha = 0.04f)
     val grid = MaterialTheme.colorScheme.outlineVariant
     val cursor = MaterialTheme.colorScheme.onSurface
     val measurer = rememberTextMeasurer()
@@ -104,6 +111,11 @@ fun TimeSeriesChart(
             val right = x(minOf(to ?: end, end))
             if (right > left) drawRect(bandColor, Offset(left, 0f), androidx.compose.ui.geometry.Size(right - left, size.height))
         }
+        now?.takeIf { it in start..end }?.let { n ->
+            drawRect(futureColor, Offset(x(n), 0f), androidx.compose.ui.geometry.Size(size.width - x(n), size.height))
+            drawLine(grid, Offset(x(n), 0f), Offset(x(n), size.height), strokeWidth = 1.dp.toPx(),
+                pathEffect = PathEffect.dashPathEffect(floatArrayOf(4.dp.toPx(), 3.dp.toPx())))
+        }
         timeTicks(start, end).forEach { t ->
             drawLine(grid, Offset(x(t), 0f), Offset(x(t), size.height), strokeWidth = 1f)
         }
@@ -117,6 +129,19 @@ fun TimeSeriesChart(
         }
 
         series.forEach { s ->
+            if (s.dots) {
+                s.points.forEach { (t, v) -> drawCircle(s.color, 3.5.dp.toPx(), Offset(x(t), y(v))) }
+                return@forEach
+            }
+            s.lower?.let { lower ->
+                if (lower.size < 2 || lower.size != s.points.size) return@forEach
+                val path = Path()
+                s.points.forEachIndexed { i, (t, v) -> if (i == 0) path.moveTo(x(t), y(v)) else path.lineTo(x(t), y(v)) }
+                lower.asReversed().forEach { (t, v) -> path.lineTo(x(t), y(v)) }
+                path.close()
+                drawPath(path, s.color)
+                return@forEach
+            }
             splitRuns(s.points, s.breakOnGaps).forEach { run ->
                 val path = Path()
                 run.forEachIndexed { i, (t, v) ->

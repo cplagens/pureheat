@@ -7,6 +7,10 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 
 ## Unreleased
 
+- Room detail: the temperature chart shows the next 12 hours as the room model expects them,
+  and when each heat-up should reach its target. Room model card reworked: reliability badge,
+  key figures, tomorrow with your active profile; details on demand. Probe run as a hit rate,
+  a deviation chart and the next check.
 - Room model card: a chart of a simulated day (setback → comfort → setback) for both models;
   the model from all data with its predictions, which values are measured or only estimated,
   and its weekly versions with the error on the last week (also as a chart).

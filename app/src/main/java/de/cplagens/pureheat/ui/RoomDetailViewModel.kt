@@ -36,7 +36,18 @@ import de.cplagens.pureheat.data.probe.ProbeScore
 import de.cplagens.pureheat.data.probe.Strategy
 import kotlinx.coroutines.launch
 import de.cplagens.pureheat.data.model.RoomInsight
+import de.cplagens.pureheat.data.model.ActiveModel
+import de.cplagens.pureheat.data.model.GreyBoxModel
+import de.cplagens.pureheat.data.model.RoomOutlook
+import de.cplagens.pureheat.data.model.SimParams
+import de.cplagens.pureheat.data.model.toModel
+import de.cplagens.pureheat.data.probe.ProbeRun
 import de.cplagens.pureheat.data.room.RoomDescription
+import de.cplagens.pureheat.hmip.Room
+import kotlinx.coroutines.CancellationException
+import kotlinx.coroutines.flow.first
+import java.time.ZoneId
+import kotlin.math.abs
 
 enum class HistoryRange(@StringRes val label: Int, val millis: Long) {
     DAY(R.string.range_24h, 24 * 3_600_000L),
@@ -122,39 +133,102 @@ class RoomDetailViewModel(app: Application, private val roomId: String) : Androi
     private val _greyBoxVersions = MutableStateFlow<List<RoomModelEntity>?>(null)
     val greyBoxVersions: StateFlow<List<RoomModelEntity>?> = _greyBoxVersions
 
-    init {
+    private val modelsLoaded = viewModelScope.launch {
+        launch { _insight.value = runCatching { repository.roomInsights()[roomId] }.getOrNull() }
+        launch { _greyBoxVersions.value = runCatching { repository.roomModelVersions(roomId) }.getOrDefault(emptyList()) }
+    }
+
+    /** The grey box in use; null before its first weekly fit (or while loading). */
+    private val greyBox: GreyBoxModel? get() = _greyBoxVersions.value?.firstOrNull { it.adopted }?.toModel()
+
+    /** What the active model expects until the end of tomorrow; null without profile or model. */
+    private val _outlook = MutableStateFlow<RoomOutlook?>(null)
+    val outlook: StateFlow<RoomOutlook?> = _outlook
+    private var outlookFor: Pair<String?, Double?>? = null
+
+    /**
+     * Loads the room's active profile (one read request, nothing is written) and simulates the
+     * active model with it and the forecast. Again only when the profile or temperature changes.
+     */
+    fun loadOutlook(room: Room) {
+        val key = room.activeProfile to room.actualTemperature
+        if (key == outlookFor) return
+        outlookFor = key
         viewModelScope.launch {
-            _insight.value = runCatching { repository.roomInsights()[roomId] }.getOrNull()
+            _outlook.value = try {
+                buildOutlook(room)
+            } catch (e: CancellationException) {
+                throw e
+            } catch (_: Exception) {
+                null
+            }
         }
-        viewModelScope.launch {
-            _greyBoxVersions.value = runCatching { repository.roomModelVersions(roomId) }.getOrDefault(emptyList())
-        }
+    }
+
+    private suspend fun buildOutlook(room: Room): RoomOutlook? {
+        val temperature = room.actualTemperature ?: return null
+        val ref = room.profiles.firstOrNull { it.index == room.activeProfile } ?: return null
+        modelsLoaded.join()
+        val insight = _insight.value ?: return null
+        val active = ActiveModel.choose(greyBox, insight.model) ?: return null
+        // The grey box's 1-h error on the hold-out week (else on its fit); the physics model has none.
+        val adopted = _greyBoxVersions.value?.firstOrNull { it.adopted }
+        val stepError = if (active.isGreyBox) adopted?.holdoutRmse ?: adopted?.rmse else null
+        val profile = repository.loadProfile(room.id, ref.index, ref.profileId)
+        val now = System.currentTimeMillis()
+        val forecast = repository.forecastSince(now - 3_600_000L).first()
+        val fallback = insight.outside ?: 5.0
+        val zone = ZoneId.systemDefault()
+        return RoomOutlook.build(
+            active = active,
+            comparison = if (active.isGreyBox) SimParams.of(insight.model) else null,
+            startTemperature = temperature,
+            now = now,
+            setPointAt = { ProbeRun.setPointAt(profile.days, it, zone) },
+            // Same as the probe run: nearest forecast hour, else the last known outside temperature.
+            outsideAt = { t ->
+                forecast.minByOrNull { abs(it.timestamp - t) }?.takeIf { abs(it.timestamp - t) <= 2 * 3_600_000L }?.temperature ?: fallback
+            },
+            stepError = stepError,
+            zone = zone,
+        )
     }
 
     /** Probe run of this room: predictions of the last 14 days plus the planned ones, and the score. */
-    val probe: StateFlow<ProbeState> = repository.predictionsSince(roomId, System.currentTimeMillis() - SCORE_WINDOW_MS)
+    val probe: StateFlow<ProbeState> = repository.predictionsSince(roomId, System.currentTimeMillis() - ProbeState.SCORE_WINDOW_MS)
         .map { ProbeState.from(it) }
         .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), ProbeState())
-
-    private companion object {
-        const val SCORE_WINDOW_MS = 14 * 24 * 3_600_000L
-    }
 }
 
 data class ProbeState(
-    /** Predictions of the physics model (listed in the card). */
+    /** Predictions of the physics model. */
     val predictions: List<PredictionEntity> = emptyList(),
     val score: ProbeScore = ProbeScore(0, 0, null, 0),
-    /** Score of the grey-box model side by side; null until it has made predictions. */
+    /** Predictions of the grey-box model side by side (empty until it has made some). */
+    val greyBoxPredictions: List<PredictionEntity> = emptyList(),
+    /** Score of the grey-box model; null until it has made predictions. */
     val greyBoxScore: ProbeScore? = null,
 ) {
+    /** Predictions and score of the active model (the grey box once it predicts), then of the other one. */
+    fun forActive(greyBox: Boolean): Pair<List<PredictionEntity>, ProbeScore> =
+        if (greyBox && greyBoxScore != null) greyBoxPredictions to greyBoxScore else predictions to score
+
+    fun forOther(greyBox: Boolean): Pair<List<PredictionEntity>, ProbeScore>? = when {
+        greyBox && greyBoxScore != null -> predictions to score
+        greyBoxScore != null -> greyBoxPredictions to greyBoxScore
+        else -> null
+    }
+
     companion object {
+        const val SCORE_WINDOW_MS = 14 * 24 * 3_600_000L
+
         fun from(predictions: List<PredictionEntity>): ProbeState {
             val byStrategy = predictions.groupBy { it.strategy }
             val physics = byStrategy[Strategy.PHYSICS].orEmpty()
             return ProbeState(
                 predictions = physics,
                 score = score(physics),
+                greyBoxPredictions = byStrategy[Strategy.GREYBOX].orEmpty(),
                 greyBoxScore = byStrategy[Strategy.GREYBOX]?.let(::score),
             )
         }

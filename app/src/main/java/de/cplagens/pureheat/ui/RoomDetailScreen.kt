@@ -5,7 +5,6 @@
  */
 package de.cplagens.pureheat.ui
 
-import android.content.Context
 import android.text.format.DateFormat
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.layout.Arrangement
@@ -45,19 +44,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.history.PhaseKind
 import de.cplagens.pureheat.data.history.ThermalPhase
-import de.cplagens.pureheat.data.history.PredictionEntity
-import de.cplagens.pureheat.data.history.RoomModelEntity
-import de.cplagens.pureheat.data.model.toModel
-import de.cplagens.pureheat.data.model.GreyBoxModel
-import de.cplagens.pureheat.data.model.ModelCurve
-import androidx.compose.runtime.remember
-import java.time.LocalDate
-import java.time.ZoneId
-import kotlin.math.ceil
-import kotlin.math.floor
-import de.cplagens.pureheat.data.probe.ModelSource
-import de.cplagens.pureheat.data.probe.Outcome
-import de.cplagens.pureheat.data.model.RoomInsight
+import androidx.compose.runtime.LaunchedEffect
 import de.cplagens.pureheat.data.room.RoomProperties
 import de.cplagens.pureheat.data.DetailSection
 import androidx.compose.foundation.selection.toggleable
@@ -89,6 +76,9 @@ fun RoomDetailScreen(
     val insight by vm.insight.collectAsStateWithLifecycle()
     val greyBoxVersions by vm.greyBoxVersions.collectAsStateWithLifecycle()
     val probe by vm.probe.collectAsStateWithLifecycle()
+    val outlook by vm.outlook.collectAsStateWithLifecycle()
+    LaunchedEffect(room.activeProfile, room.actualTemperature) { vm.loadOutlook(room) }
+    val greyBoxActive = greyBoxVersions?.any { it.adopted } == true
     var selected by rememberSaveable { mutableStateOf<Long?>(null) }
     val ctx = LocalContext.current
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
@@ -97,13 +87,25 @@ fun RoomDetailScreen(
     val setPointColor = muted
     val outsideColor = MaterialTheme.colorScheme.tertiary
     val valveColor = HeatingColor.copy(alpha = 0.5f)
+    val reachColor = MaterialTheme.colorScheme.secondary
 
     val actual = state.samples.mapNotNull { s -> s.actualTemperature?.let { s.timestamp to it } }
     val setPoint = state.samples.mapNotNull { s -> s.setPointTemperature?.let { s.timestamp to it } }
     val outside = state.weather.mapNotNull { w -> w.outsideTemperature?.let { w.timestamp to it } }
     val humidity = state.samples.mapNotNull { s -> s.humidity?.let { s.timestamp to it.toDouble() } }
     val humidityColor = MaterialTheme.colorScheme.secondary
-    val temps = (actual + setPoint + outside).map { it.second }
+    // Up to 3 days the chart runs on into the next hours with what the active model expects.
+    val future = outlook?.takeIf { state.range.millis <= HistoryRange.DAYS_3.millis && state.samples.isNotEmpty() }
+    val chartEnd = future?.let { maxOf(state.end, it.now + OUTLOOK_MS) } ?: state.end
+    val ahead = future?.points.orEmpty().filter { it.time in state.end..chartEnd }
+    val expected = ahead.map { it.time to it.temperature }
+    val plannedSetPoint = ahead.filter { !it.setPoint.isNaN() }.map { it.time to it.setPoint }
+    val band = future?.band.orEmpty().filter { it.first in state.end..chartEnd }
+    // When the active model expects each heat-up to reach its target (past and planned).
+    val reaches = probe.forActive(greyBoxActive).first
+        .mapNotNull { p -> p.predictedReach?.takeIf { it in state.start..chartEnd }?.let { it to p.targetTemperature } }
+        .sortedBy { it.first }
+    val temps = (actual + setPoint + outside + expected + plannedSetPoint + reaches).map { it.second } + band.map { it.third }
     val yMin = (temps.minOrNull() ?: 15.0).let { kotlin.math.floor(it) - 0.5 }
     val yMax = (temps.maxOrNull() ?: 25.0).let { kotlin.math.ceil(it) + 0.5 }
 
@@ -142,7 +144,8 @@ fun RoomDetailScreen(
             val values = selected?.let { t ->
                 buildList {
                     actual.nearest(t)?.let { add(ctx.getString(R.string.value_actual, it)) }
-                    setPoint.nearest(t)?.let { add(ctx.getString(R.string.value_setpoint, it)) }
+                    expected.nearest(t)?.let { add(ctx.getString(R.string.value_forecast, it)) }
+                    (setPoint + plannedSetPoint).nearest(t)?.let { add(ctx.getString(R.string.value_setpoint, it)) }
                     outside.nearest(t)?.let { add(ctx.getString(R.string.value_outside, it)) }
                     humidity.nearest(t)?.let { add(ctx.getString(R.string.value_humidity, it.toInt())) }
                     channels.forEach { (label, pts) ->
@@ -162,32 +165,43 @@ fun RoomDetailScreen(
                         Legend(stringResource(R.string.legend_setpoint), setPointColor, dashed = true)
                         Legend(stringResource(R.string.legend_outside), outsideColor, dashed = false)
                         if (state.windows.isNotEmpty()) BandLegend(stringResource(R.string.legend_window_detected))
+                        if (expected.isNotEmpty()) Legend(stringResource(R.string.legend_forecast), actualColor, dashed = true)
+                        if (band.size >= 2) AreaLegend(stringResource(R.string.legend_uncertainty), actualColor.copy(alpha = 0.15f))
+                        if (reaches.isNotEmpty()) DotLegend(stringResource(R.string.legend_expected_reach), reachColor)
                     }
                     if (actual.size < 2) {
                         Text(stringResource(R.string.too_little_data), style = MaterialTheme.typography.bodySmall)
                     }
                     // Time labels only where they stay readable (up to 3 days).
                     if (state.end - state.start <= HistoryRange.DAYS_3.millis) {
-                        MarkerStrip(chartMarkers(ctx, state.samples, state.windows, state.start, state.end, state.bathing), state.start, state.end)
+                        MarkerStrip(chartMarkers(ctx, state.samples, state.windows, state.start, state.end, state.bathing), state.start, chartEnd)
                     }
                     TimeSeriesChart(
-                        series = listOf(
+                        series = listOfNotNull(
+                            band.takeIf { it.size >= 2 }?.let { b ->
+                                ChartSeries("band", actualColor.copy(alpha = 0.15f), b.map { it.first to it.third }, lower = b.map { it.first to it.second })
+                            },
                             ChartSeries("outside", outsideColor, outside),
                             ChartSeries("setpoint", setPointColor, setPoint, step = true, dashed = true),
+                            ChartSeries("planned", setPointColor, plannedSetPoint, step = true, dashed = true),
                             ChartSeries("actual", actualColor, actual),
+                            ChartSeries("expected", actualColor, expected, dashed = true),
+                            ChartSeries("reach", reachColor, reaches, dots = true),
                         ),
                         start = state.start,
-                        end = state.end,
+                        end = chartEnd,
+                        now = future?.let { state.end },
                         yMin = yMin,
                         yMax = yMax,
                         selected = selected,
                         onSelect = { selected = it },
                         yLabel = { ctx.getString(R.string.temp_c0, it) },
                         modifier = Modifier.fillMaxWidth().height(180.dp),
-                        bands = state.windows.map { it.start to it.end },
+                        // An open window lasts until now, not into the forecast.
+                        bands = state.windows.map { it.start to (it.end ?: state.end) },
                         bandColor = WindowBandColor,
                     )
-                    TimeAxis(state.start, state.end)
+                    TimeAxis(state.start, chartEnd)
                 }
             }
         }
@@ -201,7 +215,8 @@ fun RoomDetailScreen(
                         TimeSeriesChart(
                             series = listOf(ChartSeries(label, valveColor, points, step = true, area = true)),
                             start = state.start,
-                            end = state.end,
+                            end = chartEnd,
+                            now = future?.let { state.end },
                             yMin = 0.0,
                             yMax = 1.0,
                             selected = selected,
@@ -209,7 +224,7 @@ fun RoomDetailScreen(
                             modifier = Modifier.fillMaxWidth().height(36.dp),
                         )
                     }
-                    TimeAxis(state.start, state.end)
+                    TimeAxis(state.start, chartEnd)
                 }
             }
         }
@@ -224,17 +239,18 @@ fun RoomDetailScreen(
                         TimeSeriesChart(
                             series = listOf(ChartSeries("humidity", humidityColor, humidity)),
                             start = state.start,
-                            end = state.end,
+                            end = chartEnd,
+                            now = future?.let { state.end },
                             yMin = kotlin.math.floor(minOf(humidity.minOf { it.second }, hMid - 5)),
                             yMax = kotlin.math.ceil(maxOf(humidity.maxOf { it.second }, hMid + 5)),
                             selected = selected,
                             onSelect = { selected = it },
                             yLabel = { ctx.getString(R.string.percent, it.toInt()) },
                             modifier = Modifier.fillMaxWidth().height(80.dp),
-                            bands = state.windows.map { it.start to it.end },
+                            bands = state.windows.map { it.start to (it.end ?: state.end) },
                             bandColor = WindowBandColor,
                         )
-                        TimeAxis(state.start, state.end)
+                        TimeAxis(state.start, chartEnd)
                     }
                 }
             }
@@ -242,8 +258,8 @@ fun RoomDetailScreen(
 
         if (room.actualTemperature != null) {
             if (shown(DetailSection.PROPERTIES)) item { PropertiesCard(description?.properties, onOpenProperties) }
-            if (shown(DetailSection.MODEL)) item { ModelCard(insight, greyBoxVersions) }
-            if (shown(DetailSection.PROBE)) item { ProbeCard(probe) }
+            if (shown(DetailSection.MODEL)) item { ModelCard(insight, greyBoxVersions, outlook, probe) }
+            if (shown(DetailSection.PROBE)) item { ProbeCard(probe, greyBoxActive) }
             // A room described as windowless has nothing to detect.
             if (shown(DetailSection.WINDOWS) && description?.properties?.hasWindows != false) {
                 item {
@@ -297,6 +313,9 @@ fun RoomDetailScreen(
     }
 }
 
+/** How far the temperature chart looks ahead (up to the 3-day range). */
+private const val OUTLOOK_MS = 12 * 3_600_000L
+
 /** Which sections the detail view shows (same for all rooms; default: all). */
 @Composable
 private fun SectionsDialog(hidden: Set<DetailSection>, onChange: (DetailSection, Boolean) -> Unit, onDismiss: () -> Unit) {
@@ -348,253 +367,6 @@ private fun PropertiesCard(properties: RoomProperties?, onOpen: () -> Unit) {
             TextButton(onClick = onOpen, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.props_link)) }
         }
     }
-}
-
-/** What the room model has learned, with the predictions and how reliable they are. */
-@Composable
-private fun ModelCard(insight: RoomInsight?, greyBoxVersions: List<RoomModelEntity>?) {
-    val ctx = LocalContext.current
-    val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    Card(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(stringResource(R.string.model_title), style = MaterialTheme.typography.labelLarge)
-            if (insight == null) {
-                Text(stringResource(R.string.model_computing), style = MaterialTheme.typography.bodySmall)
-                return@Column
-            }
-            val m = insight.model
-            val unknown = stringResource(R.string.unknown)
-            val greyBox = remember(greyBoxVersions) { greyBoxVersions?.firstOrNull { it.adopted }?.toModel() }
-            ModelCurveChart(insight, greyBox)
-            ModelTexts.summary(ctx, insight)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
-            Text(
-                stringResource(
-                    R.string.model_parameters,
-                    m.k?.let { ctx.getString(R.string.model_k, it) } ?: unknown,
-                    m.power?.let { ctx.getString(R.string.model_p, it) } ?: unknown,
-                    m.deadTimeHours?.let { ModelTexts.duration(ctx, it) } ?: unknown,
-                ),
-                style = MaterialTheme.typography.bodySmall,
-                color = muted,
-            )
-            Text(
-                buildString {
-                    append(stringResource(R.string.model_phases, m.heatingPhases, m.coolingPhases))
-                    m.kSpread?.let { append(stringResource(R.string.model_spread, (it * 50).toInt())) }
-                    if (insight.windowEvents.isNotEmpty()) {
-                        append(pluralStringResource(R.plurals.model_windows_excluded, insight.windowEvents.size, insight.windowEvents.size))
-                    }
-                },
-                style = MaterialTheme.typography.bodySmall,
-                color = muted,
-            )
-            insight.levels?.let {
-                Text(stringResource(R.string.model_levels, it.setback, it.comfort), style = MaterialTheme.typography.bodySmall, color = muted)
-            }
-            Text(stringResource(R.string.model_explanation), style = MaterialTheme.typography.bodySmall, color = muted)
-            greyBoxVersions?.let { GreyBoxSection(insight, it) }
-        }
-    }
-}
-
-/** The grey-box model in use (weekly fit over all data) and its versions with the hold-out error. */
-@Composable
-private fun GreyBoxSection(insight: RoomInsight, versions: List<RoomModelEntity>) {
-    val ctx = LocalContext.current
-    val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    val current = versions.firstOrNull { it.adopted }
-    if (current == null) {
-        Text(stringResource(R.string.greybox_pending), style = MaterialTheme.typography.bodySmall, color = muted)
-        return
-    }
-    val date: (Long) -> String = { DateFormat.getDateFormat(ctx).format(Date(it)) }
-    Text(stringResource(R.string.greybox_title, date(current.fittedAt)), style = MaterialTheme.typography.labelMedium)
-    ModelTexts.greyBoxSummary(ctx, current.toModel(), insight)?.let { Text(it, style = MaterialTheme.typography.bodyMedium) }
-    Text(ModelTexts.greyBoxParameters(ctx, current.toModel()), style = MaterialTheme.typography.bodySmall, color = muted)
-    Text(
-        stringResource(
-            R.string.greybox_versions,
-            versions.joinToString(" · ") { v ->
-                val e = v.holdoutRmse
-                when {
-                    e == null -> ctx.getString(R.string.greybox_version_first, date(v.fittedAt))
-                    v.adopted -> ctx.getString(R.string.greybox_version, date(v.fittedAt), e)
-                    else -> ctx.getString(R.string.greybox_version_rejected, date(v.fittedAt), e)
-                }
-            },
-        ),
-        style = MaterialTheme.typography.bodySmall,
-        color = muted,
-    )
-    VersionsChart(versions)
-}
-
-/**
- * One simulated day ([ModelCurve]) with the setpoint, the grey box and the physics model (once it
- * has learned enough), so the predictions can be compared at a glance. Tap for values.
- */
-@OptIn(ExperimentalLayoutApi::class)
-@Composable
-private fun ModelCurveChart(insight: RoomInsight, greyBox: GreyBoxModel?) {
-    val levels = insight.levels ?: return
-    val outside = insight.outside ?: return
-    val ctx = LocalContext.current
-    // Local midnight, so the 6-h grid lines fall on 6, 12 and 18 h of the cycle.
-    val start = remember { LocalDate.now().atStartOfDay(ZoneId.systemDefault()).toInstant().toEpochMilli() }
-    val physics = remember(insight, start) { ModelCurve.physics(insight.model, levels, outside, start) }
-    val grey = remember(greyBox, insight, start) { greyBox?.let { ModelCurve.greyBox(it, levels, outside, start) } }
-    val any = grey ?: physics ?: return
-    val end = start + ModelCurve.HOURS * 3_600_000L
-    val setPointColor = MaterialTheme.colorScheme.onSurfaceVariant
-    val greyColor = MaterialTheme.colorScheme.primary
-    val physicsColor = MaterialTheme.colorScheme.tertiary
-    val setPoints = any.map { it.time to it.setPoint }
-    val greyPoints = grey?.map { it.time to it.temperature }.orEmpty()
-    val physicsPoints = physics?.map { it.time to it.temperature }.orEmpty()
-    val temps = greyPoints.map { it.second } + physicsPoints.map { it.second } + listOf(levels.setback, levels.comfort)
-    var selected by remember { mutableStateOf<Long?>(null) }
-
-    Text(stringResource(R.string.model_curve_title, outside), style = MaterialTheme.typography.labelMedium)
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
-        Legend(stringResource(R.string.legend_setpoint), setPointColor, dashed = true)
-        if (grey != null) Legend(stringResource(R.string.legend_greybox), greyColor, dashed = false)
-        if (physics != null) Legend(stringResource(R.string.legend_physics), physicsColor, dashed = true)
-    }
-    TimeSeriesChart(
-        series = listOf(
-            ChartSeries("setpoint", setPointColor, setPoints, step = true, dashed = true),
-            ChartSeries("physics", physicsColor, physicsPoints, dashed = true),
-            ChartSeries("greybox", greyColor, greyPoints),
-        ),
-        start = start,
-        end = end,
-        yMin = floor(temps.min()) - 0.5,
-        yMax = ceil(temps.max()) + 0.5,
-        selected = selected,
-        onSelect = { selected = it },
-        yLabel = { ctx.getString(R.string.temp_c0, it) },
-        modifier = Modifier.fillMaxWidth().height(120.dp),
-    )
-    Row(Modifier.fillMaxWidth()) {
-        listOf(0, ModelCurve.HOURS / 2, ModelCurve.HOURS).forEachIndexed { i, h ->
-            if (i > 0) Spacer(Modifier.weight(1f))
-            Text(stringResource(R.string.duration_h, h), style = MaterialTheme.typography.labelSmall, color = setPointColor)
-        }
-    }
-    selected?.let { t ->
-        val values = buildList {
-            setPoints.nearest(t)?.let { add(ctx.getString(R.string.model_curve_value, ctx.getString(R.string.legend_setpoint), it)) }
-            greyPoints.nearest(t)?.let { add(ctx.getString(R.string.model_curve_value, ctx.getString(R.string.legend_greybox), it)) }
-            physicsPoints.nearest(t)?.let { add(ctx.getString(R.string.model_curve_value, ctx.getString(R.string.legend_physics), it)) }
-        }
-        Text(
-            stringResource(R.string.model_curve_at, ModelTexts.duration(ctx, (t - start) / 3_600_000.0), values.joinToString(" · ")),
-            style = MaterialTheme.typography.bodySmall,
-        )
-    }
-}
-
-/** Hold-out error of each grey-box version over time; only once there are two to compare. */
-@Composable
-private fun VersionsChart(versions: List<RoomModelEntity>) {
-    val ctx = LocalContext.current
-    val points = versions.mapNotNull { v -> v.holdoutRmse?.let { v.fittedAt to it } }.sortedBy { it.first }
-    if (points.size < 2) return
-    val pad = 12 * 3_600_000L
-    val start = points.first().first - pad
-    val end = points.last().first + pad
-    var selected by remember { mutableStateOf<Long?>(null) }
-    Text(stringResource(R.string.greybox_versions_chart), style = MaterialTheme.typography.labelMedium)
-    TimeSeriesChart(
-        series = listOf(ChartSeries("holdout", MaterialTheme.colorScheme.primary, points)),
-        start = start,
-        end = end,
-        yMin = 0.0,
-        yMax = points.maxOf { it.second } * 1.2,
-        selected = selected,
-        onSelect = { selected = it },
-        yLabel = { ctx.getString(R.string.greybox_rmse_axis, it) },
-        modifier = Modifier.fillMaxWidth().height(80.dp),
-    )
-    TimeAxis(start, end)
-}
-
-/** Probe run (step 5): how well the predictions matched reality. Nothing is written to the heating. */
-@Composable
-private fun ProbeCard(probe: ProbeState) {
-    val ctx = LocalContext.current
-    val muted = MaterialTheme.colorScheme.onSurfaceVariant
-    val s = probe.score
-    Card(Modifier.fillMaxWidth()) {
-        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
-            Text(stringResource(R.string.probe_title), style = MaterialTheme.typography.labelLarge)
-            Text(stringResource(R.string.probe_explanation), style = MaterialTheme.typography.bodySmall, color = muted)
-            if (probe.predictions.isEmpty()) {
-                Text(stringResource(R.string.probe_none), style = MaterialTheme.typography.bodySmall)
-                return@Column
-            }
-            if (s.evaluated > 0) {
-                Text(
-                    stringResource(
-                        R.string.probe_score,
-                        s.evaluated,
-                        (s.hitRate * 100).toInt(),
-                        s.meanAbsErrorMinutes?.toString() ?: "–",
-                        s.days,
-                    ),
-                    style = MaterialTheme.typography.bodyMedium,
-                )
-            }
-            probe.greyBoxScore?.takeIf { it.evaluated > 0 }?.let { g ->
-                Text(
-                    stringResource(
-                        R.string.probe_score_greybox,
-                        g.evaluated,
-                        (g.hitRate * 100).toInt(),
-                        g.meanAbsErrorMinutes?.toString() ?: "–",
-                    ),
-                    style = MaterialTheme.typography.bodySmall,
-                    color = muted,
-                )
-            }
-            Text(
-                stringResource(if (s.trustworthy) R.string.probe_ready else R.string.probe_not_ready),
-                style = MaterialTheme.typography.bodySmall,
-                color = muted,
-            )
-            val now = System.currentTimeMillis()
-            // Planned first, then the most recent results.
-            val planned = probe.predictions.filter { it.eventTime >= now }.take(3)
-            val past = probe.predictions.filter { it.eventTime < now }.asReversed().take(8)
-            (planned + past).forEach { p -> Text(describePrediction(ctx, p, now), style = MaterialTheme.typography.bodySmall) }
-        }
-    }
-}
-
-private fun describePrediction(ctx: Context, p: PredictionEntity, now: Long): String {
-    val time: (Long) -> String = { DateFormat.getTimeFormat(ctx).format(Date(it)) }
-    val event = dayTime(ctx, p.eventTime)
-    val predicted = p.predictedReach?.let(time) ?: ctx.getString(R.string.probe_not_reached)
-    val prior = if (p.modelSource == ModelSource.PRIOR) ctx.getString(R.string.probe_prior) else ""
-    if (p.eventTime >= now || p.outcome == null) {
-        return ctx.getString(R.string.probe_planned, event, p.targetTemperature, predicted) + prior
-    }
-    val actual = p.actualReach?.let(time) ?: ctx.getString(R.string.probe_not_reached)
-    val delta = if (p.actualReach != null && p.predictedReach != null) {
-        ctx.getString(R.string.probe_delta, (p.actualReach - p.predictedReach) / 60_000)
-    } else {
-        ""
-    }
-    val outcome = ctx.getString(
-        when (p.outcome) {
-            Outcome.HIT -> R.string.outcome_hit
-            Outcome.EARLY -> R.string.outcome_early
-            Outcome.LATE -> R.string.outcome_late
-            Outcome.NOT_REACHED -> R.string.outcome_not_reached
-            else -> R.string.outcome_disturbed
-        },
-    )
-    return ctx.getString(R.string.probe_result, event, p.targetTemperature, predicted, actual, delta, outcome) + prior
 }
 
 @Composable
@@ -665,7 +437,7 @@ private fun PhaseRow(p: ThermalPhase) {
 }
 
 @Composable
-private fun Legend(label: String, color: Color, dashed: Boolean) {
+internal fun Legend(label: String, color: Color, dashed: Boolean) {
     Row(verticalAlignment = Alignment.CenterVertically) {
         Canvas(Modifier.size(width = 14.dp, height = 10.dp)) {
             drawLine(
@@ -682,14 +454,26 @@ private fun Legend(label: String, color: Color, dashed: Boolean) {
 }
 
 @Composable
-private fun BandLegend(label: String) {
+private fun BandLegend(label: String) = AreaLegend(label, WindowBandColor)
+
+@Composable
+internal fun AreaLegend(label: String, color: Color) {
     Row(verticalAlignment = Alignment.CenterVertically) {
-        Canvas(Modifier.size(width = 14.dp, height = 10.dp)) { drawRect(WindowBandColor) }
+        Canvas(Modifier.size(width = 14.dp, height = 10.dp)) { drawRect(color) }
+        Spacer(Modifier.width(4.dp))
+        Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
+    }
+}
+
+@Composable
+internal fun DotLegend(label: String, color: Color) {
+    Row(verticalAlignment = Alignment.CenterVertically) {
+        Canvas(Modifier.size(width = 14.dp, height = 10.dp)) { drawCircle(color, 3.5.dp.toPx()) }
         Spacer(Modifier.width(4.dp))
         Text(label, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
     }
 }
 
 /** Value of the sample closest to [t], if one lies within 30 min. */
-private fun List<Pair<Long, Double>>.nearest(t: Long): Double? =
+internal fun List<Pair<Long, Double>>.nearest(t: Long): Double? =
     minByOrNull { abs(it.first - t) }?.takeIf { abs(it.first - t) <= 30 * 60_000L }?.second
