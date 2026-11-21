@@ -234,7 +234,7 @@ private fun RoomCard(
             }
             // Rooms without a thermometer (towel radiators) have nothing to learn from.
             if (room.actualTemperature != null) {
-                ModelTexts.summary(ctx, insight)?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = muted) }
+                ModelTexts.activeSummary(ctx, insight)?.let { Text(it, style = MaterialTheme.typography.bodySmall, color = muted) }
             }
             Row(horizontalArrangement = Arrangement.spacedBy(16.dp)) {
                 TextButton(onClick = onOpenHistory, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.history_link)) }

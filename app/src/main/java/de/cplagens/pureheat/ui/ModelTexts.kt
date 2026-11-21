@@ -38,6 +38,13 @@ internal object ModelTexts {
         )
     }
 
+    /** Dashboard line from the model in use ([de.cplagens.pureheat.data.model.ActiveModel]): grey box first, else [summary]. */
+    fun activeSummary(ctx: Context, insight: RoomInsight?): String? {
+        val grey = insight?.greyBox ?: return summary(ctx, insight)
+        if (insight.levels == null) return ctx.getString(R.string.model_no_setback)
+        return greyBoxSummary(ctx, grey, insight)
+    }
+
     /** Same line as [summary] with the grey-box model; no "still learning": it always has values. */
     fun greyBoxSummary(ctx: Context, model: GreyBoxModel, insight: RoomInsight): String? {
         val levels = insight.levels ?: return null

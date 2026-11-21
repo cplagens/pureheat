@@ -230,7 +230,9 @@ class HeatingRepository(
         val forecast = dao.forecastBetween(now, now + PREDICTION_HORIZON_MS).map { it.temperature }
         val forecastOutside = forecast.takeIf { it.isNotEmpty() }?.average()
         val properties = descriptions.all.value.mapValues { it.value.properties }
-        return withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside, properties) }
+        val insights = withContext(Dispatchers.Default) { RoomInsight.forAllRooms(samples, weather, now, forecastOutside, properties) }
+        // The grey box has values from the start (prior): the dashboard shows it while the physics model learns.
+        return insights.mapValues { (id, insight) -> insight.copy(greyBox = dao.currentRoomModel(id)?.toModel()) }
     }
 
     /** Grey-box model versions of [roomId], newest first; the one in use is the first adopted. */

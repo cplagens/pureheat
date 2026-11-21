@@ -25,6 +25,8 @@ data class RoomInsight(
     val outsideIsForecast: Boolean = false,
     /** Detected open-window times in the analysed history; excluded from the model. */
     val windowEvents: List<WindowEvent> = emptyList(),
+    /** Grey-box model in use (fitted over all data); null until the first weekly fit. */
+    val greyBox: GreyBoxModel? = null,
 ) {
     /** Setback → comfort, e.g. in the morning. */
     val heatUp: Prediction
