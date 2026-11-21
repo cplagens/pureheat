@@ -51,13 +51,16 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `HeatingRepository.kt` | Einziger Zugang zur Cloud: Zustand holen + aufzeichnen, Profile laden/speichern (Backup vorher, Prüfung nachher), Debug-Dumps |
 | `ForecastClient.kt` | Open-Meteo-Abruf (stündliche Außentemperatur, 3 Tage) mit gerundetem Standort |
 | `HistoryWorker.kt` | Sich selbst neu planende Abrufkette (`history-chain`) + stündlicher `HistoryWatchdogWorker` |
+| `RoomModelWorker.kt` | Täglich beim Laden (`room-model`, ohne Netz): `refitGreyBoxModels()` – jeder Raum höchstens einmal pro Woche |
 | `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
-| `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 6): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction` |
+| `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 7): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction`, `room_model` |
 | `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Phasen „Ventil offen/zu“ (mit Totzeit-Tiefpunkt und Ende des freien Aufheizens) |
 | `history/BathingDetection.kt` | Reine Heuristik: Duschen/Baden aus schnellem Luftfeuchte-Anstieg; Ausklammern fürs Modell |
 | `RoomOrder.kt` | Reine Logik: Reihenfolge der Raumkarten (Thermostate hinter ihrem Raum, gespeicherte Reihenfolge) |
 | `history/WindowDetection.kt` | Reine Heuristik: Fenster offen aus Temperatursturz/-anstieg (+ Luftfeuchte) bei geschlossenem Ventil; Ausklammern dieser Zeiten fürs Modell |
 | `model/RoomModel.kt` | Reines Wärmemodell je Raum (k, P, Totzeit), Anpassung aus Phasen, Vorhersage Aufheiz-/Abkühlzeit; `SetPointLevels` (Spar-/Komforttemperatur aus Sollwerten) |
+| `model/GreyBoxModel.kt` | Reines Grey-Box-Modell über alle Stundendaten (`ΔT = −k(T − Tₐ) + P·Ventil(t − Verzug) + g`), Ridge-Fit mit Prior, „gemessen“/„geschätzt“ je Parameter |
+| `model/GreyBoxTraining.kt` | Rein: erstes Modell nach 7 Tagen, wöchentlicher Kandidat ohne die letzte Woche angepasst; übernommen nur, wenn sein Hold-out-Fehler nicht schlechter ist als der des aktiven Modells |
 | `model/RoomSimulator.kt` | Reine Vorwärtssimulation eines Raums (Thermostat-Verhalten, Totzeit, Prognose) |
 | `probe/ProbeRun.kt` | Reiner Probelauf: Vorhersage der Aufheizzeiten aus dem aktiven Profil, Auswertung gegen die Messung, Trefferquote |
 | `model/RoomInsight.kt` | Modell + Spar/Komfort + Außentemperatur je Raum, mit fertigen Vorhersagen |
@@ -107,7 +110,7 @@ das Logo zusätzlich als `docs/assets/logo.svg`.
 3. Profil erneut laden und mit dem gesendeten vergleichen; Abweichung → Fehlermeldung.
 „Rückgängig“ spielt das Backup auf demselben Weg zurück.
 
-## Datenmodell (Room, `history.db`, Version 6)
+## Datenmodell (Room, `history.db`, Version 7)
 
 | Tabelle | Schlüssel | Felder |
 |---|---|---|
@@ -116,9 +119,10 @@ das Logo zusätzlich als `docs/assets/logo.svg`.
 | `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`), outsideAbsHumidity g/m³ (`home.weather.vaporAmount`, seit v6) |
 | `prediction` | roomId + strategy + eventTime | Probelauf: Ziel, Starttemperatur, vorhergesagte/tatsächliche Erreichzeit, Modellquelle (fit/prior), Ergebnis (ab v5) |
 | `forecast_sample` | timestamp | temperature (Open-Meteo, stündlich), fetchedAt; bei jedem Abruf ersetzt (ab v4) |
+| `room_model` | roomId + fittedAt | Grey-Box-Versionen: k, power, gain, lagHours, Standardfehler, rmse, n, holdoutRmse, previousHoldoutRmse, adopted, prior (ab v7); aktiv = neueste übernommene Zeile |
 
 Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidity`, 3 → 4 legt
-`forecast_sample` an, 4 → 5 `prediction`, 5 → 6 ergänzt `weather_sample.outsideAbsHumidity`; vorhandene Daten
+`forecast_sample` an, 4 → 5 `prediction`, 5 → 6 ergänzt `weather_sample.outsideAbsHumidity`, 6 → 7 legt `room_model` an; vorhandene Daten
 bleiben erhalten. Die REST-Server-Adresse wird in SharedPreferences `hmip_server` gecacht
 (neuer Lookup nur nach Fehler – der Lookup-Dienst antwortet bei zu vielen Anfragen mit 418).
 Größe gemessen: ca. 710 Zeilen bzw. 120 KB/Tag → nach 2 Jahren ca. 90 MB.

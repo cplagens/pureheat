@@ -7,6 +7,32 @@ Neueste Version oben. Die Version ist der Git-Tag des Releases (`vX.Y.Z`, siehe 
 
 ## Unveröffentlicht
 
+## 1.1.0 – Raummodell aus allen Daten (November 2026)
+
+- Übersicht: die Aufheiz-/Abkühlzeile jedes Raums kommt jetzt aus dem Raummodell über alle
+  Daten und zeigt damit schon ab der ersten Woche Zeiten statt „lernt noch“. Zeigt der Probelauf,
+  dass das klassische Modell für einen Raum deutlich genauer ist, wird dieses angezeigt.
+- Raumdetail: das Temperaturdiagramm zeigt die nächsten 12 Stunden so, wie das Raummodell sie
+  erwartet, und wann jedes Aufheizen sein Ziel erreichen soll. Raummodell-Karte überarbeitet:
+  Zuverlässigkeits-Abzeichen, Kennzahlen, morgen mit deinem aktiven Profil; Details auf Wunsch.
+  Probelauf als Trefferquote, Abweichungsdiagramm und nächste Prüfung.
+- Raummodell-Karte: Diagramm eines simulierten Tages (Absenkung → Komfort → Absenkung) für beide
+  Modelle; das Modell aus allen Daten mit seinen Vorhersagen, welche Werte gemessen oder nur
+  geschätzt sind, und seine wöchentlichen Versionen mit dem Fehler der letzten Woche (auch als
+  Diagramm).
+- Probelauf: sobald es ein Raummodell aus allen Daten gibt (nach 7 Tagen), sagt es neben dem
+  Physikmodell voraus; die Detailansicht zeigt seine eigene Trefferquote.
+- Fenster offen: gilt nicht mehr als geschlossen, wenn die Heizung anläuft oder die Temperatur
+  nur leicht schwankt; morgendliches Heizen gegen ein offenes Fenster fließt nicht ins Raummodell.
+- Heizprofil: „Letztes Speichern rückgängig“ fragt jetzt vor dem Schreiben in die Cloud nach.
+- Heizprofil-Editor: „Phase hinzufügen“ hängt die neue Phase direkt hinter die letzte an (statt
+  in die größte Lücke, meist am frühen Morgen).
+- Heizprofil speichern: die Auswahl weiterer Räume kommt zuerst, lange Änderungslisten sind
+  eingeklappt; andere Räume bekommen nur die geänderten Tage (vorher: die ganze Woche).
+- Info: die Sprachauswahl ist auf eine Zeile eingeklappt.
+- Abmelden löscht auch den letzten Datenexport aus dem App-Cache.
+- Profil-Editor: Screenreader sagen die −/+-Tasten mit dem Namen ihres Werts an.
+
 ## 1.0.0 – erste Veröffentlichung (November 2026)
 
 **Anzeige**

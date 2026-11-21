@@ -1,6 +1,5 @@
-First release of PureHeat:
-- See which floor heating circuit is open and how far each valve opens.
-- History, room model with heat-up times and a probe run of its predictions.
-- Open-window and shower detection without extra sensors.
-- Edit heating profiles, or create them from a description.
-- Demo mode without an access point. 12 languages, free, no ads.
+New in 1.1.0:
+- Room model from all data: heat-up times from the first week on, a 12-hour forecast in the room chart and a simulated day for both models.
+- Probe run as a hit rate with a deviation chart; the better model is shown per room.
+- Fewer false open-window detections.
+- Heating profiles: undo asks first, new phases go after the last one, only changed days are copied to other rooms.

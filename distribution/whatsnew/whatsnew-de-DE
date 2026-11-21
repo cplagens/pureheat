@@ -1,6 +1,5 @@
-Erste Version von PureHeat:
-- Sieh, welcher Heizkreis offen ist und wie weit jedes Ventil öffnet.
-- Verlauf, Raummodell mit Aufheizzeiten und ein Probelauf seiner Vorhersagen.
-- Fenster-offen- und Duschen-Erkennung ohne zusätzliche Sensoren.
-- Heizprofile bearbeiten oder aus einer Beschreibung erstellen.
-- Demo-Modus ohne Access Point. 12 Sprachen, kostenlos, ohne Werbung.
+Neu in 1.1.0:
+- Raummodell aus allen Daten: Aufheizzeiten ab der ersten Woche, 12-Stunden-Vorschau im Raumdiagramm und ein simulierter Tag für beide Modelle.
+- Probelauf als Trefferquote mit Abweichungsdiagramm; je Raum wird das bessere Modell gezeigt.
+- Weniger falsche Fenster-offen-Erkennungen.
+- Heizprofile: Rückgängig fragt nach, neue Phasen kommen hinter die letzte, nur geänderte Tage gehen an andere Räume.

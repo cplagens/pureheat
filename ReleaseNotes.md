@@ -7,6 +7,8 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 
 ## Unreleased
 
+## 1.1.0 – room model from all data (November 2026)
+
 - Overview: each room's heat-up/cool-down line now comes from the room model fitted over all
   data, so it shows times from the first week on instead of "still learning". If the probe run
   shows the classic model is clearly more accurate for a room, that one is shown instead.
