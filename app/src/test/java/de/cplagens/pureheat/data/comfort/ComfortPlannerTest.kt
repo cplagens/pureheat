@@ -65,6 +65,20 @@ class ComfortPlannerTest {
         assertEquals(ComfortPlanner.MAX_LEAD_HOURS, w.leadHours, 1e-9)
     }
 
+    /** Measured 2026-11-22: very slow room, weak heating, much heat from other sources. */
+    @Test
+    fun slowRoomWithLargeGainIsNotWorseThanSwitchingAtTheWindow() {
+        val slow = SimParams(k = 0.0071, power = 0.092, deadTimeHours = 4.0, gain = 0.125)
+        val day = ComfortDay(16.0, listOf(ComfortWindow(330, 465, 23.0), ComfortWindow(465, 1320, 21.5)))
+        val comfort = Weekday.entries.associateWith { day }
+        val suggested = ComfortPlanner.planWeek(comfort, slow) { _, _ -> 2.0 }.mapValues { it.value.profileDay }
+        val naive = comfort.mapValues { (_, c) -> ProfileDay(c.ecoTemperature, c.windows.map { HeatingPeriod(it.start, it.end, it.temperature) }) }
+        val cmp = ComfortEvaluation.compare(naive, suggested, comfort, slow, 22.0, monday, monday + weekMs, { 2.0 }, zone)
+        assertTrue("suggested ${cmp.suggested.comfortKept} vs ${cmp.current.comfortKept}", cmp.suggested.comfortKept >= cmp.current.comfortKept - 0.02)
+        // Out of reach in the morning: heat right through the window, no early stop.
+        assertTrue(suggested.getValue(Weekday.MONDAY).periods.any { it.start < 330 && it.end >= 465 })
+    }
+
     @Test
     fun backToBackWindowsBecomeOnePeriod() {
         val split = ComfortDay(17.0, listOf(ComfortWindow(6 * 60, 9 * 60, 21.0), ComfortWindow(9 * 60 + 30, 12 * 60, 22.0)))

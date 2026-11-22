@@ -52,6 +52,12 @@ object ComfortPlanner {
     const val ALLOWED_DROP = 0.5
     /** Lead when the target is out of reach or the model has no heating power: start this early at most. */
     const val MAX_LEAD_HOURS = 6.0
+    /**
+     * Stop at most this long before the window end. A very slow room with much heat from other
+     * sources looks as if it never cooled down (hold time ∞), but over days it drifts (measured
+     * 2026-11-22: k 0.007/h, gain 0.125 K/h → heating stopped 15 min into every window, comfort 38 %).
+     */
+    const val MAX_HOLD_HOURS = 3.0
 
     fun plan(
         day: Weekday,
@@ -102,7 +108,9 @@ object ComfortPlanner {
             val earliest = prevEnd ?: 0
             val start = snapDown(max(earliest, w.start - (lead * 60).toInt() - BUFFER_MINUTES))
 
-            val holdHours = coolHoursFor(w.temperature, w.temperature - ALLOWED_DROP, params, outside)
+            // Out of reach: the room is behind all the time, so heat until the window ends.
+            val holdHours = if (!reachable) 0.0
+            else min(MAX_HOLD_HOURS, coolHoursFor(w.temperature, w.temperature - ALLOWED_DROP, params, outside))
             var end = snapNearest(w.end - (holdHours * 60).toInt())
             end = end.coerceIn(min(snapUp(w.start) + ProfileEditing.STEP_MINUTES, 1440), 1440)
             if (end <= start) end = min(start + ProfileEditing.STEP_MINUTES, 1440)
