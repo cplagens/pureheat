@@ -16,6 +16,7 @@ import androidx.room.PrimaryKey
 import androidx.room.Query
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.Transaction
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
 import kotlinx.coroutines.flow.Flow
@@ -113,6 +114,24 @@ data class RoomModelEntity(
     val priorPowerSd: Double,
     val priorGain: Double,
     val priorGainSd: Double,
+)
+
+/** Step 6: setback temperature of a room on one weekday (since DB v8); [weekday] is a `Weekday` name. */
+@Entity(tableName = "comfort_day", primaryKeys = ["roomId", "weekday"])
+data class ComfortDayEntity(
+    val roomId: String,
+    val weekday: String,
+    val ecoTemperature: Double,
+)
+
+/** Step 6: one comfort window ("warm by" [start] … "may cool from" [end], minutes of the day, since DB v8). */
+@Entity(tableName = "comfort_window", primaryKeys = ["roomId", "weekday", "start"])
+data class ComfortWindowEntity(
+    val roomId: String,
+    val weekday: String,
+    val start: Int,
+    val end: Int,
+    val temperature: Double,
 )
 
 @Dao
@@ -250,11 +269,47 @@ interface HistoryDao {
 
     @Query("DELETE FROM room_model")
     suspend fun clearRoomModels()
+
+    // --- Comfort windows (step 6, since v8) ---
+
+    @Query("SELECT * FROM comfort_day WHERE roomId = :roomId")
+    suspend fun comfortDays(roomId: String): List<ComfortDayEntity>
+
+    @Query("SELECT * FROM comfort_window WHERE roomId = :roomId ORDER BY weekday, start")
+    suspend fun comfortWindows(roomId: String): List<ComfortWindowEntity>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertComfortDays(days: List<ComfortDayEntity>)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertComfortWindows(windows: List<ComfortWindowEntity>)
+
+    @Query("DELETE FROM comfort_day WHERE roomId = :roomId")
+    suspend fun deleteComfortDays(roomId: String)
+
+    @Query("DELETE FROM comfort_window WHERE roomId = :roomId")
+    suspend fun deleteComfortWindows(roomId: String)
+
+    /** Replaces all comfort settings of one room at once (editor save). */
+    @Transaction
+    suspend fun replaceComfort(roomId: String, days: List<ComfortDayEntity>, windows: List<ComfortWindowEntity>) {
+        deleteComfortDays(roomId)
+        deleteComfortWindows(roomId)
+        insertComfortDays(days)
+        insertComfortWindows(windows)
+    }
+
+    @Query("DELETE FROM comfort_day")
+    suspend fun clearComfortDays()
+
+    @Query("DELETE FROM comfort_window")
+    suspend fun clearComfortWindows()
 }
 
 @Database(
-    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class, PredictionEntity::class, RoomModelEntity::class],
-    version = 7,
+    entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class, PredictionEntity::class, RoomModelEntity::class,
+        ComfortDayEntity::class, ComfortWindowEntity::class],
+    version = 8,
     exportSchema = false,
 )
 abstract class HistoryDatabase : RoomDatabase() {
@@ -324,9 +379,27 @@ abstract class HistoryDatabase : RoomDatabase() {
             }
         }
 
+        /** v8: comfort windows + setback temperature per room and weekday (step 6). */
+        private val MIGRATION_7_8 = object : Migration(7, 8) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `comfort_day` (`roomId` TEXT NOT NULL, `weekday` TEXT NOT NULL, " +
+                        "`ecoTemperature` REAL NOT NULL, PRIMARY KEY(`roomId`, `weekday`))",
+                )
+                db.execSQL(
+                    "CREATE TABLE IF NOT EXISTS `comfort_window` (`roomId` TEXT NOT NULL, `weekday` TEXT NOT NULL, " +
+                        "`start` INTEGER NOT NULL, `end` INTEGER NOT NULL, `temperature` REAL NOT NULL, " +
+                        "PRIMARY KEY(`roomId`, `weekday`, `start`))",
+                )
+            }
+        }
+
         fun create(context: Context): HistoryDatabase =
             Room.databaseBuilder(context, HistoryDatabase::class.java, "history.db")
-                .addMigrations(MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
+                .addMigrations(
+                    MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7,
+                    MIGRATION_7_8,
+                )
                 .build()
     }
 }

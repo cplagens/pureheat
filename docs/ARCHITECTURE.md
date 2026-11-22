@@ -53,7 +53,7 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 | `HistoryWorker.kt` | Self-rescheduling fetch chain (`history-chain`) + hourly `HistoryWatchdogWorker` |
 | `RoomModelWorker.kt` | Daily while charging (`room-model`, no network): `refitGreyBoxModels()` – each room at most once a week |
 | `PollingPolicy.kt` | Pure logic: next fetch in 15 min (valve/target changing), 30 min (stable) or 60 min (night) |
-| `history/HistoryDatabase.kt` | Room DB `history.db` (version 7): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction`, `room_model` |
+| `history/HistoryDatabase.kt` | Room DB `history.db` (version 8): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction`, `room_model` |
 | `history/HistoryAnalysis.kt` | Pure analysis: warning "valve open but no heat", heat-up rate, phases "valve open/closed" (with dead-time minimum and end of free heat-up) |
 | `history/BathingDetection.kt` | Pure heuristic: showering/bathing from a quick rise in humidity; exclusion for the model |
 | `RoomOrder.kt` | Pure logic: order of the room cards (thermostats after their room, saved order) |
@@ -112,7 +112,7 @@ logo also exists as `docs/assets/logo.svg`.
 3. load the profile again and compare it with what was sent; difference → error message.
 "Undo" plays the backup back the same way.
 
-## Data model (Room, `history.db`, version 7)
+## Data model (Room, `history.db`, version 8)
 
 | Table | Key | Fields |
 |---|---|---|
@@ -122,9 +122,11 @@ logo also exists as `docs/assets/logo.svg`.
 | `prediction` | roomId + strategy + eventTime | Probe run: target, start temperature, predicted/actual reach time, model source (fit/prior), result (since v5) |
 | `forecast_sample` | timestamp | temperature (Open-Meteo, hourly), fetchedAt; replaced on every fetch (since v4) |
 | `room_model` | roomId + fittedAt | Grey-box versions: k, power, gain, lagHours, standard errors, rmse, n, holdoutRmse, previousHoldoutRmse, adopted, prior (since v7); in use = newest adopted row |
+| `comfort_day` | roomId + weekday | ecoTemperature (step 6 setback, since v8) |
+| `comfort_window` | roomId + weekday + start | end, temperature – "warm by" / "may cool from" in minutes of the day (since v8); local only, cleared on logout |
 
 Migration 1 → 2 creates `weather_sample`, 2 → 3 adds `room_sample.humidity`, 3 → 4 creates
-`forecast_sample`, 4 → 5 `prediction`, 5 → 6 adds `weather_sample.outsideAbsHumidity`, 6 → 7 creates `room_model`; existing data is kept. The REST server address is cached in SharedPreferences
+`forecast_sample`, 4 → 5 `prediction`, 5 → 6 adds `weather_sample.outsideAbsHumidity`, 6 → 7 creates `room_model`, 7 → 8 `comfort_day` + `comfort_window`; existing data is kept. The REST server address is cached in SharedPreferences
 `hmip_server` (new lookup only after an error – the lookup service answers 418 to too many
 requests).
 Measured size: about 710 rows or 120 KB/day → about 90 MB after 2 years.

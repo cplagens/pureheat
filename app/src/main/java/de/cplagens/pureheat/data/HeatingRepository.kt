@@ -10,6 +10,9 @@ import android.util.Log
 import de.cplagens.pureheat.BuildConfig
 import de.cplagens.pureheat.R
 import de.cplagens.pureheat.ui.UiText
+import de.cplagens.pureheat.data.comfort.ComfortDay
+import de.cplagens.pureheat.data.comfort.ComfortRows
+import de.cplagens.pureheat.hmip.Weekday
 import de.cplagens.pureheat.data.history.CircuitSample
 import de.cplagens.pureheat.data.history.HistoryDao
 import de.cplagens.pureheat.data.history.RoomModelEntity
@@ -249,6 +252,16 @@ class HeatingRepository(
     suspend fun roomModelVersions(roomId: String, limit: Int = 6): List<RoomModelEntity> =
         dao.roomModelVersions(roomId, limit)
 
+    /** Step 6: comfort windows of [roomId] per weekday; empty until the user saved some. */
+    suspend fun comfort(roomId: String): Map<Weekday, ComfortDay> =
+        ComfortRows.fromEntities(dao.comfortDays(roomId), dao.comfortWindows(roomId))
+
+    /** Local only (no cloud write): replaces the comfort windows of [roomId]. */
+    suspend fun saveComfort(roomId: String, days: Map<Weekday, ComfortDay>) {
+        val (dayRows, windowRows) = ComfortRows.toEntities(roomId, days)
+        dao.replaceComfort(roomId, dayRows, windowRows)
+    }
+
     /**
      * Fits the grey-box model of every room that is due ([GreyBoxTraining.due]) over its whole
      * history and stores the version; the candidate replaces the model in use only if it predicts
@@ -288,6 +301,8 @@ class HeatingRepository(
         dao.clearForecast()
         dao.clearPredictions()
         dao.clearRoomModels()
+        dao.clearComfortDays()
+        dao.clearComfortWindows()
         probePrefs.edit().clear().apply()
         descriptions.clear()
         withContext(Dispatchers.IO) {
