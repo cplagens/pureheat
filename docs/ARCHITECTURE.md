@@ -61,6 +61,8 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 | `model/RoomModel.kt` | Pure thermal model per room (k, P, dead time), fitting from phases, prediction of heat-up/cool-down time; `SetPointLevels` (eco/comfort temperature from target values) |
 | `model/GreyBoxModel.kt` | Pure grey-box model over all hourly data (`ΔT = −k(T − Tₐ) + P·valve(t − lag) + g`), ridge fit with prior, "measured"/"estimated" per parameter |
 | `model/GreyBoxTraining.kt` | Pure: first model after 7 days, weekly candidate fitted without the last week; adopted only if its hold-out error is not worse than the model in use |
+| `comfort/ComfortPlanner.kt` | Pure step 6: comfort windows ("warm by" / "may cool from") → heating periods: lead from heat-up after the setback (bisection), end before the window by the screed's hold time for 0.5 K, 15 min grid, merge, max. 6 periods |
+| `comfort/ComfortEvaluation.kt` | Pure: simulates current and suggested profile with `RoomSimulator` over past weather; comfort kept, valve hours, mean temperature |
 | `model/RoomSimulator.kt` | Pure forward simulation of a room (thermostat behaviour, dead time, forecast) |
 | `probe/ProbeRun.kt` | Pure probe run: prediction of heat-up times from the active profile, evaluation against the measurement, hit rate |
 | `model/RoomInsight.kt` | Model + eco/comfort + outdoor temperature per room, with ready-made predictions |
