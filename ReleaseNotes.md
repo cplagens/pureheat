@@ -7,6 +7,10 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 
 ## Unreleased
 
+- New "Comfort times" screen (from the heating profile): set per weekday when a room should be
+  warm, with presets and a draft from the current profile. Saved on the phone only; nothing is
+  written to the heating yet.
+
 ## 1.1.0 – room model from all data (November 2026)
 
 - Overview: each room's heat-up/cool-down line now comes from the room model fitted over all

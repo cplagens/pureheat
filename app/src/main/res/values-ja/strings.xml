@@ -460,4 +460,26 @@
     <string name="outcome_disturbed_short">対象外</string>
     <string name="outcome_pending">判定待ち</string>
     <string name="model_tile_within_hour">1 時間未満</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">快適時間 ›</string>
+    <string name="comfort_title">快適時間</string>
+    <string name="comfort_intro">部屋はいつ暖かくあるべきですか？ PureHeat は後で部屋モデルから暖房を開始すべき時刻を計算します。この端末にのみ保存され、暖房には何も書き込まれません。</string>
+    <string name="comfort_week_hint">週 – バーは部屋が暖かくあるべき時間を示します。曜日をタップして編集</string>
+    <string name="comfort_day_empty">快適時間なし</string>
+    <string name="comfort_drag_hint">端をドラッグ：左 = この時刻までに暖かく、右 = この時刻から冷えてもよい。</string>
+    <string name="comfort_window">時間帯 %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">暖かくなる時刻</string>
+    <string name="comfort_cool_from">冷えてもよい時刻</string>
+    <string name="comfort_add">＋ 快適時間帯を追加</string>
+    <string name="comfort_max">快適時間帯は最大 %d 個</string>
+    <string name="comfort_eco">節約温度（時間帯の外）</string>
+    <string name="comfort_presets">この日のテンプレート</string>
+    <string name="comfort_preset_workday">平日</string>
+    <string name="comfort_preset_home_office">在宅勤務</string>
+    <string name="comfort_preset_weekend">週末</string>
+    <string name="comfort_take_profile">現在の暖房プロファイルを取り込む</string>
+    <string name="comfort_from_profile_done">有効な暖房プロファイルから取り込みました – 時刻を調整して保存してください。</string>
+    <string name="comfort_default_week">提案：平日と週末のテンプレート – 調整して保存してください。</string>
+    <string name="comfort_no_profile">取り込める有効な暖房プロファイルがありません。</string>
+    <string name="comfort_saved">快適時間をこの端末に保存しました。</string>
 </resources>

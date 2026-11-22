@@ -80,6 +80,7 @@ fun ProfileScreen(
     vm: ProfileViewModel,
     onBack: () -> Unit,
     onChanged: () -> Unit,
+    onOpenComfort: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
     val state by vm.ui.collectAsStateWithLifecycle()
@@ -143,6 +144,7 @@ fun ProfileScreen(
                     }
                     if (!state.dirty) {
                         TextButton(onClick = { renaming = sel }, enabled = !busy) { Text(stringResource(R.string.profile_rename)) }
+                        TextButton(onClick = onOpenComfort, enabled = !busy) { Text(stringResource(R.string.comfort_link)) }
                     }
                 }
             }
@@ -362,9 +364,13 @@ private fun SaveDialog(
     )
 }
 
+/**
+ * Edits one day. With [comfort] the same bars are comfort windows (comfort editor, step 6):
+ * left edge "warm by", right edge "may cool from"; no preheat hint (the planner does that).
+ */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun DayEditor(
+internal fun DayEditor(
     day: Weekday,
     value: ProfileDay,
     range: ClosedFloatingPointRange<Double>,
@@ -372,13 +378,17 @@ private fun DayEditor(
     heatUpRate: Double?,
     onChange: (ProfileDay) -> Unit,
     onCopy: (Set<Weekday>) -> Unit,
+    comfort: Boolean = false,
 ) {
     val minT = room.minTemperature
     val maxT = room.maxTemperature
     fun temp(t: Double) = ProfileEditing.snapTemperature(t, minT, maxT)
 
     Column(Modifier.padding(vertical = 8.dp), verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(stringResource(R.string.editor_drag_hint), style = MaterialTheme.typography.bodySmall)
+        Text(
+            stringResource(if (comfort) R.string.comfort_drag_hint else R.string.editor_drag_hint),
+            style = MaterialTheme.typography.bodySmall,
+        )
         DraggableDayBar(value, range, onChange, Modifier.fillMaxWidth().height(44.dp))
         HourAxis()
 
@@ -386,7 +396,10 @@ private fun DayEditor(
             Column(verticalArrangement = Arrangement.spacedBy(2.dp)) {
                 Row(verticalAlignment = Alignment.CenterVertically) {
                     Text(
-                        stringResource(R.string.editor_phase, i + 1, formatTime(p.start), formatTime(p.end)),
+                        stringResource(
+                            if (comfort) R.string.comfort_window else R.string.editor_phase,
+                            i + 1, formatTime(p.start), formatTime(p.end),
+                        ),
                         style = MaterialTheme.typography.labelLarge,
                         modifier = Modifier.weight(1f),
                     )
@@ -394,12 +407,12 @@ private fun DayEditor(
                 }
                 FlowRow(horizontalArrangement = Arrangement.spacedBy(16.dp), verticalArrangement = Arrangement.spacedBy(4.dp)) {
                     Stepper(
-                        stringResource(R.string.editor_start), formatTime(p.start),
+                        stringResource(if (comfort) R.string.comfort_warm_by else R.string.editor_start), formatTime(p.start),
                         onMinus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, true, p.start - ProfileEditing.STEP_MINUTES))) },
                         onPlus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, true, p.start + ProfileEditing.STEP_MINUTES))) },
                     )
                     Stepper(
-                        stringResource(R.string.editor_end), formatTime(p.end),
+                        stringResource(if (comfort) R.string.comfort_cool_from else R.string.editor_end), formatTime(p.end),
                         onMinus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, false, p.end - ProfileEditing.STEP_MINUTES))) },
                         onPlus = { onChange(value.copy(periods = ProfileEditing.moveEdge(value.periods, i, false, p.end + ProfileEditing.STEP_MINUTES))) },
                     )
@@ -416,20 +429,20 @@ private fun DayEditor(
         TextButton(onClick = { added?.let(onChange) }, enabled = added != null, contentPadding = PaddingValues(0.dp)) {
             Text(
                 if (value.periods.size >= ProfileEditing.MAX_PERIODS) {
-                    stringResource(R.string.editor_max_phases, ProfileEditing.MAX_PERIODS)
+                    stringResource(if (comfort) R.string.comfort_max else R.string.editor_max_phases, ProfileEditing.MAX_PERIODS)
                 } else {
-                    stringResource(R.string.editor_add_phase)
+                    stringResource(if (comfort) R.string.comfort_add else R.string.editor_add_phase)
                 },
             )
         }
 
         Stepper(
-            stringResource(R.string.editor_base), stringResource(R.string.temp_c, value.baseTemperature),
+            stringResource(if (comfort) R.string.comfort_eco else R.string.editor_base), stringResource(R.string.temp_c, value.baseTemperature),
             onMinus = { onChange(value.copy(baseTemperature = temp(value.baseTemperature - 0.5))) },
             onPlus = { onChange(value.copy(baseTemperature = temp(value.baseTemperature + 0.5))) },
         )
 
-        preheatHint(LocalContext.current, value, heatUpRate)?.let {
+        if (!comfort) preheatHint(LocalContext.current, value, heatUpRate)?.let {
             Text(it, style = MaterialTheme.typography.bodySmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
         }
 
@@ -488,7 +501,7 @@ private fun Stepper(label: String, value: String, onMinus: () -> Unit, onPlus: (
 }
 
 @Composable
-private fun HourAxis(modifier: Modifier = Modifier) {
+internal fun HourAxis(modifier: Modifier = Modifier) {
     Row(modifier.fillMaxWidth()) {
         listOf("0", "6", "12", "18", "24").forEachIndexed { i, h ->
             Text(h, style = MaterialTheme.typography.labelSmall, color = MaterialTheme.colorScheme.onSurfaceVariant)
@@ -498,7 +511,7 @@ private fun HourAxis(modifier: Modifier = Modifier) {
 }
 
 /** Temperature span of a profile (setback to warmest phase), so the colour steps are visible. */
-private fun temperatureRange(days: Collection<ProfileDay>): ClosedFloatingPointRange<Double> {
+internal fun temperatureRange(days: Collection<ProfileDay>): ClosedFloatingPointRange<Double> {
     val temps = days.flatMap { d -> d.periods.map { it.temperature } + d.baseTemperature }
     val lo = temps.minOrNull() ?: 16.0
     val hi = temps.maxOrNull() ?: 26.0
@@ -512,7 +525,7 @@ private fun phaseColor(t: Double, range: ClosedFloatingPointRange<Double>): Colo
 }
 
 @Composable
-private fun DayBar(
+internal fun DayBar(
     day: ProfileDay,
     range: ClosedFloatingPointRange<Double>,
     modifier: Modifier = Modifier,

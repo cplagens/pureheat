@@ -463,4 +463,26 @@
     <string name="outcome_disturbed_short">sayılmadı</string>
     <string name="outcome_pending">bekliyor</string>
     <string name="model_tile_within_hour">&lt; 1 sa</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Konfor saatleri ›</string>
+    <string name="comfort_title">Konfor saatleri</string>
+    <string name="comfort_intro">Oda ne zaman sıcak olmalı? PureHeat daha sonra oda modelinden ısıtmanın ne zaman başlaması gerektiğini hesaplar. Yalnızca bu telefona kaydedilir – ısıtmaya hiçbir şey yazılmaz.</string>
+    <string name="comfort_week_hint">Hafta – çubuklar odanın ne zaman sıcak olması gerektiğini gösterir; düzenlemek için bir güne dokun</string>
+    <string name="comfort_day_empty">Konfor saati yok</string>
+    <string name="comfort_drag_hint">Kenarları sürükle: sol = şu saatten itibaren sıcak, sağ = şu saatten itibaren soğuyabilir.</string>
+    <string name="comfort_window">Aralık %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Sıcak olsun</string>
+    <string name="comfort_cool_from">Soğuyabilir</string>
+    <string name="comfort_add">+ Konfor aralığı ekle</string>
+    <string name="comfort_max">En fazla %d konfor aralığı</string>
+    <string name="comfort_eco">Düşürülmüş sıcaklık (aralıkların dışında)</string>
+    <string name="comfort_presets">Bu gün için şablon</string>
+    <string name="comfort_preset_workday">İş günü</string>
+    <string name="comfort_preset_home_office">Evden çalışma</string>
+    <string name="comfort_preset_weekend">Hafta sonu</string>
+    <string name="comfort_take_profile">Geçerli ısıtma profilini al</string>
+    <string name="comfort_from_profile_done">Etkin ısıtma profilinden alındı – saatleri ayarla ve kaydet.</string>
+    <string name="comfort_default_week">Öneri: iş günü ve hafta sonu şablonları – ayarla ve kaydet.</string>
+    <string name="comfort_no_profile">Alınacak etkin ısıtma profili yok.</string>
+    <string name="comfort_saved">Konfor saatleri bu telefona kaydedildi.</string>
 </resources>

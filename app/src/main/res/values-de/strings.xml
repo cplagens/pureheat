@@ -479,4 +479,26 @@
     <string name="outcome_disturbed_short">nicht gewertet</string>
     <string name="outcome_pending">läuft</string>
     <string name="model_tile_within_hour">&lt; 1 h</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Komfortzeiten ›</string>
+    <string name="comfort_title">Komfortzeiten</string>
+    <string name="comfort_intro">Wann soll der Raum warm sein? PureHeat berechnet später aus dem Raummodell, wann die Heizung anfangen muss. Nur auf diesem Handy gespeichert – an die Heizung wird nichts geschrieben.</string>
+    <string name="comfort_week_hint">Woche – Balken zeigen, wann der Raum warm sein soll; tippe auf einen Tag, um ihn zu bearbeiten</string>
+    <string name="comfort_day_empty">Keine Komfortzeiten</string>
+    <string name="comfort_drag_hint">Ziehe die Kanten: links = warm ab, rechts = darf abkühlen ab.</string>
+    <string name="comfort_window">Fenster %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Warm ab</string>
+    <string name="comfort_cool_from">Darf abkühlen ab</string>
+    <string name="comfort_add">+ Komfortfenster hinzufügen</string>
+    <string name="comfort_max">Höchstens %d Komfortfenster</string>
+    <string name="comfort_eco">Absenktemperatur (außerhalb der Fenster)</string>
+    <string name="comfort_presets">Vorlage für diesen Tag</string>
+    <string name="comfort_preset_workday">Arbeitstag</string>
+    <string name="comfort_preset_home_office">Homeoffice</string>
+    <string name="comfort_preset_weekend">Wochenende</string>
+    <string name="comfort_take_profile">Aktuelles Heizprofil übernehmen</string>
+    <string name="comfort_from_profile_done">Aus dem aktiven Heizprofil übernommen – passe die Zeiten an und speichere.</string>
+    <string name="comfort_default_week">Vorschlag: Vorlagen Arbeitstag und Wochenende – anpassen und speichern.</string>
+    <string name="comfort_no_profile">Kein aktives Heizprofil zum Übernehmen.</string>
+    <string name="comfort_saved">Komfortzeiten auf diesem Handy gespeichert.</string>
 </resources>

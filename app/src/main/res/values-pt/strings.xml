@@ -466,4 +466,26 @@
     <string name="outcome_disturbed_short">não contado</string>
     <string name="outcome_pending">pendente</string>
     <string name="model_tile_within_hour">&lt; 1 h</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Horários de conforto ›</string>
+    <string name="comfort_title">Horários de conforto</string>
+    <string name="comfort_intro">Quando deve o quarto estar quente? Mais tarde o PureHeat calcula com o modelo do quarto quando o aquecimento tem de começar. Guardado só neste telemóvel – nada é escrito no aquecimento.</string>
+    <string name="comfort_week_hint">Semana – as barras mostram quando o quarto deve estar quente; toque num dia para o editar</string>
+    <string name="comfort_day_empty">Sem horários de conforto</string>
+    <string name="comfort_drag_hint">Arraste as margens: esquerda = quente a partir de, direita = pode arrefecer a partir de.</string>
+    <string name="comfort_window">Janela %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Quente a partir de</string>
+    <string name="comfort_cool_from">Pode arrefecer a partir de</string>
+    <string name="comfort_add">+ Adicionar janela de conforto</string>
+    <string name="comfort_max">No máximo %d janelas de conforto</string>
+    <string name="comfort_eco">Temperatura reduzida (fora das janelas)</string>
+    <string name="comfort_presets">Modelo para este dia</string>
+    <string name="comfort_preset_workday">Dia útil</string>
+    <string name="comfort_preset_home_office">Teletrabalho</string>
+    <string name="comfort_preset_weekend">Fim de semana</string>
+    <string name="comfort_take_profile">Adotar o perfil de aquecimento atual</string>
+    <string name="comfort_from_profile_done">Adotado do perfil de aquecimento ativo – ajuste os horários e guarde.</string>
+    <string name="comfort_default_week">Sugestão: modelos dia útil e fim de semana – ajuste e guarde.</string>
+    <string name="comfort_no_profile">Não há perfil de aquecimento ativo para adotar.</string>
+    <string name="comfort_saved">Horários de conforto guardados neste telemóvel.</string>
 </resources>

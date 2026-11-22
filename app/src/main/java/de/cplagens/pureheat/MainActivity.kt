@@ -28,6 +28,8 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
+import de.cplagens.pureheat.ui.ComfortScreen
+import de.cplagens.pureheat.ui.ComfortViewModel
 import de.cplagens.pureheat.ui.DashboardScreen
 import de.cplagens.pureheat.ui.HelpScreen
 import de.cplagens.pureheat.ui.MainViewModel
@@ -60,6 +62,7 @@ class MainActivity : AppCompatActivity() {
                     var profileRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var historyRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var propertiesRoomId by rememberSaveable { mutableStateOf<String?>(null) }
+                    var comfortRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var showHelp by rememberSaveable { mutableStateOf(false) }
                     val screen = Modifier.padding(padding)
 
@@ -75,7 +78,17 @@ class MainActivity : AppCompatActivity() {
                             val profileRoom = rooms.firstOrNull { it.id == profileRoomId }
                             val historyRoom = rooms.firstOrNull { it.id == historyRoomId }
                             val propertiesRoom = rooms.firstOrNull { it.id == propertiesRoomId }
+                            val comfortRoom = rooms.firstOrNull { it.id == comfortRoomId }
                             when {
+                                comfortRoom != null -> {
+                                    BackHandler { comfortRoomId = null }
+                                    ComfortScreen(
+                                        room = comfortRoom,
+                                        vm = viewModel(key = "comfort-${comfortRoom.id}") { ComfortViewModel(application, comfortRoom.id) },
+                                        onBack = { comfortRoomId = null },
+                                        modifier = screen,
+                                    )
+                                }
                                 propertiesRoom != null -> {
                                     BackHandler { propertiesRoomId = null }
                                     RoomPropertiesScreen(
@@ -95,6 +108,7 @@ class MainActivity : AppCompatActivity() {
                                         vm = viewModel(key = "profile-${profileRoom.id}") { ProfileViewModel(application, profileRoom.id) },
                                         onBack = { profileRoomId = null },
                                         onChanged = viewModel::refresh,
+                                        onOpenComfort = { comfortRoomId = profileRoom.id },
                                         modifier = screen,
                                     )
                                 }

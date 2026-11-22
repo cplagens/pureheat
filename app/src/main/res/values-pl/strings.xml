@@ -469,4 +469,26 @@
     <string name="outcome_disturbed_short">nie liczone</string>
     <string name="outcome_pending">w toku</string>
     <string name="model_tile_within_hour">&lt; 1 godz.</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Godziny komfortu ›</string>
+    <string name="comfort_title">Godziny komfortu</string>
+    <string name="comfort_intro">Kiedy pomieszczenie ma być ciepłe? PureHeat obliczy później z modelu pomieszczenia, kiedy ogrzewanie musi się włączyć. Zapisywane tylko na tym telefonie – nic nie jest zapisywane w ogrzewaniu.</string>
+    <string name="comfort_week_hint">Tydzień – paski pokazują, kiedy pomieszczenie ma być ciepłe; dotknij dnia, aby go edytować</string>
+    <string name="comfort_day_empty">Brak godzin komfortu</string>
+    <string name="comfort_drag_hint">Przeciągnij krawędzie: lewa = ciepło od, prawa = może stygnąć od.</string>
+    <string name="comfort_window">Okno %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Ciepło od</string>
+    <string name="comfort_cool_from">Może stygnąć od</string>
+    <string name="comfort_add">+ Dodaj okno komfortu</string>
+    <string name="comfort_max">Najwyżej %d okien komfortu</string>
+    <string name="comfort_eco">Temperatura obniżona (poza oknami)</string>
+    <string name="comfort_presets">Szablon dla tego dnia</string>
+    <string name="comfort_preset_workday">Dzień roboczy</string>
+    <string name="comfort_preset_home_office">Praca zdalna</string>
+    <string name="comfort_preset_weekend">Weekend</string>
+    <string name="comfort_take_profile">Przejmij bieżący profil ogrzewania</string>
+    <string name="comfort_from_profile_done">Przejęto z aktywnego profilu ogrzewania – dopasuj godziny i zapisz.</string>
+    <string name="comfort_default_week">Propozycja: szablony dzień roboczy i weekend – dopasuj i zapisz.</string>
+    <string name="comfort_no_profile">Brak aktywnego profilu ogrzewania do przejęcia.</string>
+    <string name="comfort_saved">Godziny komfortu zapisane na tym telefonie.</string>
 </resources>

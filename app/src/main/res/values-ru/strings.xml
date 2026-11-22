@@ -469,4 +469,26 @@
     <string name="outcome_disturbed_short">не учтено</string>
     <string name="outcome_pending">ожидает</string>
     <string name="model_tile_within_hour">&lt; 1 ч</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Время комфорта ›</string>
+    <string name="comfort_title">Время комфорта</string>
+    <string name="comfort_intro">Когда в комнате должно быть тепло? Позже PureHeat по модели комнаты рассчитает, когда должно включаться отопление. Сохраняется только на этом телефоне – в отопление ничего не записывается.</string>
+    <string name="comfort_week_hint">Неделя – полосы показывают, когда в комнате должно быть тепло; нажмите на день, чтобы изменить его</string>
+    <string name="comfort_day_empty">Нет времени комфорта</string>
+    <string name="comfort_drag_hint">Перетаскивайте края: слева = тепло с, справа = может остывать с.</string>
+    <string name="comfort_window">Окно %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Тепло с</string>
+    <string name="comfort_cool_from">Может остывать с</string>
+    <string name="comfort_add">+ Добавить окно комфорта</string>
+    <string name="comfort_max">Не более %d окон комфорта</string>
+    <string name="comfort_eco">Пониженная температура (вне окон)</string>
+    <string name="comfort_presets">Шаблон для этого дня</string>
+    <string name="comfort_preset_workday">Рабочий день</string>
+    <string name="comfort_preset_home_office">Удалённая работа</string>
+    <string name="comfort_preset_weekend">Выходные</string>
+    <string name="comfort_take_profile">Взять текущий профиль отопления</string>
+    <string name="comfort_from_profile_done">Взято из активного профиля отопления – настройте время и сохраните.</string>
+    <string name="comfort_default_week">Предложение: шаблоны «рабочий день» и «выходные» – настройте и сохраните.</string>
+    <string name="comfort_no_profile">Нет активного профиля отопления.</string>
+    <string name="comfort_saved">Время комфорта сохранено на этом телефоне.</string>
 </resources>

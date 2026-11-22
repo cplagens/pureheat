@@ -466,4 +466,26 @@
     <string name="outcome_disturbed_short">non conteggiato</string>
     <string name="outcome_pending">in corso</string>
     <string name="model_tile_within_hour">&lt; 1 h</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Orari di comfort ›</string>
+    <string name="comfort_title">Orari di comfort</string>
+    <string name="comfort_intro">Quando deve essere calda la stanza? In seguito PureHeat calcolerà con il modello della stanza quando deve partire il riscaldamento. Salvato solo su questo telefono – nulla viene scritto sul riscaldamento.</string>
+    <string name="comfort_week_hint">Settimana – le barre mostrano quando la stanza deve essere calda; tocca un giorno per modificarlo</string>
+    <string name="comfort_day_empty">Nessun orario di comfort</string>
+    <string name="comfort_drag_hint">Trascina i bordi: sinistra = calda dalle, destra = può raffreddarsi dalle.</string>
+    <string name="comfort_window">Fascia %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Calda dalle</string>
+    <string name="comfort_cool_from">Può raffreddarsi dalle</string>
+    <string name="comfort_add">+ Aggiungi fascia di comfort</string>
+    <string name="comfort_max">Al massimo %d fasce di comfort</string>
+    <string name="comfort_eco">Temperatura ridotta (fuori dalle fasce)</string>
+    <string name="comfort_presets">Modello per questo giorno</string>
+    <string name="comfort_preset_workday">Giorno lavorativo</string>
+    <string name="comfort_preset_home_office">Smart working</string>
+    <string name="comfort_preset_weekend">Fine settimana</string>
+    <string name="comfort_take_profile">Riprendi il profilo di riscaldamento attuale</string>
+    <string name="comfort_from_profile_done">Ripreso dal profilo di riscaldamento attivo – regola gli orari e salva.</string>
+    <string name="comfort_default_week">Proposta: modelli giorno lavorativo e fine settimana – regola e salva.</string>
+    <string name="comfort_no_profile">Nessun profilo di riscaldamento attivo da riprendere.</string>
+    <string name="comfort_saved">Orari di comfort salvati su questo telefono.</string>
 </resources>

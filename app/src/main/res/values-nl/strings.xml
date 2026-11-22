@@ -463,4 +463,26 @@
     <string name="outcome_disturbed_short">niet meegeteld</string>
     <string name="outcome_pending">loopt</string>
     <string name="model_tile_within_hour">&lt; 1 u</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Comforttijden ›</string>
+    <string name="comfort_title">Comforttijden</string>
+    <string name="comfort_intro">Wanneer moet de kamer warm zijn? PureHeat berekent later met het kamermodel wanneer de verwarming moet starten. Alleen op deze telefoon opgeslagen – er wordt niets naar de verwarming geschreven.</string>
+    <string name="comfort_week_hint">Week – balken tonen wanneer de kamer warm moet zijn; tik op een dag om hem te bewerken</string>
+    <string name="comfort_day_empty">Geen comforttijden</string>
+    <string name="comfort_drag_hint">Sleep de randen: links = warm vanaf, rechts = mag afkoelen vanaf.</string>
+    <string name="comfort_window">Venster %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Warm vanaf</string>
+    <string name="comfort_cool_from">Mag afkoelen vanaf</string>
+    <string name="comfort_add">+ Comfortvenster toevoegen</string>
+    <string name="comfort_max">Hoogstens %d comfortvensters</string>
+    <string name="comfort_eco">Verlaagde temperatuur (buiten de vensters)</string>
+    <string name="comfort_presets">Sjabloon voor deze dag</string>
+    <string name="comfort_preset_workday">Werkdag</string>
+    <string name="comfort_preset_home_office">Thuiswerken</string>
+    <string name="comfort_preset_weekend">Weekend</string>
+    <string name="comfort_take_profile">Huidig verwarmingsprofiel overnemen</string>
+    <string name="comfort_from_profile_done">Overgenomen uit het actieve verwarmingsprofiel – pas de tijden aan en sla op.</string>
+    <string name="comfort_default_week">Voorstel: sjablonen werkdag en weekend – aanpassen en opslaan.</string>
+    <string name="comfort_no_profile">Geen actief verwarmingsprofiel om over te nemen.</string>
+    <string name="comfort_saved">Comforttijden op deze telefoon opgeslagen.</string>
 </resources>

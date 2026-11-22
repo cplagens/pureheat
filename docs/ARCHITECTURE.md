@@ -61,6 +61,7 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 | `model/RoomModel.kt` | Pure thermal model per room (k, P, dead time), fitting from phases, prediction of heat-up/cool-down time; `SetPointLevels` (eco/comfort temperature from target values) |
 | `model/GreyBoxModel.kt` | Pure grey-box model over all hourly data (`ΔT = −k(T − Tₐ) + P·valve(t − lag) + g`), ridge fit with prior, "measured"/"estimated" per parameter |
 | `model/GreyBoxTraining.kt` | Pure: first model after 7 days, weekly candidate fitted without the last week; adopted only if its hold-out error is not worse than the model in use |
+| `comfort/ComfortRows.kt` / `ComfortEditing.kt` | Pure: comfort settings ↔ DB rows; editor helpers (profile-day conversion, draft from profile, presets, copy day) |
 | `comfort/ComfortPlanner.kt` | Pure step 6: comfort windows ("warm by" / "may cool from") → heating periods: lead from heat-up after the setback (bisection), end before the window by the screed's hold time for 0.5 K, 15 min grid, merge, max. 6 periods |
 | `comfort/ComfortEvaluation.kt` | Pure: simulates current and suggested profile with `RoomSimulator` over past weather; comfort kept, valve hours, mean temperature |
 | `model/RoomSimulator.kt` | Pure forward simulation of a room (thermostat behaviour, dead time, forecast) |
@@ -85,6 +86,7 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 | `ModelTexts.kt` | Texts for model predictions (duration, "unreachable", "still learning") |
 | `TimeSeriesChart.kt` | Reusable time series chart with a shared time cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | View/edit/save/activate/undo weekly profiles |
+| `ComfortScreen.kt` / `ComfortViewModel.kt` | Step 6 comfort windows per weekday (reuses `DayEditor` with `comfort = true`), presets, draft from the active profile (read only); saved locally |
 | `AboutDialog.kt` | Version, description, language, data, coffee tip (`SupportSection` + `SupportViewModel`), logo preview |
 | `SetupScreen.kt` | SGTIN/PIN input, hint about the blue button |
 

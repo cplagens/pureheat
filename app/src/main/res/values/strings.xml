@@ -491,4 +491,26 @@
     <string name="outcome_disturbed_short">not counted</string>
     <string name="outcome_pending">pending</string>
     <string name="model_tile_within_hour">&lt; 1 h</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Comfort times ›</string>
+    <string name="comfort_title">Comfort times</string>
+    <string name="comfort_intro">When should the room be warm? PureHeat later works out from the room model when the heating has to start. Saved on this phone only – nothing is written to the heating.</string>
+    <string name="comfort_week_hint">Week – bars show when the room should be warm; tap a day to edit it</string>
+    <string name="comfort_day_empty">No comfort times</string>
+    <string name="comfort_drag_hint">Drag the edges: left = warm by, right = may cool from.</string>
+    <string name="comfort_window">Window %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Warm by</string>
+    <string name="comfort_cool_from">May cool from</string>
+    <string name="comfort_add">+ Add comfort window</string>
+    <string name="comfort_max">At most %d comfort windows</string>
+    <string name="comfort_eco">Setback temperature (outside the windows)</string>
+    <string name="comfort_presets">Preset for this day</string>
+    <string name="comfort_preset_workday">Workday</string>
+    <string name="comfort_preset_home_office">Home office</string>
+    <string name="comfort_preset_weekend">Weekend</string>
+    <string name="comfort_take_profile">Take over the current heating profile</string>
+    <string name="comfort_from_profile_done">Taken over from the active heating profile – adjust the times and save.</string>
+    <string name="comfort_default_week">Suggestion: workday and weekend presets – adjust and save.</string>
+    <string name="comfort_no_profile">No active heating profile to take over.</string>
+    <string name="comfort_saved">Comfort times saved on this phone.</string>
 </resources>

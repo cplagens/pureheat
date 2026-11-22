@@ -466,4 +466,26 @@
     <string name="outcome_disturbed_short">non compté</string>
     <string name="outcome_pending">en cours</string>
     <string name="model_tile_within_hour">&lt; 1 h</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Plages de confort ›</string>
+    <string name="comfort_title">Plages de confort</string>
+    <string name="comfort_intro">Quand la pièce doit-elle être chaude ? PureHeat calculera ensuite avec le modèle de la pièce quand le chauffage doit démarrer. Enregistré uniquement sur ce téléphone – rien n\'est écrit dans le chauffage.</string>
+    <string name="comfort_week_hint">Semaine – les barres indiquent quand la pièce doit être chaude ; touchez un jour pour le modifier</string>
+    <string name="comfort_day_empty">Aucune plage de confort</string>
+    <string name="comfort_drag_hint">Faites glisser les bords : gauche = chaud dès, droite = peut refroidir dès.</string>
+    <string name="comfort_window">Plage %1$d : %2$s–%3$s</string>
+    <string name="comfort_warm_by">Chaud dès</string>
+    <string name="comfort_cool_from">Peut refroidir dès</string>
+    <string name="comfort_add">+ Ajouter une plage de confort</string>
+    <string name="comfort_max">%d plages de confort au maximum</string>
+    <string name="comfort_eco">Température réduite (hors des plages)</string>
+    <string name="comfort_presets">Modèle pour ce jour</string>
+    <string name="comfort_preset_workday">Jour de travail</string>
+    <string name="comfort_preset_home_office">Télétravail</string>
+    <string name="comfort_preset_weekend">Week-end</string>
+    <string name="comfort_take_profile">Reprendre le profil de chauffage actuel</string>
+    <string name="comfort_from_profile_done">Repris du profil de chauffage actif – ajustez les horaires et enregistrez.</string>
+    <string name="comfort_default_week">Suggestion : modèles jour de travail et week-end – ajustez et enregistrez.</string>
+    <string name="comfort_no_profile">Aucun profil de chauffage actif à reprendre.</string>
+    <string name="comfort_saved">Plages de confort enregistrées sur ce téléphone.</string>
 </resources>

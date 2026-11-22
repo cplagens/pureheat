@@ -460,4 +460,26 @@
     <string name="outcome_disturbed_short">不计入</string>
     <string name="outcome_pending">待评估</string>
     <string name="model_tile_within_hour">不到 1 小时</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">舒适时段 ›</string>
+    <string name="comfort_title">舒适时段</string>
+    <string name="comfort_intro">房间应在什么时候暖和？PureHeat 之后会根据房间模型计算供暖何时开始。仅保存在本手机上——不会向供暖系统写入任何内容。</string>
+    <string name="comfort_week_hint">一周——色条表示房间应暖和的时间；点按某天进行编辑</string>
+    <string name="comfort_day_empty">无舒适时段</string>
+    <string name="comfort_drag_hint">拖动边缘：左 = 此时之前变暖，右 = 此时之后可降温。</string>
+    <string name="comfort_window">时段 %1$d：%2$s–%3$s</string>
+    <string name="comfort_warm_by">变暖时间</string>
+    <string name="comfort_cool_from">可降温时间</string>
+    <string name="comfort_add">+ 添加舒适时段</string>
+    <string name="comfort_max">最多 %d 个舒适时段</string>
+    <string name="comfort_eco">节能温度（时段之外）</string>
+    <string name="comfort_presets">此日模板</string>
+    <string name="comfort_preset_workday">工作日</string>
+    <string name="comfort_preset_home_office">居家办公</string>
+    <string name="comfort_preset_weekend">周末</string>
+    <string name="comfort_take_profile">采用当前供暖方案</string>
+    <string name="comfort_from_profile_done">已从当前供暖方案采用——请调整时间并保存。</string>
+    <string name="comfort_default_week">建议：工作日和周末模板——调整后保存。</string>
+    <string name="comfort_no_profile">没有可采用的当前供暖方案。</string>
+    <string name="comfort_saved">舒适时段已保存在本手机上。</string>
 </resources>

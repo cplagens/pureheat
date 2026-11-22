@@ -466,4 +466,26 @@
     <string name="outcome_disturbed_short">no contado</string>
     <string name="outcome_pending">pendiente</string>
     <string name="model_tile_within_hour">&lt; 1 h</string>
+    <!-- Comfort times (step 6) -->
+    <string name="comfort_link">Horarios de confort ›</string>
+    <string name="comfort_title">Horarios de confort</string>
+    <string name="comfort_intro">¿Cuándo debe estar caliente la habitación? Más adelante PureHeat calculará con el modelo de la habitación cuándo debe arrancar la calefacción. Solo se guarda en este teléfono: no se escribe nada en la calefacción.</string>
+    <string name="comfort_week_hint">Semana – las barras muestran cuándo debe estar caliente la habitación; toca un día para editarlo</string>
+    <string name="comfort_day_empty">Sin horarios de confort</string>
+    <string name="comfort_drag_hint">Arrastra los bordes: izquierda = caliente desde, derecha = puede enfriarse desde.</string>
+    <string name="comfort_window">Franja %1$d: %2$s–%3$s</string>
+    <string name="comfort_warm_by">Caliente desde</string>
+    <string name="comfort_cool_from">Puede enfriarse desde</string>
+    <string name="comfort_add">+ Añadir franja de confort</string>
+    <string name="comfort_max">Como máximo %d franjas de confort</string>
+    <string name="comfort_eco">Temperatura reducida (fuera de las franjas)</string>
+    <string name="comfort_presets">Plantilla para este día</string>
+    <string name="comfort_preset_workday">Día laborable</string>
+    <string name="comfort_preset_home_office">Teletrabajo</string>
+    <string name="comfort_preset_weekend">Fin de semana</string>
+    <string name="comfort_take_profile">Adoptar el perfil de calefacción actual</string>
+    <string name="comfort_from_profile_done">Adoptado del perfil de calefacción activo: ajusta los horarios y guarda.</string>
+    <string name="comfort_default_week">Sugerencia: plantillas de día laborable y fin de semana; ajusta y guarda.</string>
+    <string name="comfort_no_profile">No hay ningún perfil de calefacción activo que adoptar.</string>
+    <string name="comfort_saved">Horarios de confort guardados en este teléfono.</string>
 </resources>
