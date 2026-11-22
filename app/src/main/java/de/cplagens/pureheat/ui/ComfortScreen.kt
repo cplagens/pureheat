@@ -30,10 +30,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -41,8 +43,13 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.comfort.ComfortEditing
 import de.cplagens.pureheat.data.comfort.ComfortPreset
+import de.cplagens.pureheat.data.comfort.ComfortReview
+import de.cplagens.pureheat.data.comfort.ComfortSuggestion
 import de.cplagens.pureheat.hmip.Room
 import de.cplagens.pureheat.hmip.Weekday
+import kotlin.math.ceil
+import kotlin.math.floor
+import kotlin.math.roundToInt
 
 /**
  * Step 6: when should the room be warm? Same week view and day editor as the heating profile, but
@@ -143,6 +150,79 @@ fun ComfortScreen(room: Room, vm: ComfortViewModel, onBack: () -> Unit, modifier
                         contentPadding = PaddingValues(0.dp),
                     ) { Text(stringResource(R.string.comfort_take_profile)) }
                 }
+            }
+
+            item { ComparisonCard(state.suggestion, state.suggestionMissing) }
+        }
+    }
+}
+
+/** Step 6: the planner's suggestion against the current profile, simulated over the last week. */
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun ComparisonCard(suggestion: ComfortSuggestion?, missing: UiText?) {
+    val ctx = LocalContext.current
+    val muted = MaterialTheme.colorScheme.onSurfaceVariant
+    Card(Modifier.fillMaxWidth()) {
+        Column(Modifier.padding(16.dp), verticalArrangement = Arrangement.spacedBy(6.dp)) {
+            Text(stringResource(R.string.comfort_compare_title), style = MaterialTheme.typography.titleSmall)
+            Text(stringResource(R.string.comfort_compare_intro), style = MaterialTheme.typography.bodySmall, color = muted)
+            if (suggestion == null) {
+                if (missing != null) Text(missing.asString(), style = MaterialTheme.typography.bodySmall)
+                else LinearProgressIndicator(Modifier.fillMaxWidth())
+                return@Column
+            }
+            val cur = suggestion.comparison.current
+            val sug = suggestion.comparison.suggested
+            Text(stringResource(R.string.comfort_compare_kept, (cur.comfortKept * 100).roundToInt(), (sug.comfortKept * 100).roundToInt()))
+            Text(stringResource(R.string.comfort_compare_valve, cur.valveHours, sug.valveHours))
+            Text(stringResource(R.string.comfort_compare_mean, cur.meanTemperature, sug.meanTemperature))
+
+            val currentColor = MaterialTheme.colorScheme.tertiary
+            val suggestedColor = MaterialTheme.colorScheme.primary
+            val currentPoints = remember(suggestion) { cur.curve.map { it.time to it.temperature } }
+            val suggestedPoints = remember(suggestion) { sug.curve.map { it.time to it.temperature } }
+            val temps = currentPoints.map { it.second } + suggestedPoints.map { it.second }
+            if (temps.size >= 2) {
+                var selected by remember { mutableStateOf<Long?>(null) }
+                FlowRow(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                    Legend(stringResource(R.string.comfort_compare_legend_current), currentColor, dashed = true)
+                    Legend(stringResource(R.string.comfort_compare_legend_suggested), suggestedColor, dashed = false)
+                }
+                TimeSeriesChart(
+                    series = listOf(
+                        ChartSeries("current", currentColor, currentPoints, dashed = true),
+                        ChartSeries("suggested", suggestedColor, suggestedPoints),
+                    ),
+                    start = suggestion.start,
+                    end = suggestion.end,
+                    yMin = floor(temps.min()) - 0.5,
+                    yMax = ceil(temps.max()) + 0.5,
+                    selected = selected,
+                    onSelect = { selected = it },
+                    yLabel = { ctx.getString(R.string.temp_c0, it) },
+                    modifier = Modifier.fillMaxWidth().height(140.dp),
+                )
+                TimeAxis(suggestion.start, suggestion.end)
+            }
+            Text(
+                stringResource(R.string.comfort_compare_changed, suggestion.changedDays.size),
+                style = MaterialTheme.typography.bodySmall,
+                color = muted,
+            )
+            if (suggestion.unreachable > 0) {
+                Text(
+                    stringResource(R.string.comfort_compare_unreachable, suggestion.unreachable),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.error,
+                )
+            }
+            if (suggestion.outsideEstimated) {
+                Text(
+                    stringResource(R.string.comfort_compare_outside_estimated, ComfortReview.FALLBACK_OUTSIDE),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = muted,
+                )
             }
         }
     }

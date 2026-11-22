@@ -513,4 +513,17 @@
     <string name="comfort_default_week">Suggestion: workday and weekend presets – adjust and save.</string>
     <string name="comfort_no_profile">No active heating profile to take over.</string>
     <string name="comfort_saved">Comfort times saved on this phone.</string>
+    <string name="comfort_compare_title">Suggestion – last week</string>
+    <string name="comfort_compare_intro">The room model plans heating times for these comfort windows and simulates them against the current profile with last week\'s outdoor temperature. Nothing is written to the heating.</string>
+    <string name="comfort_compare_kept">Comfort kept: %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">Valve open: %1$.0f h → %2$.0f h</string>
+    <string name="comfort_compare_mean">Mean temperature: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Current profile</string>
+    <string name="comfort_compare_legend_suggested">Suggestion</string>
+    <string name="comfort_compare_changed">Days changed by the suggestion: %1$d of 7</string>
+    <string name="comfort_compare_unreachable">Comfort windows the room can\'t reach in time: %1$d</string>
+    <string name="comfort_compare_outside_estimated">No outdoor temperature recorded last week – %1$.0f °C assumed.</string>
+    <string name="comfort_compare_no_profile">No active heating profile to compare with.</string>
+    <string name="comfort_compare_no_model">No room model yet – the comparison needs one.</string>
+    <string name="comfort_compare_no_windows">Add comfort windows to see a suggestion.</string>
 </resources>

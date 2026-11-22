@@ -482,4 +482,17 @@
     <string name="comfort_default_week">建议：工作日和周末模板——调整后保存。</string>
     <string name="comfort_no_profile">没有可采用的当前供暖方案。</string>
     <string name="comfort_saved">舒适时段已保存在本手机上。</string>
+    <string name="comfort_compare_title">建议 – 上周</string>
+    <string name="comfort_compare_intro">房间模型为这些舒适时段规划供暖时间，并用上周的室外温度与当前方案进行对比模拟。不会向供暖系统写入任何内容。</string>
+    <string name="comfort_compare_kept">舒适达成：%1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">阀门开启：%1$.0f 小时 → %2$.0f 小时</string>
+    <string name="comfort_compare_mean">平均温度：%1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">当前方案</string>
+    <string name="comfort_compare_legend_suggested">建议</string>
+    <string name="comfort_compare_changed">建议更改的天数：%1$d / 7</string>
+    <string name="comfort_compare_unreachable">房间无法按时达到的舒适时段：%1$d</string>
+    <string name="comfort_compare_outside_estimated">上周没有记录室外温度 – 假定为 %1$.0f °C。</string>
+    <string name="comfort_compare_no_profile">没有可比较的有效供暖方案。</string>
+    <string name="comfort_compare_no_model">还没有房间模型 – 对比需要它。</string>
+    <string name="comfort_compare_no_windows">添加舒适时段以查看建议。</string>
 </resources>

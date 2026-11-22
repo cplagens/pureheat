@@ -10,6 +10,9 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 - New "Comfort times" screen (from the heating profile): set per weekday when a room should be
   warm, with presets and a draft from the current profile. Saved on the phone only; nothing is
   written to the heating yet.
+- Comfort times: a card shows what the planner suggests for your windows and how it would have done
+  last week compared with the current profile (comfort kept, valve hours, mean temperature, both
+  curves). Simulation only.
 
 ## 1.1.0 – room model from all data (November 2026)
 

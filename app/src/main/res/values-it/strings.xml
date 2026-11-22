@@ -488,4 +488,17 @@
     <string name="comfort_default_week">Proposta: modelli giorno lavorativo e fine settimana – regola e salva.</string>
     <string name="comfort_no_profile">Nessun profilo di riscaldamento attivo da riprendere.</string>
     <string name="comfort_saved">Orari di comfort salvati su questo telefono.</string>
+    <string name="comfort_compare_title">Suggerimento – settimana scorsa</string>
+    <string name="comfort_compare_intro">Il modello della stanza pianifica gli orari di riscaldamento per queste fasce di comfort e li simula rispetto al profilo attuale con la temperatura esterna della settimana scorsa. Non viene scritto nulla sul riscaldamento.</string>
+    <string name="comfort_compare_kept">Comfort rispettato: %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">Valvola aperta: %1$.0f h → %2$.0f h</string>
+    <string name="comfort_compare_mean">Temperatura media: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Profilo attuale</string>
+    <string name="comfort_compare_legend_suggested">Suggerimento</string>
+    <string name="comfort_compare_changed">Giorni modificati dal suggerimento: %1$d su 7</string>
+    <string name="comfort_compare_unreachable">Fasce di comfort non raggiungibili in tempo: %1$d</string>
+    <string name="comfort_compare_outside_estimated">Nessuna temperatura esterna registrata la settimana scorsa – ipotizzati %1$.0f °C.</string>
+    <string name="comfort_compare_no_profile">Nessun profilo di riscaldamento attivo da confrontare.</string>
+    <string name="comfort_compare_no_model">Ancora nessun modello della stanza – il confronto ne ha bisogno.</string>
+    <string name="comfort_compare_no_windows">Aggiungi fasce di comfort per vedere un suggerimento.</string>
 </resources>

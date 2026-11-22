@@ -501,4 +501,17 @@
     <string name="comfort_default_week">Vorschlag: Vorlagen Arbeitstag und Wochenende – anpassen und speichern.</string>
     <string name="comfort_no_profile">Kein aktives Heizprofil zum Übernehmen.</string>
     <string name="comfort_saved">Komfortzeiten auf diesem Handy gespeichert.</string>
+    <string name="comfort_compare_title">Vorschlag – letzte Woche</string>
+    <string name="comfort_compare_intro">Das Raummodell plant Heizzeiten für diese Komfortzeiten und simuliert sie gegen das aktuelle Profil mit der Außentemperatur der letzten Woche. Es wird nichts an die Heizung geschrieben.</string>
+    <string name="comfort_compare_kept">Komfort eingehalten: %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">Ventil offen: %1$.0f h → %2$.0f h</string>
+    <string name="comfort_compare_mean">Mitteltemperatur: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Aktuelles Profil</string>
+    <string name="comfort_compare_legend_suggested">Vorschlag</string>
+    <string name="comfort_compare_changed">Vom Vorschlag geänderte Tage: %1$d von 7</string>
+    <string name="comfort_compare_unreachable">Komfortzeiten, die der Raum nicht rechtzeitig erreicht: %1$d</string>
+    <string name="comfort_compare_outside_estimated">Letzte Woche keine Außentemperatur aufgezeichnet – %1$.0f °C angenommen.</string>
+    <string name="comfort_compare_no_profile">Kein aktives Heizprofil zum Vergleichen.</string>
+    <string name="comfort_compare_no_model">Noch kein Raummodell – der Vergleich braucht eins.</string>
+    <string name="comfort_compare_no_windows">Lege Komfortzeiten an, um einen Vorschlag zu sehen.</string>
 </resources>

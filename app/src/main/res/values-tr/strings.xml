@@ -485,4 +485,17 @@
     <string name="comfort_default_week">Öneri: iş günü ve hafta sonu şablonları – ayarla ve kaydet.</string>
     <string name="comfort_no_profile">Alınacak etkin ısıtma profili yok.</string>
     <string name="comfort_saved">Konfor saatleri bu telefona kaydedildi.</string>
+    <string name="comfort_compare_title">Öneri – geçen hafta</string>
+    <string name="comfort_compare_intro">Oda modeli bu konfor aralıkları için ısıtma zamanlarını planlar ve geçen haftanın dış sıcaklığıyla mevcut profile karşı simüle eder. Isıtmaya hiçbir şey yazılmaz.</string>
+    <string name="comfort_compare_kept">Korunan konfor: %%%1$d → %%%2$d</string>
+    <string name="comfort_compare_valve">Vana açık: %1$.0f sa → %2$.0f sa</string>
+    <string name="comfort_compare_mean">Ortalama sıcaklık: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Mevcut profil</string>
+    <string name="comfort_compare_legend_suggested">Öneri</string>
+    <string name="comfort_compare_changed">Önerinin değiştirdiği günler: 7 günden %1$d</string>
+    <string name="comfort_compare_unreachable">Odanın zamanında ulaşamadığı konfor aralıkları: %1$d</string>
+    <string name="comfort_compare_outside_estimated">Geçen hafta dış sıcaklık kaydedilmedi – %1$.0f °C varsayıldı.</string>
+    <string name="comfort_compare_no_profile">Karşılaştırılacak etkin ısıtma profili yok.</string>
+    <string name="comfort_compare_no_model">Henüz oda modeli yok – karşılaştırma için gerekli.</string>
+    <string name="comfort_compare_no_windows">Öneri görmek için konfor aralıkları ekle.</string>
 </resources>

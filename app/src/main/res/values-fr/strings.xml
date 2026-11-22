@@ -488,4 +488,17 @@
     <string name="comfort_default_week">Suggestion : modèles jour de travail et week-end – ajustez et enregistrez.</string>
     <string name="comfort_no_profile">Aucun profil de chauffage actif à reprendre.</string>
     <string name="comfort_saved">Plages de confort enregistrées sur ce téléphone.</string>
+    <string name="comfort_compare_title">Suggestion – semaine dernière</string>
+    <string name="comfort_compare_intro">Le modèle de la pièce planifie les heures de chauffe pour ces plages de confort et les simule face au profil actuel avec la température extérieure de la semaine dernière. Rien n\'est écrit sur le chauffage.</string>
+    <string name="comfort_compare_kept">Confort respecté : %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">Vanne ouverte : %1$.0f h → %2$.0f h</string>
+    <string name="comfort_compare_mean">Température moyenne : %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Profil actuel</string>
+    <string name="comfort_compare_legend_suggested">Suggestion</string>
+    <string name="comfort_compare_changed">Jours modifiés par la suggestion : %1$d sur 7</string>
+    <string name="comfort_compare_unreachable">Plages de confort non atteintes à temps : %1$d</string>
+    <string name="comfort_compare_outside_estimated">Aucune température extérieure enregistrée la semaine dernière – %1$.0f °C supposés.</string>
+    <string name="comfort_compare_no_profile">Aucun profil de chauffage actif à comparer.</string>
+    <string name="comfort_compare_no_model">Pas encore de modèle de la pièce – la comparaison en a besoin.</string>
+    <string name="comfort_compare_no_windows">Ajoutez des plages de confort pour voir une suggestion.</string>
 </resources>

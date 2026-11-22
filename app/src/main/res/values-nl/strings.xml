@@ -485,4 +485,17 @@
     <string name="comfort_default_week">Voorstel: sjablonen werkdag en weekend – aanpassen en opslaan.</string>
     <string name="comfort_no_profile">Geen actief verwarmingsprofiel om over te nemen.</string>
     <string name="comfort_saved">Comforttijden op deze telefoon opgeslagen.</string>
+    <string name="comfort_compare_title">Voorstel – vorige week</string>
+    <string name="comfort_compare_intro">Het kamermodel plant verwarmingstijden voor deze comforttijden en simuleert ze tegen het huidige profiel met de buitentemperatuur van vorige week. Er wordt niets naar de verwarming geschreven.</string>
+    <string name="comfort_compare_kept">Comfort gehaald: %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">Klep open: %1$.0f u → %2$.0f u</string>
+    <string name="comfort_compare_mean">Gemiddelde temperatuur: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Huidig profiel</string>
+    <string name="comfort_compare_legend_suggested">Voorstel</string>
+    <string name="comfort_compare_changed">Door het voorstel gewijzigde dagen: %1$d van 7</string>
+    <string name="comfort_compare_unreachable">Comforttijden die de kamer niet op tijd haalt: %1$d</string>
+    <string name="comfort_compare_outside_estimated">Vorige week geen buitentemperatuur vastgelegd – %1$.0f °C aangenomen.</string>
+    <string name="comfort_compare_no_profile">Geen actief verwarmingsprofiel om mee te vergelijken.</string>
+    <string name="comfort_compare_no_model">Nog geen kamermodel – de vergelijking heeft er een nodig.</string>
+    <string name="comfort_compare_no_windows">Voeg comforttijden toe om een voorstel te zien.</string>
 </resources>

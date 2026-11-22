@@ -491,4 +491,17 @@
     <string name="comfort_default_week">Propozycja: szablony dzień roboczy i weekend – dopasuj i zapisz.</string>
     <string name="comfort_no_profile">Brak aktywnego profilu ogrzewania do przejęcia.</string>
     <string name="comfort_saved">Godziny komfortu zapisane na tym telefonie.</string>
+    <string name="comfort_compare_title">Propozycja – ostatni tydzień</string>
+    <string name="comfort_compare_intro">Model pomieszczenia planuje czasy grzania dla tych okien komfortu i symuluje je względem obecnego profilu przy temperaturze zewnętrznej z ostatniego tygodnia. Nic nie jest zapisywane w ogrzewaniu.</string>
+    <string name="comfort_compare_kept">Komfort utrzymany: %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">Zawór otwarty: %1$.0f h → %2$.0f h</string>
+    <string name="comfort_compare_mean">Średnia temperatura: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Obecny profil</string>
+    <string name="comfort_compare_legend_suggested">Propozycja</string>
+    <string name="comfort_compare_changed">Dni zmienione przez propozycję: %1$d z 7</string>
+    <string name="comfort_compare_unreachable">Okna komfortu nieosiągalne na czas: %1$d</string>
+    <string name="comfort_compare_outside_estimated">W ostatnim tygodniu nie zapisano temperatury zewnętrznej – przyjęto %1$.0f °C.</string>
+    <string name="comfort_compare_no_profile">Brak aktywnego profilu grzania do porównania.</string>
+    <string name="comfort_compare_no_model">Brak jeszcze modelu pomieszczenia – porównanie go wymaga.</string>
+    <string name="comfort_compare_no_windows">Dodaj okna komfortu, aby zobaczyć propozycję.</string>
 </resources>

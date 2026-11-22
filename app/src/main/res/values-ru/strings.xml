@@ -491,4 +491,17 @@
     <string name="comfort_default_week">Предложение: шаблоны «рабочий день» и «выходные» – настройте и сохраните.</string>
     <string name="comfort_no_profile">Нет активного профиля отопления.</string>
     <string name="comfort_saved">Время комфорта сохранено на этом телефоне.</string>
+    <string name="comfort_compare_title">Предложение – прошлая неделя</string>
+    <string name="comfort_compare_intro">Модель комнаты планирует время нагрева для этих интервалов комфорта и моделирует его в сравнении с текущим профилем при наружной температуре прошлой недели. В отопление ничего не записывается.</string>
+    <string name="comfort_compare_kept">Комфорт соблюдён: %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">Клапан открыт: %1$.0f ч → %2$.0f ч</string>
+    <string name="comfort_compare_mean">Средняя температура: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">Текущий профиль</string>
+    <string name="comfort_compare_legend_suggested">Предложение</string>
+    <string name="comfort_compare_changed">Дней изменено предложением: %1$d из 7</string>
+    <string name="comfort_compare_unreachable">Интервалы комфорта, которые комната не достигает вовремя: %1$d</string>
+    <string name="comfort_compare_outside_estimated">На прошлой неделе наружная температура не записана – принято %1$.0f °C.</string>
+    <string name="comfort_compare_no_profile">Нет активного профиля отопления для сравнения.</string>
+    <string name="comfort_compare_no_model">Модели комнаты пока нет – для сравнения она нужна.</string>
+    <string name="comfort_compare_no_windows">Добавьте интервалы комфорта, чтобы увидеть предложение.</string>
 </resources>

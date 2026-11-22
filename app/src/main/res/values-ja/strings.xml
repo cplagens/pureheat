@@ -482,4 +482,17 @@
     <string name="comfort_default_week">提案：平日と週末のテンプレート – 調整して保存してください。</string>
     <string name="comfort_no_profile">取り込める有効な暖房プロファイルがありません。</string>
     <string name="comfort_saved">快適時間をこの端末に保存しました。</string>
+    <string name="comfort_compare_title">提案 – 先週</string>
+    <string name="comfort_compare_intro">部屋モデルがこれらの快適時間帯に合わせて暖房時間を計画し、先週の外気温で現在のプロファイルと比較シミュレーションします。暖房には何も書き込みません。</string>
+    <string name="comfort_compare_kept">快適さの維持: %1$d%% → %2$d%%</string>
+    <string name="comfort_compare_valve">バルブ開: %1$.0f 時間 → %2$.0f 時間</string>
+    <string name="comfort_compare_mean">平均温度: %1$.1f °C → %2$.1f °C</string>
+    <string name="comfort_compare_legend_current">現在のプロファイル</string>
+    <string name="comfort_compare_legend_suggested">提案</string>
+    <string name="comfort_compare_changed">提案で変更される日: 7日中 %1$d日</string>
+    <string name="comfort_compare_unreachable">時間内に到達できない快適時間帯: %1$d</string>
+    <string name="comfort_compare_outside_estimated">先週の外気温の記録がありません – %1$.0f °C と仮定しました。</string>
+    <string name="comfort_compare_no_profile">比較する有効な暖房プロファイルがありません。</string>
+    <string name="comfort_compare_no_model">部屋モデルがまだありません – 比較には必要です。</string>
+    <string name="comfort_compare_no_windows">提案を見るには快適時間帯を追加してください。</string>
 </resources>
