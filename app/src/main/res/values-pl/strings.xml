@@ -504,4 +504,8 @@
     <string name="comfort_compare_no_profile">Brak aktywnego profilu grzania do porównania.</string>
     <string name="comfort_compare_no_model">Brak jeszcze modelu pomieszczenia – porównanie go wymaga.</string>
     <string name="comfort_compare_no_windows">Dodaj okna komfortu, aby zobaczyć propozycję.</string>
+    <string name="comfort_apply">Otwórz w edytorze profilu</string>
+    <string name="comfort_apply_hint">Proponowane dni trafiają do edytora aktywnego profilu. Nic nie zostanie zapisane, dopóki nie sprawdzisz i nie potwierdzisz tam zmian.</string>
+    <string name="comfort_apply_done">Propozycja z okien komfortu jest w edytorze – sprawdź zmiany, potem zapisz.</string>
+    <string name="comfort_apply_unchanged">Propozycja odpowiada profilowi – nie ma czego zmieniać.</string>
 </resources>

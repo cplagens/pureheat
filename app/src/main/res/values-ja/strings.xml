@@ -495,4 +495,8 @@
     <string name="comfort_compare_no_profile">比較する有効な暖房プロファイルがありません。</string>
     <string name="comfort_compare_no_model">部屋モデルがまだありません – 比較には必要です。</string>
     <string name="comfort_compare_no_windows">提案を見るには快適時間帯を追加してください。</string>
+    <string name="comfort_apply">プロファイルエディターで開く</string>
+    <string name="comfort_apply_hint">提案された日が有効なプロファイルのエディターに入ります。そこで変更を確認して承認するまで、何も保存されません。</string>
+    <string name="comfort_apply_done">快適時間帯からの提案がエディターに入りました – 変更を確認してから保存してください。</string>
+    <string name="comfort_apply_unchanged">提案はプロファイルと同じです – 変更はありません。</string>
 </resources>

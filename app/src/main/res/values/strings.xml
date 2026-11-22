@@ -526,4 +526,8 @@
     <string name="comfort_compare_no_profile">No active heating profile to compare with.</string>
     <string name="comfort_compare_no_model">No room model yet – the comparison needs one.</string>
     <string name="comfort_compare_no_windows">Add comfort windows to see a suggestion.</string>
+    <string name="comfort_apply">Open in the profile editor</string>
+    <string name="comfort_apply_hint">The suggested days are put into the editor of the active profile. Nothing is saved until you check the changes and confirm there.</string>
+    <string name="comfort_apply_done">Suggestion from the comfort times is in the editor – check the changes, then save.</string>
+    <string name="comfort_apply_unchanged">The suggestion matches the profile – nothing to change.</string>
 </resources>

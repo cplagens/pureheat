@@ -501,4 +501,8 @@
     <string name="comfort_compare_no_profile">Aucun profil de chauffage actif à comparer.</string>
     <string name="comfort_compare_no_model">Pas encore de modèle de la pièce – la comparaison en a besoin.</string>
     <string name="comfort_compare_no_windows">Ajoutez des plages de confort pour voir une suggestion.</string>
+    <string name="comfort_apply">Ouvrir dans l\'éditeur de profil</string>
+    <string name="comfort_apply_hint">Les jours suggérés sont placés dans l\'éditeur du profil actif. Rien n\'est enregistré avant que vous ne vérifiiez et confirmiez les modifications.</string>
+    <string name="comfort_apply_done">La suggestion des plages de confort est dans l\'éditeur – vérifiez les modifications, puis enregistrez.</string>
+    <string name="comfort_apply_unchanged">La suggestion correspond au profil – rien à modifier.</string>
 </resources>

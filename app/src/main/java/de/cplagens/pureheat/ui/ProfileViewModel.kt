@@ -76,6 +76,7 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
                         hasBackup = repository.hasBackup(roomId, ref.index),
                     )
                 }
+                applyPending()
             } catch (e: Exception) {
                 _ui.update { it.copy(loading = false, error = e.toUiText()) }
             }
@@ -87,6 +88,34 @@ class ProfileViewModel(app: Application, private val roomId: String) : AndroidVi
     fun copyDay(from: Weekday, to: Set<Weekday>) = edit { ProfileEditing.copyDay(it, from, to) }
 
     fun discard() = _ui.update { it.copy(edited = it.original, message = null) }
+
+    /** Suggestion from the comfort times waiting for [ref] to be loaded. */
+    private var pendingSuggestion: Pair<ProfileRef, Map<Weekday, ProfileDay>>? = null
+
+    /**
+     * Step 6: puts the comfort planner's [days] into the editor of [ref] (selecting it if needed).
+     * Only the edited copy changes; saving is the normal confirmed path with the list of changes.
+     */
+    fun applySuggestion(ref: ProfileRef, days: Map<Weekday, ProfileDay>) {
+        pendingSuggestion = ref to days
+        val s = _ui.value
+        if (s.selected == ref && s.original != null) applyPending() else select(ref)
+    }
+
+    private fun applyPending() {
+        val (ref, days) = pendingSuggestion ?: return
+        if (_ui.value.selected != ref) return
+        pendingSuggestion = null
+        _ui.update { s ->
+            val edited = s.edited ?: return@update s
+            val next = edited.copy(days = edited.days + days)
+            s.copy(
+                edited = next,
+                error = null,
+                message = UiText.Res(if (next.days == edited.days) R.string.comfort_apply_unchanged else R.string.comfort_apply_done),
+            )
+        }
+    }
 
     /** Saves the edited week to this room and, if chosen, to the active profile of [alsoRooms]. */
     fun save(alsoRooms: List<Room>, onSaved: () -> Unit) {

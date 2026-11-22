@@ -12,7 +12,8 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
   written to the heating yet.
 - Comfort times: a card shows what the planner suggests for your windows and how it would have done
   last week compared with the current profile (comfort kept, valve hours, mean temperature, both
-  curves). Simulation only.
+  curves). "Open in the profile editor" puts the suggestion into the profile editor; it is only
+  saved after you check the changes and confirm.
 
 ## 1.1.0 – room model from all data (November 2026)
 

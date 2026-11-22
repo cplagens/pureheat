@@ -82,10 +82,17 @@ class MainActivity : AppCompatActivity() {
                             when {
                                 comfortRoom != null -> {
                                     BackHandler { comfortRoomId = null }
+                                    // Same key as the profile screen below: the suggestion lands in its editor.
+                                    val profileVm = viewModel(key = "profile-${comfortRoom.id}") { ProfileViewModel(application, comfortRoom.id) }
                                     ComfortScreen(
                                         room = comfortRoom,
                                         vm = viewModel(key = "comfort-${comfortRoom.id}") { ComfortViewModel(application, comfortRoom.id) },
                                         onBack = { comfortRoomId = null },
+                                        onApplySuggestion = { ref, days ->
+                                            profileVm.applySuggestion(ref, days)
+                                            profileRoomId = comfortRoom.id
+                                            comfortRoomId = null
+                                        },
                                         modifier = screen,
                                     )
                                 }

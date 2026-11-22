@@ -45,6 +45,8 @@ import de.cplagens.pureheat.data.comfort.ComfortEditing
 import de.cplagens.pureheat.data.comfort.ComfortPreset
 import de.cplagens.pureheat.data.comfort.ComfortReview
 import de.cplagens.pureheat.data.comfort.ComfortSuggestion
+import de.cplagens.pureheat.hmip.ProfileDay
+import de.cplagens.pureheat.hmip.ProfileRef
 import de.cplagens.pureheat.hmip.Room
 import de.cplagens.pureheat.hmip.Weekday
 import kotlin.math.ceil
@@ -57,7 +59,14 @@ import kotlin.math.roundToInt
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun ComfortScreen(room: Room, vm: ComfortViewModel, onBack: () -> Unit, modifier: Modifier = Modifier) {
+fun ComfortScreen(
+    room: Room,
+    vm: ComfortViewModel,
+    onBack: () -> Unit,
+    /** Hands the suggested days of the active profile to the profile editor (not saved there yet). */
+    onApplySuggestion: (ProfileRef, Map<Weekday, ProfileDay>) -> Unit,
+    modifier: Modifier = Modifier,
+) {
     val state by vm.ui.collectAsStateWithLifecycle()
     LaunchedEffect(room.id) { vm.start(room) }
     var expandedDay by rememberSaveable { mutableStateOf<Weekday?>(null) }
@@ -152,7 +161,20 @@ fun ComfortScreen(room: Room, vm: ComfortViewModel, onBack: () -> Unit, modifier
                 }
             }
 
-            item { ComparisonCard(state.suggestion, state.suggestionMissing) }
+            item {
+                val active = room.profiles.firstOrNull { it.index == room.activeProfile }
+                ComparisonCard(
+                    suggestion = state.suggestion,
+                    missing = state.suggestionMissing,
+                    onApply = active?.let { ref ->
+                        { s: ComfortSuggestion ->
+                            // The suggestion belongs to these windows: keep them (local only).
+                            if (state.dirty) vm.save()
+                            onApplySuggestion(ref, s.profile.filterKeys { it in s.changedDays })
+                        }
+                    },
+                )
+            }
         }
     }
 }
@@ -160,7 +182,7 @@ fun ComfortScreen(room: Room, vm: ComfortViewModel, onBack: () -> Unit, modifier
 /** Step 6: the planner's suggestion against the current profile, simulated over the last week. */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ComparisonCard(suggestion: ComfortSuggestion?, missing: UiText?) {
+private fun ComparisonCard(suggestion: ComfortSuggestion?, missing: UiText?, onApply: ((ComfortSuggestion) -> Unit)?) {
     val ctx = LocalContext.current
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Card(Modifier.fillMaxWidth()) {
@@ -223,6 +245,10 @@ private fun ComparisonCard(suggestion: ComfortSuggestion?, missing: UiText?) {
                     style = MaterialTheme.typography.bodySmall,
                     color = muted,
                 )
+            }
+            if (onApply != null && suggestion.changedDays.isNotEmpty()) {
+                Button(onClick = { onApply(suggestion) }) { Text(stringResource(R.string.comfort_apply)) }
+                Text(stringResource(R.string.comfort_apply_hint), style = MaterialTheme.typography.bodySmall, color = muted)
             }
         }
     }

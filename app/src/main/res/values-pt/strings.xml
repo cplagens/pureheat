@@ -501,4 +501,8 @@
     <string name="comfort_compare_no_profile">Nenhum perfil de aquecimento ativo para comparar.</string>
     <string name="comfort_compare_no_model">Ainda não há modelo do cômodo – a comparação precisa de um.</string>
     <string name="comfort_compare_no_windows">Adicione períodos de conforto para ver uma sugestão.</string>
+    <string name="comfort_apply">Abrir no editor de perfil</string>
+    <string name="comfort_apply_hint">Os dias sugeridos são colocados no editor do perfil ativo. Nada é salvo até você revisar e confirmar as alterações lá.</string>
+    <string name="comfort_apply_done">A sugestão dos períodos de conforto está no editor – revise as alterações e depois salve.</string>
+    <string name="comfort_apply_unchanged">A sugestão corresponde ao perfil – nada a alterar.</string>
 </resources>

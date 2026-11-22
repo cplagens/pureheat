@@ -495,4 +495,8 @@
     <string name="comfort_compare_no_profile">没有可比较的有效供暖方案。</string>
     <string name="comfort_compare_no_model">还没有房间模型 – 对比需要它。</string>
     <string name="comfort_compare_no_windows">添加舒适时段以查看建议。</string>
+    <string name="comfort_apply">在方案编辑器中打开</string>
+    <string name="comfort_apply_hint">建议的天会放入当前有效方案的编辑器。在你检查并确认更改之前，不会保存任何内容。</string>
+    <string name="comfort_apply_done">来自舒适时段的建议已在编辑器中 – 请检查更改后再保存。</string>
+    <string name="comfort_apply_unchanged">建议与方案一致 – 无需更改。</string>
 </resources>

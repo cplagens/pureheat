@@ -514,4 +514,8 @@
     <string name="comfort_compare_no_profile">Kein aktives Heizprofil zum Vergleichen.</string>
     <string name="comfort_compare_no_model">Noch kein Raummodell – der Vergleich braucht eins.</string>
     <string name="comfort_compare_no_windows">Lege Komfortzeiten an, um einen Vorschlag zu sehen.</string>
+    <string name="comfort_apply">Im Profil-Editor öffnen</string>
+    <string name="comfort_apply_hint">Die vorgeschlagenen Tage kommen in den Editor des aktiven Profils. Gespeichert wird erst, wenn du dort die Änderungen prüfst und bestätigst.</string>
+    <string name="comfort_apply_done">Vorschlag aus den Komfortzeiten ist im Editor – prüfe die Änderungen und speichere dann.</string>
+    <string name="comfort_apply_unchanged">Der Vorschlag entspricht dem Profil – nichts zu ändern.</string>
 </resources>

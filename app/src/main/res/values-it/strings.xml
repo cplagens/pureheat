@@ -501,4 +501,8 @@
     <string name="comfort_compare_no_profile">Nessun profilo di riscaldamento attivo da confrontare.</string>
     <string name="comfort_compare_no_model">Ancora nessun modello della stanza – il confronto ne ha bisogno.</string>
     <string name="comfort_compare_no_windows">Aggiungi fasce di comfort per vedere un suggerimento.</string>
+    <string name="comfort_apply">Apri nell\'editor del profilo</string>
+    <string name="comfort_apply_hint">I giorni suggeriti vengono inseriti nell\'editor del profilo attivo. Non viene salvato nulla finché non controlli e confermi le modifiche.</string>
+    <string name="comfort_apply_done">Il suggerimento dalle fasce di comfort è nell\'editor – controlla le modifiche, poi salva.</string>
+    <string name="comfort_apply_unchanged">Il suggerimento corrisponde al profilo – niente da cambiare.</string>
 </resources>

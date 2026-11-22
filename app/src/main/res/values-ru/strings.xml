@@ -504,4 +504,8 @@
     <string name="comfort_compare_no_profile">Нет активного профиля отопления для сравнения.</string>
     <string name="comfort_compare_no_model">Модели комнаты пока нет – для сравнения она нужна.</string>
     <string name="comfort_compare_no_windows">Добавьте интервалы комфорта, чтобы увидеть предложение.</string>
+    <string name="comfort_apply">Открыть в редакторе профиля</string>
+    <string name="comfort_apply_hint">Предложенные дни попадают в редактор активного профиля. Ничего не сохраняется, пока вы не проверите и не подтвердите изменения.</string>
+    <string name="comfort_apply_done">Предложение из интервалов комфорта в редакторе – проверьте изменения и сохраните.</string>
+    <string name="comfort_apply_unchanged">Предложение совпадает с профилем – менять нечего.</string>
 </resources>

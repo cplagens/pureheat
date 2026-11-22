@@ -498,4 +498,8 @@
     <string name="comfort_compare_no_profile">Karşılaştırılacak etkin ısıtma profili yok.</string>
     <string name="comfort_compare_no_model">Henüz oda modeli yok – karşılaştırma için gerekli.</string>
     <string name="comfort_compare_no_windows">Öneri görmek için konfor aralıkları ekle.</string>
+    <string name="comfort_apply">Profil düzenleyicide aç</string>
+    <string name="comfort_apply_hint">Önerilen günler etkin profilin düzenleyicisine konur. Oradaki değişiklikleri kontrol edip onaylayana kadar hiçbir şey kaydedilmez.</string>
+    <string name="comfort_apply_done">Konfor aralıklarından gelen öneri düzenleyicide – değişiklikleri kontrol et, sonra kaydet.</string>
+    <string name="comfort_apply_unchanged">Öneri profille aynı – değiştirilecek bir şey yok.</string>
 </resources>

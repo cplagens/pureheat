@@ -501,4 +501,8 @@
     <string name="comfort_compare_no_profile">No hay un perfil de calefacción activo para comparar.</string>
     <string name="comfort_compare_no_model">Aún no hay modelo de la habitación – la comparación lo necesita.</string>
     <string name="comfort_compare_no_windows">Añade franjas de confort para ver una sugerencia.</string>
+    <string name="comfort_apply">Abrir en el editor de perfil</string>
+    <string name="comfort_apply_hint">Los días sugeridos se colocan en el editor del perfil activo. No se guarda nada hasta que revises y confirmes los cambios allí.</string>
+    <string name="comfort_apply_done">La sugerencia de las franjas de confort está en el editor: revisa los cambios y luego guarda.</string>
+    <string name="comfort_apply_unchanged">La sugerencia coincide con el perfil: no hay nada que cambiar.</string>
 </resources>

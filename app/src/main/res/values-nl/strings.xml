@@ -498,4 +498,8 @@
     <string name="comfort_compare_no_profile">Geen actief verwarmingsprofiel om mee te vergelijken.</string>
     <string name="comfort_compare_no_model">Nog geen kamermodel – de vergelijking heeft er een nodig.</string>
     <string name="comfort_compare_no_windows">Voeg comforttijden toe om een voorstel te zien.</string>
+    <string name="comfort_apply">Openen in de profieleditor</string>
+    <string name="comfort_apply_hint">De voorgestelde dagen worden in de editor van het actieve profiel gezet. Er wordt niets opgeslagen tot je de wijzigingen daar controleert en bevestigt.</string>
+    <string name="comfort_apply_done">Het voorstel uit de comforttijden staat in de editor – controleer de wijzigingen en sla dan op.</string>
+    <string name="comfort_apply_unchanged">Het voorstel komt overeen met het profiel – niets te wijzigen.</string>
 </resources>
