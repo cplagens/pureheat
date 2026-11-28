@@ -549,4 +549,14 @@
     <string name="fault_device_meaning">Cihaz dahili bir sorun bildiriyor (kod aşağıda). Kontrol ettiği devreler doğru çalışmıyor olabilir.</string>
     <string name="fault_device_causes">• Aşırı ısınma (cihazın çevresinde hava yok)\n• Düşük gerilim ya da elektrik kesintisi\n• Aşırı yük ya da dahili hata</string>
     <string name="fault_device_steps">1. Güç kaynağını ve cihazın havalandığını kontrol et.\n2. Kısa süre kapatıp yeniden aç.\n3. Hata sürerse: üreticinin desteğine başvur.</string>
+    <string name="notif_channel_faults">Isıtma arızaları</string>
+    <string name="notif_channel_faults_desc">Bir vana ya da cihaz sorun bildirdiğinde</string>
+    <string name="notify_title">Bildirimler</string>
+    <string name="notify_faults">Arızalarda bildir</string>
+    <string name="notify_faults_text">Arka plan kaydı sırasında kontrol edilir (15–60 dakikada bir). Her yeni arıza için bir bildirim.</string>
+    <string name="notify_blocked">Bu uygulamanın bildirimleri Android’de kapalı.</string>
+    <string name="notify_allow">Bildirimlere izin ver</string>
+    <string name="notify_hint_title">Arızalarda bildirim alınsın mı?</string>
+    <string name="notify_hint_text">PureHeat bir vana ya da cihaz sorun bildirdiğinde sana haber verebilir – örneğin artık vanasına oturmayan bir aktüatör.</string>
+    <string name="support_title">Destekle</string>
 </resources>

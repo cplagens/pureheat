@@ -552,4 +552,14 @@
     <string name="fault_device_meaning">L’appareil signale un problème interne (code ci-dessous). Les circuits qu’il commande ne fonctionnent peut-être pas correctement.</string>
     <string name="fault_device_causes">• Surchauffe (pas d’air autour de l’appareil)\n• Sous-tension ou coupure de courant\n• Surcharge ou défaut interne</string>
     <string name="fault_device_steps">1. Vérifie l’alimentation et que l’appareil est bien aéré.\n2. Éteins-le et rallume-le brièvement.\n3. Si l’erreur persiste : contacte le support du fabricant.</string>
+    <string name="notif_channel_faults">Défauts du chauffage</string>
+    <string name="notif_channel_faults_desc">Quand une vanne ou un appareil signale un problème</string>
+    <string name="notify_title">Notifications</string>
+    <string name="notify_faults">M’avertir en cas de défaut</string>
+    <string name="notify_faults_text">Vérifié lors de l’enregistrement en arrière-plan (toutes les 15 à 60 minutes). Un message par nouveau défaut.</string>
+    <string name="notify_blocked">Les notifications de cette app sont désactivées dans Android.</string>
+    <string name="notify_allow">Autoriser les notifications</string>
+    <string name="notify_hint_title">Être averti en cas de défaut ?</string>
+    <string name="notify_hint_text">PureHeat peut te prévenir quand une vanne ou un appareil signale un problème – par exemple un actionneur qui n’est plus en place sur sa vanne.</string>
+    <string name="support_title">Soutenir</string>
 </resources>

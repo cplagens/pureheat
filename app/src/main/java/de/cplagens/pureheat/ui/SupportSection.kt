@@ -8,17 +8,13 @@ package de.cplagens.pureheat.ui
 import android.app.Activity
 import android.content.Context
 import android.content.ContextWrapper
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.material3.FilledTonalButton
-import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.viewmodel.compose.viewModel
 import de.cplagens.pureheat.R
@@ -32,9 +28,9 @@ fun SupportSection(vm: SupportViewModel = viewModel()) {
     val state by vm.state.collectAsStateWithLifecycle()
     val price = state.price ?: return
     val activity = LocalContext.current.findActivity()
-    HorizontalDivider()
-    Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(stringResource(R.string.support_text))
+    InfoCard {
+        Text(stringResource(R.string.support_title), style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.support_text), style = MaterialTheme.typography.bodyMedium)
         FilledTonalButton(onClick = { activity?.let(vm::buy) }, enabled = activity != null) {
             Text(stringResource(R.string.coffee_buy, price))
         }

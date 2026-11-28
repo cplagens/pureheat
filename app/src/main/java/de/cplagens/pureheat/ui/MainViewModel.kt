@@ -170,6 +170,8 @@ class MainViewModel(app: Application) : AndroidViewModel(app) {
         _ui.update { (it as? UiState.Dashboard)?.copy(loading = true, error = null) ?: it }
         try {
             val parsed = repository.fetch(creds)
+            // The banner shows them now; no notification for these later.
+            de.cplagens.pureheat.data.FaultNotifier.update(getApplication(), parsed.faults, background = false)
             // While the app is open the probe run may happen right away if it is due.
             viewModelScope.launch { repository.maybeRunProbe(parsed, System.currentTimeMillis(), charging = false, foreground = true) }
             _ui.update {

@@ -546,4 +546,14 @@
     <string name="fault_device_meaning">设备报告了内部问题（代码见下）。它控制的回路可能无法正常工作。</string>
     <string name="fault_device_causes">• 过热（设备周围不通风）\n• 欠压或停电\n• 过载或内部故障</string>
     <string name="fault_device_steps">1. 检查电源以及设备是否通风。\n2. 短暂关闭后重新打开。\n3. 如错误仍在：联系制造商客服。</string>
+    <string name="notif_channel_faults">供暖故障</string>
+    <string name="notif_channel_faults_desc">当阀门或设备报告问题时</string>
+    <string name="notify_title">通知</string>
+    <string name="notify_faults">出现故障时通知我</string>
+    <string name="notify_faults_text">在后台记录时检查（每 15–60 分钟）。每个新故障通知一次。</string>
+    <string name="notify_blocked">此应用的通知在 Android 中已关闭。</string>
+    <string name="notify_allow">允许通知</string>
+    <string name="notify_hint_title">出现故障时通知你？</string>
+    <string name="notify_hint_text">当阀门或设备报告问题时（例如执行器已不在阀门上），PureHeat 可以通知你。</string>
+    <string name="support_title">支持</string>
 </resources>

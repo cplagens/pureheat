@@ -58,18 +58,15 @@ fun DashboardScreen(
     onOpenProfile: (roomId: String) -> Unit,
     onOpenHistory: (roomId: String) -> Unit,
     onOpenHelp: () -> Unit,
+    onOpenInfo: () -> Unit,
     modifier: Modifier = Modifier,
     roomOrder: List<String> = emptyList(),
     onRoomOrderChange: (List<String>) -> Unit = {},
 ) {
-    var showAbout by remember { mutableStateOf(false) }
     var showOrder by remember { mutableStateOf(false) }
     var openFault by remember { mutableStateOf<Fault?>(null) }
     openFault?.let { FaultDialog(it, onDismiss = { openFault = null }) }
     val faults = state.state?.faults.orEmpty()
-    if (showAbout) {
-        AboutDialog(onDismiss = { showAbout = false }, roomLabels = state.state?.rooms.orEmpty().associate { it.id to it.label })
-    }
     val rooms = RoomOrder.arrange(state.state?.rooms.orEmpty(), { it.id }, { it.label }, roomOrder)
     if (showOrder) {
         RoomOrderDialog(rooms, onChange = onRoomOrderChange, onReset = { onRoomOrderChange(emptyList()) }, onDismiss = { showOrder = false })
@@ -104,7 +101,7 @@ fun DashboardScreen(
             Row {
                 TextButton(onClick = onOpenHelp, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.help)) }
                 Spacer(Modifier.width(16.dp))
-                TextButton(onClick = { showAbout = true }, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.info)) }
+                TextButton(onClick = onOpenInfo, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.info)) }
                 Spacer(Modifier.width(16.dp))
                 TextButton(onClick = { showOrder = true }, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.room_order)) }
             }
@@ -116,7 +113,10 @@ fun DashboardScreen(
             // Faults first: a stuck-open circuit or a dead actuator matters more than everything below.
             FaultBanner(faults, onOpen = { openFault = it }, Modifier.padding(top = 8.dp))
             // The demo records nothing in the background.
-            if (!state.demo) BatteryHint(Modifier.padding(top = 8.dp))
+            if (!state.demo) {
+                BatteryHint(Modifier.padding(top = 8.dp))
+                NotificationHint(Modifier.padding(top = 8.dp))
+            }
         }
 
         val unassigned = state.state?.unassignedCircuits.orEmpty()

@@ -577,4 +577,14 @@
     <string name="fault_device_meaning">The device reports an internal problem (code below). The circuits it controls may not work correctly.</string>
     <string name="fault_device_causes">• Overheating (no air around the device)\n• Under-voltage or power failure\n• Overload or internal fault</string>
     <string name="fault_device_steps">1. Check the power supply and that the device has air around it.\n2. Switch it off and on briefly.\n3. If the error stays: contact the manufacturer’s support.</string>
+    <string name="notif_channel_faults">Heating faults</string>
+    <string name="notif_channel_faults_desc">When a valve or device reports a problem</string>
+    <string name="notify_title">Notifications</string>
+    <string name="notify_faults">Notify me about faults</string>
+    <string name="notify_faults_text">Checked during the background recording (every 15–60 minutes). You get one message per new fault.</string>
+    <string name="notify_blocked">Notifications are turned off for this app in Android.</string>
+    <string name="notify_allow">Allow notifications</string>
+    <string name="notify_hint_title">Get notified about faults?</string>
+    <string name="notify_hint_text">PureHeat can tell you when a valve or device reports a problem – for example an actuator that is no longer seated on its valve.</string>
+    <string name="support_title">Support</string>
 </resources>

@@ -18,14 +18,14 @@ import java.time.Instant
  */
 object Csv {
     const val ROOMS = "timestamp,time_utc,room_id,actual_temperature,set_point_temperature,valve_position,humidity"
-    const val CIRCUITS = "timestamp,time_utc,device_id,channel_index,valve_position"
+    const val CIRCUITS = "timestamp,time_utc,device_id,channel_index,valve_position,valve_state"
     const val WEATHER = "timestamp,time_utc,outside_temperature,outside_vapour_g_m3"
     const val PREDICTIONS =
         "room_id,strategy,event_time,created_at,target_temperature,start_temperature,predicted_reach,model_source,evaluated_at,actual_reach,outcome"
     const val ROOM_NAMES = "room_id,label"
 
     fun room(s: RoomSample) = line(s.timestamp, iso(s.timestamp), s.roomId, s.actualTemperature, s.setPointTemperature, s.valvePosition, s.humidity)
-    fun circuit(s: CircuitSample) = line(s.timestamp, iso(s.timestamp), s.deviceId, s.channelIndex, s.valvePosition)
+    fun circuit(s: CircuitSample) = line(s.timestamp, iso(s.timestamp), s.deviceId, s.channelIndex, s.valvePosition, s.valveState)
     fun weather(s: WeatherSample) = line(s.timestamp, iso(s.timestamp), s.outsideTemperature, s.outsideAbsHumidity)
     fun prediction(p: PredictionEntity) = line(
         p.roomId, p.strategy, p.eventTime, p.createdAt, p.targetTemperature, p.startTemperature, p.predictedReach,
@@ -50,6 +50,8 @@ object Csv {
             channelIndex = f[3].toIntOrNull() ?: return null,
             timestamp = f[0].toLongOrNull() ?: return null,
             valvePosition = f[4].toDoubleOrNull(),
+            // The state column came with DB v9; older exports have five columns.
+            valveState = f.getOrNull(5)?.ifEmpty { null },
         )
     }
 

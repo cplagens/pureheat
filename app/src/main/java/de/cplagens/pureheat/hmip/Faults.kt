@@ -30,6 +30,9 @@ enum class FaultKind(val severity: Severity) {
     ;
 
     enum class Severity { INFO, WARNING, ERROR }
+
+    /** The valve value can't be trusted (a low battery alone still reports correctly). */
+    val distortsValve: Boolean get() = this != LOW_BATTERY
 }
 
 /** One problem to show to the user. [channelIndex] is null for device-wide faults. */
@@ -46,6 +49,9 @@ data class Fault(
 ) {
     fun matches(circuit: HeatingCircuit): Boolean =
         channelIndex != null && deviceId == circuit.deviceId && channelIndex == circuit.channelIndex
+
+    /** Identifies "the same fault" across fetches (for notifying only once). */
+    val key: String get() = "$deviceId/${channelIndex ?: "-"}/$code"
 }
 
 object Faults {
@@ -66,6 +72,19 @@ object Faults {
         "RUN_TO_START", "WAIT_FOR_ADAPTION", "ADAPTION_IN_PROGRESS" -> FaultKind.VALVE_ADAPTING
         else -> FaultKind.VALVE_UNKNOWN
     }
+
+    /**
+     * Rooms whose valve value is meaningless right now: a faulty channel of the room, or a
+     * device-wide fault of a device the room belongs to (its thermostat, its actuator).
+     */
+    fun untrustedRooms(state: HeatingState): Set<String> = state.faults.filter { it.kind.distortsValve }.flatMap { f ->
+        val viaDevice = if (f.channelIndex == null) {
+            state.rooms.filter { r -> r.circuits.any { it.deviceId == f.deviceId } }.map { it.id }
+        } else {
+            emptyList()
+        }
+        listOfNotNull(f.roomId) + viaDevice
+    }.toSet()
 
     /** Most severe first; stable within a severity. */
     fun sorted(faults: List<Fault>): List<Fault> = faults.sortedByDescending { it.kind.severity }

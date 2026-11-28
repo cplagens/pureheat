@@ -22,6 +22,10 @@ class CsvTest {
         assertEquals(empty, Csv.parseRoom(Csv.room(empty)))
         val circuit = CircuitSample("dev-1", 4, 1_762_200_000_000, 1.0)
         assertEquals(circuit, Csv.parseCircuit(Csv.circuit(circuit)))
+        val faulty = CircuitSample("dev-1", 3, 1_762_200_000_000, null, "ADJUSTMENT_TOO_BIG")
+        assertEquals(faulty, Csv.parseCircuit(Csv.circuit(faulty)))
+        // Exports from before DB v9 have no valve state column.
+        assertEquals(circuit, Csv.parseCircuit("1762200000000,2025-11-03T20:00:00Z,dev-1,4,1.0"))
         val weather = WeatherSample(1_762_200_000_000, -3.5)
         assertEquals(weather, Csv.parseWeather(Csv.weather(weather)))
         val withVapour = WeatherSample(1_762_200_000_000, 2.1, 4.08)

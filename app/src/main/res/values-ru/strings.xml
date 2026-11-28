@@ -555,4 +555,14 @@
     <string name="fault_device_meaning">Устройство сообщает о внутренней проблеме (код ниже). Контуры, которыми оно управляет, могут работать неправильно.</string>
     <string name="fault_device_causes">• Перегрев (нет воздуха вокруг устройства)\n• Пониженное напряжение или сбой питания\n• Перегрузка или внутренняя ошибка</string>
     <string name="fault_device_steps">1. Проверь питание и вентиляцию устройства.\n2. Надолго выключи и снова включи его.\n3. Если ошибка остаётся: обратись в поддержку производителя.</string>
+    <string name="notif_channel_faults">Неисправности отопления</string>
+    <string name="notif_channel_faults_desc">Когда клапан или устройство сообщает о проблеме</string>
+    <string name="notify_title">Уведомления</string>
+    <string name="notify_faults">Уведомлять о неисправностях</string>
+    <string name="notify_faults_text">Проверяется при записи в фоне (каждые 15–60 минут). Одно уведомление на каждую новую неисправность.</string>
+    <string name="notify_blocked">Уведомления этого приложения отключены в Android.</string>
+    <string name="notify_allow">Разрешить уведомления</string>
+    <string name="notify_hint_title">Уведомлять о неисправностях?</string>
+    <string name="notify_hint_text">PureHeat может сообщить тебе, когда клапан или устройство сообщает о проблеме – например, если привод больше не сидит на клапане.</string>
+    <string name="support_title">Поддержать</string>
 </resources>

@@ -2,6 +2,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <!-- Fault notifications from the background recording (asked for in the app, can be turned off). -->
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
 
     <!-- Dictating a room description uses the system speech input (no microphone permission of our own). -->
     <queries>

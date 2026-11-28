@@ -5,7 +5,9 @@
  */
 package de.cplagens.pureheat.ui
 
+import android.content.Context
 import androidx.annotation.StringRes
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -82,9 +84,11 @@ internal fun Severity.color(): Color = when (this) {
 
 /** "Living room · Channel 3", "Floor heating actuator", … */
 @Composable
-internal fun Fault.place(): String {
+internal fun Fault.place(): String = place(LocalContext.current)
+
+internal fun Fault.place(ctx: Context): String {
     val parts = if (channelIndex != null) {
-        listOf(roomLabel ?: deviceLabel, channelLabel ?: stringResource(R.string.channel_n, channelIndex))
+        listOf(roomLabel ?: deviceLabel, channelLabel ?: ctx.getString(R.string.channel_n, channelIndex))
     } else {
         listOfNotNull(deviceLabel, roomLabel)
     }

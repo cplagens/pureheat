@@ -36,6 +36,7 @@ class HistoryWorker(context: Context, params: WorkerParameters) : CoroutineWorke
         val creds = app.credentialStore.load() ?: return Result.success()
         val delay = try {
             val state = app.repository.fetch(creds)
+            FaultNotifier.update(applicationContext, state.faults, background = true)
             // Daily probe run (step 5): preferably while charging, so it costs no battery.
             app.repository.maybeRunProbe(state, System.currentTimeMillis(), isCharging(), foreground = false)
             val (latest, previous) = app.repository.lastTwoRecordings()

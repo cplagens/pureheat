@@ -44,6 +44,8 @@ data class CircuitSample(
     val channelIndex: Int,
     val timestamp: Long,
     val valvePosition: Double?,
+    /** Raw `valveState` (e.g. ADAPTION_DONE, ADJUSTMENT_TOO_BIG), since DB v9; null before. */
+    val valveState: String? = null,
 )
 
 /** Outside weather at the time of a snapshot; one row per recording, shared by all rooms. */
@@ -309,7 +311,7 @@ interface HistoryDao {
 @Database(
     entities = [RoomSample::class, CircuitSample::class, WeatherSample::class, ForecastSample::class, PredictionEntity::class, RoomModelEntity::class,
         ComfortDayEntity::class, ComfortWindowEntity::class],
-    version = 8,
+    version = 9,
     exportSchema = false,
 )
 abstract class HistoryDatabase : RoomDatabase() {
@@ -394,11 +396,18 @@ abstract class HistoryDatabase : RoomDatabase() {
             }
         }
 
+        /** v9: valve state per circuit sample (fault periods). */
+        private val MIGRATION_8_9 = object : Migration(8, 9) {
+            override fun migrate(db: SupportSQLiteDatabase) {
+                db.execSQL("ALTER TABLE `circuit_sample` ADD COLUMN `valveState` TEXT")
+            }
+        }
+
         fun create(context: Context): HistoryDatabase =
             Room.databaseBuilder(context, HistoryDatabase::class.java, "history.db")
                 .addMigrations(
                     MIGRATION_1_2, MIGRATION_2_3, MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7,
-                    MIGRATION_7_8,
+                    MIGRATION_7_8, MIGRATION_8_9,
                 )
                 .build()
     }

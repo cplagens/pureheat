@@ -47,7 +47,7 @@ fun LanguagePicker(modifier: Modifier = Modifier) {
                 .padding(vertical = 4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            Text(stringResource(R.string.language), style = MaterialTheme.typography.titleSmall, modifier = Modifier.weight(1f))
+            Text(stringResource(R.string.language), style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
             Text(
                 (entries.firstOrNull { it.first == selected }?.second.orEmpty()) + if (expanded) " ▾" else " ▸",
                 style = MaterialTheme.typography.bodyMedium,

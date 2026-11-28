@@ -37,6 +37,7 @@ import de.cplagens.pureheat.data.room.RoomDescriptionStore
 import de.cplagens.pureheat.data.room.RoomPriors
 import de.cplagens.pureheat.data.demo.DemoCloud
 import de.cplagens.pureheat.data.demo.DemoHome
+import de.cplagens.pureheat.hmip.Faults
 import de.cplagens.pureheat.hmip.HeatingCloud
 import java.time.ZoneId
 import de.cplagens.pureheat.hmip.HeatingProfile
@@ -414,11 +415,14 @@ class HeatingRepository(
         // Logged out while this fetch was in flight: don't leave samples behind after clear().
         if (store.load() == null) return
 
-        dao.insertRooms(state.rooms.map { it.toSample(now) })
+        // While a valve or device of a room is faulty its valve value says nothing (stuck open at "0"):
+        // store it as unknown, so the grey box skips those hours (it drops hours with a null valve).
+        val untrusted = Faults.untrustedRooms(state)
+        dao.insertRooms(state.rooms.map { it.toSample(now, it.id in untrusted) })
         val circuits = state.rooms.flatMap { it.circuits } + state.unassignedCircuits
         dao.insertCircuits(
             circuits.distinctBy { it.deviceId to it.channelIndex }
-                .map { CircuitSample(it.deviceId, it.channelIndex, now, it.valvePosition) },
+                .map { CircuitSample(it.deviceId, it.channelIndex, now, it.valvePosition, it.valveState) },
         )
         val outsideTemp = state.outsideTemperature
         val outsideRh = state.outsideHumidity
@@ -430,12 +434,12 @@ class HeatingRepository(
         dao.deleteWeatherSamplesBefore(now - RETENTION_MS)
     }
 
-    private fun Room.toSample(now: Long) = RoomSample(
+    private fun Room.toSample(now: Long, faulty: Boolean) = RoomSample(
         roomId = id,
         timestamp = now,
         actualTemperature = actualTemperature,
         setPointTemperature = setPointTemperature,
-        valvePosition = circuits.mapNotNull { it.valvePosition }.maxOrNull() ?: valvePosition,
+        valvePosition = if (faulty) null else circuits.mapNotNull { it.valvePosition }.maxOrNull() ?: valvePosition,
         humidity = humidity,
     )
 

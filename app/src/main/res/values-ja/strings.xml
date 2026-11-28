@@ -546,4 +546,14 @@
     <string name="fault_device_meaning">デバイスが内部の問題を報告しています（下のコード）。制御している回路が正しく動作しない可能性があります。</string>
     <string name="fault_device_causes">• 過熱（デバイスの周りに空気がない）\n• 低電圧または停電\n• 過負荷または内部エラー</string>
     <string name="fault_device_steps">1. 電源とデバイスの通気を確認します。\n2. 一度電源を切って入れ直します。\n3. エラーが消えない場合：メーカーのサポートに問い合わせてください。</string>
+    <string name="notif_channel_faults">暖房の障害</string>
+    <string name="notif_channel_faults_desc">バルブやデバイスが問題を報告したとき</string>
+    <string name="notify_title">通知</string>
+    <string name="notify_faults">障害を通知する</string>
+    <string name="notify_faults_text">バックグラウンド記録の際に確認します（15〜60分ごと）。新しい障害ごとに1回通知します。</string>
+    <string name="notify_blocked">このアプリの通知は Android でオフになっています。</string>
+    <string name="notify_allow">通知を許可</string>
+    <string name="notify_hint_title">障害を通知しますか？</string>
+    <string name="notify_hint_text">バルブやデバイスが問題を報告したとき（例：アクチュエーターがバルブから外れたとき）、PureHeat がお知らせします。</string>
+    <string name="support_title">支援する</string>
 </resources>

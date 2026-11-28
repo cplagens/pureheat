@@ -52,8 +52,8 @@ fun DataSection(roomLabels: Map<String, String>, vm: DataViewModel = viewModel()
     val pick = rememberLauncherForActivityResult(ActivityResultContracts.OpenDocument()) { uri -> pendingImport = uri }
 
     Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-        Text(stringResource(R.string.data_title), style = MaterialTheme.typography.titleSmall)
-        Text(stringResource(R.string.data_text), style = MaterialTheme.typography.bodySmall)
+        Text(stringResource(R.string.data_title), style = MaterialTheme.typography.titleMedium)
+        Text(stringResource(R.string.data_text), style = MaterialTheme.typography.bodyMedium)
         FlowRow(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
             OutlinedButton(enabled = !state.busy, onClick = {
                 vm.exportForSharing(roomLabels) { uri ->

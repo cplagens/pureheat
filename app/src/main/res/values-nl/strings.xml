@@ -549,4 +549,14 @@
     <string name="fault_device_meaning">Het apparaat meldt een intern probleem (code hieronder). De groepen die het aanstuurt werken misschien niet goed.</string>
     <string name="fault_device_causes">• Oververhitting (geen lucht rond het apparaat)\n• Onderspanning of stroomstoring\n• Overbelasting of interne fout</string>
     <string name="fault_device_steps">1. Controleer de voeding en of het apparaat lucht heeft.\n2. Zet het kort uit en weer aan.\n3. Blijft de fout: neem contact op met de support van de fabrikant.</string>
+    <string name="notif_channel_faults">Storingen van de verwarming</string>
+    <string name="notif_channel_faults_desc">Als een klep of apparaat een probleem meldt</string>
+    <string name="notify_title">Meldingen</string>
+    <string name="notify_faults">Melding bij storingen</string>
+    <string name="notify_faults_text">Gecontroleerd tijdens het opnemen op de achtergrond (elke 15–60 minuten). Eén melding per nieuwe storing.</string>
+    <string name="notify_blocked">Meldingen voor deze app staan in Android uit.</string>
+    <string name="notify_allow">Meldingen toestaan</string>
+    <string name="notify_hint_title">Melding bij storingen?</string>
+    <string name="notify_hint_text">PureHeat kan je laten weten als een klep of apparaat een probleem meldt – bijvoorbeeld een stelmotor die niet meer op zijn klep zit.</string>
+    <string name="support_title">Steunen</string>
 </resources>

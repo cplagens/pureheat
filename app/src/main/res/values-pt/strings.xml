@@ -552,4 +552,14 @@
     <string name="fault_device_meaning">O dispositivo indica um problema interno (código abaixo). Os circuitos que controla podem não funcionar corretamente.</string>
     <string name="fault_device_causes">• Sobreaquecimento (sem ventilação)\n• Subtensão ou falha de energia\n• Sobrecarga ou falha interna</string>
     <string name="fault_device_steps">1. Verifica a alimentação e se o dispositivo está ventilado.\n2. Desliga-o e volta a ligá-lo.\n3. Se o erro continuar: contacta o suporte do fabricante.</string>
+    <string name="notif_channel_faults">Avarias do aquecimento</string>
+    <string name="notif_channel_faults_desc">Quando uma válvula ou um dispositivo indica um problema</string>
+    <string name="notify_title">Notificações</string>
+    <string name="notify_faults">Avisar-me de avarias</string>
+    <string name="notify_faults_text">Verificado durante o registo em segundo plano (a cada 15–60 minutos). Uma mensagem por cada avaria nova.</string>
+    <string name="notify_blocked">As notificações desta app estão desativadas no Android.</string>
+    <string name="notify_allow">Permitir notificações</string>
+    <string name="notify_hint_title">Ser avisado de avarias?</string>
+    <string name="notify_hint_text">O PureHeat pode avisar-te quando uma válvula ou um dispositivo indica um problema – por exemplo um atuador que já não está encaixado na válvula.</string>
+    <string name="support_title">Apoiar</string>
 </resources>

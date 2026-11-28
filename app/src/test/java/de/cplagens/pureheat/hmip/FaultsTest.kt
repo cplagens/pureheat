@@ -85,6 +85,28 @@ class FaultsTest {
     }
 
     @Test
+    fun faultyRoomsAreExcludedFromTheModel() {
+        val state = HeatingStateParser.parse(Json.parseToJsonElement(sample).jsonObject)
+        assertEquals(setOf("grp-living"), Faults.untrustedRooms(state))
+        // A low battery alone doesn't make the valve value wrong.
+        val onlyBattery = state.copy(faults = listOf(Fault(FaultKind.LOW_BATTERY, "lowBat", "dev-wth", "T", roomId = "grp-living")))
+        assertTrue(Faults.untrustedRooms(onlyBattery).isEmpty())
+        // A device-wide fault of the actuator hits every room it serves.
+        val actuator = state.copy(faults = listOf(Fault(FaultKind.UNREACHABLE, "unreach", "dev-fal", "F")))
+        assertEquals(setOf("grp-living"), Faults.untrustedRooms(actuator))
+    }
+
+    @Test
+    fun notifiesOnlyNewNonInfoFaults() {
+        val known = setOf(faults.first { it.kind == FaultKind.VALVE_TOO_BIG }.key)
+        val fresh = de.cplagens.pureheat.data.FaultNotifier.newFaults(known, faults)
+        assertTrue(fresh.none { it.kind == FaultKind.VALVE_TOO_BIG })
+        assertTrue(fresh.any { it.kind == FaultKind.UNREACHABLE })
+        val adapting = Fault(FaultKind.VALVE_ADAPTING, "ADAPTION_IN_PROGRESS", "dev-fal", "F", channelIndex = 2)
+        assertTrue(de.cplagens.pureheat.data.FaultNotifier.newFaults(emptySet(), listOf(adapting)).isEmpty())
+    }
+
+    @Test
     fun valveKinds() {
         assertNull(Faults.valveKind("ADAPTION_DONE"))
         assertNull(Faults.valveKind(null))

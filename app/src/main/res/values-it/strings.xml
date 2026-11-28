@@ -552,4 +552,14 @@
     <string name="fault_device_meaning">Il dispositivo segnala un problema interno (codice sotto). I circuiti che comanda potrebbero non funzionare correttamente.</string>
     <string name="fault_device_causes">• Surriscaldamento (poca aria intorno)\n• Sottotensione o mancanza di corrente\n• Sovraccarico o guasto interno</string>
     <string name="fault_device_steps">1. Controlla l’alimentazione e che il dispositivo sia ben aerato.\n2. Spegnilo e riaccendilo brevemente.\n3. Se l’errore resta: contatta l’assistenza del produttore.</string>
+    <string name="notif_channel_faults">Guasti del riscaldamento</string>
+    <string name="notif_channel_faults_desc">Quando una valvola o un dispositivo segnala un problema</string>
+    <string name="notify_title">Notifiche</string>
+    <string name="notify_faults">Avvisami in caso di guasto</string>
+    <string name="notify_faults_text">Controllato durante la registrazione in background (ogni 15–60 minuti). Un messaggio per ogni nuovo guasto.</string>
+    <string name="notify_blocked">Le notifiche di questa app sono disattivate in Android.</string>
+    <string name="notify_allow">Consenti notifiche</string>
+    <string name="notify_hint_title">Avvisarti in caso di guasto?</string>
+    <string name="notify_hint_text">PureHeat può avvisarti quando una valvola o un dispositivo segnala un problema, per esempio un attuatore non più inserito sulla sua valvola.</string>
+    <string name="support_title">Sostieni</string>
 </resources>

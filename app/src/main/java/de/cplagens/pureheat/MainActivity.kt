@@ -32,6 +32,7 @@ import de.cplagens.pureheat.ui.ComfortScreen
 import de.cplagens.pureheat.ui.ComfortViewModel
 import de.cplagens.pureheat.ui.DashboardScreen
 import de.cplagens.pureheat.ui.HelpScreen
+import de.cplagens.pureheat.ui.InfoScreen
 import de.cplagens.pureheat.ui.MainViewModel
 import de.cplagens.pureheat.ui.ProfileScreen
 import de.cplagens.pureheat.ui.ProfileViewModel
@@ -64,6 +65,7 @@ class MainActivity : AppCompatActivity() {
                     var propertiesRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var comfortRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var showHelp by rememberSaveable { mutableStateOf(false) }
+                    var showInfo by rememberSaveable { mutableStateOf(false) }
                     val screen = Modifier.padding(padding)
 
                     if (showHelp) {
@@ -80,6 +82,14 @@ class MainActivity : AppCompatActivity() {
                             val propertiesRoom = rooms.firstOrNull { it.id == propertiesRoomId }
                             val comfortRoom = rooms.firstOrNull { it.id == comfortRoomId }
                             when {
+                                showInfo -> {
+                                    BackHandler { showInfo = false }
+                                    InfoScreen(
+                                        onBack = { showInfo = false },
+                                        roomLabels = rooms.associate { it.id to it.label },
+                                        modifier = screen,
+                                    )
+                                }
                                 comfortRoom != null -> {
                                     BackHandler { comfortRoomId = null }
                                     // Same key as the profile screen below: the suggestion lands in its editor.
@@ -136,6 +146,7 @@ class MainActivity : AppCompatActivity() {
                                     onOpenProfile = { profileRoomId = it },
                                     onOpenHistory = { historyRoomId = it },
                                     onOpenHelp = { showHelp = true },
+                                    onOpenInfo = { showInfo = true },
                                     modifier = screen,
                                     roomOrder = roomOrder,
                                     onRoomOrderChange = (application as PureHeatApp).viewSettings::setRoomOrder,
