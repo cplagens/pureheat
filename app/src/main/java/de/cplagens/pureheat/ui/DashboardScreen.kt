@@ -16,10 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.AlertDialog
-import androidx.compose.ui.semantics.contentDescription
-import androidx.compose.ui.semantics.semantics
 import de.cplagens.pureheat.data.RoomOrder
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
@@ -61,16 +57,12 @@ fun DashboardScreen(
     onOpenInfo: () -> Unit,
     modifier: Modifier = Modifier,
     roomOrder: List<String> = emptyList(),
-    onRoomOrderChange: (List<String>) -> Unit = {},
+    onOpenOrder: () -> Unit = {},
 ) {
-    var showOrder by remember { mutableStateOf(false) }
     var openFault by remember { mutableStateOf<Fault?>(null) }
     openFault?.let { FaultDialog(it, onDismiss = { openFault = null }) }
     val faults = state.state?.faults.orEmpty()
     val rooms = RoomOrder.arrange(state.state?.rooms.orEmpty(), { it.id }, { it.label }, roomOrder)
-    if (showOrder) {
-        RoomOrderDialog(rooms, onChange = onRoomOrderChange, onReset = { onRoomOrderChange(emptyList()) }, onDismiss = { showOrder = false })
-    }
 
     LazyColumn(
         modifier = modifier,
@@ -103,7 +95,7 @@ fun DashboardScreen(
                 Spacer(Modifier.width(16.dp))
                 TextButton(onClick = onOpenInfo, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.info)) }
                 Spacer(Modifier.width(16.dp))
-                TextButton(onClick = { showOrder = true }, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.room_order)) }
+                TextButton(onClick = onOpenOrder, contentPadding = PaddingValues(0.dp)) { Text(stringResource(R.string.room_order)) }
             }
             if (state.demo) {
                 Text(stringResource(R.string.demo_banner), style = MaterialTheme.typography.labelMedium, color = MaterialTheme.colorScheme.tertiary)
@@ -148,39 +140,6 @@ fun DashboardScreen(
             TextButton(onClick = onLogout) { Text(stringResource(R.string.logout)) }
         }
     }
-}
-
-/** Move rooms up/down; every move is saved right away. */
-@Composable
-private fun RoomOrderDialog(rooms: List<Room>, onChange: (List<String>) -> Unit, onReset: () -> Unit, onDismiss: () -> Unit) {
-    AlertDialog(
-        onDismissRequest = onDismiss,
-        title = { Text(stringResource(R.string.room_order_title)) },
-        text = {
-            LazyColumn {
-                itemsIndexed(rooms, key = { _, r -> r.id }) { i, room ->
-                    fun move(to: Int) = onChange(rooms.map { it.id }.toMutableList().apply { add(to, removeAt(i)) })
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        Text(room.label.trim(), style = MaterialTheme.typography.bodyMedium, modifier = Modifier.weight(1f))
-                        val up = stringResource(R.string.move_up)
-                        val down = stringResource(R.string.move_down)
-                        TextButton(
-                            onClick = { move(i - 1) },
-                            enabled = i > 0,
-                            modifier = Modifier.semantics { contentDescription = up },
-                        ) { Text("↑") }
-                        TextButton(
-                            onClick = { move(i + 1) },
-                            enabled = i < rooms.lastIndex,
-                            modifier = Modifier.semantics { contentDescription = down },
-                        ) { Text("↓") }
-                    }
-                }
-            }
-        },
-        confirmButton = { TextButton(onClick = onDismiss) { Text(stringResource(R.string.close)) } },
-        dismissButton = { TextButton(onClick = onReset) { Text(stringResource(R.string.room_order_reset)) } },
-    )
 }
 
 @Composable

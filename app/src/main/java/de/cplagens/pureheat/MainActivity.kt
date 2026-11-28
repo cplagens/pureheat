@@ -36,7 +36,9 @@ import de.cplagens.pureheat.ui.InfoScreen
 import de.cplagens.pureheat.ui.MainViewModel
 import de.cplagens.pureheat.ui.ProfileScreen
 import de.cplagens.pureheat.ui.ProfileViewModel
+import de.cplagens.pureheat.data.RoomOrder
 import de.cplagens.pureheat.ui.RoomDetailScreen
+import de.cplagens.pureheat.ui.RoomOrderScreen
 import de.cplagens.pureheat.ui.RoomDetailViewModel
 import de.cplagens.pureheat.ui.RoomPropertiesScreen
 import de.cplagens.pureheat.ui.RoomPropertiesViewModel
@@ -66,6 +68,7 @@ class MainActivity : AppCompatActivity() {
                     var comfortRoomId by rememberSaveable { mutableStateOf<String?>(null) }
                     var showHelp by rememberSaveable { mutableStateOf(false) }
                     var showInfo by rememberSaveable { mutableStateOf(false) }
+                    var showOrder by rememberSaveable { mutableStateOf(false) }
                     val screen = Modifier.padding(padding)
 
                     if (showHelp) {
@@ -82,6 +85,15 @@ class MainActivity : AppCompatActivity() {
                             val propertiesRoom = rooms.firstOrNull { it.id == propertiesRoomId }
                             val comfortRoom = rooms.firstOrNull { it.id == comfortRoomId }
                             when {
+                                showOrder -> {
+                                    BackHandler { showOrder = false }
+                                    RoomOrderScreen(
+                                        rooms = RoomOrder.arrange(rooms, { it.id }, { it.label }, roomOrder),
+                                        onChange = (application as PureHeatApp).viewSettings::setRoomOrder,
+                                        onBack = { showOrder = false },
+                                        modifier = screen,
+                                    )
+                                }
                                 showInfo -> {
                                     BackHandler { showInfo = false }
                                     InfoScreen(
@@ -149,7 +161,7 @@ class MainActivity : AppCompatActivity() {
                                     onOpenInfo = { showInfo = true },
                                     modifier = screen,
                                     roomOrder = roomOrder,
-                                    onRoomOrderChange = (application as PureHeatApp).viewSettings::setRoomOrder,
+                                    onOpenOrder = { showOrder = true },
                                 )
                             }
                         }

@@ -12,6 +12,7 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
   mode). Tap it for the likely causes and the steps to fix it.
 - Notification when a new fault appears while the app is closed (can be turned off under Info).
 - The valve state is kept in the history; hours with a faulty valve no longer feed the room model.
+- Room order is now a screen with cards (like Help and Info) instead of a dialog.
 - "Info" is now a screen with cards like the rest of the app (language, notifications, data,
   support, open source).
 - New "Comfort times" screen (from the heating profile): set per weekday when a room should be
