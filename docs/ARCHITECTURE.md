@@ -87,6 +87,7 @@ Paths relative to `app/src/main/java/de/cplagens/pureheat/`.
 | `TimeSeriesChart.kt` | Reusable time series chart with a shared time cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | View/edit/save/activate/undo weekly profiles |
 | `ComfortScreen.kt` / `ComfortViewModel.kt` | Step 6 comfort windows per weekday (reuses `DayEditor` with `comfort = true`), presets, draft from the active profile (read only); saved locally |
+| `RoomOrderScreen.kt` | Order of the room cards (cards with ↑/↓, reset), saved right away |
 | `AboutDialog.kt` | Version, description, language, data, coffee tip (`SupportSection` + `SupportViewModel`), logo preview |
 | `SetupScreen.kt` | SGTIN/PIN input, hint about the blue button |
 
@@ -128,7 +129,7 @@ logo also exists as `docs/assets/logo.svg`.
 | `comfort_window` | roomId + weekday + start | end, temperature – "warm by" / "may cool from" in minutes of the day (since v8); local only, cleared on logout |
 
 Migration 1 → 2 creates `weather_sample`, 2 → 3 adds `room_sample.humidity`, 3 → 4 creates
-`forecast_sample`, 4 → 5 `prediction`, 5 → 6 adds `weather_sample.outsideAbsHumidity`, 6 → 7 creates `room_model`, 7 → 8 `comfort_day` + `comfort_window`; existing data is kept. The REST server address is cached in SharedPreferences
+`forecast_sample`, 4 → 5 `prediction`, 5 → 6 adds `weather_sample.outsideAbsHumidity`, 6 → 7 creates `room_model`, 7 → 8 `comfort_day` + `comfort_window`, 8 → 9 adds `circuit_sample.valveState`; existing data is kept. The REST server address is cached in SharedPreferences
 `hmip_server` (new lookup only after an error – the lookup service answers 418 to too many
 requests).
 Measured size: about 710 rows or 120 KB/day → about 90 MB after 2 years.

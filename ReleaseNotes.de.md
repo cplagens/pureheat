@@ -7,6 +7,29 @@ Neueste Version oben. Die Version ist der Git-Tag des Releases (`vX.Y.Z`, siehe 
 
 ## Unveröffentlicht
 
+## 1.2.0 – Störungen und Komfortzeiten (November 2026)
+
+- Störungen werden sofort angezeigt: ein Banner oben in der Übersicht und eine Zeile in der
+  Raumkarte (z. B. Stellantrieb sitzt nicht auf dem Ventil, Ventil klemmt, Gerät nicht
+  erreichbar, Batterie schwach, Notbetrieb). Antippen zeigt wahrscheinliche Ursachen und was zu
+  tun ist.
+- Benachrichtigung, wenn bei geschlossener App eine neue Störung auftritt (unter Info
+  abschaltbar).
+- Der Ventilzustand wird im Verlauf gespeichert; Stunden mit gestörtem Ventil fließen nicht mehr
+  ins Raummodell ein.
+- Die Reihenfolge der Räume ist jetzt ein Screen mit Karten (wie Hilfe und Info) statt eines
+  Dialogs.
+- „Info“ ist jetzt ein Screen mit Karten wie der Rest der App (Sprache, Benachrichtigungen, Daten,
+  Unterstützen, Open Source).
+- Neuer Screen „Komfortzeiten“ (aus dem Heizprofil): je Wochentag festlegen, wann ein Raum warm
+  sein soll, mit Vorlagen und einem Entwurf aus dem aktuellen Profil. Nur auf dem Telefon
+  gespeichert; an die Heizung wird noch nichts geschrieben.
+- Komfortzeiten: eine Karte zeigt, was der Planer für deine Zeiten vorschlägt und wie er sich
+  letzte Woche im Vergleich zum aktuellen Profil geschlagen hätte (Komfort gehalten,
+  Ventilstunden, mittlere Temperatur, beide Kurven). „Im Profil-Editor öffnen“ übernimmt den
+  Vorschlag in den Profil-Editor; gespeichert wird erst, wenn du die Änderungen prüfst und
+  bestätigst.
+
 ## 1.1.0 – Raummodell aus allen Daten (November 2026)
 
 - Übersicht: die Aufheiz-/Abkühlzeile jedes Raums kommt jetzt aus dem Raummodell über alle

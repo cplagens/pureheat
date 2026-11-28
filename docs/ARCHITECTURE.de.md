@@ -53,7 +53,7 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `HistoryWorker.kt` | Sich selbst neu planende Abrufkette (`history-chain`) + stündlicher `HistoryWatchdogWorker` |
 | `RoomModelWorker.kt` | Täglich beim Laden (`room-model`, ohne Netz): `refitGreyBoxModels()` – jeder Raum höchstens einmal pro Woche |
 | `PollingPolicy.kt` | Reine Logik: nächster Abruf in 15 min (Ventil/Sollwert ändert sich), 30 min (stabil) oder 60 min (nachts) |
-| `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 7): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction`, `room_model` |
+| `history/HistoryDatabase.kt` | Room-DB `history.db` (Version 9): `room_sample`, `circuit_sample`, `weather_sample`, `forecast_sample`, `prediction`, `room_model` |
 | `history/HistoryAnalysis.kt` | Reine Analyse: Warnung „Ventil offen, aber keine Wärme“, Aufheizrate, Phasen „Ventil offen/zu“ (mit Totzeit-Tiefpunkt und Ende des freien Aufheizens) |
 | `history/BathingDetection.kt` | Reine Heuristik: Duschen/Baden aus schnellem Luftfeuchte-Anstieg; Ausklammern fürs Modell |
 | `RoomOrder.kt` | Reine Logik: Reihenfolge der Raumkarten (Thermostate hinter ihrem Raum, gespeicherte Reihenfolge) |
@@ -61,6 +61,9 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `model/RoomModel.kt` | Reines Wärmemodell je Raum (k, P, Totzeit), Anpassung aus Phasen, Vorhersage Aufheiz-/Abkühlzeit; `SetPointLevels` (Spar-/Komforttemperatur aus Sollwerten) |
 | `model/GreyBoxModel.kt` | Reines Grey-Box-Modell über alle Stundendaten (`ΔT = −k(T − Tₐ) + P·Ventil(t − Verzug) + g`), Ridge-Fit mit Prior, „gemessen“/„geschätzt“ je Parameter |
 | `model/GreyBoxTraining.kt` | Rein: erstes Modell nach 7 Tagen, wöchentlicher Kandidat ohne die letzte Woche angepasst; übernommen nur, wenn sein Hold-out-Fehler nicht schlechter ist als der des aktiven Modells |
+| `comfort/ComfortRows.kt` / `ComfortEditing.kt` | Rein: Komforteinstellungen ↔ DB-Zeilen; Editor-Helfer (Umrechnung Profiltag, Entwurf aus dem Profil, Vorlagen, Tag kopieren) |
+| `comfort/ComfortPlanner.kt` | Rein, Schritt 6: Komfortfenster („warm ab“ / „darf abkühlen ab“) → Heizperioden: Vorlauf aus dem Aufheizen nach der Absenkung (Bisektion), Ende vor dem Fenster um die Haltezeit des Estrichs für 0,5 K, 15-min-Raster, zusammenführen, max. 6 Perioden |
+| `comfort/ComfortEvaluation.kt` | Rein: simuliert aktuelles und vorgeschlagenes Profil mit `RoomSimulator` über vergangenes Wetter; Komfort gehalten, Ventilstunden, mittlere Temperatur |
 | `model/RoomSimulator.kt` | Reine Vorwärtssimulation eines Raums (Thermostat-Verhalten, Totzeit, Prognose) |
 | `probe/ProbeRun.kt` | Reiner Probelauf: Vorhersage der Aufheizzeiten aus dem aktiven Profil, Auswertung gegen die Messung, Trefferquote |
 | `model/RoomInsight.kt` | Modell + Spar/Komfort + Außentemperatur je Raum, mit fertigen Vorhersagen |
@@ -83,6 +86,8 @@ Pfade relativ zu `app/src/main/java/de/cplagens/pureheat/`.
 | `ModelTexts.kt` | Deutsche Texte für Modellvorhersagen (Dauer, „nicht erreichbar“, „lernt noch“) |
 | `TimeSeriesChart.kt` | Wiederverwendbares Zeitreihen-Diagramm mit gemeinsamem Zeit-Cursor |
 | `ProfileScreen.kt` / `ProfileViewModel.kt` | Wochenprofile ansehen/bearbeiten/speichern/aktivieren/rückgängig |
+| `ComfortScreen.kt` / `ComfortViewModel.kt` | Schritt 6: Komfortfenster je Wochentag (nutzt `DayEditor` mit `comfort = true`), Vorlagen, Entwurf aus dem aktiven Profil (nur lesend); lokal gespeichert |
+| `RoomOrderScreen.kt` | Reihenfolge der Raumkarten (Karten mit ↑/↓, Zurücksetzen), sofort gespeichert |
 | `AboutDialog.kt` | Version, Beschreibung, Sprache, Daten, Kaffee spendieren (`SupportSection` + `SupportViewModel`), Logo-Preview |
 | `SetupScreen.kt` | SGTIN/PIN-Eingabe, Hinweis auf blauen Knopf |
 
@@ -110,19 +115,21 @@ das Logo zusätzlich als `docs/assets/logo.svg`.
 3. Profil erneut laden und mit dem gesendeten vergleichen; Abweichung → Fehlermeldung.
 „Rückgängig“ spielt das Backup auf demselben Weg zurück.
 
-## Datenmodell (Room, `history.db`, Version 7)
+## Datenmodell (Room, `history.db`, Version 9)
 
 | Tabelle | Schlüssel | Felder |
 |---|---|---|
 | `room_sample` | roomId + timestamp | actualTemperature, setPointTemperature, valvePosition (max. der Kanäle bzw. Gruppenwert), humidity (ab v3) |
-| `circuit_sample` | deviceId + channelIndex + timestamp | valvePosition |
+| `circuit_sample` | deviceId + channelIndex + timestamp | valvePosition, valveState (roh, ab v9) |
 | `weather_sample` | timestamp | outsideTemperature (`home.weather.temperature`), outsideAbsHumidity g/m³ (`home.weather.vaporAmount`, seit v6) |
 | `prediction` | roomId + strategy + eventTime | Probelauf: Ziel, Starttemperatur, vorhergesagte/tatsächliche Erreichzeit, Modellquelle (fit/prior), Ergebnis (ab v5) |
 | `forecast_sample` | timestamp | temperature (Open-Meteo, stündlich), fetchedAt; bei jedem Abruf ersetzt (ab v4) |
 | `room_model` | roomId + fittedAt | Grey-Box-Versionen: k, power, gain, lagHours, Standardfehler, rmse, n, holdoutRmse, previousHoldoutRmse, adopted, prior (ab v7); aktiv = neueste übernommene Zeile |
+| `comfort_day` | roomId + weekday | ecoTemperature (Absenkung für Schritt 6, ab v8) |
+| `comfort_window` | roomId + weekday + start | end, temperature – „warm ab“ / „darf abkühlen ab“ in Minuten des Tages (ab v8); nur lokal, beim Abmelden gelöscht |
 
 Migration 1 → 2 legt `weather_sample` an, 2 → 3 ergänzt `room_sample.humidity`, 3 → 4 legt
-`forecast_sample` an, 4 → 5 `prediction`, 5 → 6 ergänzt `weather_sample.outsideAbsHumidity`, 6 → 7 legt `room_model` an; vorhandene Daten
+`forecast_sample` an, 4 → 5 `prediction`, 5 → 6 ergänzt `weather_sample.outsideAbsHumidity`, 6 → 7 legt `room_model` an, 7 → 8 `comfort_day` + `comfort_window`, 8 → 9 ergänzt `circuit_sample.valveState`; vorhandene Daten
 bleiben erhalten. Die REST-Server-Adresse wird in SharedPreferences `hmip_server` gecacht
 (neuer Lookup nur nach Fehler – der Lookup-Dienst antwortet bei zu vielen Anfragen mit 418).
 Größe gemessen: ca. 710 Zeilen bzw. 120 KB/Tag → nach 2 Jahren ca. 90 MB.

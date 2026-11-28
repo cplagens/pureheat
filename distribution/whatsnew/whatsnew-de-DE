@@ -1,5 +1,4 @@
-Neu in 1.1.0:
-- Raummodell aus allen Daten: Aufheizzeiten ab der ersten Woche, 12-Stunden-Vorschau im Raumdiagramm und ein simulierter Tag für beide Modelle.
-- Probelauf als Trefferquote mit Abweichungsdiagramm; je Raum wird das bessere Modell gezeigt.
-- Weniger falsche Fenster-offen-Erkennungen.
-- Heizprofile: Rückgängig fragt nach, neue Phasen kommen hinter die letzte, nur geänderte Tage gehen an andere Räume.
+Neu in 1.2.0:
+- Störungen sofort sichtbar: Banner und Zeile in der Raumkarte mit Ursachen und Abhilfe (Ventil klemmt, Antrieb sitzt nicht, nicht erreichbar, Batterie schwach), dazu eine Benachrichtigung bei geschlossener App.
+- Komfortzeiten: festlegen, wann ein Raum warm sein soll; der Planer schlägt ein Profil vor und vergleicht es mit deinem. Geschrieben wird nur nach Bestätigung.
+- Info und Raum-Reihenfolge als Karten-Screens.

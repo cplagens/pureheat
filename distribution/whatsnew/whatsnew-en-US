@@ -1,5 +1,4 @@
-New in 1.1.0:
-- Room model from all data: heat-up times from the first week on, a 12-hour forecast in the room chart and a simulated day for both models.
-- Probe run as a hit rate with a deviation chart; the better model is shown per room.
-- Fewer false open-window detections.
-- Heating profiles: undo asks first, new phases go after the last one, only changed days are copied to other rooms.
+New in 1.2.0:
+- Faults right away: banner and room-card line with likely causes and fixes (valve stuck, actuator not seated, unreachable, low battery), plus a notification when the app is closed.
+- Comfort times: set when each room should be warm; the planner suggests a profile and compares it with your current one. Nothing is written without your confirmation.
+- Info and room order as card screens.

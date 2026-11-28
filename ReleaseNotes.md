@@ -7,6 +7,8 @@ Newest version on top. The version is the git tag of the release (`vX.Y.Z`, see 
 
 ## Unreleased
 
+## 1.2.0 – faults and comfort times (November 2026)
+
 - Faults are shown right away: a banner at the top of the overview and a line in the room card
   (e.g. actuator not seated on the valve, valve stuck, device unreachable, low battery, emergency
   mode). Tap it for the likely causes and the steps to fix it.
