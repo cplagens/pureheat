@@ -21,6 +21,8 @@ data class ProfileScore(
     val valveHours: Double,
     val meanTemperature: Double,
     val curve: List<SimPoint>,
+    /** Window starts in the simulated period at which the room was more than [ComfortPlanner.ALLOWED_DROP] below the target. */
+    val missedStarts: Int = 0,
 )
 
 /** The current profile and the suggestion, simulated over the same weather. */
@@ -67,7 +69,28 @@ object ComfortEvaluation {
             valveHours = openSteps * RoomSimulator.STEP_MS / 3_600_000.0,
             meanTemperature = curve.map { it.temperature }.average().takeUnless { it.isNaN() } ?: startTemperature,
             curve = curve,
+            missedStarts = missedStarts(curve, comfort, start, end, zone),
         )
+    }
+
+    /** Counts window starts in [start, end) where the simulated room was too cold (curve in [RoomSimulator.STEP_MS] steps from [start]). */
+    fun missedStarts(curve: List<SimPoint>, comfort: Map<Weekday, ComfortDay>, start: Long, end: Long, zone: ZoneId): Int {
+        if (curve.isEmpty()) return 0
+        var missed = 0
+        var date = Instant.ofEpochMilli(start).atZone(zone).toLocalDate()
+        val last = Instant.ofEpochMilli(end).atZone(zone).toLocalDate()
+        while (!date.isAfter(last)) {
+            val day = comfort[Weekday.entries[date.dayOfWeek.value - 1]]
+            for (w in day?.windows.orEmpty()) {
+                if (w.end <= w.start) continue
+                val t = date.atStartOfDay(zone).plusMinutes(w.start.toLong()).toInstant().toEpochMilli()
+                if (t < start || t >= end) continue
+                val i = ((t - start) / RoomSimulator.STEP_MS).toInt().coerceIn(0, curve.lastIndex)
+                if (curve[i].temperature < w.temperature - ComfortPlanner.ALLOWED_DROP) missed++
+            }
+            date = date.plusDays(1)
+        }
+        return missed
     }
 
     fun compare(

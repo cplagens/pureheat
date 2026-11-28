@@ -24,6 +24,8 @@ data class HeatingCircuit(
     /** 0.0–1.0, or null if the device does not report a position for this channel. */
     val valvePosition: Double?,
     val valveState: String?,
+    /** `emergencyOperationActive`: runs a fixed emergency value (lost its thermostat). */
+    val emergency: Boolean = false,
 ) {
     val isHeating: Boolean get() = (valvePosition ?: 0.0) > 0.0
 }
@@ -73,6 +75,8 @@ data class HeatingState(
     val outsideVapour: Double? = null,
     /** Location of the home, already rounded to ~1 km ([GeoPoint.rounded]); used for the forecast. */
     val location: GeoPoint? = null,
+    /** Valve and device problems, most severe first ([Faults.sorted]). */
+    val faults: List<Fault> = emptyList(),
 )
 
 /** Coordinates rounded to 2 decimals (~1 km) – the exact address never leaves the app. */
@@ -121,6 +125,7 @@ object HeatingStateParser {
                     channelLabel = channel.str("label")?.takeIf { it.isNotBlank() },
                     valvePosition = channel.dbl("valvePosition"),
                     valveState = channel.str("valveState"),
+                    emergency = channel.bool("emergencyOperationActive") == true,
                 )
                 val groupIds = (channel["groups"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.content }
                     ?: emptyList()
@@ -163,6 +168,18 @@ object HeatingStateParser {
             )
         }.sortedBy { it.label.lowercase() }
 
+        val roomLabels = rooms.associate { it.id to it.label }
+        val faults = mutableListOf<Fault>()
+        for ((c, ids) in circuits) {
+            val roomId = ids.firstOrNull { it in roomLabels }
+            fun add(kind: FaultKind, code: String) = faults.add(
+                Fault(kind, code, c.deviceId, c.deviceLabel, c.channelIndex, c.channelLabel, roomId, roomLabels[roomId]),
+            )
+            Faults.valveKind(c.valveState)?.let { add(it, c.valveState.orEmpty()) }
+            if (c.emergency) add(FaultKind.EMERGENCY, "emergencyOperationActive")
+        }
+        faults += deviceFaults(devices, roomLabels)
+
         return HeatingState(
             rooms = rooms,
             unassignedCircuits = circuits.map { it.first }.filter { it !in assigned },
@@ -175,7 +192,37 @@ object HeatingStateParser {
                 val lon = loc.dbl("longitude") ?: loc.str("longitude")?.toDoubleOrNull()
                 if (lat != null && lon != null) GeoPoint.rounded(lat, lon) else null
             },
+            faults = Faults.sorted(faults),
         )
+    }
+
+    /**
+     * Device-wide problems (unreachable, low battery, overheated, …) of floor heating actuators and of
+     * every device that belongs to a heating room (thermostats, window contacts).
+     */
+    private fun deviceFaults(devices: JsonObject, roomLabels: Map<String, String>): List<Fault> = buildList {
+        for ((deviceId, deviceEl) in devices) {
+            val device = deviceEl.asObject()
+            val type = device.str("type") ?: continue
+            val channels = device["functionalChannels"].asObject().values.map { it.asObject() }
+            val roomIds = channels.flatMap { ch ->
+                (ch["groups"] as? JsonArray)?.mapNotNull { (it as? JsonPrimitive)?.content }.orEmpty()
+            }.filter { it in roomLabels }.distinct()
+            if (!type.contains("FLOOR_TERMINAL_BLOCK") && roomIds.isEmpty()) continue
+            val base = channels.firstOrNull { it.str("functionalChannelType")?.startsWith("DEVICE_BASE") == true }
+                ?: continue
+            val label = device.str("label") ?: deviceId
+            val roomId = roomIds.singleOrNull()
+            fun add(kind: FaultKind, code: String) =
+                add(Fault(kind, code, deviceId, label, roomId = roomId, roomLabel = roomLabels[roomId]))
+            // An unreachable device's other flags are stale; one message is enough.
+            if (base.bool("unreach") == true) {
+                add(FaultKind.UNREACHABLE, "unreach")
+                continue
+            }
+            if (base.bool("lowBat") == true) add(FaultKind.LOW_BATTERY, "lowBat")
+            Faults.DEVICE_FLAGS.filter { base.bool(it) == true }.forEach { add(FaultKind.DEVICE, it) }
+        }
     }
 
     private fun JsonElement?.asObject(): JsonObject = (this as? JsonObject) ?: JsonObject(emptyMap())

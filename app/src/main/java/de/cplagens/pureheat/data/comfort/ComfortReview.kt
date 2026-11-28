@@ -25,7 +25,10 @@ data class ComfortSuggestion(
     val end: Long,
     /** Days where the suggestion differs from the current profile. */
     val changedDays: Set<Weekday>,
-    /** Comfort windows the room can't reach in time, even with the longest lead. */
+    /**
+     * Window starts last week at which the room was still too cold with the suggestion (from the
+     * simulation, not the planner's assumption: a room warmed by other sources may be warm anyway).
+     */
     val unreachable: Int,
     /** True if no outdoor temperature was recorded in the week ([ComfortReview.FALLBACK_OUTSIDE] was used). */
     val outsideEstimated: Boolean,
@@ -73,7 +76,7 @@ object ComfortReview {
             start = start,
             end = now,
             changedDays = Weekday.entries.filter { current[it] != suggested[it] }.toSet(),
-            unreachable = plan.values.sumOf { d -> d.windows.count { !it.reachable } },
+            unreachable = comparison.suggested.missedStarts,
             outsideEstimated = outside.empty,
         )
     }

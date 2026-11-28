@@ -111,5 +111,8 @@ class ComfortPlannerTest {
         val c = ComfortPlanner.coolHoursFor(21.0, 20.5, params, 5.0)
         assertEquals(kotlin.math.ln(16.0 / 15.5) / 0.04, c, 1e-9)
         assertEquals(17.0, ComfortPlanner.cooledTo(21.0, 100.0, params, 5.0, 17.0), 1e-9)
+        // Heat from other sources: equilibrium 5 + 0.2 / 0.01 = 25 °C, the room warms in the setback.
+        val warm = SimParams(k = 0.01, power = 0.1, deadTimeHours = 4.0, gain = 0.2)
+        assertEquals(25.0 + (21.0 - 25.0) * kotlin.math.exp(-0.1), ComfortPlanner.cooledTo(21.0, 10.0, warm, 5.0, 16.0), 1e-9)
     }
 }

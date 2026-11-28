@@ -41,6 +41,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import de.cplagens.pureheat.R
 import de.cplagens.pureheat.data.model.RoomInsight
+import de.cplagens.pureheat.hmip.Fault
+import de.cplagens.pureheat.hmip.FaultKind.Severity
 import de.cplagens.pureheat.hmip.HeatingCircuit
 import de.cplagens.pureheat.hmip.Room
 import java.text.DateFormat
@@ -62,6 +64,9 @@ fun DashboardScreen(
 ) {
     var showAbout by remember { mutableStateOf(false) }
     var showOrder by remember { mutableStateOf(false) }
+    var openFault by remember { mutableStateOf<Fault?>(null) }
+    openFault?.let { FaultDialog(it, onDismiss = { openFault = null }) }
+    val faults = state.state?.faults.orEmpty()
     if (showAbout) {
         AboutDialog(onDismiss = { showAbout = false }, roomLabels = state.state?.rooms.orEmpty().associate { it.id to it.label })
     }
@@ -108,6 +113,8 @@ fun DashboardScreen(
             }
             if (state.loading) LinearProgressIndicator(Modifier.fillMaxWidth())
             state.error?.let { Text(it.asString(), color = MaterialTheme.colorScheme.error) }
+            // Faults first: a stuck-open circuit or a dead actuator matters more than everything below.
+            FaultBanner(faults, onOpen = { openFault = it }, Modifier.padding(top = 8.dp))
             // The demo records nothing in the background.
             if (!state.demo) BatteryHint(Modifier.padding(top = 8.dp))
         }
@@ -125,12 +132,16 @@ fun DashboardScreen(
                 state.lastUpdated ?: System.currentTimeMillis(),
                 onOpenProfile = { onOpenProfile(room.id) },
                 onOpenHistory = { onOpenHistory(room.id) },
+                faults = faults,
+                onOpenFault = { openFault = it },
             )
         }
 
         if (unassigned.isNotEmpty()) {
             item { Text(stringResource(R.string.unassigned_circuits), style = MaterialTheme.typography.titleMedium) }
-            items(unassigned, key = { "${it.deviceId}-${it.channelIndex}" }) { CircuitRow(it, showDevice) }
+            items(unassigned, key = { "${it.deviceId}-${it.channelIndex}" }) {
+                CircuitRow(it, showDevice, faults.filter { f -> f.matches(it) }, onOpenFault = { f -> openFault = f })
+            }
         }
 
         item {
@@ -181,8 +192,12 @@ private fun RoomCard(
     now: Long,
     onOpenProfile: () -> Unit,
     onOpenHistory: () -> Unit,
+    faults: List<Fault>,
+    onOpenFault: (Fault) -> Unit,
 ) {
     val ctx = LocalContext.current
+    // While a circuit of this room is faulty its valve value can't be trusted (stuck open at "0 %").
+    val roomError = faults.any { f -> f.kind.severity == Severity.ERROR && room.circuits.any { f.matches(it) } }
     val muted = MaterialTheme.colorScheme.onSurfaceVariant
     Card(
         colors = if (room.isHeating) {
@@ -197,7 +212,9 @@ private fun RoomCard(
                 Text(room.label, style = MaterialTheme.typography.titleMedium, modifier = Modifier.weight(1f))
                 // "Valve open" rather than "heating": the system only knows the valve position,
                 // not whether warm water actually flows (stuck valve pin, cold supply, …).
-                if (room.isHeating) {
+                if (roomError) {
+                    Text(stringResource(R.string.fault_badge), color = MaterialTheme.colorScheme.error, style = MaterialTheme.typography.labelLarge)
+                } else if (room.isHeating) {
                     Text(stringResource(R.string.valve_open), color = HeatingColor, style = MaterialTheme.typography.labelLarge)
                 }
             }
@@ -212,7 +229,7 @@ private fun RoomCard(
             if (room.circuits.isEmpty()) {
                 room.valvePosition?.let { ValveBar(stringResource(R.string.valve_room), it) }
             } else {
-                room.circuits.forEach { CircuitRow(it, showDevice) }
+                room.circuits.forEach { c -> CircuitRow(c, showDevice, faults.filter { it.matches(c) }, onOpenFault) }
             }
             history?.stalled?.let { stalled ->
                 val hours = (now - stalled.openSince) / (60 * 60 * 1000.0)
@@ -249,15 +266,16 @@ private fun RoomCard(
 }
 
 @Composable
-private fun CircuitRow(circuit: HeatingCircuit, showDevice: Boolean) {
+private fun CircuitRow(circuit: HeatingCircuit, showDevice: Boolean, faults: List<Fault>, onOpenFault: (Fault) -> Unit) {
     val name = buildString {
         append(circuit.channelLabel ?: stringResource(R.string.channel_n, circuit.channelIndex))
         if (showDevice) append(" · ${circuit.deviceLabel}")
     }
     val position = circuit.valvePosition
-    if (position != null) {
-        ValveBar(name, position)
-    } else {
+    if (position != null) ValveBar(name, position)
+    if (faults.isNotEmpty()) {
+        faults.forEach { FaultRow(name, it, onOpenFault) }
+    } else if (position == null) {
         Text(
             stringResource(R.string.channel_state, name, circuit.valveState ?: stringResource(R.string.unknown)),
             style = MaterialTheme.typography.bodySmall,

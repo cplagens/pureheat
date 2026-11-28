@@ -43,6 +43,25 @@ class ComfortReviewTest {
         assertEquals(19.0, s.comparison.current.curve.first().temperature, 0.01)
     }
 
+    /** Measured 2026-11-22: weak heating, but other sources keep the room at ~24 °C. */
+    @Test
+    fun roomWarmedByOtherSourcesHasNoMissedWindows() {
+        val slow = SimParams(k = 0.0071, power = 0.092, deadTimeHours = 4.0, gain = 0.125)
+        val day = ComfortDay(16.0, listOf(ComfortWindow(330, 465, 23.0), ComfortWindow(465, 1320, 21.5)))
+        val warmRoom = listOf(RoomSample("r", now - ComfortReview.WEEK_MS, 24.3, 16.0, 0.0))
+        val warmWeather = weather.map { it.copy(outsideTemperature = 8.0) } // equilibrium 25.6 °C
+        val s = ComfortReview.lastWeek(naive, Weekday.entries.associateWith { day }, slow, warmWeather, warmRoom, now, zone)!!
+        assertEquals(0, s.unreachable)
+        assertEquals(1.0, s.comparison.suggested.comfortKept, 1e-9)
+    }
+
+    @Test
+    fun weakRoomMissesWindowStarts() {
+        val weak = SimParams(k = 0.04, power = 0.4, deadTimeHours = 1.0) // equilibrium 15 °C at 5 °C outside
+        val s = ComfortReview.lastWeek(naive, comfort, weak, weather, room, now, zone)!!
+        assertTrue("missed ${s.unreachable}", s.unreachable >= 6)
+    }
+
     @Test
     fun daysWithoutComfortWindowsKeepTheCurrentProfile() {
         val onlyMonday = mapOf(Weekday.MONDAY to comfortDay)

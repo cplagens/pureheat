@@ -79,7 +79,7 @@ object ComfortPlanner {
             val (fromTemp, gapMinutes) = if (i > 0) {
                 prevTemp!! to (w.start - prevEnd!!).toDouble()
             } else {
-                previousDayLast(day, week)?.let { (last, endMin) -> last.temperature to (w.start + 1440 - endMin).toDouble() }
+                previousDayLast(day, week, params, outsideAt)?.let { (last, endMin) -> last.temperature to (w.start + 1440 - endMin).toDouble() }
                     ?: (comfort.ecoTemperature to Double.POSITIVE_INFINITY)
             }
             // The setback ends when heating starts, so the lead L solves L = heatUp(cooled(gap − L)).
@@ -109,8 +109,7 @@ object ComfortPlanner {
             val start = snapDown(max(earliest, w.start - (lead * 60).toInt() - BUFFER_MINUTES))
 
             // Out of reach: the room is behind all the time, so heat until the window ends.
-            val holdHours = if (!reachable) 0.0
-            else min(MAX_HOLD_HOURS, coolHoursFor(w.temperature, w.temperature - ALLOWED_DROP, params, outside))
+            val holdHours = if (!reachable) 0.0 else holdHours(w, params, outside)
             var end = snapNearest(w.end - (holdHours * 60).toInt())
             end = end.coerceIn(min(snapUp(w.start) + ProfileEditing.STEP_MINUTES, 1440), 1440)
             if (end <= start) end = min(start + ProfileEditing.STEP_MINUTES, 1440)
@@ -170,18 +169,34 @@ object ComfortPlanner {
         return ln((from - eq) / (to - eq)) / p.k
     }
 
-    /** Temperature after [hours] of setback, starting at [from]; the thermostat holds [eco]. */
+    /**
+     * Temperature after [hours] of setback, starting at [from]; the thermostat holds [eco]. With
+     * much heat from other sources the passive equilibrium lies above [from]: the room warms up.
+     */
     fun cooledTo(from: Double, hours: Double, p: SimParams, outside: Double, eco: Double): Double {
-        if (hours.isInfinite()) return max(eco, outside + p.gain / max(p.k, 1e-4))
         val eq = outside + p.gain / max(p.k, 1e-4)
-        val t = eq + (from - eq) * exp(-p.k * hours)
-        return max(eco, min(from, t))
+        if (hours.isInfinite()) return max(eco, eq)
+        return max(eco, eq + (from - eq) * exp(-p.k * hours))
     }
 
-    private fun previousDayLast(day: Weekday, week: Map<Weekday, ComfortDay>): Pair<ComfortWindow, Int>? {
+    /** How long before the window end the heating may stop (residual heat of the screed). */
+    private fun holdHours(w: ComfortWindow, p: SimParams, outside: Double) =
+        min(MAX_HOLD_HOURS, coolHoursFor(w.temperature, w.temperature - ALLOWED_DROP, p, outside))
+
+    /**
+     * Yesterday's last window and when its heating stopped (minutes): the room cools from there,
+     * not from the window end. Approximation: as if that window was reachable.
+     */
+    private fun previousDayLast(
+        day: Weekday,
+        week: Map<Weekday, ComfortDay>,
+        p: SimParams,
+        outsideAt: (Weekday, Int) -> Double,
+    ): Pair<ComfortWindow, Int>? {
         val prev = Weekday.entries[(day.ordinal + 6) % 7]
         val last = week[prev]?.windows?.filter { it.end > it.start }?.maxByOrNull { it.end } ?: return null
-        return last to last.end
+        val stop = last.end - (holdHours(last, p, outsideAt(prev, last.start)) * 60).toInt()
+        return last to snapNearest(stop).coerceIn(last.start, last.end)
     }
 
     private fun snapDown(m: Int) = m / ProfileEditing.STEP_MINUTES * ProfileEditing.STEP_MINUTES
